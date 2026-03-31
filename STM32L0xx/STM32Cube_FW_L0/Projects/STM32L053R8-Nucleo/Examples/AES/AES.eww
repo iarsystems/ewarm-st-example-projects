@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/AES_DMA/EWARM/AES_DMA.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/AES_Modes/EWARM/AES_Modes.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>AES_DMA</project>
+        <configuration>STM32L053R8_NUCLEO</configuration>
+      </member>
+      <member>
+        <project>AES_Modes</project>
+        <configuration>STM32L053R8_NUCLEO</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

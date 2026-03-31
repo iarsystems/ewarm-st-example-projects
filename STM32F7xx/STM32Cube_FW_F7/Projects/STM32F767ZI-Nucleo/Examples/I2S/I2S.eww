@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/I2S_DataExchangeInterrupt/EWARM/I2S_DataExchangeInterrupt.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>I2S_DataExchangeInterrupt</project>
+        <configuration>STM32F767ZI-Nucleo</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

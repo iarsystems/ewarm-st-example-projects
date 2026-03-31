@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.JPN.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>PWR Workspace</h1>
+
+=====================================================================================
+<b>PWR_PVD</b>
+PWR Programmable Voltage Detector (PVD) example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to configure the programmable voltage detector using
+an external interrupt line. External DC supply has to be used to power Vdd.
+In this example, EXTI line 16 is configured to generate an interrupt on each rising
+or falling edge of the PVD output signal (which indicates that the Vdd voltage is
+moving below or above the PVD threshold). As long as the voltage is above the
+target threshold (2.5V), LED1 is blinking with a 200 ms-period; when the voltage drops
+below the threshold, LED1 stops blinking and remains constantly on (or appears
+to be turned off if the voltage is getting really low); when the voltage moves back
+above the target threshold, LED1 starts blinking again.
+If LED3 is on, it means that the system has generated an error.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - PWR/PWR_PVD/Inc/stm32f1xx_hal_conf.h     HAL Configuration file
+  - PWR/PWR_PVD/Inc/stm32f1xx_it.h           Header for stm32f1xx_it.c
+  - PWR/PWR_PVD/Inc/main.h                   Header file for main.c
+  - PWR/PWR_PVD/Src/system_stm32f1xx.c       STM32F1xx system clock configuration file
+  - PWR/PWR_PVD/Src/stm32f1xx_it.c           Interrupt handlers
+  - PWR/PWR_PVD/Src/main.c                   Main program
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F103xG devices
+
+  - This example has been tested with STMicroelectronics STM3210E-EVAL RevD
+    board and can be easily tailored to any other supported device
+    and development board.
+
+  - STM3210E-EVAL RevD Set-up
+    To apply an external power supply input, the user can resort to
+    pin 69 (3V3) of the daughter board extension connector CN10 and any GND pin
+    of the same connector (pin 1, 19 or 39)
+    Next,
+    - LED1 (GREEN) connected to PF.06 pin indicates the behavior of
+    the test software as explained above.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF1GettingStarted.pdf">Getting started with STM32CubeF1 Embedded Software for STM32F1xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF1 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM3210E-EVAL Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

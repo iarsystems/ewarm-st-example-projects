@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/ADC_Sequencer/EWARM/ADC_Sequencer.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>ADC_Sequencer</project>
+        <configuration>STM32L152RE_NUCLEO</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

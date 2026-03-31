@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>LCD Workspace</h1>
+
+=====================================================================================
+<b>LCD_Blink_Frequency</b>
+LCD Blink frequency example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example provides a description of how to use the STM32L0xx embedded LCD GLASS
+controller and how to configures the LCD Blink mode and Blink frequency.
+After Reset the Blink frequency is equal to LCDCLK/16 and LCD Glass display "BK0016"
+string. By pressing on the Key button (PA.00)the Blink frequency is incremented
+and the message displayed on the Pacific Display LCD glass is proportional
+to the blink frequency.
+
+In this example, 7 different Blink frequency are used:
+   - The Blink frequency = fLcd/16
+   - The Blink frequency = fLcd/32
+   - The Blink frequency = fLcd/64
+   - The Blink frequency = fLcd/128
+   - The Blink frequency = fLcd/256
+   - The Blink frequency = fLcd/512
+   - The Blink frequency = fLcd/1024
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate
+      delay (in milliseconds) based on variable incremented in SysTick ISR. This
+      implies that if HAL_Delay() is called from a peripheral ISR process, then
+      the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - LCD/LCD_Blink_Frequency/Inc/stm32l0xx_hal_conf.h          HAL configuration file
+  - LCD/LCD_Blink_Frequency/Inc/stm32l0xx_it.h                Interrupt handlers header file
+  - LCD/LCD_Blink_Frequency/Inc/main.h                        Header for main.c module
+  - LCD/LCD_Blink_Frequency/Inc/stm32l152c_discovery.h        stm32l152c discovery header file
+  - LCD/LCD_Blink_Frequency/Inc/stm32l152c_discovery_lcd.h    stm32l152c discovery lcd glass header file
+  - LCD/LCD_Blink_Frequency/Src/stm32l0xx_it.c                Interrupt handlers
+  - LCD/LCD_Blink_Frequency/Src/main.c                        Main program
+  - LCD/LCD_Blink_Frequency/Src/system_stm32l0xx.c            STM32L0xx system source file
+  - LCD/LCD_Blink_Frequency/Src/stm32l152c_discovery.c        stm32l152c discovery source file
+  - LCD/LCD_Blink_Frequency/Src/stm32l152c_discovery_lcd.c    stm32l152c discovery lcd glass source file
+  - LCD/LCD_Blink_Frequency/Src/stm32l0xx_hal_msp.c           HAL MSP module
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32L053xx  and STM32L063xx device lines RevZ
+
+  - This example has been tested with STM32L152C DISCOVERY RevC(STM32L152C device
+    changed with STM32L053).
+    It can be easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>LCD_SegmentsDrive</b>
+LCD Segments Drive example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example provides a description of how to use the STM32L0xx embedded LCD
+controller to drive the Pacific Display LCD glass mounted on STM32L152C-Disovery board.
+The goal of this example is to display a "STM32L" string on LCD glass in scrolling
+mode. The scrolling number is fixed to 10 repetition and the speed is fixed to 200ms.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate
+      delay (in milliseconds) based on variable incremented in SysTick ISR. This
+      implies that if HAL_Delay() is called from a peripheral ISR process, then
+      the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - LCD/LCD_SegmentsDrive/Inc/stm32l0xx_hal_conf.h          HAL configuration file
+  - LCD/LCD_SegmentsDrive/Inc/stm32l0xx_it.h                Interrupt handlers header file
+  - LCD/LCD_SegmentsDrive/Inc/main.h                        Header for main.c module
+  - LCD/LCD_SegmentsDrive/Inc/stm32l152c_discovery.h        stm32l152c discovery header file
+  - LCD/LCD_SegmentsDrive/Inc/stm32l152c_discovery_lcd.h    stm32l152c discovery lcd glass header file
+  - LCD/LCD_SegmentsDrive/Src/stm32l0xx_it.c                Interrupt handlers
+  - LCD/LCD_SegmentsDrive/Src/main.c                        Main program
+  - LCD/LCD_SegmentsDrive/Src/system_stm32l0xx.c            STM32L0xx system source file
+  - LCD/LCD_SegmentsDrive/Src/stm32l152c_discovery.c        stm32l152c discovery source file
+  - LCD/LCD_SegmentsDrive/Src/stm32l152c_discovery_lcd.c    stm32l152c discovery lcd glass source file
+  - LCD/LCD_SegmentsDrive/Src/stm32l0xx_hal_msp.c           HAL MSP module
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32L053xx  and STM32L063xx device lines RevZ
+
+ - This example has been tested with STM32L152C DISCOVERY RevC(STM32L152C device
+    changed with STM32L053).
+    It can be easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeL0GettingStarted.pdf">Getting started with STM32CubeL0 Embedded Software for STM32L0xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeL0 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32L053R8-Nucleo Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

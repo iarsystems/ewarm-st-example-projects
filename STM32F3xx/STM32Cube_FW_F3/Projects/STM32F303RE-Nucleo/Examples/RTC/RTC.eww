@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/RTC_Calendar/EWARM/RTC_Calendar.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>RTC_Calendar</project>
+        <configuration>STM32F303RE-Nucleo</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<infocenter_data version="1.0">
+  <iar_name>ADC</iar_name><!--App-->
+  <iar_description>This example describes how to configure and use ADC to convert an external
+analog input (PA0, connected on A0 on arduino connector) and get the result using a DMA transfer, through the
+STM32F0xx HAL API.</iar_description><!--App short description-->
+  <iar_curdir>$CUR_DIR$</iar_curdir>
+</infocenter_data>

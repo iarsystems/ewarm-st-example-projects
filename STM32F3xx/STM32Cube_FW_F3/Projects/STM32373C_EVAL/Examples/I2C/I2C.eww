@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/I2C_EEPROM/EWARM/I2C_EEPROM.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>I2C_EEPROM</project>
+        <configuration>STM32373C_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

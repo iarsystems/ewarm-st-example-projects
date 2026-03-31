@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<exampleInfo>
+  <copyDir>..\</copyDir>
+  <copyDir>..\..\..\..\..\Drivers\BSP\Components\Common\</copyDir>
+  <copyDir>..\..\..\..\..\Drivers\BSP\Components\ili9325\</copyDir>
+  <copyDir>..\..\..\..\..\Drivers\BSP\Components\mfxstm32l152\</copyDir>
+  <copyDir>..\..\..\..\..\Drivers\BSP\Components\n25q256a\</copyDir>
+  <copyDir>..\..\..\..\..\Drivers\BSP\Components\s5k5cag\</copyDir>
+  <copyDir>..\..\..\..\..\Drivers\BSP\Components\wm8994\</copyDir>
+  <copyDir>..\..\..\..\..\Drivers\BSP\STM32446E_EVAL\</copyDir>
+  <copyDir>..\..\..\..\..\Drivers\CMSIS\Device\ST\STM32F4xx\</copyDir>
+  <copyDir>..\..\..\..\..\Drivers\STM32F4xx_HAL_Driver\</copyDir>
+  <copyDir>..\..\..\..\..\Middlewares\ST\STM32_Audio\Addons\PDM\</copyDir>
+  <copyDir>..\..\..\..\..\Utilities\Fonts\</copyDir>
+  <copyDir>..\..\..\..\..\Utilities\Log\</copyDir>
+</exampleInfo>

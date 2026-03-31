@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/DMAMUX_RequestGen/EWARM/DMAMUX_RequestGen.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/DMAMUX_SYNC/EWARM/DMAMUX_SYNC.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/DMA_FIFOMode/EWARM/DMA_FIFOMode.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/DMA_FLASHToRAM/EWARM/DMA_FLASHToRAM.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>DMAMUX_RequestGen</project>
+        <configuration>STM32H743I_EVAL</configuration>
+      </member>
+      <member>
+        <project>DMAMUX_SYNC</project>
+        <configuration>STM32H743I_EVAL</configuration>
+      </member>
+      <member>
+        <project>DMA_FIFOMode</project>
+        <configuration>STM32H743I_EVAL</configuration>
+      </member>
+      <member>
+        <project>DMA_FLASHToRAM</project>
+        <configuration>STM32H743I_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

@@ -1,0 +1,217 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>DCMI Workspace</h1>
+
+=====================================================================================
+<b>DCMI_CaptureMode</b>
+DCMI Capture Mode example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example provides a short description of how to use the DCMI to interface with
+a camera module and to display in continuous mode the picture on the LCD.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+Then the SystemClock_Config() function is used to configure the system
+clock (SYSCLK) to run at 200 MHz.
+
+The Digital camera interface is configured to receive the capture from
+the camera module mounted on STM327x6G-EVAL revB evaluation board.
+The DMA is configured to transfer the picture from DCMI peripheral
+to an external RAM used by the LCD as a frame buffer.
+When each line event callback is raised the pixels coming from sensor are converted from
+RGB565 to RGB0888 format using DMA2D and transferred to the LCD frame buffer.
+
+The camera module is configured to generate QVGA (320x240) image resolution
+and the LCD is configured to display QVGA image resolution
+It also possible to test other resolutions. To do, uncomment one of the
+following lines in main.h:
+/* #define TEST_RESOLUTION_R160x120         */
+/* #define TEST_RESOLUTION_R320x240         */
+/* #define TEST_RESOLUTION_R480x272         */
+/* The following resolusion is valid only on MB1063 */
+/* #define TEST_RESOLUTION_R640x480         */
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+Note: The STM32F7xx devices can reach a maximum clock frequency of 216MHz but as this example uses SDRAM,
+      the system clock is limited to 200MHz. Indeed proper functioning of the SDRAM is only guaranteed
+      at a maximum system clock frequency of 200MHz.
+
+
+<u>Keywords</u>
+
+Display, DCMI, Camera, Capture, Frame Buffer, LCD, ARGB8888, DMA, RGB565, SDRAM, DMA2D, QQVGA
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - DCMI/DCMI_CaptureMode/Inc/stm32f7xx_hal_conf.h    HAL configuration file
+  - DCMI/DCMI_CaptureMode/Inc/stm32f7xx_it.h          Interrupt handlers header file
+  - DCMI/DCMI_CaptureMode/Inc/main.h                  Header for main.c module
+  - DCMI/DCMI_CaptureMode/Src/stm32f7xx_it.c          Interrupt handlers
+  - DCMI/DCMI_CaptureMode/Src/main.c                  Main program
+  - DCMI/DCMI_CaptureMode/Src/system_stm32f7xx.c      STM32F7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F756xx/STM32F746xx devices.
+
+  - This example has been tested with STM327x6G-EVAL board revB and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32756G_EVAL Set-up: Make sure that jumper JP23 is on CAMERA position.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files: Project-&gt;Rebuild all
+ - Load project image: Project-&gt;Download and Debug
+ - Run program: Debug-&gt;Go(F5)
+
+
+=====================================================================================
+<b>DCMI_SnapshotMode</b>
+DCMI Capture Mode example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example provides a short description of how to use the DCMI to interface with
+a camera module and to display in snapshot mode the picture on the LCD.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+Then the SystemClock_Config() function is used to configure the system
+clock (SYSCLK) to run at 200 MHz.
+
+The Digital camera interface is configured to receive the capture from
+the camera module mounted on STM327x6G-EVAL revB evaluation board.
+The DMA is configured to transfer the picture from DCMI peripheral
+to an external RAM used by the LCD as a frame buffer.
+When each line event callback is raised the pixels coming from sensor are converted from
+RGB565 to RGB0888 format using DMA2D and transfered to the LCD frame buffer.
+
+The camera module is configured to generate QVGA (320x240) image resolution
+and the LCD is configured to display QVGA image resolution
+It also possible to test other resolutions. To do, uncomment one of the
+following lines in main.h:
+/* #define TEST_RESOLUTION_R160x120         */
+/* #define TEST_RESOLUTION_R320x240         */
+/* #define TEST_RESOLUTION_R480x272         */
+/* The following resolusion is valid only on MB1063 */
+/* #define TEST_RESOLUTION_R640x480         */
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+Note: The STM32F7xx devices can reach a maximum clock frequency of 216MHz but as this example uses SDRAM,
+      the system clock is limited to 200MHz. Indeed proper functioning of the SDRAM is only guaranteed
+      at a maximum system clock frequency of 200MHz.
+
+
+<u>Keywords</u>
+
+Display, DCMI, Camera, Snapshot, Frame Buffer, LCD, ARGB8888, DMA, RGB565, SDRAM, DMA2D, QQVGA
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - DCMI/DCMI_SnapshotMode/Inc/stm32f7xx_hal_conf.h    HAL configuration file
+  - DCMI/DCMI_SnapshotMode/Inc/stm32f7xx_it.h          Interrupt handlers header file
+  - DCMI/DCMI_SnapshotMode/Inc/main.h                  Header for main.c module
+  - DCMI/DCMI_SnapshotMode/Src/stm32f7xx_it.c          Interrupt handlers
+  - DCMI/DCMI_SnapshotMode/Src/main.c                  Main program
+  - DCMI/DCMI_SnapshotMode/Src/system_stm32f7xx.c      STM32F7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F756xx/STM32F746xx devices.
+
+  - This example has been tested with STM327x6G-EVAL board revB and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32756G_EVAL Set-up: Make sure that jumper JP23 is on CAMERA position.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files: Project-&gt;Rebuild all
+ - Load project image: Project-&gt;Download and Debug
+ - Run program: Debug-&gt;Go(F5)
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF7GettingStarted.pdf">Getting started with STM32CubeF7 Embedded Software for STM32F7xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF7 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM327x6G-EVAL Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

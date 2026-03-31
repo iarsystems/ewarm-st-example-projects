@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>OPAMP Workspace</h1>
+
+=====================================================================================
+<b>OPAMP_InternalFollower</b>
+OPAMP used as internal follower
+=====================================================================================
+
+<u>Example Description</u>
+
+This example provides a short description of how to configure the OPAMP in internal
+follower mode (unity gain). The signal applied on OPAMP non-inverting input is
+reproduced on OPAMP output.
+
+Other peripherals are used in this example:
+ - DAC generates continuously a signal on OPAMP2 non-inverting input (internal connection: no external connection needed)
+   This signal can be observed on pin PA.04 (output of DAC_CHANNEL_1 has been connected to this GPIO pin for debug)
+
+   Note: External connection between DAC output and OPAMP non-inverting input is possible:
+         Change OPAMP init parameter "NonInvertingInput" from "OPAMP_NONINVERTINGINPUT_DAC_CH1" to "OPAMP_NONINVERTINGINPUT_IO0",
+         then connect a wire between pin PA.04 (output of DAC_CHANNEL_1) and pin PA.06 (non-inverting input of OPAMP).
+
+ - ADC acquires the signal on OPAMP2 output (internal connection: no external connection needed)
+   This signal can be observed on pin PB.00
+
+   Note: ADC conversion results are stored into array "aADCxConvertedValues" (for debug: check into watch window)            */
+         These results can be compared to reference waveform "Waveform_Ramp_12bits_5samples".                                       */
+
+ - DAC and ADC are clock by the same timer TIMx: DAC on TIMx rising edge, ADC on TIMx falling edge
+  (in order to have for each sample of DAC waveform a stabilization time of 1/2 TIMx clock cycle, then ADC acquisition of this sample).
+
+To run the example:
+ - There is no external connection needed to run this example
+ - Optionally, for this example purpose: pressing on User push-button enable/disable OPAMP
+   to watch the impact on OPAMP output voltage and LED status.
+
+STM32L152RE-Nucleo Rev C board's LED is be used to monitor the program execution status:
+ - Normal operation: LED2 is turned-on/off in function of OPAMP output vs input voltage
+   comparison status:
+    - Turn-off if OPAMP output is different of non-inverting input
+    - Turn-on if OPAMP output is equal to non-inverting input
+ - Error: In case of error, LED2 is toggling at a frequency of 1Hz.
+
+
+<u>Directory contents</u>
+
+  - OPAMP/OPAMP_InternalFollower/Inc/stm32l1xx_hal_conf.h    HAL configuration file
+  - OPAMP/OPAMP_InternalFollower/Inc/stm32l1xx_it.h          DMA interrupt handlers header file
+  - OPAMP/OPAMP_InternalFollower/Inc/main.h                        Header for main.c module
+  - OPAMP/OPAMP_InternalFollower/Src/stm32l1xx_it.c          DMA interrupt handlers
+  - OPAMP/OPAMP_InternalFollower/Src/main.c                        Main program
+  - OPAMP/OPAMP_InternalFollower/Src/stm32l1xx_hal_msp.c     HAL MSP file
+  - OPAMP/OPAMP_InternalFollower/Src/system_stm32l1xx.c      STM32L1xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32L1xx Cat.3, Cat.4, Cat.5 devices.
+
+  - This example has been tested with STM32L152RE-Nucleo Rev C board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeL1GettingStarted.pdf">Getting started with STM32CubeL1 Embedded Software for STM32L1xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeL1 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32L152RE-Nucleo Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/LCD_Blink_Frequency/EWARM/LCD_Blink_Frequency.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/LCD_SegmentsDrive/EWARM/LCD_SegmentsDrive.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>LCD_Blink_Frequency</project>
+        <configuration>STM32L053R8_NUCLEO</configuration>
+      </member>
+      <member>
+        <project>LCD_SegmentsDrive</project>
+        <configuration>STM32L053R8_NUCLEO</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

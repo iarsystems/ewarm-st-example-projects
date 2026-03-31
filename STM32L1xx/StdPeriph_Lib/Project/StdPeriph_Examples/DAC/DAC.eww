@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/DAC_ADC/DAC_ADC.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/DAC_SignalsGeneration/DAC_SignalsGeneration.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>DAC_ADC</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>DAC_ADC</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>DAC_SignalsGeneration</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>DAC_SignalsGeneration</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

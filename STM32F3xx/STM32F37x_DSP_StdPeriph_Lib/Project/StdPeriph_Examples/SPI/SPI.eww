@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/SPI_DataExchangeDMA/SPI_DataExchangeDMA.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/SPI_DataExchangeInterrupt/SPI_DataExchangeInterrupt.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/SPI_MSD/SPI_MSD.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>SPI_DataExchangeDMA</project>
+        <configuration>STM32373C-EVAL</configuration>
+      </member>
+      <member>
+        <project>SPI_DataExchangeInterrupt</project>
+        <configuration>STM32373C-EVAL</configuration>
+      </member>
+      <member>
+        <project>SPI_MSD</project>
+        <configuration>STM32373C-EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

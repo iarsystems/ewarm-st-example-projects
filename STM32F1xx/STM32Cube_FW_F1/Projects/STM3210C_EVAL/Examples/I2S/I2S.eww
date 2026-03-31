@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/I2S_Audio/EWARM/I2S_Audio.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>I2S_Audio</project>
+        <configuration>STM3210C_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

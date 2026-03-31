@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/TIM_DMA/EWARM/TIM_DMA.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/TIM_InputCapture/EWARM/TIM_InputCapture.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/TIM_OCActive/EWARM/TIM_OCActive.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>TIM_DMA</project>
+        <configuration>STM32F413H_DISCOVERY</configuration>
+      </member>
+      <member>
+        <project>TIM_InputCapture</project>
+        <configuration>STM32F413H_DISCOVERY</configuration>
+      </member>
+      <member>
+        <project>TIM_OCActive</project>
+        <configuration>STM32F413H_DISCOVERY</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

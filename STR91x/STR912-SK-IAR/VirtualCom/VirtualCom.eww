@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/VirtualCom.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>VirtualCom</project>
+        <configuration>Debug</configuration>
+      </member>
+      <member>
+        <project>VirtualCom</project>
+        <configuration>J-Trace debug</configuration>
+      </member>
+      <member>
+        <project>VirtualCom</project>
+        <configuration>Debug Remap Bank 1</configuration>
+      </member>
+      <member>
+        <project>VirtualCom</project>
+        <configuration>J-Trace debug Remap Bank 1</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/ADC3_DMA/ADC3_DMA.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/DualADC_Interleaved_DMAmode3/DualADC_Interleaved.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/DualADC_RegulSimu_DMAmode1/DualADC_RegulSimu.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/TripleADC_Interleaved_DMAmode2/TripleADC_Interleaved.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/VBAT_Measurement/VBAT_Measurement.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>ADC3_DMA</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+      <member>
+        <project>DualADC_Interleaved</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+      <member>
+        <project>DualADC_RegulSimu</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+      <member>
+        <project>TripleADC_Interleaved</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+      <member>
+        <project>VBAT_Measurement</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

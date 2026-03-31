@@ -1,0 +1,261 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.JPN.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>ADC Workspace</h1>
+
+=====================================================================================
+<b>ADC_DifferentialMode</b>
+ADC conversion of 2 channels in differential mode, voltage input from DAC, user control by push button and LED
+=====================================================================================
+
+<u>Example Description</u>
+
+This example provides a short description of how to use ADC peripherals to
+perform a conversion in differential mode, between 2 ADC channels.
+
+ADC settings:
+  Continuous mode to have conversions kept running after 1st conversion trig.
+  Software start to trig the 1st conversion manually, without external event.
+  Channel in differential mode.
+
+ADC conversion results:
+  ADC conversions results are transfered automatically by ADC IRQ handler, through
+  function HAL_ADC_ConvCpltCallback(), into variable "uhADCxConvertedValue".
+
+  ADC Differential conversion result calculation:
+   - An offset of half of full range is added to keep the full dynamic range of differential voltage.
+   - Channels voltage is divided by 2, resolution is lowered of 1 bit.
+   =&gt; Diff conversion result = mid-range + (channel_high-channel_low)/2
+
+Board settings:
+  The voltage input on ADC channels is provided from DAC channels.
+  ADC and DAC channels have been chosen to have the same pads shared at device level: PA4 and PA5.
+  Therefore, there is no external connection needed to run this example.
+
+  Voltage on ADC channels input is changed by pressing on push button:
+  Voltage is increasing at each click on push button, from 0 to maximum range in 4 steps.
+  Click on push button are circular cycles: At counter maximum value reached, counter is set back to 0.
+
+  ADC differential high input is kept at a constant voltage level.
+
+STM32 board's LEDs are be used to monitor the transfer status:
+ - Normal operation: LED2 is turned-on/off in function of ADC conversion result.
+    - Turned-on if differential voltage is positive
+    - Turned-off if differential voltage is negative
+
+ - Error: In case of error, LED3 is toggling at a frequency of 1Hz.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - ADC/ADC_DifferentialMode/Inc/stm32f3xx_hal_conf.h    HAL configuration file
+  - ADC/ADC_DifferentialMode/Inc/stm32f3xx_it.h          DMA interrupt handlers header file
+  - ADC/ADC_DifferentialMode/Inc/main.h                  Header for main.c module
+  - ADC/ADC_DifferentialMode/Src/stm32f3xx_it.c          DMA interrupt handlers
+  - ADC/ADC_DifferentialMode/Src/main.c                  Main program
+  - ADC/ADC_DifferentialMode/Src/stm32f3xx_hal_msp.c     HAL MSP file
+  - ADC/ADC_DifferentialMode/Src/system_stm32f3xx.c      stm32f3xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F303xE devices.
+
+  - This example has been tested with STM32303E-EVAL RevC board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>ADC_DualMode_18MSamplesPerSec</b>
+ADC1 and ADC2 in Dual interleaved mode, maximum sampling rate, transfer by DMA
+=====================================================================================
+
+<u>Example Description</u>
+
+This example provides a short description of how to use two ADC peripherals to
+convert a regular channel in Dual interleaved mode.
+
+ADC1 and ADC2 are configured to have the maximum sampling rate: 18 Msamples/second.
+Note: In this example, conversion accuracy is not set as the highest possible (resolution minimum, sampling time minimum.), but it shows the maximum sampling rate possible.
+      Conversion accuracy can be improved by increased resolution and sampling time, but this will decrease the sampling rate.
+
+ADC settings:
+  System clock is 72MHz
+  HCLOCK is 72MHz            (AHB Prescaler = 1 from SystemClock_Config())
+  ADC clock = HCLOCK / 1     (ADC_CLOCK_SYNC_PCLK_DIV1 from ADC_Config())
+            = 72 MHz
+  Sample time:     1.5 ADC clock cycles (set using ADC_SAMPLETIME_1CYCLE_5).
+  Conversion time: 6.5 ADC clock cycles (set using ADC_RESOLUTION_6B (refer to reference manual)).
+  Delay time:      3   ADC clock cycles (set using ADC_TWOSAMPLINGDELAY_3CYCLES).
+
+  Note: Delay has been chosen to have ADC2 conversion in the mid-delay between ADC1 conversion.
+        See document "ADC timing simulation DualMode 18Msps.xls" describing the conversions timing.
+
+ADC sampling rate calculation:
+   - There are 2 ADC conversions every 8 ADC clock cycles (sample cycles+ conversion cycles)
+   - This is equivalent to 1 ADC conversion every 4 ADC clock cycles.
+   =&gt; Sampling frequency is 72MHz/4 = 18 Msamples/sec
+
+ADC conversion results:
+  ADC and DMA are configured to operate continuously, in circular mode: conversions results are updated continuoulsy.
+  ADC conversions results are transfered automatically by DMA, by half words every ADC1+ADC2 conversions.
+  Array "aADCDualConvertedValue" contains both ADC results on 16 bits:
+   - ADC master results in the 8 LSB [7:0]
+   - ADC slave results in the 8 MSB [15:8]
+
+Board settings:
+  ADC1 and ADC2 are configured to convert ADC_CHANNEL_7 (pin PC.01).
+  You can modify the voltage on this channel by turning potentiometer RV2.
+
+STM32 board's LEDs are be used to monitor the program execution status:
+ - Normal operation: LED1 is toggling when the conversion is complete.
+                     The toggle frequency depends on Conversion result link to RV2 position.
+                     Slow frequency for ADC full scale result
+                     Fast frequency for ADC low scale result
+ - Error: In case of error, LED3 is toggling at a frequency of 1Hz.
+
+Note: See document "ADC timing simulation DualMode 18Msps.xls" describing the conversions timing.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - ADC/ADC_DualMode_18MSamplesPerSec/Inc/stm32f3xx_hal_conf.h    HAL configuration file
+  - ADC/ADC_DualMode_18MSamplesPerSec/Inc/stm32f3xx_it.h          DMA interrupt handlers header file
+  - ADC/ADC_DualMode_18MSamplesPerSec/Inc/main.h                  Header for main.c module
+  - ADC/ADC_DualMode_18MSamplesPerSec/Src/stm32f3xx_it.c          DMA interrupt handlers
+  - ADC/ADC_DualMode_18MSamplesPerSec/Src/main.c                  Main program
+  - ADC/ADC_DualMode_18MSamplesPerSec/Src/stm32f3xx_hal_msp.c     HAL MSP file
+  - ADC/ADC_DualMode_18MSamplesPerSec/Src/system_stm32f3xx.c      stm32f3xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F303xE devices.
+
+  - This example has been tested with STM32303E-EVAL RevC board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>ADC_TriggerMode</b>
+ADC1 conversion using Trigger Mode
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to use the ADC and TIM2 to convert continuously data
+from ADC channel. Each time an external trigger is generated by TIM2 a new
+conversion is started by ADC.
+
+At the end of conversion, an interrupt is generated and the converted data of
+ADC1 DR register is affected to the uhADCxConvertedValue variable in the ADC
+conversion complete call back function (HAL_ADC_ConvCpltCallback).
+
+The timer is used to trigger an ADC measure at 20 KHz.
+
+Configuration of the timer to trig an ADC measure at 20 Khz:
+  From the reference manual, Reset and Clock control part, Timer 2 is clocked on PCLK1.
+  The function SystemClock_Config() configures the clock divider as follows:
+  1) The system clock is 72 MHz.
+  2) AHB  Prescaler = 1 =&gt; AHB clock is 72 MHz.
+  3) APB1 Prescaler = 2 =&gt; PCLK1 clock is 36 MHz.
+  4) For Timer 2, as APB1 Prescaler = 2, Timer 2 Clock is PCLK1 clock X 2 = 72 Mhz.
+
+  For a 20 Khz frequency, we need 72 MHz / 20 KHz = 3600 clock cycle.
+  So, in TIM_Config function, we set the following period: htim.Init.Period = 3600;
+
+The voltage on pin PC.01 (ADC_CHANNEL_7)can vary using the board potentiometer RV2.
+
+Remark: LED3 is ON when there is an error in initialization.
+
+
+<u>Directory contents</u>
+
+  - ADC/ADC_TriggerMode/Inc/stm32f3xx_hal_conf.h    HAL configuration file
+  - ADC/ADC_TriggerMode/Inc/stm32f3xx_it.h          DMA interrupt handlers header file
+  - ADC/ADC_TriggerMode/Inc/main.h                  Header for main.c module
+  - ADC/ADC_TriggerMode/Src/stm32f3xx_it.c          DMA interrupt handlers
+  - ADC/ADC_TriggerMode/Src/main.c                  Main program
+  - ADC/ADC_TriggerMode/Src/stm32f3xx_hal_msp.c     HAL MSP file
+  - ADC/ADC_TriggerMode/Src/system_stm32f3xx.c      STM32F3xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F303xE devices.
+
+  - This example has been tested with STM32303E-EVAL RevC board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF3GettingStarted.pdf">Getting started with STM32CubeF3 Embedded Software for STM32F3xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF3 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32303E-EVAL Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

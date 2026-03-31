@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.JPN.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>CEC Workspace</h1>
+
+=====================================================================================
+<b>CEC</b>
+CEC_DataExchange example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to configure and use the CEC peripheral to receive and
+transmit messages.
+
+- Hardware Description
+
+To use this example, two STM32H743I-EVAL boards (called Device_1 and
+Device_2) are loaded with the same software then connected through CEC lines
+
+ /|\  In the firmware file main.h, uncomment the dedicated line to use
+/_!_\ the CEC peripheral as STM32 device_1 or STM32 device_2.
+
+*------------------------------------------------------------------------------*
+|           STM32H743I-EVAL                         STM32H743I-EVAL            |
+|         Device Address :0x01                    Device Address :0x03         |
+|         ____________________                   ____________________          |
+|        |                    |                 |                    |         |
+|        |                    |                 |                    |         |
+|        |     __________     |                 |     __________     |         |
+|        |    |   CEC    |____|____CECLine______|____|   CEC    |    |         |
+|        |    | Device_1 |    |                 |    | Device_2 |    |         |
+|        |    |__________|    |                 |    |__________|    |         |
+|        |                    |                 |                    |         |
+|        |  O LD1             |                 |  O LD1             |         |
+|        |  O LD2    Joystick |                 |  O LD2    Joystick |         |
+|        |  O LD3        _    |                 |  O LD3        _    |         |
+|        |  O LD4       |_|   |                 |  O LD4       |_|   |         |
+|        |                    |                 |                    |         |
+|        |             GND O--|-----------------|--O GND             |         |
+|        |____________________|                 |____________________|         |
+|                                                                              |
+|                                                                              |
+*------------------------------------------------------------------------------*
+
+- Software Description
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+The SystemClock_Config() function is used to configure the system clock for STM32H743xx Devices:
+ - The CPU at 400MHz
+ - The HCLK for D1 Domain AXI and AHB3 peripherals , D2 Domain AHB1/AHB2 peripherals and D3 Domain AHB4  peripherals at 200MHz.
+ - The APB clock dividers for D1 Domain APB3 peripherals, D2 Domain APB1 and APB2 peripherals and D3 Domain APB4 peripherals to run at 100MHz.
+
+The test unrolls as follows.
+
+On TX side, four possible messages can be transmitted and are indicated as
+below on the transmitting board:
+ - when Tamper push-button is pressed, LED1 toggles
+ - when Joystick Selection push-button is pressed, LED2 toggles
+ - when Joystick UP push-button is pressed, LED3 toggles
+ - when Joystick DOWN push-button is pressed, LED4 toggles
+
+Accordingly, the following happens on the RX side in case of successful
+reception:
+ - when Tamper push-button is pressed on TX side,
+     * all RX side LEDs are turned off
+ - when Joystick Selection push-button is pressed on TX side, on RX side
+     *  LED1 and LED2 are turned on
+     *  LED3 and LED4 are turned off
+ - when Joystick UP push-button is pressed on TX side,
+     *  all RX side LEDs are turned on
+ - when Joystick DOWN push-button is pressed on TX side, on RX side
+     * LED1 and LED2 are turned off
+     * LED3 and LED4 are turned on
+In case of unsuccessful reception, LED3 is turned on.
+
+Practically, 2 EXTI lines (EXTI15_10 and EXTI9_5) are configured to
+generate an interrupt on each falling or rising edge.
+A specific message is then transmitted by the CEC IP
+and a LED connected to a specific MFX GPIO pin is toggled.
+    - EXTI9_5 is mapped to MFX used to manage Joystick pins
+    - EXTI15_10 is mapped to PC.13
+
+Then, on TX side,
+  - when rising edge is detected on EXTI9_5-SEL joystick button, LED2 toggles
+  - when falling edge is detected on EXTI15_10 and EXTI line interrupt is detected
+    on PC.13, LED1 toggles
+  - when falling edge is detected on EXTI9_5-UP joystick button, LED3 toggles
+  - when falling edge is detected on EXTI9_5-DOWN joystick button LED4 toggles
+
+
+<u>Keywords</u>
+
+Connectivity, CEC, Transmission, Reception, joystick, Data exchange
+
+
+<u>Directory contents</u>
+
+  - CEC/CEC_DataExchange/Inc/stm32h7xx_hal_conf.h    HAL configuration file
+  - CEC/CEC_DataExchange/Inc/stm32h7xx_it.h          Interrupt handlers header file
+  - CEC/CEC_DataExchange/Inc/main.h                  Header for main.c module
+  - CEC/CEC_DataExchange/Src/stm32h7xx_it.c          Interrupt handlers
+  - CEC/CEC_DataExchange/Src/system_stm32h7xx.c      STM32H7xx system source file
+  - CEC/CEC_DataExchange/Src/main.c                  Main program
+  - CEC/CEC_DataExchange/Src/stm32h7xx_hal_msp.c     IP hardware resources initialization
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32H743xx devices.
+
+  - This example has been tested with STM32H743I-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - in main.h, uncomment DEVICE_1 for first board, uncomment DEVICE_2 for second board
+ - Rebuild all files and load your image into target memory
+ - With a wire, connect GPIOA-GPIO_PIN_15 between the 2 boards
+ - Connect the ground of the 2 boards
+ - Connect a 27k Ohms pull-up resistor between CEC pin (PA15) and VDD (+3V3)
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeH7GettingStarted.pdf">Getting started with STM32CubeH7 Embedded Software for STM32H7xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeH7 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32H743I-EVAL Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

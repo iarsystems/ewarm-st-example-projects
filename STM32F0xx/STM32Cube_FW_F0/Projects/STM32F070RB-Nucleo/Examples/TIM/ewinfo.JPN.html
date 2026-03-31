@@ -1,0 +1,407 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.JPN.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>TIM Workspace</h1>
+
+=====================================================================================
+<b>TIM_ComplementarySignals</b>
+TIM Complementary Signals example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to configure the TIM1 peripheral to generate three
+complementary TIM1 signals, to insert a defined dead time value, to use the break
+feature and to lock the desired parameters.
+
+TIM1CLK is fixed to SystemCoreClock, the TIM1 Prescaler is set to have
+TIM1 counter clock = 12MHz.
+
+The objective is to generate PWM signal at 10 KHz:
+  - TIM1_Period = (TIM1 counter clock / 10000) - 1
+
+The Three Duty cycles are computed as the following description:
+The channel 1 duty cycle is set to 50% so channel 1N is set to 50%.
+The channel 2 duty cycle is set to 25% so channel 2N is set to 75%.
+The channel 3 duty cycle is set to 12.5% so channel 3N is set to 87.5%.
+The Timer pulse is calculated as follows:
+  - ChannelxPulse = DutyCycle * (TIM1_Period - 1) / 100
+
+A dead time equal to 100/SystemCoreClock (around 2.1us) is inserted between
+the different complementary signals, and the Lock level 1 is selected.
+  - The OCx output signal is the same as the reference signal except for the rising edge,
+    which is delayed relative to the reference rising edge.
+  - The OCxN output signal is the opposite of the reference signal except for the rising
+    edge, which is delayed relative to the reference falling edge
+
+Note that calculated duty cycles apply to the reference signal (OCxREF) from
+which outputs OCx and OCxN are generated. As dead time insertion is enabled the
+duty cycle measured on OCx will be slightly lower.
+
+The break Polarity is used at High level.
+
+The TIM1 waveforms can be displayed using an oscilloscope.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - TIM/TIM_ComplementarySignals/Inc/stm32f0xx_hal_conf.h    HAL configuration file
+  - TIM/TIM_ComplementarySignals/Inc/stm32f0xx_it.h          Interrupt handlers header file
+  - TIM/TIM_ComplementarySignals/Inc/main.h                  Header for main.c module
+  - TIM/TIM_ComplementarySignals/Src/stm32f0xx_it.c          Interrupt handlers
+  - TIM/TIM_ComplementarySignals/Src/main.c                  Main program
+  - TIM/TIM_ComplementarySignals/Src/stm32f0xx_hal_msp.c     HAL MSP file
+  - TIM/TIM_ComplementarySignals/Src/system_stm32f0xx.c      STM32F0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F070xB devices.
+
+  - This example has been tested with STMicroelectronics STM32F070RB-Nucleo RevC
+    board and can be easily tailored to any other supported device
+    and development board.
+
+  - STM32F070RB-Nucleo RevC Set-up
+    - Connect the TIM1 pins to an oscilloscope to monitor the different waveforms:
+      - TIM1_CH1  pin (PA.08 : pin23 in CN10)
+      - TIM1_CH1N pin (PB.13 : pin30 in CN10)
+      - TIM1_CH2  pin (PA.09 : pin21 in CN10)
+      - TIM1_CH2N pin (PB.14 : pin28 in CN10)
+      - TIM1_CH3  pin (PA.10 : pin33 in CN10)
+      - TIM1_CH3N pin (PB.15 : pin26 in CN10)
+
+    - Connect the TIM1 break pin TIM1_BKIN pin (PB.12) to the GND. To generate a
+      break event, switch this pin level from 0V to 3.3V.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>TIM_DMA</b>
+TIM DMA example
+=====================================================================================
+
+<u>Example Description</u>
+
+  This example provides a description of how to use DMA with TIM1 Update request
+  to transfer Data from memory to TIM1 Capture Compare Register 3 (TIMx_CCR3).
+
+  The following configuration values are used in this example:
+
+    - TIM1CLK = SystemCoreClock
+    - Counter repetion = 3
+    - Prescaler = 0
+    - TIM1 counter clock = SystemCoreClock
+    - SystemCoreClock is set to 48 MHz for STM32F0xx
+
+  The objective is to configure TIM1 channel 3 to generate complementary PWM
+  (Pulse Width Modulation) signal with a frequency equal to 17.57 KHz, and a variable
+  duty cycle that is changed by the DMA after a specific number of Update DMA request.
+
+  The number of this repetitive requests is defined by the TIM1 Repetition counter,
+  each 4 Update Requests, the TIM1 Channel 3 Duty Cycle changes to the next new
+  value defined by the aCCValue_Buffer.
+
+The PWM waveform can be displayed using an oscilloscope.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate
+      delay (in milliseconds) based on variable incremented in SysTick ISR. This
+      implies that if HAL_Delay() is called from a peripheral ISR process, then
+      the SysTick interrupt must have higher priority (numerically lower)
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - TIM/TIM_DMA/Inc/stm32f0xx_hal_conf.h    HAL configuration file
+  - TIM/TIM_DMA/Inc/stm32f0xx_it.h          Interrupt handlers header file
+  - TIM/TIM_DMA/Inc/main.h                  Header for main.c module
+  - TIM/TIM_DMA/Src/stm32f0xx_it.c          Interrupt handlers
+  - TIM/TIM_DMA/Src/main.c                  Main program
+  - TIM/TIM_DMA/Src/stm32f0xx_hal_msp.c     HAL MSP file
+  - TIM/TIM_DMA/Src/system_stm32f0xx.c      STM32F0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F070xB devices.
+
+  - This example has been tested with STMicroelectronics STM32F070RB-Nucleo RevC
+    board and can be easily tailored to any other supported device
+    and development board.
+
+  - STM32F070RB-Nucleo RevC Set-up
+    - Connect the TIM1 pin to an oscilloscope to monitor the different waveforms:
+      - TIM1 CH3 (PA.10 : connected to D2 (pin 33 in CN10 connector)).
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>TIM_InputCapture</b>
+Input Capture example
+=====================================================================================
+
+<u>Example Description</u>
+
+  This example shows how to use the TIM peripheral to measure the frequency of
+  an external signal.
+
+  The TIM1CLK frequency is set to SystemCoreClock (Hz), the Prescaler is 0,
+  so the TIM1 counter clock is SystemCoreClock (Hz).
+  SystemCoreClock is set to 48 MHz for STM32F070xB Devices.
+
+  TIM1 is configured in Input Capture Mode: the external signal is connected to
+  TIM1 Channel2 used as input pin.
+  To measure the frequency we use the TIM1 CC2 interrupt request, so in the
+  TIM1_CC_IRQHandler routine, the frequency of the external signal is computed.
+
+  The "uwFrequency" variable contains the external signal frequency:
+  uwFrequency = TIM1 counter clock / uwDiffCapture (Hz),
+  where "uwDiffCapture" is the difference between two consecutive TIM1 captures.
+
+  The minimum frequency value to measure is TIM1 counter clock / CCR MAX
+                                              = 48 MHz / 65535
+
+  Due to TIM1_CC_IRQHandler processing time (around 5.25us), the maximum
+  frequency value to measure is around 190kHz.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - TIM/TIM_InputCapture/Inc/stm32f0xx_hal_conf.h    HAL configuration file
+  - TIM/TIM_InputCapture/Inc/stm32f0xx_it.h          Interrupt handlers header file
+  - TIM/TIM_InputCapture/Inc/main.h                  Header for main.c module
+  - TIM/TIM_InputCapture/Src/stm32f0xx_it.c          Interrupt handlers
+  - TIM/TIM_InputCapture/Src/main.c                  Main program
+  - TIM/TIM_InputCapture/Src/stm32f0xx_hal_msp.c     HAL MSP file
+  - TIM/TIM_InputCapture/Src/system_stm32f0xx.c      STM32F0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F070xB devices.
+  - In this example, the clock is set to 48 MHz.
+
+  - This example has been tested with STMicroelectronics STM32F070RB-Nucleo RevC
+    board and can be easily tailored to any other supported device
+    and development board.
+
+  - STM32F070RB-Nucleo RevC Set-up
+    - Connect the external signal to measure to the TIM1 CH2 pin (PA.09).
+      ==&gt; PA.09 connected to pin 21 on CN10
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>TIM_PWMInput</b>
+TIM PWM Input example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to use the TIM peripheral to measure the frequency and
+duty cycle of an external signal.
+
+The TIM3CLK frequency is set to SystemCoreClock (Hz), the Prescaler is 0 so the
+counter clock is SystemCoreClock (Hz).
+SystemCoreClock is set to 48 MHz for STM32F070xB Devices.
+
+TIM3 is configured in PWM Input Mode: the external signal is connected to
+TIM3 Channel2 used as input pin.
+To measure the frequency and the duty cycle we use the TIM3 CC2 interrupt request,
+so in the TIM3_IRQHandler routine, the frequency and the duty cycle of the external
+signal are computed.
+
+"uwFrequency" variable contains the external signal frequency:
+TIM3 counter clock = SystemCoreClock,
+Frequency = TIM3 counter clock / TIM3_CCR2 in Hz,
+
+"DutyCycle" variable contains the external signal duty cycle:
+DutyCycle = (TIM3_CCR1*100)/(TIM3_CCR2) in %.
+
+The minimum frequency value to measure is (TIM3 counter clock / CCR MAX)
+                                         = (48 MHz)/ 65535
+                                         = 732 Hz
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - TIM/TIM_PWMInput/Inc/stm32f0xx_hal_conf.h    HAL configuration file
+  - TIM/TIM_PWMInput/Inc/stm32f0xx_it.h          Interrupt handlers header file
+  - TIM/TIM_PWMInput/Inc/main.h                  Header for main.c module
+  - TIM/TIM_PWMInput/Src/stm32f0xx_it.c          Interrupt handlers
+  - TIM/TIM_PWMInput/Src/main.c                  Main program
+  - TIM/TIM_PWMInput/Src/stm32f0xx_hal_msp.c     HAL MSP file
+  - TIM/TIM_PWMInput/Src/system_stm32f0xx.c      STM32F0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F070xB devices.
+
+  - This example has been tested with STMicroelectronics STM32F070RB-Nucleo RevC
+    board and can be easily tailored to any other supported device
+    and development board.
+
+  - STM32F070RB-Nucleo RevC Set-up
+    - Connect the external signal to measure to the TIM3 CH2 pin (PB.05: connected to pin 29 in CN10 connector).
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>TIM_TimeBase</b>
+Time Base example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to configure the TIM peripheral to generate a time base of
+one second with the corresponding Interrupt request.
+
+    In this example TIM3 input clock (TIM3CLK)  is set to APB1 clock (PCLK1),
+    since APB1 prescaler is equal to 1.
+      TIM3CLK = PCLK1
+      PCLK1 = HCLK
+      =&gt; TIM3CLK = HCLK = SystemCoreClock
+    To get TIM3 counter clock at 10 KHz, the Prescaler is computed as following:
+    Prescaler = (TIM3CLK / TIM3 counter clock) - 1
+    Prescaler = (SystemCoreClock /10 KHz) - 1
+
+SystemCoreClock is set to 48 MHz for STM32F0xx Devices.
+
+The TIM3 ARR register value is equal to 10000 - 1,
+Update rate = TIM3 counter clock / (Period + 1) = 1 Hz,
+So the TIM3 generates an interrupt each 1 s
+
+When the counter value reaches the auto-reload register value, the TIM update
+interrupt is generated and, in the handler routine, pin PA.05 (connected to LED2 on board STM32F070RB-Nucleo RevC)
+is toggled at the following frequency: 0.5Hz.
+
+In case of error, LED2 is turned ON.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - TIM/TIM_TimeBase/Inc/stm32f0xx_hal_conf.h    HAL configuration file
+  - TIM/TIM_TimeBase/Inc/stm32f0xx_it.h          Interrupt handlers header file
+  - TIM/TIM_TimeBase/Inc/main.h                  Header for main.c module
+  - TIM/TIM_TimeBase/Src/stm32f0xx_it.c          Interrupt handlers
+  - TIM/TIM_TimeBase/Src/main.c                  Main program
+  - TIM/TIM_TimeBase/Src/stm32f0xx_hal_msp.c     HAL MSP file
+  - TIM/TIM_TimeBase/Src/system_stm32f0xx.c      STM32F0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F070xB devices.
+
+  - This example has been tested with STMicroelectronics STM32F070RB-Nucleo RevC
+    board and can be easily tailored to any other supported device
+    and development board.
+
+  - STM32F070RB-Nucleo RevC Set-up
+    - Use LED2 connected to PA.05 pin (pin 11 in CN10 connector) and connect them on an oscilloscope
+      to show the Time Base signal.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF0GettingStarted.pdf">Getting started with STM32CubeF0 Embedded Software for STM32F0xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF0 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32F070RB-Nucleo Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

@@ -1,0 +1,56 @@
+/******************** (C) COPYRIGHT 2007 STMicroelectronics ********************
+* File Name          : version.txt
+* Author             : MCD Application Team
+* Version            : V1.1
+* Date               : 11/26/2007
+* Description        : Version file for the STM3210B-EVAL Demonstration firmware.
+********************************************************************************
+* THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+* WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE TIME.
+* AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY DIRECT,
+* INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING FROM THE
+* CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING
+* INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+*******************************************************************************/
+
+* V1.1 - 11/26/2007
+====================
+ + lcd.c/.h
+   - Add automatic detection/drive of the LCD mounted on the MB542 board 
+     The supported LCDs are AM-240320LTNQW00H (LCD_HX8312) and AM-240320L8TNQW00H (LCD_ILI9320)
+   - Functions name update
+
+ + Add Segger "emWin" graphics demonstration 
+ 
+ + main.c
+   - change "LCD_DisplayString" by "LCD_DisplayStringLine"
+   - change "LCD_Clear()" by "LCD_Clear(White)"
+   
+ + menu.c (line 785)
+   - change the Demonstration firmware version to V1.1 
+ 
+ + Updated/new images of the Demonstration to be loaded with DFU
+ 
+ 
+* V1.0 - 10/08/2007
+====================
+ + Updated with STM32F10x FWLib and USBLib V1.0 
+
+ + Add project with RIDE toolchain
+ 
+ + Resolve LCD driver issue with high compiler optimization 
+ 
+ + Before entering STOP mode all GPIO pins are forced to Analog Input mode to be
+   able to measure STOP mode current comsumption in the STM3210B-EVAL board
+  
+ + Generate an new image of the Demonstration (STM3210B-EVAL_Demo.dfu) to be loaded with DFU    
+
+ + Update the STM32F10x evaluation bord name from STM32F10x-EVAL to STM3210B-EVAL
+ 
+
+* V0.1 - 05/21/2007
+====================
+  Created.
+
+
+******************* (C) COPYRIGHT 2007 STMicroelectronics *****END OF FILE******

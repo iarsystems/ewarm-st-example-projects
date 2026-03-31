@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/COMP_Hygrometer/EWARM/COMP_Hygrometer.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/COMP_OutputBlanking/EWARM/COMP_OutputBlanking.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>COMP_Hygrometer</project>
+        <configuration>STM32303E_EVAL</configuration>
+      </member>
+      <member>
+        <project>COMP_OutputBlanking</project>
+        <configuration>STM32303E_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

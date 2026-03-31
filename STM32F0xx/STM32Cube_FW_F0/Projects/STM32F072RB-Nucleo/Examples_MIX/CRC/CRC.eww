@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/CRC_PolynomialUpdate/EWARM/CRC_PolynomialUpdate.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>CRC_PolynomialUpdate</project>
+        <configuration>STM32F072RB-Nucleo</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

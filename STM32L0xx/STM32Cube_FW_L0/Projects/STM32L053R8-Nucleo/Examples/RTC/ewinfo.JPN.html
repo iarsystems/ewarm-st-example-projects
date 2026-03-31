@@ -1,0 +1,373 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.JPN.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>RTC Workspace</h1>
+
+=====================================================================================
+<b>RTC_Alarm</b>
+RTC Alarm Example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example guides you through the different configuration steps by mean of HAL API
+to ensure Alarm configuration and generation using the RTC peripheral.
+
+- At the beginning of the main program the HAL_Init() function is called to reset
+  all the peripherals, initialize the Flash interface and the systick.
+  Then the SystemClock_Config() function is used to configure the system
+  clock (SYSCLK) to run at 2 MHz.
+
+- The RTC peripheral configuration is ensured by the HAL_RTC_Init() function.
+  This later is calling the HAL_RTC_MspInit()function which core is implementing
+  the configuration of the needed RTC resources according to the used hardware (CLOCK,
+  PWR, RTC clock source and BackUp). You may update this function to change RTC configuration.
+
+- LSE oscillator clock is used as RTC clock source by default.
+  The user can use also LSI as RTC clock source. The user uncomment the adequate
+  define on the main.h file.
+
+- HAL_RTC_SetAlarm_IT() function is called to initialize the Alarm feature with
+  interrupt mode.
+  HAL_RTC_SetDate() and HAL_RTC_SetTime() functions are then called to initialize the
+  time and the date.
+
+In this example, the Time is set to 02:20:00 and the Alarm must be generated after
+30 seconds on 02:20:30.
+  - LED2 is turned ON when the RTC Alarm is generated correctly.
+    The current time is updated and displayed on the debugger in aShowTime variable.
+  - LED2 is toggling : This indicates that the system generates an error.
+
+Note: Using stdio.h may increase the code size, it is optional and intended only to
+      ease the example by displaying the date variable (aShowTime) on the debugger.
+      By default this option is enabled, user can disable it by commenting
+       "#define DISPLAY_ON_DUBUGGER" in main.h file.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate
+      delay (in milliseconds) based on variable incremented in SysTick ISR. This
+      implies that if HAL_Delay() is called from a peripheral ISR process, then
+      the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - RTC/RTC_Alarm/Inc/stm32l0xx_hal_conf.h    HAL configuration file
+  - RTC/RTC_Alarm/Inc/stm32l0xx_it.h          Interrupt handlers header file
+  - RTC/RTC_Alarm/Inc/main.h                  Header for main.c module
+  - RTC/RTC_Alarm/Src/stm32l0xx_it.c          Interrupt handlers
+  - RTC/RTC_Alarm/Src/main.c                  Main program
+  - RTC/RTC_Alarm/Src/stm32l0xx_hal_msp.c     HAL MSP module
+  - RTC/RTC_Alarm/Src/system_stm32l0xx.c      STM32L0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32L051xx, STM32L052xx, STM32L053xx STM32L062xx and
+    STM32L063xx device lines RevZ
+
+  - This example has been tested with STM32L053R8-Nucleo RevC  board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32L053R8-Nucleo Set-up
+    - Use LED2 connected to PA.05 pin
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>RTC_LSI</b>
+RTC prescaler adjustment with LSI Measurements example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example demonstrates and explains how to use the LSI clock source auto
+calibration to get a precise RTC clock.
+In the associated software, the system clock is set to 32 MHz.
+As an application example, it demonstrates how to configure the TIM21 timer
+internally connected to LSI clock output, in order to adjust the RTC prescaler.
+
+The Low Speed Internal (LSI) clock is used as RTC clock source.
+After reset, the RTC prescaler (asynchronous and synchronous) is set with the
+default LSI frequency (39KHz).
+The RTC WakeUp is configured to generate an interrupt each 1s. The WakeUp counter
+is clocked by the RTC CK_SPRE signal (1Hz) and its counter is set to 0x0.
+LED2 is toggled inside the RTC WakeUp interrupt each 1s.
+
+The inaccuracy of the LSI clock causes the RTC WakeUp Interrupt to be inaccurate.
+The RTC CK_SPRE signal can be monitored by LED1 which is toggled into the RTC
+Wakeup interrupt service routine.
+
+The program waits until Key Push button is pressed to begin the auto calibration
+procedure:
+ - Configure the TIM21 to remap internally the TIM21 Channel 1 Input Capture to
+   the LSI clock output.
+ - Enable the TIM21 Input Capture interrupt: after one cycle of LSI clock, the
+   period value is stored in a variable and compared to the HCLK clock to get
+   its real value.
+ - The RTC prescaler is adjusted with this LSI frequency value so that the RTC
+   CK_SPRE value become more accurate.
+ - When calibration is done the variable uwLsiFreq is visualized into the debugger
+   to indicate the end of this operation.
+ - The LSI value is updated and displayed on the debugger in uwLsiFreq variable.
+
+- LED2 is Off: This indicates that the system generates an error.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate
+      delay (in milliseconds) based on variable incremented in SysTick ISR. This
+      implies that if HAL_Delay() is called from a peripheral ISR process, then
+      the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - RTC/RTC_LSI/Inc/stm32l0xx_conf.h         Library Configuration file
+  - RTC/RTC_LSI/Inc/main.h                   header file for main.c
+  - RTC/RTC_LSI/Inc/stm32l0xx_it.h           Header for stm32l0xx_it.c
+  - RTC/RTC_LSI/Src/system_stm32l0xx.c       STM32L0xx system clock configuration file
+  - RTC/RTC_LSI/Src/stm32l0xx_it.c           Interrupt handlers
+  - RTC/RTC_LSI/Src/main.c                   Main program
+  - RTC/RTC_LSI/Src/stm32l0xx_hal_msp.c      HAL MSP module
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32L051xx, STM32L052xx, STM32L053xx STM32L062xx and
+    STM32L063xx device lines RevZ
+
+  - This example has been tested with STM32L053R8-Nucleo RevC  board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32L053R8-Nucleo Set-up
+    - Use LED2 connected to PA.05 pin
+    - Use the Key push-button connected to pin PC13 (EXTI_Line13)
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>RTC_Tamper</b>
+RTC Tamper Example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example guides you through the different configuration steps by mean of HAL API
+to write/read data to/from RTC Backup data registers and demonstrate the Tamper
+detection feature using the RTC peripheral.
+
+- At the beginning of the main program the HAL_Init() function is called to reset
+  all the peripherals, initialize the Flash interface and the systick.
+  Then the SystemClock_Config() function is used to configure the system
+  clock (SYSCLK) to run at 2 MHz.
+
+- The RTC peripheral configuration is ensured by the HAL_RTC_Init() function.
+  This later is calling the HAL_RTC_MspInit() function which core is implementing
+  the configuration of the needed RTC resources according to the used hardware (CLOCK,
+  PWR, RTC clock source and BackUp). You may update this function to change RTC configuration.
+
+- LSE oscillator clock is used as RTC clock source by default.
+  The user can use also LSI as RTC clock source. The user uncomment the adequate
+  define on the main.h file.
+
+- HAL_RTCEx_SetTamper_IT() function is then called to initialize the Tamper with
+  interrupt mode. This function allows to erase or not the backup data registers
+  after a Tamper detection through the NoErase and MaskFlag fields in the Tamper
+  configuration.
+  In this example the Backup registers should be erased.
+
+The associated firmware performs the following:
+1. It configures the Tamper pin to be falling edge, and enables the Tamper
+   interrupt.
+2. It writes the data to all RTC Backup data registers, then check whether the
+   data were correctly written.
+3. Applying a low level on the TAMPER1 pin (PC.13) by pressing Tamper push button,
+   the RTC backup data registers are reset and the Tamper interrupt is generated.
+4. The corresponding ISR then checks whether the RTC Backup data registers are cleared.
+   If yes LED2 turns ON.
+
+- LED2 is toggling : This indicates that the system generates an error.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate
+      delay (in milliseconds) based on variable incremented in SysTick ISR. This
+      implies that if HAL_Delay() is called from a peripheral ISR process, then
+      the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - RTC/RTC_Tamper/Inc/stm32l0xx_hal_conf.h    HAL configuration file
+  - RTC/RTC_Tamper/Inc/stm32l0xx_it.h          Interrupt handlers header file
+  - RTC/RTC_Tamper/Inc/main.h                  Header for main.c module
+  - RTC/RTC_Tamper/Src/stm32l0xx_it.c          Interrupt handlers handlers
+  - RTC/RTC_Tamper/Src/main.c                  Main program
+  - RTC/RTC_Tamper/Src/stm32l0xx_hal_msp.c     HAL MSP module
+  - RTC/RTC_Tamper/Src/system_stm32l0xx.c      STM32L0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32L051xx, STM32L052xx, STM32L053xx STM32L062xx and
+    STM32L063xx device lines RevZ
+
+  - This example has been tested with STM32L053R8-Nucleo RevC  board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32L053R8-Nucleo Set-up
+    - Use LED2 connected to PA.05 pin
+    - Use KEY push button connected to PC.13 pin
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>RTC_TimeStamp</b>
+RTC time stamp Example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example guides you through the different configuration steps by mean of HAL API
+to ensure Time Stamp configuration using the RTC peripheral.
+
+- At the beginning of the main program the HAL_Init() function is called to reset
+  all the peripherals, initialize the Flash interface and the systick.
+  Then the SystemClock_Config() function is used to configure the system
+  clock (SYSCLK) to run at 2 MHz.
+
+The RTC peripheral configuration is ensured by the HAL_RTC_Init() function.
+This later is calling the HAL_RTC_MspInit()function which core is implementing
+the configuration of the needed RTC resources according to the used hardware (CLK,
+PWR, RTC clock source and BackUp). You may update this function to change RTC configuration.
+
+- LSE oscillator clock is used as RTC clock source by default.
+  The user can use also LSI as RTC clock source. The user uncomment the adequate
+  define on the main.h file.
+
+HAL_RTCEx_SetTamper()function is called to initialize the tamper feature.
+HAL_RTCEx_SetTimeStamp_IT()function is then called to initialize the time stamp feature
+with interrupt mode. It configures The Time Stamp pin to be falling edge and enables
+the time Stamp detection on tamper pin.
+HAL_RTC_SetTime()and HAL_RTC_SetDate() functions are then called to initialize the
+time and the date.
+
+The program behaves as follows:
+
+1. After startup the program configure the RTC (Time date) and enable the feature
+   timeStamp.
+
+2. Applying a low level on the Time Stamp pin (PC13) by pressing to User button,
+   a time stamp event is detedced and the calendar is saved in the time stamp structures.
+   Each time the user presses on tamper button, the current time and Time Stamp are updated and displayed
+   on the debugger in aShowTime and aShowTimeStamp variables .
+
+- LED2 is toggling : This indicates that the system generates an error.
+
+Note: Using stdio.h may increase the code size, it is optional and intended only to
+      ease the example by displaying the date variables (aShowTime and aShowTimeStamp) on the debugger.
+      By default this option is enabled, user can disable it by commenting
+       "#define DISPLAY_ON_DUBUGGER" in main.h file.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate
+      delay (in milliseconds) based on variable incremented in SysTick ISR. This
+      implies that if HAL_Delay() is called from a peripheral ISR process, then
+      the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - RTC/RTC_TimeStamp/Inc/stm32l0xx_hal_conf.h    HAL configuration file
+  - RTC/RTC_TimeStamp/Inc/stm32l0xx_it.h          Interrupt handlers header file
+  - RTC/RTC_TimeStamp/Inc/main.h                  Header for main.c module
+  - RTC/RTC_TimeStamp/Src/stm32l0xx_it.c          Interrupt handlers handlers
+  - RTC/RTC_TimeStamp/Src/main.c                  Main program
+  - RTC/RTC_TimeStamp/Src/stm32l0xx_hal_msp.c     HAL MSP module
+  - RTC/RTC_TimeStamp/Src/system_stm32l0xx.c      STM32L0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32L051xx, STM32L052xx, STM32L053xx STM32L062xx and
+    STM32L063xx device lines RevZ
+
+  - This example has been tested with STM32L053R8-Nucleo RevC  board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32L053R8-Nucleo Set-up
+    - Use KEY push button connected to PC.13 pin
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeL0GettingStarted.pdf">Getting started with STM32CubeL0 Embedded Software for STM32L0xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeL0 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32L053R8-Nucleo Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

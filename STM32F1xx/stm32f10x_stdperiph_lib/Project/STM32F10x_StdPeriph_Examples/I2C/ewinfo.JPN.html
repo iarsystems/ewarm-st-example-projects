@@ -1,0 +1,309 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.JPN.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+I2C and M24CXX EEPROM communication example
+
+Example Description
+
+This example provides a basic example of how to use the I2C firmware library and
+an associate I2C EEPROM driver to communicate with an I2C EEPROM device (here the
+example is interfacing with M24CXX EEPROMs where XX={01, 02, 04, 08, 16, 32, 64}.
+
+I2C peripheral is configured in Master transmitter during write operation and in
+Master receiver during read operation from I2C EEPROM.
+
+The peripheral used is I2C1 but can be configured by modifying the defines values
+in stm32_eval_i2c_ee.c file. The speed is set to 200kHz and can be configured to
+other values by setting the define I2C_SPEED in stm32_eval_i2c_ee.h file.
+All transfers are performed through DMA access (except for One Byte Receiving case)
+which allows user application to perform parallel tasks while transfer to/from
+EEPROM is ongoing.
+
+For M24C02 to M24C16 devices, one I2C EEPROM Block address where the program will
+write the buffer have to be selected from the four address available and defined
+in the stm32_eval_i2c_ee.h file.
+
+For M24C32 and M24C64 devices all the memory is accessible through the two-bytes
+addressing mode and need to define block addresses. In this case, only the physical
+address has to be defined (according to the address pins (E0,E1 and E2) connection).
+This address is defined in stm32_eval_i2c_ee.c.h (default is 0xA0: E0, E1 and E2
+tied to ground).
+The EEPROM addresses where the program start the write and the read operations
+is defined in the main.c file.
+
+First, the content of Tx1_Buffer is written to the EEPROM_WriteAddress1 and the
+written data are read. The written and the read buffers data are then compared.
+Following the read operation, the program waits that the EEPROM reverts to its
+Standby state. A second write operation is, then, performed and this time, Tx2_Buffer
+is written to EEPROM_WriteAddress2, which represents the address just after the last
+written one in the first write. After completion of the second write operation, the
+written data are read. The contents of the written and the read buffers are compared.
+
+Directory contents
+
+  - I2C/EEPROM/stm32f10x_conf.h    Library Configuration file
+  - I2C/EEPROM/stm32f10x_it.c      Interrupt handlers
+  - I2C/EEPROM/stm32f10x_it.h      Interrupt handlers header file
+  - I2C/EEPROM/main.c              Main program
+  - I2C/EEPROM/system_stm32f10x.c  STM32F10x system source file
+
+Hardware and Software environment
+
+  - This example runs on STM32F10x Connectivity line, High-Density, High-Density
+    Value line, Medium-Density, XL-Density, Medium-Density Value line, Low-Density
+    and Low-Density Value line Devices.
+
+  - This example has been tested with STM32100E-EVAL (STM32F10x High-Density Value
+    line) evaluation board (implemented EEPROM is M24C64) and STM3210C-EVAL
+    (STM32F10x Connectivity-Line) evaluation board (implemented EEPROM is M24C64)
+    with no additional hardware, and can be easily tailored to any other supported
+    device and development board.
+
+  - STM32100E-EVAL Set-up
+    - Make sure the jumper JP14 "ROM_WP" is fitted on the board.
+    - No additional Hardware connections are needed.
+
+  - STM3210C-EVAL Set-up
+    - Make sure the Jumper JP17 "I2C_SCK" is fitted on the board.
+    - Make sure the jumper JP9 "ROM_WP" is fitted on the board.
+    - No additional Hardware connections are needed.
+
+How to use it ?
+
+In order to make the program work, you must do the following :
+ - Copy all source files from this example folder to the template folder under
+   Project\STM32F10x_StdPeriph_Template
+ - Open your preferred toolchain
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+ note
+ - Low-density Value line devices are STM32F100xx microcontrollers where the
+   Flash memory density ranges between 16 and 32 Kbytes.
+ - Low-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 16 and 32 Kbytes.
+ - Medium-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 64 and 128 Kbytes.
+ - Medium-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 64 and 128 Kbytes.
+ - High-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - High-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - XL-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 512 and 1024 Kbytes.
+ - Connectivity line devices are STM32F105xx and STM32F107xx microcontrollers.
+
+
+***************************************************************************************************
+
+
+I2C and LM75 Temperature Sensor communication example
+
+Example Description
+
+This example provides a description of how to use the I2C to communicate with
+an STLM75 (or a compatible device) I2C temperature sensor is mounted on the
+evaluation board and used to get instantaneous external temperature
+(-55C to +125C).
+Thanks to STM32 I2C SMBus feature, we can easily monitor the temperature
+variations. This is managed by the SMBus Alert which is generating a dedicated
+interrupt informing the system that the temperature is out of the selected
+ranges.
+The user can configure the TOS and THYS thanks to a dedicated define values in
+the code.
+
+   #define TEMPERATURE_THYS 31
+   #define TEMPERATURE_TOS 32
+
+Directory contents
+
+  - I2C/I2C_TSENSOR/stm32f10x_conf.h    Library Configuration file
+  - I2C/I2C_TSENSOR/stm32f10x_it.c      Interrupt handlers
+  - I2C/I2C_TSENSOR/stm32f10x_it.h      Interrupt handlers header file
+  - I2C/I2C_TSENSOR/main.c              Main program
+  - I2C/I2C_TSENSOR/system_stm32f10x.c  STM32F10x system source file
+
+Hardware and Software environment
+
+  - This example runs on STM32F10x Connectivity line, High-Density, High-Density
+    Value line, Medium-Density, XL-Density, Medium-Density Value line, Low-Density
+    and Low-Density Value line Devices.
+
+  - This example has been tested with STMicroelectronics STM32100E-EVAL (High-Density
+    Value line), STM32100B-EVAL (Medium-Density Value line), STM3210E-EVAL (High-Density
+    and XL-Density) and STM3210B-EVAL (Medium-Density) evaluation boards and can be
+    easily tailored to any other supported device and development board.
+
+  - STM3210E-EVAL Set-up
+     note The jumper 11 must be fitted.
+
+  - STM32100E-EVAL Set-up
+    - Make sure that jumper 6 must be set in position 2&lt;-&gt;3
+
+How to use it ?
+
+In order to make the program work, you must do the following :
+ - Copy all source files from this example folder to the template folder under
+   Project\STM32F10x_StdPeriph_Template
+ - Open your preferred toolchain
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+ note
+ - Low-density Value line devices are STM32F100xx microcontrollers where the
+   Flash memory density ranges between 16 and 32 Kbytes.
+ - Low-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 16 and 32 Kbytes.
+ - Medium-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 64 and 128 Kbytes.
+ - Medium-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 64 and 128 Kbytes.
+ - High-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - High-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - XL-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 512 and 1024 Kbytes.
+ - Connectivity line devices are STM32F105xx and STM32F107xx microcontrollers.
+
+
+***************************************************************************************************
+
+
+I2C and STMPE811 IO Expander communication example
+
+Example Description
+
+This firmware provides an example of configuring and using the IO Expander STMPE811
+in order to control input Joystick IOs, output IOs and the Touch Screen feature.
+This example provides the elementary steps to control the following modules and
+use them in an application:
+The IO pins are used for:
+  - Getting Joystick pins status (Polling and interrupt) only for STM3210C-EVAL.
+  - The Touch Screen controller is used to get the Touched area detection information
+    in a single point mode (Polling and interrupt).
+
+The input information can be used either in Polling mode (uncomment the define
+#define IOE_POLLING_MODE) or in Interrupt mode (uncomment the define #define
+IOE_INTERRUPT_MODE). These defines are in main.h file.
+
+After configuring the IO Expander modules and Interrupts (if needed), the output
+IOs are set to their default state. These operations are done by the functions:
+IOE_Config() and IOE_ITConfig(). If the IO Expander is not operational (or the
+I2C pins are not in the correct level) the IOE_Config() function returns a value
+different from 0 and a message is displayed on the LCD screen.
+
+To get the status of an input:
+ - IOE_JoyStickGetState() function is used for Joystick and returns a JOY_State_TypeDef
+    value indicating the currently pressed key. This information is used to update
+    the LCD display (the Joystick pressed key name is displayed) (only for STM3210C-EVAL).
+ - IOE_TS_GetState() function is used for Touch Screen and returns a pointer to
+    a structure holding the Touch Screen status (did a Touch Detection happened,
+    X, Y, and Z positions). Only detection into the drawn rectangles areas is
+    considered and used to update the LEDs status and LCD display (corresponding
+    LED turned ON when its rectangle is touched, and the LED name is displayed on
+    the LCD screen).
+
+Besides, the examples checks the status of the other Push-Buttons implemented on
+the board (Key, Tamper and WakeUp push-buttons). They are checked in parallel
+with the IO Expander IOs and the LCD display and LEDs are updated according to
+the push buttons state.
+
+Directory contents
+
+  - I2C/IOExpander/stm32f10x_conf.h     Library Configuration file
+  - I2C/IOExpander/stm32f10x_it.c       Interrupt handlers
+  - I2C/IOExpander/stm32f10x_it.h       Header for stm32f10x_it.c
+  - I2C/IOExpander/main.c               Main program
+  - I2C/IOExpander/main.h               Header for main.c
+  - I2C/IOExpander/system_stm32f10x.c   STM32F10x system source file
+
+Hardware and Software environment
+
+  - This example runs on STM32F10x Connectivity line, High-Density, High-Density
+    Value line, Medium-Density, XL-Density, High-Density Value line, Medium-Density
+    Value line, Low-Density and Low-Density Value line Devices.
+
+  - This example has been tested with STMicroelectronics STM32100E-EVAL (High-Density
+    Value line) and STM3210C-EVAL (Connectivity line) evaluation boards
+    and can be easily tailored to any other supported device and development
+    board.
+
+  - STM32100E-EVAL Set-up
+    - Use two IO Expanders connected to I2C2 SCL and SDA pins PB10 and PB11 and
+      interrupt output pin connected to PA12 (EXTI mode). IO Expander 1 address
+      pins is connected to Gnd (address is 0x82).
+    - Use LED1, LED2, LED3 and LED4 connected respectively to PF.06, PF.07, PF.08
+      and PF.09 pins
+    - Use LCD connected to SPI3 remapped pins SCK, MISO and MOSI: PC10, PC11,
+      PC12 and the CS pin PB2.
+    - Use LCD Touch Screen module connected to IO Expander 1 pins IO_Pin_1,
+      IO_Pin_2, IO_Pin_3 and IO_Pin_4 (respectively Y-, X-, Y+, X+ lines).
+
+  - STM3210C-EVAL Set-up
+    - Use two IO Expanders connected to I2C1 SCL and SDA pins PB6 and PB7 and
+      interrupt output pin connected to PB14 (EXTI mode). IO Expander 1 address
+      pins is connected to Gnd (address is 0x82) and IO Expander 2 address pins
+      is connected to Vcc (address is 0x88).
+    - Use LED1, LED2, LED3 and LED4 connected respectively to PD.07, PD.13, PF.03
+      and PD.04 pins
+    - Use LCD connected to SPI3 remapped pins SCK, MISO and MOSI: PC10, PC11,
+      PC12 and the CS pin PB2.
+    - Use LCD Touch Screen module connected to IO Expander 1 pins IO_Pin_1,
+      IO_Pin_2, IO_Pin_3 and IO_Pin_4 (respectively Y-, X-, Y+, X+ lines).
+    - Use Joystick module connected to IO Expander 2 pins IO_Pin_3, IO_Pin_4,
+      IO_Pin_5, IO_Pin_6 and IO_Pin_7 (respectively UP, Right, Left, Down and Center)
+
+How to use it ?
+
+In order to make the program work, you must do the following :
+ - Copy all source files from this example folder to the template folder under
+   Project\STM32F10x_StdPeriph_Template
+ - Open your preferred toolchain
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+ note
+ - Low-density Value line devices are STM32F100xx microcontrollers where the
+   Flash memory density ranges between 16 and 32 Kbytes.
+ - Low-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 16 and 32 Kbytes.
+ - Medium-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 64 and 128 Kbytes.
+ - Medium-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 64 and 128 Kbytes.
+ - High-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - High-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - XL-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 512 and 1024 Kbytes.
+ - Connectivity line devices are STM32F105xx and STM32F107xx microcontrollers.
+
+</span>
+   </pre>
+
+  </div>
+  </body>
+</html>
+

@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+uIP Webserver Demo
+
+Example description
+===================
+  This demonstration is an embedded Web Server for STM32 Connectivity Line
+ Microcontrollers. It is based on uIP TCP/IP stack v0.9 and features three HTML
+ pages that form a compact and interactive Web Server to interact with
+ STM3210C-EVAL board.
+
+ You will be able to address the STM3210C-EVAL board as a web page using your
+ web browser, as well as controlling the four LEDs on the board through the
+ browser and finally you will be able to get continuously, each 1second, the
+ ADC Channel14 converted value displayed on a status bar also in the web page
+ of your browser.
+
+Directory contents
+==================
+ + \inc: contains the Demo firmware header files
+ + \EWARMv5: contains pre-configured projects for EWARM5 toolchain
+ + \src: contains the Demo firmware source files
+
+Hardware environment
+====================
+This example runs on STMicroelectronics STM3210C-EVAL evaluation board
+and can be easily tailored to any other hardware.
+
+MII mode (default setting):
+  JP3, JP11, JP12, JP13, JP4 are in 2&lt;-&gt;3 position.
+  JP14 is in 1&lt;-&gt;2 position.
+  JP2 is open.
+
+RMII mode:
+  JP11, JP12, JP13, JP4 are in 2&lt;-&gt;3 position.
+  JP3, JP14 is in 1&lt;-&gt;2 position.
+  JP2 is closed
+
+How to use it
+=============
+ + EWARM5
+    - Open the \arm\examples\ST\STM32F10x\STM32-Eval
+    \stm32f10x_stdperiph_lib\Project\Webserver_Demo_uIP
+    \EWARMv5\Project.eww workspace.
+
+    - In the workspace toolbar select the project config:
+        - STM3210C-EVAL: to configure the project for STM32 Connectivity Line devices
+    - Rebuild all files: Project->Rebuild all
+    - Load project image: Project->Debug
+    - Run program: Debug->Go(F5)
+
+NOTE:
+ - Low-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 16 and 32 Kbytes.
+ - Medium-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 32 and 128 Kbytes.
+ - High-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - Connectivity Line devices are STM32F105xx and STM32F107xx microcontrollers.
+
+   </pre>
+
+  </div>
+  </body>
+</html>
+

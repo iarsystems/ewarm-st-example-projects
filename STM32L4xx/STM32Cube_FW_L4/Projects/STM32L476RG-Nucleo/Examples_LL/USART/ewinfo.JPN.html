@@ -1,0 +1,724 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.JPN.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>USART Workspace</h1>
+
+=====================================================================================
+<b>USART_Communication_Rx_IT</b>
+USART Receiver example (IT Mode)
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to configure GPIO and USART peripheral for receiving characters
+from HyperTerminal (PC) in Asynchronous mode using IT. Peripheral initialization done
+using LL unitary services functions for optimization purpose (performance and size).
+
+USART Peripheral is configured in asynchronous mode (115200 bauds, 8 data bit, 1 start bit, 1 stop bit, no parity).
+No HW flow control is used.
+GPIO associated to User push-button is linked with EXTI.
+USART RX Not Empty interrupt is enabled.
+Virtual Com port feature of STLINK could be used for UART communication between board and PC.
+
+Example execution:
+When character is received on USART Rx line, a RXNE interrupt occurs.
+USART IRQ Handler routine is then checking received character value.
+On a specific value ('S' or 's'), LED is turned On.
+Received character is echoed on Tx line.
+On press on push button, LED is turned Off.
+In case of errors, LED is blinking.
+
+
+<u>Directory contents</u>
+
+  - USART/USART_Communication_Rx_IT/Inc/stm32l4xx_it.h          Interrupt handlers header file
+  - USART/USART_Communication_Rx_IT/Inc/main.h                  Header for main.c module
+  - USART/USART_Communication_Rx_IT/Inc/stm32_assert.h          Template file to include assert_failed function
+  - USART/USART_Communication_Rx_IT/Src/stm32l4xx_it.c          Interrupt handlers
+  - USART/USART_Communication_Rx_IT/Src/main.c                  Main program
+  - USART/USART_Communication_Rx_IT/Src/system_stm32l4xx.c      STM32L4xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32L476xx devices.
+
+  - This example has been tested with STM32L476RG-Nucleo Rev C board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32L476RG-Nucleo Rev C Set-up
+    In order to select use of Virtual Com port feature of STLINK for connection between STM32L476RG-Nucleo Rev C and PC,
+    User has to set USE_VCP_CONNECTION define to 1 in main.h file.
+    If so, please ensure that USART communication between the target MCU and ST-LINK MCU is properly enabled
+    on HW board in order to support Virtual Com Port (Default HW SB configuration allows use of VCP)
+
+    If VCP is not used (USE_VCP_CONNECTION define set to 0 in main.h file), GPIOs connected
+    to USART1 TX/RX (PA.09 and PA.10) should be wired
+    to respectively RX and TX pins of PC UART (could be done through a USB to UART adapter).
+    Connect GND between STM32 board and PC UART.
+
+  - Launch serial communication SW on PC (as HyperTerminal or TeraTerm) with proper configuration
+    (115200 bauds, 8 bits data, 1 stop bit, no parity, no HW flow control).
+    Port should be selected according to USE_VCP_CONNECTION value.
+
+  - Launch the program. Enter characters on PC communication SW side.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>USART_Communication_Rx_IT_Continuous</b>
+USART Receiver example (IT Mode, Continous reception)
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to configure GPIO and USART peripheral for continuously receiving characters
+from HyperTerminal (PC) in Asynchronous mode using IT. Peripheral initialization done
+using LL unitary services functions for optimization purpose (performance and size).
+
+USART Peripheral is configured in asynchronous mode (115200 bauds, 8 data bit, 1 start bit, 1 stop bit, no parity).
+No HW flow control is used.
+GPIO associated to User push-button is linked with EXTI.
+
+Example execution:
+After startup from reset and system configuration, LED2 is blinking quickly.
+On press on push button, USART RX Not Empty interrupt is enabled.
+When character is received on USART Rx line, a RXNE interrupt occurs.
+Received data is read from USART RDR register and stored in user buffer.
+A double buffer is available for received data, allowing continuous reception.
+User could process data received in Buffer A, while buffer B is used for reception.
+When buffer B is full, it could be handled by user, while buffer A becomes active buffer for next reception, and so on.
+Each time a reception buffer is full, user data process callback is called.
+Data processing consists in echoing data buffer content on PC Com port, and making LED toggle.
+In case of errors, LED is blinking.
+
+Virtual Com port feature of STLINK could be used for UART communication between board and PC.
+
+
+<u>Directory contents</u>
+
+  - USART/USART_Communication_Rx_IT_Continuous/Inc/stm32l4xx_it.h          Interrupt handlers header file
+  - USART/USART_Communication_Rx_IT_Continuous/Inc/main.h                  Header for main.c module
+  - USART/USART_Communication_Rx_IT_Continuous/Inc/stm32_assert.h          Template file to include assert_failed function
+  - USART/USART_Communication_Rx_IT_Continuous/Src/stm32l4xx_it.c          Interrupt handlers
+  - USART/USART_Communication_Rx_IT_Continuous/Src/main.c                  Main program
+  - USART/USART_Communication_Rx_IT_Continuous/Src/system_stm32l4xx.c      STM32L4xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32L476xx devices.
+
+  - This example has been tested with STM32L476RG-Nucleo Rev C board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32L476RG-Nucleo Rev C Set-up
+    In order to select use of Virtual Com port feature of STLINK for connection between STM32L476RG-Nucleo Rev C and PC,
+    User has to set USE_VCP_CONNECTION define to 1 in main.h file.
+    If so, please ensure that USART communication between the target MCU and ST-LINK MCU is properly enabled
+    on HW board in order to support Virtual Com Port (Default HW SB configuration allows use of VCP)
+
+    If VCP is not used (USE_VCP_CONNECTION define set to 0 in main.h file), GPIOs connected
+    to USART1 TX/RX (PA.09 and PA.10) should be wired
+    to respectively RX and TX pins of PC UART (could be done through a USB to UART adapter).
+    Connect GND between STM32 board and PC UART.
+
+  - Launch serial communication SW on PC (as HyperTerminal or TeraTerm) with proper configuration
+    (115200 bauds, 8 bits data, 1 stop bit, no parity, no HW flow control).
+    Port should be selected according to USE_VCP_CONNECTION value.
+
+  - Launch the program. Enter characters on PC communication SW side.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>USART_Communication_Rx_IT_Init</b>
+USART Receiver example (IT Mode)
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to configure GPIO and USART peripheral for receiving characters
+from HyperTerminal (PC) in Asynchronous mode using IT. Peripheral initialization done
+using LL initialization function to demonstrate LL init usage.
+
+USART Peripheral is configured in asynchronous mode (115200 bauds, 8 data bit, 1 start bit, 1 stop bit, no parity).
+No HW flow control is used.
+GPIO associated to User push-button is linked with EXTI.
+USART RX Not Empty interrupt is enabled.
+Virtual Com port feature of STLINK could be used for UART communication between board and PC.
+
+Example execution:
+When character is received on USART Rx line, a RXNE interrupt occurs.
+USART IRQ Handler routine is then checking received character value.
+On a specific value ('S' or 's'), LED is turned On.
+Received character is echoed on Tx line.
+On press on push button, LED is turned Off.
+In case of errors, LED is blinking.
+
+
+<u>Directory contents</u>
+
+  - USART/USART_Communication_Rx_IT_Init/Inc/stm32l4xx_it.h          Interrupt handlers header file
+  - USART/USART_Communication_Rx_IT_Init/Inc/main.h                  Header for main.c module
+  - USART/USART_Communication_Rx_IT_Init/Inc/stm32_assert.h          Template file to include assert_failed function
+  - USART/USART_Communication_Rx_IT_Init/Src/stm32l4xx_it.c          Interrupt handlers
+  - USART/USART_Communication_Rx_IT_Init/Src/main.c                  Main program
+  - USART/USART_Communication_Rx_IT_Init/Src/system_stm32l4xx.c      STM32L4xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32L476xx devices.
+
+  - This example has been tested with STM32L476RG-Nucleo Rev C board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32L476RG-Nucleo Rev C Set-up
+    In order to select use of Virtual Com port feature of STLINK for connection between STM32L476RG-Nucleo Rev C and PC,
+    User has to set USE_VCP_CONNECTION define to 1 in main.h file.
+    If so, please ensure that USART communication between the target MCU and ST-LINK MCU is properly enabled
+    on HW board in order to support Virtual Com Port (Default HW SB configuration allows use of VCP)
+
+    If VCP is not used (USE_VCP_CONNECTION define set to 0 in main.h file), GPIOs connected
+    to USART1 TX/RX (PA.09 and PA.10) should be wired
+    to respectively RX and TX pins of PC UART (could be done through a USB to UART adapter).
+    Connect GND between STM32 board and PC UART.
+
+  - Launch serial communication SW on PC (as HyperTerminal or TeraTerm) with proper configuration
+    (115200 bauds, 8 bits data, 1 stop bit, no parity, no HW flow control).
+    Port should be selected according to USE_VCP_CONNECTION value.
+
+  - Launch the program. Enter characters on PC communication SW side.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>USART_Communication_Tx</b>
+USART Transmitter example (Polling mode)
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to configure GPIO and USART peripheral for sending characters
+to HyperTerminal (PC) in Asynchronous mode using Polling. If transfer could not
+be completed within allocated time, a timeout allows to exit from procedure
+with a Timeout error code. Peripheral initialization done using LL unitary services functions
+for optimization purpose (performance and size).
+
+USART Peripheral is configured in asynchronous mode (115200 bauds, 8 data bit, 1 start bit, 1 stop bit, no parity).
+No HW flow control is used.
+GPIO associated to User push-button is linked with EXTI.
+Virtual Com port feature of STLINK could be used for UART communication between board and PC.
+
+Example execution:
+LED is then turned Off.
+On press on push button , first character of buffer to be transmitted is written into USART Transmit Data Register (TDR)
+Program then starts polling on USART TXE flag before sending next character.
+On last character, program polls on TC flag to ensure transmit of last character is completed.
+At completion of Tx Buffer sending, LED is turned On.
+In case of errors, LED is blinking (1sec period).
+
+Program is written so that, any new press on User push-button will lead to new transmission of complete buffer.
+
+
+<u>Directory contents</u>
+
+  - USART/USART_Communication_Tx/Inc/stm32l4xx_it.h          Interrupt handlers header file
+  - USART/USART_Communication_Tx/Inc/main.h                  Header for main.c module
+  - USART/USART_Communication_Tx/Inc/stm32_assert.h          Template file to include assert_failed function
+  - USART/USART_Communication_Tx/Src/stm32l4xx_it.c          Interrupt handlers
+  - USART/USART_Communication_Tx/Src/main.c                  Main program
+  - USART/USART_Communication_Tx/Src/system_stm32l4xx.c      STM32L4xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32L476xx devices.
+
+  - This example has been tested with STM32L476RG-Nucleo Rev C board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32L476RG-Nucleo Rev C Set-up
+    In order to select use of Virtual Com port feature of STLINK for connection between STM32L476RG-Nucleo Rev C and PC,
+    User has to set USE_VCP_CONNECTION define to 1 in main.h file.
+    If so, please ensure that USART communication between the target MCU and ST-LINK MCU is properly enabled
+    on HW board in order to support Virtual Com Port (Default HW SB configuration allows use of VCP)
+
+    If VCP is not used (USE_VCP_CONNECTION define set to 0 in main.h file), GPIOs connected
+    to USART1 TX/RX (PA.09 and PA.10) should be wired
+    to respectively RX and TX pins of PC UART (could be done through a USB to UART adapter).
+    Connect GND between STM32 board and PC UART.
+
+  - Launch serial communication SW on PC (as HyperTerminal or TeraTerm) with proper configuration
+    (115200 bauds, 8 bits data, 1 stop bit, no parity, no HW flow control).
+    Port should be selected according to USE_VCP_CONNECTION value.
+
+  - Launch the program. Press on User push button on board to initiate data transfer.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>USART_Communication_TxRx_DMA</b>
+USART Transmitter/Receiver example (DMA mode)
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to configure GPIO and USART peripheral
+for sending characters to/from HyperTerminal (PC) in Asynchronous mode by using DMA mode
+through the STM32L4xx USART LL API. Peripheral initialization done
+using LL unitary services functions for optimization purpose (performance and size).
+
+USART Peripheral is configured in asynchronous mode (115200 bauds, 8 data bit, 1 start bit, 1 stop bit, no parity).
+No HW flow control is used.
+GPIO associated to User push-button is linked with EXTI.
+Virtual Com port feature of STLINK is used for UART communication between board and PC.
+
+Example execution:
+After startup from reset and system configuration, LED2 is blinking quickly and wait User push-button action.
+USART and DMA are configured.
+On press on push button , TX DMA transfer to PC is initiated.
+RX DMA transfer is also ready to retrieve characters from PC ("END" string is expected to be entered by user on PC side (HyperTerminal).
+In case of both transfers successfully completed, LED is turned on.
+In case of errors, LED is blinking (1sec period).
+
+
+<u>Directory contents</u>
+
+  - USART/USART_Communication_TxRx_DMA/Inc/stm32l4xx_it.h          Interrupt handlers header file
+  - USART/USART_Communication_TxRx_DMA/Inc/main.h                  Header for main.c module
+  - USART/USART_Communication_TxRx_DMA/Inc/stm32_assert.h          Template file to include assert_failed function
+  - USART/USART_Communication_TxRx_DMA/Src/stm32l4xx_it.c          Interrupt handlers
+  - USART/USART_Communication_TxRx_DMA/Src/main.c                  Main program
+  - USART/USART_Communication_TxRx_DMA/Src/system_stm32l4xx.c      STM32L4xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32L476xx devices.
+
+  - This example has been tested with STM32L476RG-Nucleo Rev C board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32L476RG-Nucleo Rev C Set-up
+    In order use of Virtual Com port feature of STLINK for connection between STM32L476RG-Nucleo Rev C and PC,
+    please ensure that USART communication between the target MCU and ST-LINK MCU is properly enabled
+    on HW board in order to support Virtual Com Port (Default HW SB configuration allows use of VCP)
+
+  - Launch serial communication SW on PC (as HyperTerminal or TeraTerm) with proper configuration
+    (115200 bauds, 8 bits data, 1 stop bit, no parity, no HW flow control).
+
+  - Launch the program. Press on User push button on board to initiate data transfer.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>USART_Communication_Tx_IT</b>
+USART Transmitter example (IT mode)
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to configure GPIO and USART peripheral for sending characters
+to HyperTerminal (PC) in Asynchronous mode using IT. Peripheral initialization done
+using LL unitary services functions for optimization purpose (performance and size).
+
+USART Peripheral is configured in asynchronous mode (115200 bauds, 8 data bit, 1 start bit, 1 stop bit, no parity).
+No HW flow control is used.
+GPIO associated to User push-button is linked with EXTI.
+Virtual Com port feature of STLINK could be used for UART communication between board and PC.
+
+Example execution:
+On press on push button , USART TX Empty interrupt is enabled.
+First character of buffer to be transmitted is written into USART Transmit Data Register (TDR) in order to initialise transfer procedure.
+When character is sent from TDR, a TXE interrupt occurs.
+USART IRQ Handler routine is sending next character on USART Tx line.
+IT will be raised until last byte is to be transmitted : Then, Transmit Complete (TC) interrupt is enabled
+instead of TX Empty (TXE).
+On last byte transmission complete, LED is turned on.
+In case of errors, LED is blinking (1sec period).
+
+Program is written so that, any new press on User push-button will lead to new transmission of complete buffer.
+
+
+<u>Directory contents</u>
+
+  - USART/USART_Communication_Tx_IT/Inc/stm32l4xx_it.h          Interrupt handlers header file
+  - USART/USART_Communication_Tx_IT/Inc/main.h                  Header for main.c module
+  - USART/USART_Communication_Tx_IT/Inc/stm32_assert.h          Template file to include assert_failed function
+  - USART/USART_Communication_Tx_IT/Src/stm32l4xx_it.c          Interrupt handlers
+  - USART/USART_Communication_Tx_IT/Src/main.c                  Main program
+  - USART/USART_Communication_Tx_IT/Src/system_stm32l4xx.c      STM32L4xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32L476xx devices.
+
+  - This example has been tested with STM32L476RG-Nucleo Rev C board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32L476RG-Nucleo Rev C Set-up
+    In order to select use of Virtual Com port feature of STLINK for connection between STM32L476RG-Nucleo Rev C and PC,
+    User has to set USE_VCP_CONNECTION define to 1 in main.h file.
+    If so, please ensure that USART communication between the target MCU and ST-LINK MCU is properly enabled
+    on HW board in order to support Virtual Com Port (Default HW SB configuration allows use of VCP)
+
+    If VCP is not used (USE_VCP_CONNECTION define set to 0 in main.h file), GPIOs connected
+    to USART1 TX/RX (PA.09 and PA.10) should be wired
+    to respectively RX and TX pins of PC UART (could be done through a USB to UART adapter).
+    Connect GND between STM32 board and PC UART.
+
+  - Launch serial communication SW on PC (as HyperTerminal or TeraTerm) with proper configuration
+    (115200 bauds, 8 bits data, 1 stop bit, no parity, no HW flow control).
+    Port should be selected according to USE_VCP_CONNECTION value.
+
+  - Launch the program. Press on User push button on board to initiate data transfer.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>USART_HardwareFlowControl</b>
+USART example (IT Mode with HW Flow Control)
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to configure GPIO and USART peripheral
+for receiving characters from HyperTerminal (PC) in Asynchronous mode using IT,
+with Hardware Flow Control feature enabled
+using STM32L4xx USART LL API. Peripheral initialization done
+using LL unitary services functions for optimization purpose (performance and size).
+
+USART Peripheral is configured in asynchronous mode (115200 bauds, 8 data bit, 1 start bit, 1 stop bit, no parity).
+HW flow control is used.
+GPIO associated to User push-button is linked with EXTI.
+
+Example execution:
+After startup from reset and system configuration, LED2 is blinking quickly.
+On press on push button , USART TX Empty interrupt is enabled.
+First character of buffer to be transmitted is written into USART Transmit Data Register (TDR)
+in order to initialise transfer procedure.
+When character is sent from TDR, a TXE interrupt occurs.
+USART IRQ Handler routine is sending next character on USART Tx line.
+IT will be raised until last byte is to be transmitted : Then, Transmit Complete (TC) interrupt is enabled
+instead of TX Empty (TXE).
+When character is received on USART Rx line, a RXNE interrupt occurs.
+USART IRQ Handler routine is then checking received character value.
+On a specific value ('S' or 's'), LED is turned On.
+Received character is echoed on Tx line.
+In case of errors, LED is blinking.
+
+
+<u>Directory contents</u>
+
+  - USART/USART_HardwareFlowControl/Inc/stm32l4xx_it.h          Interrupt handlers header file
+  - USART/USART_HardwareFlowControl/Inc/main.h                  Header for main.c module
+  - USART/USART_HardwareFlowControl/Inc/stm32_assert.h          Template file to include assert_failed function
+  - USART/USART_HardwareFlowControl/Src/stm32l4xx_it.c          Interrupt handlers
+  - USART/USART_HardwareFlowControl/Src/main.c                  Main program
+  - USART/USART_HardwareFlowControl/Src/system_stm32l4xx.c      STM32L4xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32L476xx devices.
+
+  - This example has been tested with STM32L476RG-Nucleo Rev C board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32L476RG-Nucleo Rev C Set-up
+    GPIOs connected to USART1 TX/RX/CTS/RTS signals should be wired
+    to corresponding pins on PC UART (could be done through a USB to UART adapter).
+    - Connect STM32 MCU board USART1 TX pin (GPIO PA9 connected to pin 21 of CN10 connector)
+      to PC COM port RX signal
+    - Connect STM32 MCU board USART1 RX pin (GPIO PA10 connected to pin 33 of CN10 connector)
+      to PC COM port TX signal
+    - Connect STM32 MCU board USART1 RTS pin (GPIO PA12 connected to pin 12 of CN10 connector)
+      to PC COM port CTS signal
+    - Connect STM32 MCU board USART1 CTS pin (GPIO PA11 connected to pin 14 of CN10 connector)
+      to PC COM port RTS signal
+    - Connect STM32 MCU board GND to PC COM port GND signal
+
+  - Launch serial communication SW on PC (as HyperTerminal or TeraTerm) with proper configuration
+    (115200 bauds, 8 bits data, 1 stop bit, no parity, HW flow control enabled).
+
+  - Launch the program. Enter characters on PC communication SW side.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>USART_SyncCommunication_FullDuplex_DMA</b>
+USART Synchronous Transmitter/Receiver example (DMA mode)
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to configure GPIO, USART, DMA and SPI peripherals
+for transmitting bytes from/to an USART peripheral to/from an SPI peripheral (in slave mode)
+by using DMA mode through the STM32L4xx USART LL API. Peripheral initialization
+done using LL unitary services functions for optimization purpose (performance and size).
+
+This example works with only one STM32L476RG-Nucleo Rev C.
+
+USART1 Peripheral is acts as Master.
+SPI1 Peripheral is configured in Slave mode.
+GPIO associated to User push-button is linked with EXTI.
+
+Example execution:
+
+LED2 is blinking Fast (200ms) and wait User push-button action.
+Press User push-button on BOARD start a Full-Duplex communication through DMA.
+On USART1 side, Clock will be generated on SCK line, Transmission done on TX, reception on RX.
+On SPI1 side, reception is done through the MOSI Line, transmission on MISO line.
+
+At end of transmission, both received buffers are compared to expected ones.
+In case of both transfers successfully completed, LED2 is turned on.
+In case of errors, LED2 is blinking Slowly (1s).
+
+
+<u>Directory contents</u>
+
+  - USART/USART_SyncCommunication_FullDuplex_DMA/Inc/stm32l4xx_it.h          Interrupt handlers header file
+  - USART/USART_SyncCommunication_FullDuplex_DMA/Inc/main.h                  Header for main.c module
+  - USART/USART_SyncCommunication_FullDuplex_DMA/Inc/stm32_assert.h          Template file to include assert_failed function
+  - USART/USART_SyncCommunication_FullDuplex_DMA/Src/stm32l4xx_it.c          Interrupt handlers
+  - USART/USART_SyncCommunication_FullDuplex_DMA/Src/main.c                  Main program
+  - USART/USART_SyncCommunication_FullDuplex_DMA/Src/system_stm32l4xx.c      STM32L4xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32L476xx devices.
+
+  - This example has been tested with STM32L476RG-Nucleo Rev C board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32L476RG-Nucleo Rev C Set-up
+    - Connect USART1 SCK PA.08 to Slave SPI1 SCK PB.03
+    - Connect USART1 MOSI PA.09 to Slave SPI1 MOSI PB.05
+    - Connect USART1 MISO PA.10 to Slave SPI1 MISO PB.04
+
+Board connector:
+  PA.08 :   connected to pin 23 of CN10 connector
+  PA.09 :   connected to pin 21 of CN10 connector
+  PA.10 :   connected to pin 33 of CN10 connector
+  PB.03 :   connected to pin 31 of CN10 connector
+  PB.05 :   connected to pin 29 of CN10 connector
+  PB.04 :   connected to pin 27 of CN10 connector
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+ - Launch the program. Press on User push button on board to initiate data transfers.
+
+
+=====================================================================================
+<b>USART_SyncCommunication_FullDuplex_IT</b>
+USART Synchronous Transmitter/Receiver example (IT mode)
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to configure GPIO, USART, DMA and SPI peripherals for transmitting
+bytes from/to an USART peripheral to/from an SPI peripheral (in slave mode) by using IT mode
+through the STM32L4xx USART LL API (SPI is using DMA for
+receving/transmitting characters sent from/received by USART). Peripheral initialization
+done using LL unitary services functions for optimization purpose (performance and size).
+
+This example works with only one STM32L476RG-Nucleo Rev C.
+
+USART1 Peripheral is acts as Master using IT.
+SPI1 Peripheral is configured in Slave mode using DMA.
+GPIO associated to User push-button is linked with EXTI.
+
+Example execution:
+
+LED2 is blinking Fast (200ms) and wait User push-button action.
+Press User push-button on BOARD start a Full-Duplex communication from USART using IT.
+On USART1 side, Clock will be generated on SCK line, Transmission done on TX, reception on RX.
+On SPI1 side, reception is done through the MOSI Line, transmission on MISO line.
+
+At end of transmission, both received buffers are compared to expected ones.
+In case of both transfers successfully completed, LED2 is turned on.
+In case of errors, LED2 is blinking Slowly (1s).
+
+
+<u>Directory contents</u>
+
+  - USART/USART_SyncCommunication_FullDuplex_IT/Inc/stm32l4xx_it.h          Interrupt handlers header file
+  - USART/USART_SyncCommunication_FullDuplex_IT/Inc/main.h                  Header for main.c module
+  - USART/USART_SyncCommunication_FullDuplex_IT/Inc/stm32_assert.h          Template file to include assert_failed function
+  - USART/USART_SyncCommunication_FullDuplex_IT/Src/stm32l4xx_it.c          Interrupt handlers
+  - USART/USART_SyncCommunication_FullDuplex_IT/Src/main.c                  Main program
+  - USART/USART_SyncCommunication_FullDuplex_IT/Src/system_stm32l4xx.c      STM32L4xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32L476xx devices.
+
+  - This example has been tested with STM32L476RG-Nucleo Rev C board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32L476RG-Nucleo Rev C Set-up
+    - Connect USART1 SCK PA.08 to Slave SPI1 SCK PB.03
+    - Connect USART1 MOSI PA.09 to Slave SPI1 MOSI PB.05
+    - Connect USART1 MISO PA.10 to Slave SPI1 MISO PB.04
+
+Board connector:
+  PA.08 :   connected to pin 23 of CN10 connector
+  PA.09 :   connected to pin 21 of CN10 connector
+  PA.10 :   connected to pin 33 of CN10 connector
+  PB.03 :   connected to pin 31 of CN10 connector
+  PB.05 :   connected to pin 29 of CN10 connector
+  PB.04 :   connected to pin 27 of CN10 connector
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+ - Launch the program. Press on User push button on board to initiate data transfers.
+
+
+=====================================================================================
+<b>USART_WakeUpFromStop1</b>
+USART example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to configure GPIO and USART peripherals
+for allowing characters received on USART RX pin, to wake Up MCU from low power mode,
+using STM32L4xx USART LL API. Peripheral initialization done
+using LL unitary services functions for optimization purpose (performance and size).
+
+USART Peripheral is configured in asynchronous mode (9600 bauds, 8 data bit, 1 start bit, 1 stop bit, no parity).
+No HW flow control is used.
+USART Clock is based on HSI.
+
+Example execution:
+After startup from reset and system configuration, LED2 is blinking quickly during 3 sec,
+then MCU  enters Stop mode 1 (LED2 off).
+On first  character reception by the USART from PC Com port (ex: using HyperTerminal)
+after Stop Mode period, MCU wakes up from Stop Mode.
+Received character value is checked :
+- On a specific value ('S' or 's'), LED2 is turned On and program ends.
+- If different from 'S' or 's', program performs a quick LED2 blinks during 3 sec and
+  enters again Stop Mode 1, waiting for next character to wake up.
+
+In case of errors, LED2 is slowly blinking (1 sec period).
+
+
+<u>Directory contents</u>
+
+  - USART/USART_WakeUpFromStop1/Inc/stm32l4xx_it.h          Interrupt handlers header file
+  - USART/USART_WakeUpFromStop1/Inc/main.h                  Header for main.c module
+  - USART/USART_WakeUpFromStop1/Inc/stm32_assert.h          Template file to include assert_failed function
+  - USART/USART_WakeUpFromStop1/Src/stm32l4xx_it.c          Interrupt handlers
+  - USART/USART_WakeUpFromStop1/Src/main.c                  Main program
+  - USART/USART_WakeUpFromStop1/Src/system_stm32l4xx.c      STM32L4xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32L476xx devices.
+
+  - This example has been tested with STM32L476RG-Nucleo Rev C board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32L476RG-Nucleo Rev C Set-up
+    - Connect STM32 MCU board USART1 TX pin (GPIO PA9 connected to pin 21 of CN10 connector)
+      to PC COM port RX signal
+    - Connect STM32 MCU board USART1 RX pin (GPIO PA10 connected to pin 33 of CN10 connector)
+      to PC COM port TX signal
+    - Connect STM32 MCU board GND to PC COM port GND signal
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeL4GettingStarted.pdf">Getting started with STM32CubeL4 Embedded Software for STM32L4xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeL4 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32L476RG-Nucleo Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

@@ -1,0 +1,46 @@
+########################################################################
+#
+#                           MassStorage.eww
+#
+# $Revision: 1469 $
+#
+########################################################################
+
+DESCRIPTION
+===========
+   This example project shows how to use the IAR Embedded Workbench
+  for ARM to develop code for the IAR-STM32F103ZE-SK board.
+   It implements a MMC/SD card drive. The first free drive letters will be
+  used. For example, if your PC configuration includes two hard disk partitions
+  (in C:\ and D:\) and a CD-ROM drive (in E:\), the memory card drive will
+  appear as F:\.
+  The LCD backlight will indicate drive activity.
+
+COMPATIBILITY
+=============
+   The USB MassStorage example project is compatible with IAR-STM32F103ZE-SK
+  evaluation board. By default, the project is configured to use the
+  J-Link JTAG/SWD interface.
+
+CONFIGURATION
+=============
+   The MassStorage application is downloaded to the flash memory on the
+  evaluation board and executed. 
+
+   Make sure that the following jumpers are correctly configured on the
+  IAR-STM32F103ZE-SK evaluation board:
+
+   Jumpers:
+  PWR_SEL - depending of power source
+
+
+GETTING STARTED
+===============
+  1) Build and download the example.
+
+  2) Run the example.
+
+  3) Use a USB cable to connect the evaluation board to your PC. The first
+     time a USB device is connected to your computer, Windows will
+     automatically load the proper device driver. In this case, the USB
+     mass storage device driver will be loaded.

@@ -1,0 +1,10 @@
+setup()
+{
+  __writeMemory32(0x00000001, 0x40000000, "Memory");  // Remap RAM memory to address 0
+}
+
+
+execUserPreload()  // Called by debugger before loading in a RAM.
+{
+  setup();
+}

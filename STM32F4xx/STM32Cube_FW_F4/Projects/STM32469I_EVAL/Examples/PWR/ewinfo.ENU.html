@@ -1,0 +1,221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>PWR Workspace</h1>
+
+=====================================================================================
+<b>PWR_STANDBY</b>
+PWR standby example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to enters the system to STANDBY mode and wake-up from this
+mode using external RESET, RTC Alarm A or WKUP pin.
+
+In the associated software, the system clock is set to 180 MHz, an EXTI line
+is configured to generate an interrupt on falling edge and the SysTick is programmed
+to generate an interrupt each 250 ms. In the SysTick interrupt handler, the LED1 is
+toggled, this is used to indicate whether the MCU is in STANDBY or RUN mode.
+
+When a falling edge is detected on the EXTI line an interrupt is generated. In the
+EXTI handler routine the RTC is configured to generate an Alarm event in 5 second
+then the system enters STANDBY mode causing the LED1 to stop toggling.
+A rising edge on WKUP pin or an external RESET will wake-up the system from
+STANDBY. If within 5 second neither rising edge on WKUP pin nor external RESET
+are generated, the RTC Alarm A will wake-up the system.
+
+Two LEDs LED1 and LED3 are used to monitor the system's state as following:
+ - LED3 ON: configuration failed (system will go to an infinite loop)
+ - LED1 toggling: system in RUN mode
+ - LED1 OFF: system in STANDBY mode
+
+These steps are repeated in an infinite loop.
+
+Note: To measure the current consumption in STANDBY mode, please refer to
+      @subpage PWR_CurrentConsumption example.
+
+Note: This example can not be used in DEBUG mode, this is due to the fact
+      that the Cortex-M4 core is no longer clocked during low power mode
+      so debugging features are disabled
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+Note:  Care must be taken when HAL_RCCEx_PeriphCLKConfig() is used to select the RTC clock source; in this
+       case the Backup domain will be reset in order to modify the RTC Clock source, as consequence RTC
+       registers (including the backup registers) and RCC_BDCR register are set to their reset values.
+
+Note: The connection of the LCD reset pin to a dedicated GPIO PK7 instead of the STM32F469 NRST pin may cause residual display on LCD with applications/examples that do not require display.
+    The LCD clear can be ensured by hardware through the board's power off/power on or by software calling the BSP_LCD_Reset() function.
+
+
+<u>Directory contents</u>
+
+  - PWR/PWR_STANDBY/Inc/stm32f4xx_hal_conf.h     HAL configuration file
+  - PWR/PWR_STANDBY/Inc/stm32f4xx_it.h           Interrupt handlers header file
+  - PWR/PWR_STANDBY/Inc/main.h                   header file for main.c
+  - PWR/PWR_STANDBY/Src/system_stm32f4xx.c       STM32F4xx system clock configuration file
+  - PWR/PWR_STANDBY/Src/stm32f4xx_it.c           Interrupt handlers
+  - PWR/PWR_STANDBY/Src/main.c                   Main program
+  - PWR/PWR_STANDBY/Src/stm32f4xx_hal_msp.c      HAL MSP module
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F469xx/STM32F479xx devices.
+
+  - This example has been tested and validated with STMicroelectronics STM32469I-EVAL RevC
+    board and can be easily tailored to any other supported device
+    and development board.
+
+  - STM32469I-EVAL Set-up
+    - Use the Key push-button connected to pin PC13 (EXTI_Line13)
+    - Use the Wake-Up button connected to pin PA00
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>PWR_STOP</b>
+Power Stop Mode Example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to enter the system in STOP mode and wake-up from this mode.
+This is achieved using Tamper push-button EXTI15_10.
+LED1 is ON during RUN mode and OFF during STOP mode.
+
+In the associated software
+  - the system clock is set to 180 MHz.
+  - the EXTI15_10 is configured to generate an interrupt on falling edge.
+  - the SysTick is programmed to generate an interrupt each 1 ms.
+
+The system enters STOP mode after 5s and will wait for the Tamper push-button is pressed
+to wake up from STOP mode.
+Current consumption could be monitored through an ampere-meter.
+After the system woken up from STOP, the clock system is reconfigured because the default clock
+after wake up is the HSI.
+
+User may select either Stop mode or under drive stop mode by uncommenting the corresponding line inside the main.h file
+  /* #define STOP_MODE            */
+  /* #define STOP_UNDERDRIVE_MODE */
+
+    - STOP Mode
+    ============
+          - Regulator in LP mode
+          - VREFINT OFF with fast wakeup enabled
+          - HSI as SysClk after Wake Up
+          - No IWDG
+          - Wakeup using EXTI Line (Tamper push-button PC.13)
+
+    - Under-Drive STOP Mode
+    ========================
+          - Regulator in LP mode
+          - Under drive feature enabled
+          - VREFINT OFF with fast wakeup enabled
+          - HSI as SysClk after Wake Up
+          - No IWDG
+          - Wakeup using EXTI Line (User push-button PC.13)
+
+This behavior is repeated in an infinite loop.
+
+Note: To measure the current consumption in STOP mode, please refer to
+      @subpage PWR_CurrentConsumption example.
+
+Note: This example can not be used in DEBUG mode, this is due to the fact
+      that the Cortex-M4 core is no longer clocked during low power mode
+      so debugging features are disabled
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+Note:  Care must be taken when HAL_RCCEx_PeriphCLKConfig() is used to select the RTC clock source; in this
+       case the Backup domain will be reset in order to modify the RTC Clock source, as consequence RTC
+       registers (including the backup registers) and RCC_BDCR register are set to their reset values.
+
+Note: The connection of the LCD reset pin to a dedicated GPIO PK7 instead of the STM32F469 NRST pin may cause residual display on LCD with applications/examples that do not require display.
+    The LCD clear can be ensured by hardware through the board's power off/power on or by software calling the BSP_LCD_Reset() function.
+
+
+<u>Directory contents</u>
+
+  - PWR/PWR_STOP/Inc/stm32f4xx_conf.h         HAL Configuration file
+  - PWR/PWR_STOP/Inc/stm32f4xx_it.h           Header for stm32f4xx_it.c
+  - PWR/PWR_STOP/Inc/main.h                   Header file for main.c
+  - PWR/PWR_STOP/Src/system_stm32f4xx.c       STM32F4xx system clock configuration file
+  - PWR/PWR_STOP/Src/stm32f4xx_it.c           Interrupt handlers
+  - PWR/PWR_STOP/Src/main.c                   Main program
+  - PWR/PWR_STOP/Src/stm32f4xx_hal_msp.c      HAL MSP module
+
+
+<u>Hardware and Software environment</u>
+
+  - STM32469I-EVAL RevC Set-up :
+    - Use the Tamper push-button connected to pin PC.13 (EXTI15_10)
+    - Connect an ampere-meter to  to measure the IDD current.
+
+  - This example runs on STM32F469xx/STM32F479xx devices.
+
+  - This example has been tested and validated with STMicroelectronics STM32469I-EVAL RevC
+    evaluation board and can be easily tailored to any other supported device
+    and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF4GettingStarted.pdf">Getting started with STM32CubeF4 Embedded Software for STM32F4xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF4 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32469I-EVAL Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

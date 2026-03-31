@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/RTC_LowPower_STANDBY/EWARM/RTC_LowPower_STANDBY.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>RTC_LowPower_STANDBY</project>
+        <configuration>STM32VL-Discovery</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

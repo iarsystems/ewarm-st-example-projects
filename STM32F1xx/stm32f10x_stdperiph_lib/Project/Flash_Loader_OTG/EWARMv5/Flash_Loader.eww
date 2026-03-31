@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/Flash_Loader.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>Flash_Loader</project>
+        <configuration>USBF_HID</configuration>
+      </member>
+      <member>
+        <project>Flash_Loader</project>
+        <configuration>USBF_MSC</configuration>
+      </member>
+      <member>
+        <project>Flash_Loader</project>
+        <configuration>USBH_HID</configuration>
+      </member>
+      <member>
+        <project>Flash_Loader</project>
+        <configuration>USBH_MSC</configuration>
+      </member>
+      <member>
+        <project>Flash_Loader</project>
+        <configuration>USBH_MSC_MP3_14-7456MHz</configuration>
+      </member>
+      <member>
+        <project>Flash_Loader</project>
+        <configuration>USBH_MSC_MP3_25MHz</configuration>
+      </member>
+      <member>
+        <project>Flash_Loader</project>
+        <configuration>USBH_MSC_WAV_14-7456MHz</configuration>
+      </member>
+      <member>
+        <project>Flash_Loader</project>
+        <configuration>USBH_MSC_WAV_25MHz</configuration>
+      </member>
+      <member>
+        <project>Flash_Loader</project>
+        <configuration>USBO_DRD</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

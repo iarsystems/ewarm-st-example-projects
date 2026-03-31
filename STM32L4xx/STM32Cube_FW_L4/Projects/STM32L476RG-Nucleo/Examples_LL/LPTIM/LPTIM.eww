@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/LPTIM_PulseCounter/EWARM/LPTIM_PulseCounter.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/LPTIM_PulseCounter_Init/EWARM/LPTIM_PulseCounter_Init.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>LPTIM_PulseCounter</project>
+        <configuration>STM32L476RG_NUCLEO</configuration>
+      </member>
+      <member>
+        <project>LPTIM_PulseCounter_Init</project>
+        <configuration>STM32L476RG_NUCLEO</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

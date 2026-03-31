@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>WWDG Workspace</h1>
+
+=====================================================================================
+<b>WWDG_Example</b>
+Window Watchdog example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example guides you through the different configuration steps by means of the
+HAL API to perform periodic WWDG counter update and simulate a software fault that
+generates an MCU WWDG reset when a predefined time period has elapsed.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+Then the SystemClock_Config() function is used to configure the system
+clock (SYSCLK) to run at 2 MHz.
+
+The WWDG peripheral configuration is ensured by the HAL_WWDG_Init() function.
+This later is calling the HAL_WWDG_MspInit() function which core is implementing
+the configuration of the needed WWDG resources according to the used hardware (CLOCK,
+GPIO, DMA and NVIC). You may update this function to change WWDG configuration.
+
+The WWDG timeout is set, through counter value, to 998.4 ms.
+The refresh window is set in order to make user wait 733.2 ms after a wadchdog refresh,
+before writing again counter. Hence the WWDG counter is refreshed each (733.2 + 1) ms in the
+main program infinite loop to prevent a WWDG reset.
+LED2 is toggling at same frequency, indicating that the program is running.
+
+An EXTI Line is connected to a GPIO pin, and configured to generate an interrupt
+on the rising edge of the signal.
+
+The EXTI Line is used to simulate a software failure: once the EXTI Line event
+occurs by pressing the User push-button (PC.13), the corresponding interrupt is served.
+
+In the ISR, a write to invalid address generates a Hardfault exception containing
+an infinite loop and preventing to return to main program (the WWDG counter is
+not refreshed).
+As a result, when the WWDG counter falls to 0x3F, WWDG reset occurs.
+
+If the WWDG reset is generated, after the system resumes from reset, LED2 is turned ON for 4 seconds.
+
+If the EXTI Line event does not occur, the WWDG counter is indefinitely refreshed
+in the main program infinite loop, and there is no WWDG reset.
+
+LED2 is turned OFF if any error occurs.
+
+Note: This example must be tested in standalone mode (not in debug).
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate
+      delay (in milliseconds) based on variable incremented in SysTick ISR. This
+      implies that if HAL_Delay() is called from a peripheral ISR process, then
+      the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - WWDG/WWDG_Example/Inc/stm32l0xx_hal_conf.h    HAL configuration file
+  - WWDG/WWDG_Example/Inc/stm32l0xx_it.h          Interrupt handlers header file
+  - WWDG/WWDG_Example/Inc/main.h                  Header for main.c module
+  - WWDG/WWDG_Example/Src/stm32l0xx_it.c          Interrupt handlers
+  - WWDG/WWDG_Example/Src/main.c                  Main program
+  - WWDG/WWDG_Example/Src/stm32l0xx_hal_msp.c     HAL MSP file
+  - WWDG/WWDG_Example/Src/system_stm32l0xx.c      STM32L0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32L073xx devices.
+
+  - This example has been tested with STM32L073RZ-Nucleo Rev C board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeL0GettingStarted.pdf">Getting started with STM32CubeL0 Embedded Software for STM32L0xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeL0 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32L073RZ-Nucleo Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

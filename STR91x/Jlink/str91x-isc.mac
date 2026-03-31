@@ -1,0 +1,420 @@
+// !!! NOTE
+// All C-SPY debugger callable function are found at the end!
+// The description of the functions are also found at the end.
+
+// Known problems
+//
+// 1. Use 400 kHz fixed J-Link speed. Higher speeds and adaptive clocking will fail.
+//
+// 2. Turbo mode have to be enabled, so the functions will enable turbo mode.
+//    There is no reason why these simple operations should need turbo mode,
+//    but it simply doesn't work with the normal scan chain structure.
+//    This has the drawback that the board must be power cycled to get back
+//    to a normal state where C-SPY can debug the ARM core. A hardware reset
+//    does not seem to be enough.
+//
+
+
+/*********************************************************************
+*
+*       Low level functions
+*
+**********************************************************************/
+
+__var _value;
+__var _val0;
+__var _val1;
+__var _bitpos;
+__var _status;
+__var _turbo_mode;
+__var _debug_print;
+
+
+// This is a workaround to avoid a possible EW crash in EWARM 4.xx.
+execUserReset()
+{
+  _value = 0;
+  _val0 = 0;
+  _val1 = 0;
+  _bitpos = 0;
+  _status = 0;
+  _turbo_mode = 0;
+  _debug_print = 0;
+}
+
+
+// This function goes into idle via reset from any state
+jtag_reset()
+{
+//  _debug_print = 1;
+
+  __jtagRawWrite(0, 0x1f, 6);                  // Goto IDLE via RESET state
+  __jtagRawSync();                             // Force writing
+}
+
+
+hw_reset()
+{
+  __jtagResetTRST();
+  _turbo_mode = 0;
+}
+
+
+// Writes the bypass bits
+jtag_bypass(_ir, _goto_exit)
+{
+  if (_ir)
+  {
+    if (!_turbo_mode)
+    {
+      __jtagRawWrite(0x0f, 0, 4);                // ARM core -> bypass
+    }
+    __jtagRawWrite(0x1f, _goto_exit << 4, 5);    // Boundrary scan -> bypass
+  }
+  else
+  {
+    if (!_turbo_mode)
+    {
+      __jtagRawWrite(0, 0, 1);                   // One dummy bit for ARM core
+    }
+    __jtagRawWrite(0, _goto_exit, 1);            // One dummy bit for boundrary scan, optionally goto Exit1-IR or Exit1-DR
+  }
+}
+
+
+turbo_mode()
+{
+  __jtagRawWrite(0, 3, 4);                     // Goto Shift-IR
+  __jtagRawWrite(0x0dfff, 0x10000, 17);        // Flash JTAG command TURBO-PROG and goto Exit1-IR
+  _turbo_mode=1;
+  __jtagRawWrite(0, 1, 2);                     // Goto IDLE
+}
+
+
+/*
+*  Low level functions.
+*  Assumes IDLE state on entry, returns in IDLE state
+*/
+
+isc_idcode()
+{
+  if (_debug_print)
+  {
+    __message "STR91x flash ISC-IDCODE\n";
+  }
+  __jtagRawWrite(0, 3, 4);                     // Goto Shift-IR
+  __jtagRawWrite(0xfe, 0, 8);                  // Flash JTAG command ISC-IDCODE
+  jtag_bypass(1, 1);                           // Enter bypass and goto Exit1-IR
+  __jtagRawWrite(0, 3, 2);                     // Goto Select-DR
+  __jtagRawWrite(0, 0, 2);                     // Goto Shift-DR
+  _bitpos = __jtagRawWrite(0, 0, 32);          // Shift 32-bits from ISC-IDCODE register
+  jtag_bypass(0, 1);                           // Bypass bits and goto Exit1-DR
+  __jtagRawWrite(0, 1, 2);                     // Goto IDLE
+
+  _value = __jtagRawRead(_bitpos, 32);         // Read IDCODE
+  if (_debug_print)
+  {
+    __message "STR91x flash ISC-IDCODE = ", _value:%x, "\n";
+  }
+}
+
+
+isc_configuration()
+{
+  if (_debug_print)
+  {
+    __message "STR91x flash ISC-CONFIGURATION\n";
+  }
+  __jtagRawWrite(0, 3, 4);                     // Goto Shift-IR
+  __jtagRawWrite(0x07, 0, 8);                  // Flash JTAG command ISC-CONFIGURATION
+  jtag_bypass(1, 1);                           // Enter bypass and goto Exit1-IR
+  __jtagRawWrite(0, 3, 2);                     // Goto Select-DR
+  __jtagRawWrite(0, 0, 2);                     // Goto Shift-DR
+  _bitpos = __jtagRawWrite(0, 0, 64);          // Shift 64-bits to/from ISC-CONFIGURATION register
+  jtag_bypass(0, 1);                           // Bypass bits and goto Exit1-DR
+  __jtagRawWrite(0, 1, 2);                     // Goto IDLE
+
+  _val0 = __jtagRawRead(_bitpos, 32);          // Read LSB of ISC-CONFIGURATION
+  _val1 = __jtagRawRead(_bitpos+32, 32);       // Read MSB of ISC-CONFIGURATION
+}
+
+
+isc_enable()
+{
+  if (_debug_print)
+  {
+    __message "STR91x flash ISC-ENABLE\n";
+  }
+  __jtagRawWrite(0, 3, 4);                     // Goto Shift-IR
+  __jtagRawWrite(0x0c, 0, 8);                  // Flash JTAG command ISC-ENABLE
+  jtag_bypass(1, 1);                           // Enter bypass and goto Exit1-IR
+  __jtagRawWrite(0, 3, 2);                     // Goto Select-DR
+  __jtagRawWrite(0, 0, 2);                     // Goto Shift-DR
+  __jtagRawWrite(0xff, 0, 8);                  // Shift in 8-bits don't care
+  jtag_bypass(0, 1);                           // Bypass bits and goto Exit1-DR
+  __jtagRawWrite(0, 1, 2);                     // Goto IDLE
+}
+
+
+isc_disable()
+{
+  if (_debug_print)
+  {
+    __message "STR91x flash ISC-DISABLE\n";
+  }
+  __jtagRawWrite(0, 3, 4);                     // Goto Shift-IR
+  __jtagRawWrite(0x0f, 0, 8);                  // Flash JTAG command ISC-ENABLE
+  jtag_bypass(1, 1);                           // Enter bypass and goto Exit1-IR
+  __jtagRawWrite(0, 3, 2);                     // Goto Select-DR
+  __jtagRawWrite(0, 0, 2);                     // Goto Shift-DR
+  __jtagRawWrite(0xff, 0, 8);                  // Shift out 8-bits
+  jtag_bypass(0, 1);                           // Bypass bits and goto Exit1-DR
+  __jtagRawWrite(0, 1, 2);                     // Goto IDLE
+  __jtagRawSync();
+  __delay(1);                                  // Wait 1 ms
+  jtag_reset();
+}
+
+
+isc_address_shift(_address)
+{
+  if (_debug_print)
+  {
+    __message "STR91x flash ISC-ADDRESS-SHIFT\n";
+  }
+  __jtagRawWrite(0, 3, 4);                     // Goto Shift-IR
+  __jtagRawWrite(0x11, 0, 8);                  // Flash JTAG command ISC-ADDRESS-SHIFT
+  jtag_bypass(1, 1);                           // Enter bypass and goto Exit1-IR
+  __jtagRawWrite(0, 3, 2);                     // Goto Select-DR
+  __jtagRawWrite(0, 0, 2);                     // Goto Shift-DR
+  __jtagRawWrite(_address, 0, 8);              // Shift in 8-bits config address (0x50)
+  jtag_bypass(0, 1);                           // Bypass bits and goto Exit1-DR
+  __jtagRawWrite(0, 1, 2);                     // Goto IDLE
+}
+
+
+isc_program(_par0, _par1)
+{
+  if (_debug_print)
+  {
+    __message "STR91x flash ISC-PROGRAM\n";
+  }
+  __jtagRawWrite(0, 3, 4);                     // Goto Shift-IR
+  __jtagRawWrite(0x20, 0, 8);                  // Flash JTAG command ISC-PROGRAM
+  jtag_bypass(1, 1);                           // Enter bypass and goto Exit1-IR
+  __jtagRawWrite(0, 3, 2);                     // Goto Select-DR
+  __jtagRawWrite(0, 0, 2);                     // Goto Shift-DR
+  __jtagRawWrite(_par0, 0, 32);                // Shift in 32-bits configuration register (low part)
+  __jtagRawWrite(_par1, 0, 32);                // Shift in 32-bits configuration register (high part)
+  jtag_bypass(0, 1);                           // Bypass bits and goto Exit1-DR
+  __jtagRawWrite(0, 1, 2);                     // Goto IDLE
+}
+
+
+isc_erase(_sector0, _sector1)
+{
+  if (_debug_print)
+  {
+    __message "STR91x flash ISC-ERASE\n";
+  }
+  __jtagRawWrite(0, 3, 4);                     // Goto Shift-IR
+  __jtagRawWrite(0x30, 0, 8);                  // Flash JTAG command ISC-ERASE
+  jtag_bypass(1, 1);                           // Enter bypass and goto Exit1-IR
+  __jtagRawWrite(0, 3, 2);                     // Goto Select-DR
+  __jtagRawWrite(0, 0, 2);                     // Goto Shift-DR
+  __jtagRawWrite(_sector0, 0, 32);             // Shift in 32-bits sector mask (low part)
+  __jtagRawWrite(_sector1, 0, 32);             // Shift in 32-bits sector mask (high part)
+  jtag_bypass(0, 1);                           // Bypass bits and goto Exit1-DR
+  __jtagRawWrite(0, 1, 2);                     // Goto IDLE
+}
+
+
+isc_blank_check(_sector0, _sector1)
+{
+  if (_debug_print)
+  {
+    __message "STR91x flash ISC-BLANK-CHECK\n";
+  }
+  __jtagRawWrite(0, 3, 4);                     // Goto Shift-IR
+  __jtagRawWrite(0x60, 0, 8);                  // Flash JTAG command ISC-BLANK-CHECK
+  jtag_bypass(1, 1);                           // Enter bypass and goto Exit1-IR
+  __jtagRawWrite(0, 3, 2);                     // Goto Select-DR
+  __jtagRawWrite(0, 0, 2);                     // Goto Shift-DR
+  __jtagRawWrite(_sector0, 0, 32);             // Shift in 32-bits sector mask (low part)
+  __jtagRawWrite(_sector1, 0, 32);             // Shift in 32-bits sector mask (high part)
+  jtag_bypass(0, 1);                           // Bypass bits and goto Exit1-DR
+  __jtagRawWrite(0, 1, 2);                     // Goto IDLE
+  __jtagRawSync();                             // Force writing
+  __delay(100);                                // 100 ms delay
+  __jtagRawWrite(0, 1, 3);                     // Goto Shift-DR
+  _bitpos = __jtagRawWrite(0, 0, 32);          // Shift out 32-bits sector mask (low part)
+  __jtagRawWrite(0, 0, 32);                    // Shift out 32-bits sector mask (high part)
+  jtag_bypass(0, 1);                           // Bypass bits and goto Exit1-DR
+  __jtagRawWrite(0, 1, 2);                     // Goto IDLE
+
+  _val0 = __jtagRawRead(_bitpos, 32);          // Read LSB of ISC-CONFIGURATION
+  _val1 = __jtagRawRead(_bitpos+32, 32);       // Read MSB of ISC-CONFIGURATION
+}
+
+
+isc_noop()
+{
+  if (_debug_print)
+  {
+    __message "STR91x flash ISC-NOOP\n";
+  }
+  __jtagRawWrite(0, 3, 4);                     // Goto Shift-IR
+  __jtagRawWrite(0x10, 0, 8);                  // Flash JTAG command ISC-NOOP
+  jtag_bypass(1, 1);                           // Enter bypass and goto Exit1-IR
+  __jtagRawWrite(0, 3, 2);                     // Goto Select-DR
+  __jtagRawWrite(0, 0, 2);                     // Goto Shift-DR
+  __jtagRawSync();
+  __delay(100);                                // Wait 100 ms
+
+  while (1)
+  {
+    _bitpos = __jtagRawWrite(0xff, 0, 8);      // Shift 8-bits from status register
+    jtag_bypass(0, 1);                         // Bypass bits and goto Exit1-DR
+    _status = __jtagRawRead(_bitpos, 8);       // Read status value
+    if (_debug_print)
+    {
+      __message "STR91x flash ISC-NOOP status = ", _status:%x, ", bitpos = ", _bitpos:%d, "\n";
+    }
+    if (_status & 0x04)
+    {
+      __jtagRawWrite(0, 1, 2);                 // Goto IDLE
+      if (_debug_print)
+      {
+        __message "STR91x flash ISC-NOOP status = ", _status:%x, "\n";
+      }
+      return _status;
+    }
+    __jtagRawWrite(0, 2, 3);                   // Goto Shift-DR via Exit2-DR
+  }
+}
+
+
+/*********************************************************************
+*
+*       Medium level functions
+*
+**********************************************************************/
+
+isc_read_configuration()
+{
+  __message "Reading STR910 flash configuration register\n";
+  isc_configuration();
+
+  __message "ISC-CONFIGURATION LSB: ", _val0:%x, "\n";
+  __message "ISC-CONFIGURATION MSB: ", _val1:%x, "\n";
+}
+
+
+isc_write_configuration(_low, _high)
+{
+  __message "Writing STR910 flash configuration register\n";
+  isc_enable();
+
+  isc_erase(0x00000000, 0x00020000);         // Erase configuration register sector (bit 49)
+  isc_noop();                                  // Check status
+
+  // Program configuration register
+  isc_address_shift(0x50);                     // Set address to configuration register
+  isc_program(_low, _high);                    // Program configuration register (bit 48 is CSx).
+  isc_noop();                                  // Check status
+
+  isc_blank_check(0xffffffff, 0xffffffff);     // Check if blank
+  isc_noop();                                  // Check status
+  __message "ISC-BLANK-CHECK LSB: ", _val0:%x, "\n";
+  __message "ISC-BLANK-CHECK MSB: ", _val1:%x, "\n";
+
+  isc_disable();
+}
+
+
+isc_erase_all()
+{
+  __message "Erasing STR910 flash\n";
+  isc_enable();
+
+  isc_erase(0xffffffff, 0xffffffff);         // Erase everything
+  isc_noop();                                  // Check status
+
+  isc_blank_check(0xffffffff, 0xffffffff);     // Check if blank
+  isc_noop();                                  // Check status
+  __message "ISC-BLANK-CHECK LSB: ", _val0:%x, "\n";
+  __message "ISC-BLANK-CHECK MSB: ", _val1:%x, "\n";
+
+  isc_disable();
+}
+
+
+// _command:
+// 0 - read configuration
+// 1 - erase all
+// 2 - set configuration
+isc_command(_command, _low, _high)
+{
+  jtag_reset();
+  turbo_mode();
+  isc_idcode();
+
+  if (_command == 0)
+  {
+    isc_read_configuration();
+  }
+  if (_command == 1)
+  {
+    isc_erase_all();
+  }
+  if (_command == 2)
+  {
+    isc_write_configuration(_low, _high);
+  }
+
+  hw_reset();
+}
+
+
+/*********************************************************************
+*
+*       High level functions
+*
+*       These functions should be called from the C-SPY debugger
+*       quick watch window.
+*       All output will go the the debug log window.
+*
+*       Note that the debugger will lose the connection with the ARM core
+*       when executing any of these commands. To recover, the debugger session
+*       must be terminated and the board must be power cycled.
+*
+**********************************************************************/
+
+// Read the configuration register.
+str910_conf()
+{
+  isc_command(0, 0x00000000, 0x00000000);
+}
+
+
+// Erase the whole flash.
+// Note that this operation takes some time (about 10 seconds).
+str910_erase_all()
+{
+  isc_command(1, 0x00000000, 0x00000000);
+}
+
+
+// Set the configuration register to bank 0.
+str910_bank0()
+{
+  isc_command(2, 0x00000000, 0x00000000);
+}
+
+
+// Set the configuration register to bank 1.
+str910_bank1()
+{
+  isc_command(2, 0x00000000, 0x00010000);
+}
+

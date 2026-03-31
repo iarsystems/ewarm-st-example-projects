@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/EXTI_ToggleLedOnIT/EWARM/EXTI_ToggleLedOnIT.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/EXTI_ToggleLedOnIT_Init/EWARM/EXTI_ToggleLedOnIT_Init.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>EXTI_ToggleLedOnIT</project>
+        <configuration>STM32F334R8-Nucleo</configuration>
+      </member>
+      <member>
+        <project>EXTI_ToggleLedOnIT_Init</project>
+        <configuration>STM32F334R8-Nucleo</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

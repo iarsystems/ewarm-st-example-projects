@@ -1,0 +1,550 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.JPN.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+DMA in WFI mode example
+
+Example Description
+
+This example shows how to enters the system to WFI mode with DMA transfer enabled
+and wake-up from this mode by the DMA End of Transfer interrupt.
+
+In the associated software, the system clock is set to 72 MHz (24MHz on Value line),
+the DMA1 Channely is configured to transfer 10 data from the EVAL COM1 USART data
+register to a predefined buffer, DST_Buffer, and to generate an interrupt at the
+end of the transfer.
+The EVAL COM1 USART receives data from HyperTerminal.
+A LED1 is toggled with a frequency depending on the system clock, this is used
+to indicate whether the MCU is in WFI or RUN mode.
+
+A falling edge on the selected EXTI Line will put the core in the WFI mode,
+causing the led pin to stop toggling.
+To wake-up from WFI mode you have to send the sequence (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+from the Hyperterminal to the EVAL COM1 USART. These bytes will be transferred
+by the DMA from the EVAL COM1 receive data register to the predefined buffer,
+then generates an interrupt which exits the system from WFI mode.
+The LED1 restarts toggling and a LED2 will toggle if the buffer is correctly
+received else a LED3 is toggled.
+
+Directory contents
+
+  - NVIC/DMA_WFIMode/stm32f10x_conf.h     Library Configuration file
+  - NVIC/DMA_WFIMode/stm32f10x_it.c       Interrupt handlers
+  - NVIC/DMA_WFIMode/stm32f10x_it.h       Interrupt handlers header file
+  - NVIC/DMA_WFIMode/main.c               Main program
+  - NVIC/DMA_WFIMode/system_stm32f10x.c   STM32F10x system source file
+
+Hardware and Software environment
+
+  - This example runs on STM32F10x Connectivity line, High-Density, High-Density
+    Value line, Medium-Density, XL-Density, Medium-Density Value line, Low-Density
+    and Low-Density Value line Devices.
+
+  - This example has been tested with STMicroelectronics STM32100E-EVAL (High-Density
+    Value line), STM32100B-EVAL (Medium-Density Value line), STM3210C-EVAL (Connectivity line),
+    STM3210E-EVAL (High-Density and XL-Density) and STM3210B-EVAL (Medium-Density)
+    evaluation boards and can be easily tailored to any other supported device
+    and development board.
+    To select the STMicroelectronics evaluation board used to run the example,
+    uncomment the corresponding line in stm32_eval.h file (under Utilities\STM32_EVAL)
+
+  - STM32100E-EVAL Set-up
+    - Use LED1, LED2, LED3 and LED4 leds connected respectively to PF.06, PF0.7, PF.08
+      and PF.09 pins
+    - The USART1 signals (Rx, Tx) must be connected to a DB9 connector using a RS232
+      transceiver.
+    - Connect a null-modem female/female RS232 cable between the DB9 connector,
+      CN12 on STM3210E-EVAL board, and PC serial port.
+    - Hyperterminal configuration:
+       - Word Length = 8 Bits
+       - One Stop Bit
+       - No parity
+       - BaudRate = 115200 baud
+       - flow control: None
+    - Use the Key push-button connected to pin PG.08 (EXTI Line8).
+
+  - STM32100B-EVAL Set-up
+    - Use LED1, LED2, LED3 and LED4 leds connected respectively to PC.06, PC.07, PC.08
+      and PC.09 pins
+    - The USART1 signals (Rx, Tx) must be connected to a DB9 connector using a RS232
+      transceiver.
+    - Connect a null-modem female/female RS232 cable between the DB9 connector,
+      CN10 on STM32100B-EVAL board, and PC serial port.
+    - Hyperterminal configuration:
+       - Word Length = 8 Bits
+       - One Stop Bit
+       - No parity
+       - BaudRate = 115200 baud
+       - flow control: None
+    - Use the Key push-button connected to pin PB.09 (EXTI Line9).
+
+  - STM3210C-EVAL Set-up
+    - Use LED1, LED2, LED3 and LED4 connected respectively to PD.07, PD.13, PF.03
+      and PD.04 pins
+    - The USART2 signals (Rx, Tx) must be connected to a DB9 connector using a RS232
+      transceiver.
+    - Connect a null-modem female/female RS232 cable between the DB9 connector,
+      CN6 on STM3210C-EVAL board, and PC serial port.
+    - Hyperterminal configuration:
+       - Word Length = 8 Bits
+       - One Stop Bit
+       - No parity
+       - BaudRate = 115200 baud
+       - flow control: None
+    - Use the Key push-button connected to pin PB.09 (EXTI Line9).
+
+  - STM3210E-EVAL Set-up
+    - Use LED1, LED2, LED3 and LED4 leds connected respectively to PF.06, PF0.7, PF.08
+      and PF.09 pins
+    - The USART1 signals (Rx, Tx) must be connected to a DB9 connector using a RS232
+      transceiver.
+    - Connect a null-modem female/female RS232 cable between the DB9 connector,
+      CN12 on STM3210E-EVAL board, and PC serial port.
+    - Hyperterminal configuration:
+       - Word Length = 8 Bits
+       - One Stop Bit
+       - No parity
+       - BaudRate = 115200 baud
+       - flow control: None
+    - Use the Key push-button connected to pin PG.08 (EXTI Line8).
+
+  - STM3210B-EVAL Set-up
+    - Use LED1, LED2, LED3 and LED4 leds connected respectively to PC.06, PC.07, PC.08
+      and PC.09 pins
+    - The USART1 signals (Rx, Tx) must be connected to a DB9 connector using a RS232
+      transceiver.
+    - Connect a null-modem female/female RS232 cable between the DB9 connector,
+      CN6 on STM3210B-EVAL board, and PC serial port.
+    - Hyperterminal configuration:
+       - Word Length = 8 Bits
+       - One Stop Bit
+       - No parity
+       - BaudRate = 115200 baud
+       - flow control: None
+    - Use the Key push-button connected to pin PB.09 (EXTI Line9).
+
+How to use it ?
+
+In order to make the program work, you must do the following :
+ - Copy all source files from this example folder to the template folder under
+   Project\STM32F10x_StdPeriph_Template
+ - Open your preferred toolchain
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+ note
+ - Low-density Value line devices are STM32F100xx microcontrollers where the
+   Flash memory density ranges between 16 and 32 Kbytes.
+ - Low-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 16 and 32 Kbytes.
+ - Medium-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 64 and 128 Kbytes.
+ - Medium-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 64 and 128 Kbytes.
+ - High-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - High-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - XL-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 512 and 1024 Kbytes.
+ - Connectivity line devices are STM32F105xx and STM32F107xx microcontrollers.
+
+
+***************************************************************************************************
+
+
+NVIC IRQ Mask example
+
+Example Description
+
+This example demontrates the use of the Nested Vectored Interrupt Controller (NVIC)
+IRQ Channels configuration and how to mask/activate different IRQs:
+
+- Configuration of 3 TIM (TIM2..TIM4)timers to generate an interrupt on each
+  counter update event.
+
+- The three timers are linked to their correspondant Update IRQ channel.
+
+- Assignment of a ascendant IRQ priority for each IRQ channel :
+     - TIM2 has a preemption priority of 0
+     - TIM3 has a preemption priority of 1
+     - TIM4 has a preemption priority of 2
+- In each interrupt routine:
+   - TIM2 toggles a LED1 each 1s
+   - TIM3 toggles a LED2 each 2s
+   - TIM4 toggles a LED3 each 3s
+
+- The KEY and WAKEUP buttons are used to boost the execution priority as follows:
+
+  - The KEY button is used in GPIO mode and at each KEY button press, the execution
+    priority is raised to 0 and turn LED4 ON. This prevents all exceptions with
+    configurable priority from activating, other than through the HardFault fault
+    escalation mechanism. As consequence, all LEDs stop toggling as TIM2, TIM3
+    and TIM4 IRQs are prevented from activation.
+
+    Pressing again the KEY button will release the priority boosting, turn LED4
+    OFF and will allow all exceptions with configurable priority to be activated
+    and TIM2, TIM3 and TIM4 can be generated again and the LEDs restart toggling.
+
+    This execution priority is made using the CMSIS functions "__disable_irq()"
+    and "__enable_irq()".
+    These two functions are managing the Cortex-M3 PRIMASK special register.
+
+  - The WAKEUP button is used in EXTI mode and at each WAKEUP button press, the execution
+    priority is masked to 0x40 using the BASEPRI register.
+    A non-zero value will act as a priority mask, affecting the execution priority
+    when the priority defined by BASEPRI is the same or higher than the current
+    executing priority.
+    As consequence, LED2 and LED3 stop toggling as TIM3 and TIM4 IRQs are
+    prevented from activation.
+    Pressing again the WAKEUP button will configure the BASEPRI register to 0,
+    thus it has no effect on the current priority and TIM3 and TIM4 can be
+    generated again and LED2 and LED3 restart toggling.
+
+    This execution priority is made using the CMSIS functions "__set_BASEPRI()".
+    This function is managing the Cortex-M3 BASEPRI special register.
+    Setting the BASEPRI register has no effect when the execution priority is
+    raised to 0 using the "__disable_irq()" function.
+
+ note These mechanisms only affect the group priority. They have no effect on
+      the sub-priority. The sub-priority is only used to sort pending exception
+      priorities, and does not affect active exceptions.
+
+Directory contents
+
+  - NVIC/IRQ_Mask/stm32f10x_conf.h    Library Configuration file
+  - NVIC/IRQ_Mask/stm32f10x_it.c      Interrupt handlers
+  - NVIC/IRQ_Mask/stm32f10x_it.h      Interrupt handlers header file
+  - NVIC/IRQ_Mask/main.c              Main program
+  - NVIC/IRQ_Mask/system_stm32f10x.c  STM32F10x system source file
+
+Hardware and Software environment
+
+  - This example runs on STM32F10x Connectivity line, High-Density, High-Density
+    Value line, Medium-Density, XL-Density, Medium-Density Value line, Low-Density
+    and Low-Density Value line Devices.
+
+  - This example has been tested with STMicroelectronics STM32100E-EVAL (High-Density
+    Value line), STM32100B-EVAL (Medium-Density Value line), STM3210C-EVAL (Connectivity line),
+    STM3210E-EVAL (High-Density and XL-Density) and STM3210B-EVAL (Medium-Density)
+    evaluation boards and can be easily tailored to any other supported device
+    and development board.
+    To select the STMicroelectronics evaluation board used to run the example,
+    uncomment the corresponding line in stm32_eval.h file (under Utilities\STM32_EVAL)
+
+  - STM32100E-EVAL Set-up
+    - Use LED1, LED2, LED3 and LED4 leds connected respectively to PF.06, PF.07
+      PF.08 and PF.09
+    - Use the Key push-button connected to pin PG.08 (EXTI Line8).
+    - Use the Wakeup push-button connected to pin PA.00 (EXTI Line0).
+     note  the jumper JP4 must be not fit to be able to use the Wakeup push-button
+
+  - STM32100B-EVAL Set-up
+    - Use LED1, LED2, LED3 and LED4 leds connected respectively to PC.06, PC.07,
+      PC.08 and PC.09
+    - Use the Key push-button connected to pin PB.09 (EXTI Line9).
+    - Use the Wakeup push-button connected to pin PA.00 (EXTI Line0).
+
+  - STM3210C-EVAL Set-up
+    - Use LED1, LED2, LED3 and LED4 connected respectively to PD.07, PD.13, PF.03
+      and PD.04 pins
+    - Use the Key push-button connected to pin PB.09 (EXTI Line9).
+    - Use the Wakeup push-button connected to pin PA.00 (EXTI Line0).
+     note  Make sure that the Jumper 14 is in position 2&lt;-&gt;3.
+
+  - STM3210E-EVAL Set-up
+    - Use LED1, LED2, LED3 and LED4 leds connected respectively to PF.06, PF.07
+      PF.08 and PF.09
+    - Use the Key push-button connected to pin PG.08 (EXTI Line8).
+    - Use the Wakeup push-button connected to pin PA.00 (EXTI Line0).
+     note  the jumper JP4 must be not fit to be able to use the Wakeup push-button
+
+  - STM3210B-EVAL Set-up
+    - Use LED1, LED2, LED3 and LED4 leds connected respectively to PC.06, PC.07,
+      PC.08 and PC.09
+    - Use the Key push-button connected to pin PB.09 (EXTI Line9).
+    - Use the Wakeup push-button connected to pin PA.00 (EXTI Line0).
+
+How to use it ?
+
+In order to make the program work, you must do the following :
+ - Copy all source files from this example folder to the template folder under
+   Project\STM32F10x_StdPeriph_Template
+ - Open your preferred toolchain
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+ note
+ - Low-density Value line devices are STM32F100xx microcontrollers where the
+   Flash memory density ranges between 16 and 32 Kbytes.
+ - Low-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 16 and 32 Kbytes.
+ - Medium-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 64 and 128 Kbytes.
+ - Medium-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 64 and 128 Kbytes.
+ - High-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - High-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - XL-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 512 and 1024 Kbytes.
+ - Connectivity line devices are STM32F105xx and STM32F107xx microcontrollers.
+
+
+***************************************************************************************************
+
+
+NVIC IRQ Priority example
+
+Example Description
+
+This example demonstrates the use of the Nested Vectored Interrupt Controller (NVIC):
+
+- Configuration of 2 EXTI Lines (Wakeup button EXTI Line &amp; Key button EXTI Line)
+  to generate an interrupt on each falling edge and use the SysTick interrupt.
+- These interrupts are configured with the following parameters:
+    - Wakeup button EXTI Line:
+        - PreemptionPriority = PreemptionPriorityValue
+        - SubPriority = 0
+    - Key button EXTI Line:
+        - PreemptionPriority = 0
+        - SubPriority = 1
+    - SysTick Handler:
+        - PreemptionPriority = !PreemptionPriorityValue
+        - SubPriority = 0
+First, the PreemptionPriorityValue is equal to 0, the Wakeup button EXTI Line
+has higher preemption priority than the SysTick handler.
+
+In the key button EXTI Line interrupt routine the Wakeup button EXTI Line and
+SysTick preemption priorities are inverted.
+In the Wakeup button EXTI Line interrupt routine the pending bit of the SysTick
+interrupt is set this will cause SysTick ISR to preempt the Wakeup button EXTI
+Line ISR only if it has higher preemption priority.
+
+The system behaves as following:
+
+1) The first time Key button EXTI Line interrupt occurs the SysTick preemption
+become higher than Wakeup button EXTI Line one. So when the Wakeup button EXTI
+Line interrupt occurs, the SysTick ISR is executed and the PreemptionOccured
+variable become TRUE and the four leds (LED1, LED2, LED3, LED4) start toggling.
+
+2) When the next Key button EXTI Line interrupt occurs the SysTick preemption
+become lower than Wakeup button EXTI Line one. So when the Wakeup button EXTI Line
+interrupt occurs, the PreemptionOccured variable became FALSE and the four leds
+(LED1, LED2, LED3, LED4) stop toggling.
+
+Then this behavior is repeated from point 1) in an infinite loop.
+
+Directory contents
+
+  - NVIC/IRQ_Priority/stm32f10x_conf.h     Library Configuration file
+  - NVIC/IRQ_Priority/stm32f10x_it.c       Interrupt handlers
+  - NVIC/IRQ_Priority/stm32f10x_it.h       Interrupt handlers header file
+  - NVIC/IRQ_Priority/main.c               Main program
+  - NVIC/IRQ_Priority/system_stm32f10x.c   STM32F10x system source file
+
+Hardware and Software environment
+
+  - This example runs on STM32F10x Connectivity line, High-Density, High-Density
+    Value line, Medium-Density, XL-Density, Medium-Density Value line, Low-Density
+    and Low-Density Value line Devices.
+
+  - This example has been tested with STMicroelectronics STM32100E-EVAL (High-Density
+    Value line), STM32100B-EVAL (Medium-Density Value line), STM3210C-EVAL (Connectivity line),
+    STM3210E-EVAL (High-Density and XL-Density) and STM3210B-EVAL (Medium-Density)
+    evaluation boards and can be easily tailored to any other supported device
+    and development board.
+    To select the STMicroelectronics evaluation board used to run the example,
+    uncomment the corresponding line in stm32_eval.h file (under Utilities\STM32_EVAL)
+
+  - STM32100E-EVAL Set-up
+    - Use LED1, LED2, LED3 and LED4 connected respectively to PF.06, PF0.7, PF.08
+      and PF.09 pins
+    - Use the Key push-button connected to pin PG.08 (EXTI Line8).
+    - Use the Wakeup push-button connected to pin PA.00 (EXTI Line0).
+     note  the jumper JP4 must be not fit to be able to use the Wakeup push-button
+
+  - STM32100B-EVAL Set-up
+    - Use LED1, LED2, LED3 and LED4 connected respectively to PC.06, PC.07, PC.08
+      and PC.09 pins
+    - Use the Key push-button connected to pin PB.09 (EXTI Line9).
+    - Use the Wakeup push-button connected to pin PA.00 (EXTI Line0).
+
+ - STM3210C-EVAL Set-up
+    - Use LED1, LED2, LED3 and LED4 connected respectively to PD.07, PD.13, PF.03
+      and PD.04 pins
+    - Use the Key push-button connected to pin PB.09 (EXTI Line9).
+    - Use the Wakeup push-button connected to pin PA.00 (EXTI Line0). Make sure
+      that the Jumper 14 is in position 2&lt;-&gt;3.
+
+  - STM3210E-EVAL Set-up
+    - Use LED1, LED2, LED3 and LED4 connected respectively to PF.06, PF0.7, PF.08
+      and PF.09 pins
+    - Use the Key push-button connected to pin PG.08 (EXTI Line8).
+    - Use the Wakeup push-button connected to pin PA.00 (EXTI Line0).
+     note  the jumper JP4 must be not fit to be able to use the Wakeup push-button
+
+  - STM3210B-EVAL Set-up
+    - Use LED1, LED2, LED3 and LED4 connected respectively to PC.06, PC.07, PC.08
+      and PC.09 pins
+    - Use the Key push-button connected to pin PB.09 (EXTI Line9).
+    - Use the Wakeup push-button connected to pin PA.00 (EXTI Line0).
+
+How to use it ?
+
+In order to make the program work, you must do the following :
+ - Copy all source files from this example folder to the template folder under
+   Project\STM32F10x_StdPeriph_Template
+ - Open your preferred toolchain
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+ note
+ - Low-density Value line devices are STM32F100xx microcontrollers where the
+   Flash memory density ranges between 16 and 32 Kbytes.
+ - Low-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 16 and 32 Kbytes.
+ - Medium-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 64 and 128 Kbytes.
+ - Medium-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 64 and 128 Kbytes.
+ - High-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - High-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - XL-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 512 and 1024 Kbytes.
+ - Connectivity line devices are STM32F105xx and STM32F107xx microcontrollers.
+
+
+***************************************************************************************************
+
+
+NVIC VectorTable Relocation example
+
+Example Description
+
+This example describes how to set the CortexM3 vector table in a specific
+address other than default using the NVIC_SetVectorTable function from the
+misc.h/.c driver.
+
+This can be used to build program which will be loaded into Flash memory by an
+application previously programmed from the Flash memory base address.
+Such application can be In-Application Programming (IAP, through USART) or
+Device Firmware Upgrade (DFU, through USB).
+
+These applications are available for download from the ST microcontrollers
+website: www.st.com/stm32
+
+The associated program implements a "Delay" function based on SysTick end of count
+interrupt, and toggles four leds with timing defined by the "Delay" function.
+
+When using the IAP to load your porgram, the vector table must be relocated at
+address 0x08003000.
+
+When using the DFU to load your porgram, the vector table must be relocated at
+address 0x08003000.
+
+Directory contents
+
+ - NVIC/VectorTable_Relocation/linker: modified linker to be used for this project
+ - NVIC/VectorTable_Relocation/stm32f10x_conf.h     Library Configuration file
+ - NVIC/VectorTable_Relocation/stm32f10x_it.c       Interrupt handlers
+ - NVIC/VectorTable_Relocation/stm32f10x_it.h       Interrupt handlers header file
+ - NVIC/VectorTable_Relocation/main.c               Main program
+ - NVIC/VectorTable_Relocation/main.h               Header for main.c
+ - NVIC/VectorTable_Relocation/system_stm32f10x.c   STM32F10x system source file
+
+Hardware and Software environment
+
+  - This example runs on STM32F10x Connectivity line, High-Density, High-Density
+    Value line, Medium-Density, XL-Density, Medium-Density Value line, Low-Density
+    and Low-Density Value line Devices.
+
+  - This example has been tested with STMicroelectronics STM32100E-EVAL (High-Density
+    Value line), STM32100B-EVAL (Medium-Density Value line), STM3210C-EVAL (Connectivity line),
+    STM3210E-EVAL (High-Density and XL-Density) and STM3210B-EVAL (Medium-Density)
+    evaluation boards and can be easily tailored to any other supported device
+    and development board.
+    To select the STMicroelectronics evaluation board used to run the example,
+    uncomment the corresponding line in stm32_eval.h file (under Utilities\STM32_EVAL)
+
+  - STM32100E-EVAL Set-up
+    - Use LD1, LD2, LD3 and LD4 leds connected respectively to PF.06, PF0.7, PF.08
+      and PF.09 pins
+
+  - STM32100B-EVAL Set-up
+    - Use LD1, LD2, LD3 and LD4 leds connected respectively to PC.06, PC.07, PC.08
+      and PC.09 pins
+
+  - STM3210C-EVAL Set-up
+    - Use LED1, LED2, LED3 and LED4 leds connected respectively to PD.07, PD.13, PF.03
+      and PD.04 pins
+
+  - STM3210E-EVAL Set-up
+    - Use LD1, LD2, LD3 and LD4 leds connected respectively to PF.06, PF0.7, PF.08
+      and PF.09 pins
+
+  - STM3210B-EVAL Set-up
+    - Use LD1, LD2, LD3 and LD4 leds connected respectively to PC.06, PC.07, PC.08
+      and PC.09 pins
+
+How to use it ?
+
+In order to make the program work, you must do the following :
+- Create a project and setup all project configuration:
+         EWARM
+         - Use "stm32f10x_flash_offset.icf" as linker file
+
+- Copy all source files from this example folder to the template folder under
+  Project\STM32F10x_StdPeriph_Template
+
+- In the main.c and linker files, the vector table is relocated at address 0x08003000.
+  You can modify this address depending on the requirement of your application.
+- Rebuild all files
+- Convert the program image to a binary file, *.bin, then you can download and
+  run it using the IAP or DFU application.
+
+ note
+ - Low-density Value line devices are STM32F100xx microcontrollers where the
+   Flash memory density ranges between 16 and 32 Kbytes.
+ - Low-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 16 and 32 Kbytes.
+ - Medium-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 64 and 128 Kbytes.
+ - Medium-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 64 and 128 Kbytes.
+ - High-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - High-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - XL-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 512 and 1024 Kbytes.
+ - Connectivity line devices are STM32F105xx and STM32F107xx microcontrollers.
+
+</span>
+  </pre>
+
+  </div>
+  </body>
+</html>
+

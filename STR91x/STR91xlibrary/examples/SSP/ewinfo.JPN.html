@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.JPN.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+SSP
+
+DESCRIPTION
+===========
+   This example provides a description of how to set a communication between the
+  two SSPs and performs a transfer from Master to Slave and from Slave to Master
+  in Motorola frame format.SSP0 is configured as Master in Motorola frame format
+  and with an 8bits data size to communicate with the Slave SSP1 configured in
+  motorola frame format and with the same data size as SSP0. In the first part,
+  the Master send the SSP0_Buffer_Tx to be received by the Slave. Then data read
+  by the SSP1 peripheral and stored in the SSP1_Buffer_Rx is compared with the
+  expected values of transmitted buffer. The result of this comparison is stored
+  in the "TransferStatus1" variable. After the first transfer, the SSP0 receive 
+  FIFO have to be cleared by reading its eight data. In the second part, The
+  Slave send the SSP1_Buffer_Tx to be received by the Master Then data read by
+  the SSP0 peripheral and stored in the SSP0_Buffer_Rx is compared with the
+  expected values of transmitted buffer. The result of this comparison is 
+  stored in the "TransferStatus2" variable.   
+ 
+COMPATIBILITY
+=============
+  The project is compatible with the IAR-STR912-SK evaluation board.
+  The project is by default configured to use the J-Link JTAG interface.
+
+CONFIGURATION
+=============
+  The application is downloaded to the flash memory.
+
+  Connect both SSP0 and SSP1 pins as following:
+   - Connect SSP0_SCLK(P5.4) to SSP1_SCLK(P3.4).
+   - Connect SSP0_MISO(P5.6) to SSP1_MISO(P3.5).
+   - Connect SSP0_MOSI(P5.5) to SSP1_MOSI(P3.6).
+   - Connect SSP0_nSS (P5.7) to VCC via pull-up.
+   - Connect SSP1_nSS (P3.7) to GND via pull-down.
+        
+GETTING STARTED
+===============
+  1) Connect the J-Link.
+  2) Power the board.
+  3) Build and download the example.
+  4) Run the example.
+
+   </pre>
+
+  </div>
+  </body>
+</html>
+

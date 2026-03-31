@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/TIM_6Steps/EWARM/TIM_6Steps.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>TIM_6Steps</project>
+        <configuration>STM32F072RB-Nucleo</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.JPN.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+CAN
+
+DESCRIPTION
+===========
+  This example demonstrates the following features of the 3 CAN cells:
+   - bus initialization (setting baudrate)
+   - loopback and silent test modes
+   - configuration of message objects
+   - emission and reception of CAN messages
+   - standard and extended identifiers
+   - polling mode and interrupt mode
+
+  The program runs in loopback mode combined with silent mode (i.e. self-test
+  mode), to be independant from any true CAN network.
+
+  It is made of 2 parts :
+  1) one message exchange in polling mode
+  2) one message exchange in interrupt mode
+
+COMPATIBILITY
+=============
+  The project is compatible with the IAR STR731-SK evaluation board.
+  The project is by default configured to use the J-Link JTAG interface.
+
+CONFIGURATION
+=============
+  The application is downloaded to the flash memory.
+
+  Jumpers:
+   EXT/JLINK - the correct jumper position depends on the power source used
+
+GETTING STARTED
+===============
+  1) Connect the J-Link.
+  2) Power the board.
+  3) Build and download the example.
+  4) Run the example.
+
+   </pre>
+
+  </div>
+  </body>
+</html>
+

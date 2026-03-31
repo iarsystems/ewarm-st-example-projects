@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/FMC_SDRAM/EWARM/FMC_SDRAM.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/FMC_SDRAM_DataMemory/EWARM/FMC_SDRAM_DataMemory.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/FMC_SDRAM_LowPower/EWARM/FMC_SDRAM_LowPower.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>FMC_SDRAM</project>
+        <configuration>STM32746G_DISCOVERY</configuration>
+      </member>
+      <member>
+        <project>FMC_SDRAM_DataMemory</project>
+        <configuration>STM32746G_DISCOVERY</configuration>
+      </member>
+      <member>
+        <project>FMC_SDRAM_LowPower</project>
+        <configuration>STM32746G_DISCOVERY</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

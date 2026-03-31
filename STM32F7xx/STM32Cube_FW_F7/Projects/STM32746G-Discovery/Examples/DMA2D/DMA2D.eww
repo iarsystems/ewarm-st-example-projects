@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/DMA2D_MemToMemWithBlending/EWARM/DMA2D_MemToMemWithBlending.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/DMA2D_MemToMemWithPFC/EWARM/DMA2D_MemToMemWithPFC.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>DMA2D_MemToMemWithBlending</project>
+        <configuration>STM32746G_DISCOVERY</configuration>
+      </member>
+      <member>
+        <project>DMA2D_MemToMemWithPFC</project>
+        <configuration>STM32746G_DISCOVERY</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

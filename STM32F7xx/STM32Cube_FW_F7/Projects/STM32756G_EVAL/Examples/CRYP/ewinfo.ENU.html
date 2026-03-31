@@ -1,0 +1,591 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>CRYP Workspace</h1>
+
+=====================================================================================
+<b>CRYP_AESModes</b>
+Encrypt and Decrypt data using AES Algo in ECB/CBC/CTR
+chaining modes with all possible key sizes.
+=====================================================================================
+
+<u>Example Description</u>
+
+This example provides a short description of how to use the CRYPTO peripheral to
+encrypt and decrypt data using AES in chaining modes (ECB, CBC, CTR) and all key
+sizes (128, 192, 256) Algorithm.
+
+For this example, a firmware is used to interface with the Crypto peripheral
+in polling mode.
+
+This example behaves as follows:
+
+1. ECB mode:
+   - AES128 ECB Encryption
+   - AES192 ECB Encryption
+   - AES256 ECB Encryption
+
+   - AES128 ECB Decryption
+   - AES192 ECB Decryption
+   - AES256 ECB Decryption
+
+2. CBC mode:
+   - AES128 CBC Encryption
+   - AES192 CBC Encryption
+   - AES256 CBC Encryption
+
+   - AES128 CBC Decryption
+   - AES192 CBC Decryption
+   - AES256 CBC Decryption
+
+3. CTR mode:
+   - AES128 CTR Encryption
+   - AES192 CTR Encryption
+   - AES256 CTR Encryption
+
+   - AES128 CTR Decryption
+   - AES192 CTR Decryption
+   - AES256 CTR Decryption
+
+The Plain data, encrypted data and decrypted data can be displayed on a PC
+HyperTerminal using the UART.
+
+The USARTx is configured as follows:
+    - BaudRate = 115200 baud
+    - Word Length = 8 Bits
+    - One Stop Bit
+    - No parity
+    - Hardware flow control disabled (RTS and CTS signals)
+    - Receive and transmit enabled
+
+
+<u>Keywords</u>
+
+Security, Cryptography, CRYPT, AES, ECB, CBC, CTR, MAC, USART
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - CRYP/CRYP_AESModes/Inc/stm32f7xx_hal_conf.h    HAL configuration file
+  - CRYP/CRYP_AESModes/Inc/stm32f7xx_it.h          Interrupt handlers header file
+  - CRYP/CRYP_AESModes/Inc/main.h                  Header for main.c module
+  - CRYP/CRYP_AESModes/Src/stm32f7xx_it.c          Interrupt handlers
+  - CRYP/CRYP_AESModes/Src/main.c                  Main program
+  - CRYP/CRYP_AESModes/Src/stm32f7xx_hal_msp.c     HAL MSP module
+  - CRYP/CRYP_AESModes/Src/system_stm32f7xx.c      STM32F7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F756xx devices.
+
+  - This example has been tested with STM32756G-EVAL board revB and can be
+    easily tailored to any other supported device and development board.
+
+  - Hyperterminal configuration:
+    - BaudRate = 115200 baud
+    - Word Length = 8 Bits
+    - One Stop Bit
+    - No parity
+    - Hardware flow control disabled (RTS and CTS signals)
+    - Receive and transmit enabled
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following:
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>CRYP_AES_CCM</b>
+CRYP AES CCM example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example provides a short description of how to use the CRYPTO peripheral to
+encrypt data using AES with Combined Cipher Machine (CCM).
+
+The AES-CCM mode requires:
+1. Plain text: which will be authenticated and encrypted. Its size must be a multiple
+   of 16 bytes. So if the original plain text size is not a multiple of 16 bytes,
+   it must be padded.
+2. Header (associated data): that will be authenticated but not encrypted.
+   The header if formatted in HBuffer[]: the header size is concatenated with the
+   original header.
+3. Nonce: a value that is used only once within a specified context. Its size must
+   be 7, 8, 9, 10, 11, 12 or 13.
+4. Key: is the parameter which determines the cipher text. In this example the key
+   size is 128 bits = 16 bytes but it can be tailored to 192 bits and 256 bits.
+
+The AES-CCM provides:
+1. Cipher text: which is the encryption result of Plain text. In this example, the
+   cipher text is available in OutputText.
+   Its size is the same as the plain text.
+2. MAC: the Message Authentication Code which is used for both message authentication
+   and message tampering detection. Its size is lower or equal to 16 bytes.
+
+STM32 Eval board's LEDs can be used to monitor the encryption status:
+ - LED1 is ON when encryption is right.
+ - LED3 is Toggle when encryption is wrong.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Keywords</u>
+
+Security, Cryptography, CRYPT, AES, CCM, DMA, AESCCM, MAC, Cypher
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - CRYP/CRYP_AES_CCM/Inc/stm32f7xx_hal_conf.h    HAL configuration file
+  - CRYP/CRYP_AES_CCM/Inc/stm32f7xx_it.h          Interrupt handlers header file
+  - CRYP/CRYP_AES_CCM/Inc/main.h                      Header for main.c module
+  - CRYP/CRYP_AES_CCM/Src/stm32f7xx_it.c          Interrupt handlers
+  - CRYP/CRYP_AES_CCM/Src/main.c                      Main program
+  - CRYP/CRYP_AES_CCM/Src/stm32f7xx_hal_msp.c     HAL MSP module
+  - CRYP/CRYP_AES_CCM/Src/system_stm32f7xx.c      STM32F7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F756xx devices.
+
+  - This example has been tested with STM32756G-EVAL board revB and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32756G-EVAL Set-up :
+    - To use LED1, ensure that JP24 is in position 2-3
+    - To use LED3, ensure that JP23 is in position 2-3
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following:
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>CRYP_AES_DMA</b>
+Encrypt and Decrypt data using AES Algo in ECB chaining
+modes using DMA
+=====================================================================================
+
+<u>Example Description</u>
+
+This example provides a short description of how to use the CRYPTO peripheral to
+encrypt and decrypt data using AES-128 Algorithm with ECB chaining mode.
+
+For this example, DMA is used to transfer data from memory to the CRYPTO
+processor IN FIFO and also to transfer data from CRYPTO processor OUT FIFO
+to memory.
+
+The data to be encrypted is a 256-bit data (8 words), which correspond to
+2x AES-128 Blocks.
+
+This example behaves as below:
+- AES Encryption (Plain Data --&gt; Encrypted Data)
+- AES Key preparation for decryption (Encryption Key --&gt; Decryption Key)
+- AES Decryption (Encrypted Data --&gt; Decrypted Data)
+
+STM32 Eval board's LEDs can be used to monitor the transfer status:
+ - LED1 is ON when encryption is right.
+ - LED2 is ON when encryption or decryption is wrong.
+ - LED4 is ON when decryption is right.
+ - LED3 is ON when an initialization error occurred.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Keywords</u>
+
+Security, Cryptography, CRYPT, AES, DMA, MAC, Cypher, ECB, Key
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - CRYP/CRYP_AES_DMA/Inc/stm32f7xx_hal_conf.h    HAL configuration file
+  - CRYP/CRYP_AES_DMA/Inc/stm32f7xx_it.h          Interrupt handlers header file
+  - CRYP/CRYP_AES_DMA/Inc/main.h                  Header for main.c module
+  - CRYP/CRYP_AES_DMA/Src/stm32f7xx_it.c          Interrupt handlers
+  - CRYP/CRYP_AES_DMA/Src/main.c                  Main program
+  - CRYP/CRYP_AES_DMA/Src/stm32f7xx_hal_msp.c     HAL MSP module
+  - CRYP/CRYP_AES_DMA/Src/system_stm32f7xx.c      STM32F7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F756xx devices.
+
+  - This example has been tested with STM32756G-EVAL board revB and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32756G-EVAL Set-up :
+    - To use LED1, ensure that JP24 is in position 2-3
+    - To use LED3, ensure that JP23 is in position 2-3
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following:
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>CRYP_AES_GCM</b>
+Encrypt and Decrypt data using AES Algo using GCM chaining mode
+=====================================================================================
+
+<u>Example Description</u>
+
+This example provides a description of how to use the CRYPTO peripheral to
+encrypt and decrypt data using AES with Galois/Counter Mode (GCM).
+
+The AES-GCM mode requires:
+1. Plain text which will be authenticated and encrypted. Its size must be a
+   multiple of 16 bytes. So if the original plain text size is not a multiple
+   of 16 bytes, it must be padded.
+2. Header that will be authenticated but not encrypted. The header size must be
+   multiple of 16 bytes whatever the key size.
+3. Initialization vector a value that is used only once within a specified
+   context. It must be padded to 16-byte length with LSB set to 2.
+4. Key is the parameter which determines the cipher text. In this example the
+   key size is 128 bits =16 bytes but it can be tailored to 192 bits or 256 bits.
+
+The AES-GCM provides:
+1. Cipher text which is the encryption result of the Plaint text. In this
+   example, the cipher text is available in "EncryptedText".
+   Its size is the same as the plain text.
+2. Plain text which is the decryption result of the Cipher text. In this
+   example, the plain text is available in "DecryptedText".
+   Its size is the same as the plain text.
+3. TAG: The Message Authentication Code which is used for both message
+   authentication and message tampering detection. It's size is always 16 bytes.
+
+The Plain data, encrypted data, authentication TAG (MAC) and decrypted data can
+be displayed on a PC HyperTerminal using the UART.
+
+The USARTx is configured as follow:
+    - BaudRate = 115200 baud
+    - Word Length = 8 Bits
+    - One Stop Bit
+    - No parity
+    - Hardware flow control disabled (RTS and CTS signals)
+    - Receive and transmit enabled
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Keywords</u>
+
+Security, Cryptography, CRYPT, AES, GCM, DMA, AESGCM, MAC, Cypher, Galois, Counter, USART
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - CRYP/CRYP_AES_GCM/Inc/stm32f7xx_hal_conf.h    HAL configuration file
+  - CRYP/CRYP_AES_GCM/Inc/stm32f7xx_it.h          Interrupt handlers header file
+  - CRYP/CRYP_AES_GCM/Inc/main.h                      Header for main.c module
+  - CRYP/CRYP_AES_GCM/Src/stm32f7xx_it.c          Interrupt handlers
+  - CRYP/CRYP_AES_GCM/Src/main.c                      Main program
+  - CRYP/CRYP_AES_GCM/Src/stm32f7xx_hal_msp.c     HAL MSP module
+  - CRYP/CRYP_AES_GCM/Src/system_stm32f7xx.c      STM32F7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F756xx devices.
+
+  - This example has been tested with STM32756G-EVAL board revB and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32756G_EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between the DB9 connector
+      CN7 (USART1) and PC serial port if you want to display data on the HyperTerminal.
+      Note: Make sure that jumper JP7 is in position RS232
+
+  - Hyperterminal configuration:
+    - BaudRate = 115200 baud
+    - Word Length = 8 Bits
+    - One Stop Bit
+    - No parity
+    - Hardware flow control disabled (RTS and CTS signals)
+    - Receive and transmit enabled
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following:
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>CRYP_DESTDESmodes</b>
+Encrypt and Decrypt data using DES and TDES Algorithms
+in all chaining modes.
+=====================================================================================
+
+<u>Example Description</u>
+
+This example provides a short description of how to use the CRYPTO peripheral to
+encrypt and decrypt data using DES and TDES in all modes (ECB, CBC) Algorithm.
+
+For this example, a firmware is used to interface with the Crypto peripheral
+in polling mode.
+
+This example is behaves as follows:
+1. DES
+  - DES ECB Encryption
+  - DES ECB Decryption
+  - DES CBC Encryption
+  - DES CBC Decryption
+2. TDES
+  - TDES ECB Encryption
+  - TDES ECB Decryption
+  - TDES CBC Encryption
+  - TDES CBC Decryption
+
+The Plain data, encrypted data and decrypted data can be displayed on a PC
+HyperTerminal using the USART.
+
+The USARTx is configured as follows:
+    - BaudRate = 115200 baud
+    - Word Length = 8 Bits
+    - One Stop Bit
+    - No parity
+    - Hardware flow control disabled (RTS and CTS signals)
+    - Receive and transmit enabled
+
+
+<u>Keywords</u>
+
+Security, Cryptography, CRYPT, AES, ECB, CBC, DMA, MAC, Cypher, USART, DES, TDES,
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - CRYP/CRYP_DESTDESmodes/Inc/stm32f7xx_hal_conf.h    HAL configuration file
+  - CRYP/CRYP_DESTDESmodes/Inc/stm32f7xx_it.h          Interrupt handlers header file
+  - CRYP/CRYP_DESTDESmodes/Inc/main.h                  Header for main.c module
+  - CRYP/CRYP_DESTDESmodes/Src/stm32f7xx_it.c          Interrupt handlers
+  - CRYP/CRYP_DESTDESmodes/Src/main.c                  Main program
+  - CRYP/CRYP_DESTDESmodes/Src/stm32f7xx_hal_msp.c     HAL MSP module
+  - CRYP/CRYP_DESTDESmodes/Src/system_stm32f7xx.c      STM32F7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F756xx devices.
+
+  - This example has been tested with STM32756G-EVAL board revB and can be
+    easily tailored to any other supported device and development board.
+
+  - Hyperterminal configuration:
+    - BaudRate = 115200 baud
+    - Word Length = 8 Bits
+    - One Stop Bit
+    - No parity
+    - Hardware flow control disabled (RTS and CTS signals)
+    - Receive and transmit enabled
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following:
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>CRYP_TDES_DMA</b>
+Encrypt data using TDES Algo in ECB mode, with DMA
+=====================================================================================
+
+<u>Example Description</u>
+
+This example provides a short description of how to use the CRYPTO peripheral to
+encrypt data using TDES Algorithm.
+
+For this example, DMA is used to transfer data from memory to the CRYPTO processor
+IN FIFO and also to transfer data from CRYPTO processor OUT FIFO to memory.
+
+The data to be encrypted is a 384 bit data, which corresponds to 6 TDES Blocks.
+
+This example behaves as follows:
+- TDES Encryption   (PlainData --&gt; EncryptedData)
+
+STM32 Eval board's LEDs can be used to monitor the transfer status:
+ - LED1 is ON when encryption is right.
+ - LED3 is Toggle when encryption is wrong.
+ - LED3 is ON when an initialization error occurred.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Keywords</u>
+
+Security, Cryptography, CRYPT, AES, ECB, CBC, DMA, MAC, Cypher, TDES,
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - CRYP/CRYP_TDES_DMA/Inc/stm32f7xx_hal_conf.h    HAL configuration file
+  - CRYP/CRYP_TDES_DMA/Inc/stm32f7xx_it.h          Interrupt handlers header file
+  - CRYP/CRYP_TDES_DMA/Inc/main.h                  Header for main.c module
+  - CRYP/CRYP_TDES_DMA/Src/stm32f7xx_it.c          Interrupt handlers
+  - CRYP/CRYP_TDES_DMA/Src/main.c                  Main program
+  - CRYP/CRYP_TDES_DMA/Src/stm32f7xx_hal_msp.c     HAL MSP module
+  - CRYP/CRYP_TDES_DMA/Src/system_stm32f7xx.c      STM32F7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F756xx devices.
+
+  - This example has been tested with STM32756G-EVAL board revB and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32756G-EVAL Set-up :
+    - To use LED1, ensure that JP24 is in position 2-3
+    - To use LED3, ensure that JP23 is in position 2-3
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following:
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF7GettingStarted.pdf">Getting started with STM32CubeF7 Embedded Software for STM32F7xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF7 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM327x6G-EVAL Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

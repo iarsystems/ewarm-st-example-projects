@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<infocenter_data version="1.0">
+  <iar_template_variant>1</iar_template_variant>
+  <iar_name>ST</iar_name>                             <!--Manufacturer-->
+  <iar_title>ST examples</iar_title>                  <!--Manufacturer-->
+  <iar_description>
+
+        &lt;h2&gt;&lt;a href="http://www.st.com/content/st_com/en/products/embedded-software/mcus-embedded-software/stm32-embedded-software/stm32cube-embedded-software.html?querycriteria=productId=LN1897" target="_blank"&gt;STM32Cube MCU & MPU Packages &lt;/a&gt;&lt;/h2&gt;
+        &lt;br&gt;
+        &lt;br&gt;
+        &lt;h2&gt;Installed example projects&lt;/h2&gt;
+  </iar_description>
+
+</infocenter_data>

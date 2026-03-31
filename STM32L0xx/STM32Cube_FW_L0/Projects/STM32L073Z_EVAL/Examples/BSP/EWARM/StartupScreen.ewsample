@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<exampleInfo>
+  <copyDir>..\</copyDir>
+  <copyDir>..\..\..\..\..\Drivers\BSP\Components\Common\</copyDir>
+  <copyDir>..\..\..\..\..\Drivers\BSP\Components\hx8347d\</copyDir>
+  <copyDir>..\..\..\..\..\Drivers\BSP\Components\mfxstm32l152\</copyDir>
+  <copyDir>..\..\..\..\..\Drivers\BSP\Components\stlm75\</copyDir>
+  <copyDir>..\..\..\..\..\Drivers\BSP\STM32L073Z_EVAL\</copyDir>
+  <copyDir>..\..\..\..\..\Drivers\CMSIS\Device\ST\STM32L0xx\</copyDir>
+  <copyDir>..\..\..\..\..\Drivers\STM32L0xx_HAL_Driver\</copyDir>
+  <copyDir>..\..\..\..\..\Utilities\Fonts\</copyDir>
+  <copyDir>..\..\..\..\..\Utilities\Log\</copyDir>
+</exampleInfo>

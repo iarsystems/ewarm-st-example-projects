@@ -1,0 +1,880 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.JPN.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>JPEG Workspace</h1>
+
+=====================================================================================
+<b>JPEG_DecodingFromFLASH_DMA</b>
+JPEG example : JPEG decoding with DMA of an image stored in FLASH example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example demonstrates how to decode a JPEG image stored in the internal FLASH
+using the JPEG HW decoder in DMA mode and display the final ARGB8888 image on KoD LCD
+mounted on board or a HDMI monitor Connected through the DSI-HDMI bridge board MB1232.A.
+
+The example can automatically detect if the KoD LCD is connected or if the DSI-HDMI
+bridge is connected to the DSI connector (CN15), if no DSI slave is connected the RED LED will turn On.
+
+The example performs the following actions :
+  - Init the JPEG decoder.
+  - Init and configure the LCD_DSI screen
+  - Call the function "JPEG_Decode_DMA" to start decoding the jpg buffer with DMA (Non blocking method).
+    Function "JPEG_Decode_DMA" is implemented in a separate module decode_dma.c.
+    This module is a wrapper on top of the JPEG HAL driver
+
+  - Once the decoding ends :
+    - Call HAL routine "HAL_JPEG_GetInfo" to retrieve the image parameters :
+      image width, image height, image quality (from 1% to 100%) color space and Chroma sampling.
+    - copy the ARGB8888 result buffer to the LCD Frame buffer for display:
+        Using the DMA2D and positioning the image in the center of the LCD screen.
+
+Note: The jpeg HW decoder outputs are organized in YCbCr blocks.
+      The jpeg utilities functions implemented in "jpeg_utils.c" file are used to convert these YCbCr blocks
+      to RGB pixels to the destination JPEG output buffer.
+      The JPEG utilities files allowing to convert YCbCr blocks to RGB pixels are available under \Utilities\JPEG
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The example needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+Note: The STM32F7xx devices can reach a maximum clock frequency of 216MHz but as this example uses SDRAM,
+      the system clock is limited to 200MHz. Indeed proper functioning of the SDRAM is only guaranteed
+      at a maximum system clock frequency of 200MHz.
+
+Note: In case of EVAL's LCD use in example code, the DATA_IN_ExtSDRAM define
+      need to be added  in the project preprocessor to avoid SDRAM multiple configuration
+     (the LCD uses SDRAM as frame buffer, and its configuration is done by the BSP_SDRAM_Init()).
+
+Note: The compiler optimizations level could be set to High/Balanced giving a good tradeoff between the code size and the performance (decode time).
+
+
+<u>Keywords</u>
+
+Display, Graphic, JPEG, Decoding, Flash memory, DMA, ARGB8888, Hardware decoding, LCD, HDMI, YCbCr, RGB,
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - JPEG/JPEG_DecodingFromFLASH_DMA/Inc/stm32f7xx_hal_conf.h          HAL configuration file
+  - JPEG/JPEG_DecodingFromFLASH_DMA/Inc/stm32f7xx_it.h                Interrupt handlers header file
+  - JPEG/JPEG_DecodingFromFLASH_DMA/Inc/main.h                        Header for main.c module
+  - JPEG/JPEG_DecodingFromFLASH_DMA/Inc/decode_dma.h                  Header for decode_dma.c module
+  - JPEG/JPEG_DecodingFromFLASH_DMA/Inc/image_320_240_jpg.h           JPEG Image 320x240 to be decoded and displayed on LCD
+  - JPEG/JPEG_DecodingFromFLASH_DMA/Inc/jpeg_utils_conf.h             JPEG utilties module configuration file
+
+  - JPEG/JPEG_DecodingFromFLASH_DMA/Src/stm32f7xx_it.c                Interrupt handlers
+  - JPEG/JPEG_DecodingFromFLASH_DMA/Src/main.c                        Main program
+  - JPEG/JPEG_DecodingFromFLASH_DMA/Src/decode_dma.c                  JPEG Decoding (from memory) with DMA module
+  - JPEG/JPEG_DecodingFromFLASH_DMA/Src/stm32f7xx_hal_msp.c           HAL MSP module
+  - JPEG/JPEG_DecodingFromFLASH_DMA/Src/system_stm32f7xx.c            STM32F7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F769xx/STM32F779xx devices.
+
+  - This example has been tested with STMicroelectronics STM32F769I_EVAL revB
+    evaluation boards and can be easily tailored to any other supported device
+    and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Mount either the KoD LCD pannel (Board MB1166 rev.A) or the DSI-HDMI bridge(Board MB1232 Rev.A)
+   to the DSI connector (CN15).
+ - if using the DSI-HDMI bridge then connect a HDMI monitor using a HDMI cable to the
+   MB1232 board.
+
+ - Run the example
+
+
+=====================================================================================
+<b>JPEG_DecodingUsingFs_DMA</b>
+JPEG example : JPEG decoding using Fatfs and with DMA example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example demonstrates how to read jpeg file from SDCard memory using Fatfs, decode it
+using the JPEG HW decoder in DMA mode and display the final ARGB8888 image on KoD LCD
+mounted on board or a HDMI monitor Connected through the DSI-HDMI bridge board MB1232.A.
+
+The example can automatically detect if the KoD LCD is connected or if the DSI-HDMI
+bridge is connected to the DSI connector (CN15), if no DSI slave is connected the RED LED will turn On.
+
+The example performs the following actions :
+  - Link the uSD disk I/O driver.
+  - Register the file system object (mount) to the FatFs module for the uSD drive.
+  - Open the jpg file "image.jpg" in read access.
+  - Call the function "JPEG_Decode_DMA" to start decoding the jpg file with DMA (Non blocking method).
+    Function "JPEG_Decode_DMA" is implemented in a separate module decode_dma.c.
+    This module is a wrapper on top of the JPEG HAL driver
+
+  - Once the decoding ends,
+    - Call HAL routine "HAL_JPEG_GetInfo" to retrieve the image parameters :
+      image width, image height, image quality (from 1% to 100%) color space and Chroma sampling.
+    - copy the ARGB8888 result buffer to the LCD Frame buffer for display:
+        Using the DMA2D and positioning the image in the center of the LCD screen.
+    - Close the jpg file.
+
+Note: To run this example , you can use an JPEG .jpg file from\Utilities\Media\Pictures\JPG
+      or use your own .jpg image.
+
+Note: The jpeg HW decoder outputs are organized in YCbCr blocks.
+      The jpeg utilities functions implemented in "jpeg_utils.c" file are used to convert these YCbCr blocks
+      to RGB pixels to the destination JPEG output buffer.
+      The JPEG utilities files allowing to convert YCbCr blocks to RGB pixels are available under \Utilities\JPEG
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The example needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+Note: The STM32F7xx devices can reach a maximum clock frequency of 216MHz but as this example uses SDRAM,
+      the system clock is limited to 200MHz. Indeed proper functioning of the SDRAM is only guaranteed
+      at a maximum system clock frequency of 200MHz.
+
+Note: The compiler optimizations level could be set to High/Balanced giving a good tradeoff between the code size and the performance (decode time).
+
+Note: In case of EVAL's LCD use in example code, the DATA_IN_ExtSDRAM define
+      need to be added  in the project preprocessor to avoid SDRAM multiple configuration
+     (the LCD uses SDRAM as frame buffer, and its configuration is done by the BSP_SDRAM_Init()).
+
+
+<u>Keywords</u>
+
+Display, Graphic, JPEG, Decoding, Flash memory, DMA, ARGB8888, Hardware decoding, LCD, HDMI, YCbCr, RGB,
+FatFS, File system, SD Card, SDRAM
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - JPEG/JPEG_DecodingUsingFs_DMA/Inc/stm32f7xx_hal_conf.h          HAL configuration file
+  - JPEG/JPEG_DecodingUsingFs_DMA/Inc/stm32f7xx_it.h                Interrupt handlers header file
+  - JPEG/JPEG_DecodingUsingFs_DMA/Inc/ffconf.h                      FAT file system module configuration file
+  - JPEG/JPEG_DecodingUsingFs_DMA/Inc/main.h                        Header for main.c module
+  - JPEG/JPEG_DecodingUsingFs_DMA/Inc/decode_dma.h                  Header for decode_dma.c module
+  - JPEG/JPEG_DecodingUsingFs_DMA/Inc/jpeg_utils_conf.h             JPEG utilties module configuration file
+
+  - JPEG/JPEG_DecodingUsingFs_DMA/Src/stm32f7xx_it.c                Interrupt handlers
+  - JPEG/JPEG_DecodingUsingFs_DMA/Src/main.c                        Main program
+  - JPEG/JPEG_DecodingUsingFs_DMA/Src/decode_dma.c                  JPEG Decoding with DMA module
+  - JPEG/JPEG_DecodingUsingFs_DMA/Src/stm32f7xx_hal_msp.c           HAL MSP module
+  - JPEG/JPEG_DecodingUsingFs_DMA/Src/system_stm32f7xx.c            STM32F7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F769xx/STM32F779xx devices.
+
+  - This example has been tested with STMicroelectronics STM32F769I_EVAL revB
+    evaluation boards and can be easily tailored to any other supported device
+    and development board.
+
+  - STM32F769I_EVAL Set-up
+  - Copy a jpg image to a uSD card (under the root)
+      The image must have the following properties:
+        - named as "image.jpg"
+        - dimensions : less or equal to the display screen:
+           * LCD-DSI:
+               - Witdh  : &lt;= 800
+               - Height : &lt;= 480
+           * HDMI-DSI:
+               - Witdh  : &lt;= 720
+               - Height : &lt;= 576
+  - Connect the uSD Card to the uSD1 connector (CN17).
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Mount either the KoD LCD pannel (Board MB1166 rev.A) or the DSI-HDMI bridge(Board MB1232 Rev.A)
+   to the DSI connector (CN15).
+ - if using the DSI-HDMI bridge then connect a HDMI monitor using a HDMI cable to the
+   MB1232 board.
+ - Run the example
+
+
+=====================================================================================
+<b>JPEG_DecodingUsingFs_Interrupt</b>
+JPEG example : JPEG decoding using Fatfs and with interrupt example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example demonstrates how to read jpeg file from SDCard memory using Fatfs, decode it
+using the JPEG HW decoder in interrupt mode and display the final ARGB8888 image on KoD LCD
+mounted on board or a HDMI monitor Connected through the DSI-HDMI bridge board MB1232.A.
+
+The example can automatically detect if the KoD LCD is connected or if the DSI-HDMI
+bridge is connected to the DSI connector (CN15), if no DSI slave is connected the RED LED will turn On.
+
+The example performs the following actions :
+  - Link the uSD disk I/O driver.
+  - Register the file system object (mount) to the FatFs module for the uSD drive.
+  - Open the jpg file "image.jpg" in read access.
+  - Call the function "JPEG_Decode_IT" to start decoding the jpg file with Interrupt (Non blocking method).
+    Function "JPEG_Decode_IT" is implemented in a separate module decode_interrupt.c.
+    This module is a wrapper on top of the JPEG HAL driver
+
+  - Once the decoding ends,
+    - Call HAL routine "HAL_JPEG_GetInfo" to retrieve the image parameters :
+      image width, image height, image quality (from 1% to 100%) color space and Chroma sampling.
+    - copy the ARGB8888 result buffer to the LCD Frame buffer for display:
+        Using the DMA2D and positioning the image in the center of the LCD screen.
+    - Close the jpg file.
+
+Note: To run this example , you can use an JPEG .jpg file from\Utilities\Media\Pictures\JPG
+      or use your own .jpg image.
+
+Note: The jpeg HW decoder outputs are organized in YCbCr blocks.
+      The jpeg utilities functions implemented in "jpeg_utils.c" file are used to convert these YCbCr blocks
+      to RGB pixels to the destination JPEG output buffer.
+      The JPEG utilities files allowing to convert YCbCr blocks to RGB pixels are available under \Utilities\JPEG
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The example needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+Note: The STM32F7xx devices can reach a maximum clock frequency of 216MHz but as this example uses SDRAM,
+      the system clock is limited to 200MHz. Indeed proper functioning of the SDRAM is only guaranteed
+      at a maximum system clock frequency of 200MHz.
+
+Note: The compiler optimizations level could be set to High/Balanced giving a good tradeoff between the code size and the performance (decode time).
+
+Note: In case of EVAL's LCD use in example code, the DATA_IN_ExtSDRAM define
+      need to be added  in the project preprocessor to avoid SDRAM multiple configuration
+     (the LCD uses SDRAM as frame buffer, and its configuration is done by the BSP_SDRAM_Init()).
+
+
+<u>Keywords</u>
+
+Display, Graphic, JPEG, Decoding, Flash memory, DMA, ARGB8888, Hardware decoding, LCD, HDMI, YCbCr, RGB,
+FatFS, File system, SD Card, SDRAM
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - JPEG/JPEG_DecodingUsingFs_Interrupt/Inc/stm32f7xx_hal_conf.h          HAL configuration file
+  - JPEG/JPEG_DecodingUsingFs_Interrupt/Inc/stm32f7xx_it.h                Interrupt handlers header file
+  - JPEG/JPEG_DecodingUsingFs_Interrupt/Inc/ffconf.h                      FAT file system module configuration file
+  - JPEG/JPEG_DecodingUsingFs_Interrupt/Inc/main.h                        Header for main.c module
+  - JPEG/JPEG_DecodingUsingFs_Interrupt/Inc/decode_interrupt.h            Header for decode_interrupt.c module
+  - JPEG/JPEG_DecodingUsingFs_Interrupt/Inc/jpeg_utils_conf.h             JPEG utilties module configuration file
+
+  - JPEG/JPEG_DecodingUsingFs_Interrupt/Src/stm32f7xx_it.c                Interrupt handlers
+  - JPEG/JPEG_DecodingUsingFs_Interrupt/Src/main.c                        Main program
+  - JPEG/JPEG_DecodingUsingFs_Interrupt/Src/decode_interrupt.c            JPEG Decoding with interrupt module
+  - JPEG/JPEG_DecodingUsingFs_Interrupt/Src/stm32f7xx_hal_msp.c           HAL MSP module
+  - JPEG/JPEG_DecodingUsingFs_Interrupt/Src/system_stm32f7xx.c            STM32F7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F769xx/STM32F779xx devices.
+
+  - This example has been tested with STMicroelectronics STM32F769I_EVAL revB
+    evaluation boards and can be easily tailored to any other supported device
+    and development board.
+
+  - STM32F769I_EVAL Set-up
+  - Copy a jpg image to a uSD card (under the root)
+      The image must have the following properties:
+        - named as "image.jpg"
+        - dimensions : less or equal to the display screen:
+           * LCD-DSI:
+               - Witdh  : &lt;= 800
+               - Height : &lt;= 480
+           * HDMI-DSI:
+               - Witdh  : &lt;= 720
+               - Height : &lt;= 576
+  - Connect the uSD Card to the uSD1 connector (CN17).
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Mount either the KoD LCD pannel (Board MB1166 rev.A) or the DSI-HDMI bridge(Board MB1232 Rev.A)
+   to the DSI connector (CN15).
+ - if using the DSI-HDMI bridge then connect a HDMI monitor using a HDMI cable to the
+   MB1232 board.
+ - Run the example
+
+
+=====================================================================================
+<b>JPEG_DecodingUsingFs_Polling</b>
+JPEG example : JPEG decoding using Fatfs and with Polling example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example demonstrates how to read jpeg file from SDCard memory using Fatfs, decode it
+using the JPEG HW decoder in polling mode and display the final ARGB8888 image on KoD LCD
+mounted on board or a HDMI monitor Connected through the DSI-HDMI bridge board MB1232.A.
+
+The example can automatically detect if the KoD LCD is connected or if the DSI-HDMI
+bridge is connected to the DSI connector (CN15), if no DSI slave is connected the RED LED will turn On.
+
+The example performs the following actions :
+  - Link the uSD disk I/O driver.
+  - Register the file system object (mount) to the FatFs module for the uSD drive.
+  - Open the jpg file "image.jpg" in read access.
+  - Call the function "JPEG_DecodePolling" to start decoding the jpg file with Polling (blocking method).
+    Function "JPEG_DecodePolling" is implemented in a separate module decode_polling.c.
+    This module is a wrapper on top of the JPEG HAL driver
+
+  - Once the decoding ends,
+    - Call HAL routine "HAL_JPEG_GetInfo" to retrieve the image parameters :
+      image width, image height, image quality (from 1% to 100%) color space and Chroma sampling.
+    - copy the ARGB8888 result buffer to the LCD Frame buffer for display:
+        Using the DMA2D and positioning the image in the center of the LCD screen.
+    - Close the jpg file.
+
+Note: To run this example , you can use an JPEG .jpg file from\Utilities\Media\Pictures\JPG
+      or use your own .jpg image.
+
+Note: The jpeg HW decoder outputs are organized in YCbCr blocks.
+      The jpeg utilities functions implemented in "jpeg_utils.c" file are used to convert these YCbCr blocks
+      to RGB pixels to the destination JPEG output buffer.
+      The JPEG utilities files allowing to convert YCbCr blocks to RGB pixels are available under \Utilities\JPEG
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The example needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+Note: The STM32F7xx devices can reach a maximum clock frequency of 216MHz but as this example uses SDRAM,
+      the system clock is limited to 200MHz. Indeed proper functioning of the SDRAM is only guaranteed
+      at a maximum system clock frequency of 200MHz.
+
+Note: The compiler optimizations level could be set to High/Balanced giving a good tradeoff between the code size and the performance (decode time).
+
+Note: In case of EVAL's LCD use in example code, the DATA_IN_ExtSDRAM define
+      need to be added  in the project preprocessor to avoid SDRAM multiple configuration
+     (the LCD uses SDRAM as frame buffer, and its configuration is done by the BSP_SDRAM_Init()).
+
+
+<u>Keywords</u>
+
+Display, Graphic, JPEG, Decoding, Flash memory, Polling, ARGB8888, Hardware decoding, LCD, HDMI, YCbCr, RGB,
+FatFS, File system, SD Card, SDRAM
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - JPEG/JPEG_DecodingUsingFs_Polling/Inc/stm32f7xx_hal_conf.h          HAL configuration file
+  - JPEG/JPEG_DecodingUsingFs_Polling/Inc/stm32f7xx_it.h                Interrupt handlers header file
+  - JPEG/JPEG_DecodingUsingFs_Polling/Inc/ffconf.h                      FAT file system module configuration file
+  - JPEG/JPEG_DecodingUsingFs_Polling/Inc/main.h                        Header for main.c module
+  - JPEG/JPEG_DecodingUsingFs_Polling/Inc/decode_polling.h              Header for decode_polling.c module
+  - JPEG/JPEG_DecodingUsingFs_Polling/Inc/jpeg_utils_conf.h             JPEG utilties module configuration file
+
+  - JPEG/JPEG_DecodingUsingFs_Polling/Src/stm32f7xx_it.c                Interrupt handlers
+  - JPEG/JPEG_DecodingUsingFs_Polling/Src/main.c                        Main program
+  - JPEG/JPEG_DecodingUsingFs_Polling/Src/decode_polling.c              JPEG Decoding with polling module
+  - JPEG/JPEG_DecodingUsingFs_Polling/Src/stm32f7xx_hal_msp.c           HAL MSP module
+  - JPEG/JPEG_DecodingUsingFs_Polling/Src/system_stm32f7xx.c            STM32F7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F769xx/STM32F779xx devices.
+
+  - This example has been tested with STMicroelectronics STM32F769I_EVAL revB
+    evaluation boards and can be easily tailored to any other supported device
+    and development board.
+
+  - STM32F769I_EVAL Set-up
+  - Copy a jpg image to a uSD card (under the root)
+      The image must have the following properties:
+        - named as "image.jpg"
+        - dimensions : less or equal to the display screen:
+           * LCD-DSI:
+               - Witdh  : &lt;= 800
+               - Height : &lt;= 480
+           * HDMI-DSI:
+               - Witdh  : &lt;= 720
+               - Height : &lt;= 576
+  - Connect the uSD Card to the uSD1 connector (CN17).
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Mount either the KoD LCD pannel (Board MB1166 rev.A) or the DSI-HDMI bridge(Board MB1232 Rev.A)
+   to the DSI connector (CN15).
+ - if using the DSI-HDMI bridge then connect a HDMI monitor using a HDMI cable to the
+   MB1232 board.
+ - Run the example
+
+
+=====================================================================================
+<b>JPEG_EncodingFromFLASH_DMA</b>
+JPEG example : JPEG encoding with DMA of an image stored in FLASH example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example demonstrates how to read an RGB image stored in the internal FLASH, encode it
+using the JPEG HW encoder in DMA mode and save it in SDCard.
+
+The example performs the following actions :
+  - Link the uSD disk I/O driver.
+  - Register the file system object (mount) to the FatFs module for the uSD drive.
+  - Create the JPEG file with write access.
+  - Call the function "JPEG_Encode_DMA" to start encoding the jpg file with DMA (Non blocking method).
+    the RGB input image nameis automatically selected according to the selected RGB format as follow :
+    - Image_RGB888 for RGB888 (#define JPEG_RGB_FORMAT      JPEG_RGB888)
+    - Image_RGB565 for RGB565 (#define JPEG_RGB_FORMAT      JPEG_RGB565)
+    - Image_ARGB8888 for ARGB8888 (#define JPEG_RGB_FORMAT      JPEG_ARGB8888)
+    Function "JPEG_Encode_DMA" is implemented in a separate module encode_dma.c.
+    This module is a wrapper on top of the JPEG HAL driver
+  - Save encoded data in jpg file
+  - Once the encoding ends, close the jpg file.
+  - The Green LED1 is On if the test ends properly.
+  - The Red LED3 is On in case of error.
+
+Note: The jpeg HW encoder inputs are organized in YCbCr blocks.
+      The jpeg utilities functions implemented in "jpeg_utils.c" file are used to convert the input RGB pixels
+      to YCbCr blocks.
+      The JPEG utilities files allowing to convert RGB pixels to YCbCr blocks are available under \Utilities\JPEG
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The example needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+Note: The STM32F7xx devices can reach a maximum clock frequency of 216MHz but as this example uses SDRAM,
+      the system clock is limited to 200MHz. Indeed proper functioning of the SDRAM is only guaranteed
+      at a maximum system clock frequency of 200MHz.
+
+Note: The compiler optimizations level could be set to High/Balanced giving a good tradeoff between the code size and the performance (decode time).
+
+Note: In case of EVAL's LCD use in example code, the DATA_IN_ExtSDRAM define
+      need to be added  in the project preprocessor to avoid SDRAM multiple configuration
+     (the LCD uses SDRAM as frame buffer, and its configuration is done by the BSP_SDRAM_Init()).
+
+
+<u>Keywords</u>
+
+Display, Graphic, JPEG, Encoding, Flash memory, DMA, ARGB8888, Hardware Encoding, LCD, HDMI, YCbCr, RGB,
+SD Card, SDRAM
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - JPEG/JPEG_EncodingFromFLASH_DMA/Inc/stm32f7xx_hal_conf.h          HAL configuration file
+  - JPEG/JPEG_EncodingFromFLASH_DMA/Inc/stm32f7xx_it.h                Interrupt handlers header file
+  - JPEG/JPEG_EncodingFromFLASH_DMA/Inc/ffconf.h                      FAT file system module configuration file
+  - JPEG/JPEG_EncodingFromFLASH_DMA/Inc/main.h                        Header for main.c module
+  - JPEG/JPEG_EncodingFromFLASH_DMA/Inc/encode_dma.h                  Header for encode_dma.c module
+  - JPEG/JPEG_EncodingFromFLASH_DMA/Inc/jpeg_utils_conf.h             JPEG utilties module configuration file
+  - JPEG/JPEG_EncodingFromFLASH_DMA/Inc/image_320_240_rgb.h           Specification of RGB image to load in FLASH
+
+  - JPEG/JPEG_EncodingFromFLASH_DMA/Src/stm32f7xx_it.c                Interrupt handlers
+  - JPEG/JPEG_EncodingFromFLASH_DMA/Src/main.c                        Main program
+  - JPEG/JPEG_EncodingFromFLASH_DMA/Src/encode_dma.c                  JPEG Encoding with DMA module
+  - JPEG/JPEG_EncodingFromFLASH_DMA/Src/stm32f7xx_hal_msp.c           HAL MSP module
+  - JPEG/JPEG_EncodingFromFLASH_DMA/Src/system_stm32f7xx.c            STM32F7xx system source file
+  - JPEG/JPEG_EncodingFromFLASH_DMA/Src/Image_argb_8888.c             Example of ARGB888 image to load in FLASH
+  - JPEG/JPEG_EncodingFromFLASH_DMA/Src/Image_rgb_565.c               Example of RGB565 image to load in FLASH
+  - JPEG/JPEG_EncodingFromFLASH_DMA/Src/Image_rgb_888.c               Example of RGB888 image to load in FLASH
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F769xx/STM32F779xx devices.
+
+  - This example has been tested with STMicroelectronics STM32F769I_EVAL revB
+    evaluation boards and can be easily tailored to any other supported device
+    and development board.
+
+  - STM32F769I_EVAL Set-up
+  - Connect the uSD Card to the uSD1 connector (CN17).
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>JPEG_EncodingUsingFs_DMA</b>
+JPEG example : JPEG encoding using Fatfs and with DMA example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example demonstrates how to read bmp file from SDCard memory using Fatfs, encode it
+using the JPEG HW encoder in DMA mode and save it in SDCard.
+
+The example performs the following actions :
+  - Link the uSD disk I/O driver.
+  - Register the file system object (mount) to the FatFs module for the uSD drive.
+  - Open the bmp file "image.bmp" in read access.
+  - Create the JPEG file with write access.
+  - Call the function "JPEG_Encode_DMA" to start encoding the jpg file with DMA (Non blocking method).
+    Function "JPEG_Encode_DMA" is implemented in a separate module encode_dma.c.
+    This module is a wrapper on top of the JPEG HAL driver
+  - Save encoded data in jpg file
+  - Once the encoding ends, close the bmp and jpg file.
+  - The Green LED1 is On if the test ends properly.
+
+Note: To run this example , you can use a BMP .bmp file from\Utilities\Media\Pictures\BMP_XXXxXXX
+      or use your own bmp image. The input BMP file should be 24bpp (i.e pixels are RGB888 format).
+      To double check that the input BMP file is compatible, right click on file, go to "Details"
+      and check that "Bit depth" is "24".
+      The BMP file width and height must verify the following requirement:
+      - If encoding parameters YCbCr 4:2:0 then width and height must be multiple of 16 pixels.
+      - For all other modes, width and height must be multiple of 8 pixels.
+      The encoding parameters are set in the "main.h" (JPEG_COLOR_SPACE and JPEG_CHROMA_SAMPLING defines)
+
+Note: The jpeg HW encoder inputs are organized in YCbCr blocks.
+      The jpeg utilities functions implemented in "jpeg_utils.c" file are used to convert the input RGB pixels
+      to YCbCr blocks.
+      The JPEG utilities files allowing to convert RGB pixels to YCbCr blocks are available under \Utilities\JPEG
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The example needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+Note: The STM32F7xx devices can reach a maximum clock frequency of 216MHz but as this example uses SDRAM,
+      the system clock is limited to 200MHz. Indeed proper functioning of the SDRAM is only guaranteed
+      at a maximum system clock frequency of 200MHz.
+
+Note: The compiler optimizations level could be set to High/Balanced giving a good tradeoff between the code size and the performance (decode time).
+
+Note: In case of EVAL's LCD use in example code, the DATA_IN_ExtSDRAM define
+      need to be added  in the project preprocessor to avoid SDRAM multiple configuration
+     (the LCD uses SDRAM as frame buffer, and its configuration is done by the BSP_SDRAM_Init()).
+
+
+<u>Keywords</u>
+
+Display, Graphic, JPEG, Encoding, Flash memory, DMA, ARGB8888, Hardware Encoding, LCD, HDMI, YCbCr, RGB,
+FatFS, File system, SD Card, SDRAM
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - JPEG/JPEG_EncodingUsingFs_DMA/Inc/stm32f7xx_hal_conf.h          HAL configuration file
+  - JPEG/JPEG_EncodingUsingFs_DMA/Inc/stm32f7xx_it.h                Interrupt handlers header file
+  - JPEG/JPEG_EncodingUsingFs_DMA/Inc/ffconf.h                      FAT file system module configuration file
+  - JPEG/JPEG_EncodingUsingFs_DMA/Inc/main.h                        Header for main.c module
+  - JPEG/JPEG_EncodingUsingFs_DMA/Inc/encode_dma.h                  Header for encode_dma.c module
+  - JPEG/JPEG_EncodingUsingFs_DMA/Inc/jpeg_utils_conf.h             JPEG utilties module configuration file
+
+  - JPEG/JPEG_EncodingUsingFs_DMA/Src/stm32f7xx_it.c                Interrupt handlers
+  - JPEG/JPEG_EncodingUsingFs_DMA/Src/main.c                        Main program
+  - JPEG/JPEG_EncodingUsingFs_DMA/Src/encode_dma.c                  JPEG Encoding with DMA module
+  - JPEG/JPEG_EncodingUsingFs_DMA/Src/stm32f7xx_hal_msp.c           HAL MSP module
+  - JPEG/JPEG_EncodingUsingFs_DMA/Src/system_stm32f7xx.c            STM32F7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F769xx/STM32F779xx devices.
+
+  - This example has been tested with STMicroelectronics STM32F769I_EVAL revB
+    evaluation boards and can be easily tailored to any other supported device
+    and development board.
+
+  - STM32F769I_EVAL Set-up
+  - Copy a bmp image to a uSD card (under the root)
+      The image must have the following properties:
+        - named as "image.bmp"
+  - Connect the uSD Card to the uSD1 connector (CN17).
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>JPEG_MJPEG_VideoDecoding</b>
+MJPEG video decoding example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example demonstrates how to use the HW JPEG decoder to decode an MJPEG video file
+and display it on the DSI screen.
+Note That the DSI peripheral is configured in command mode with tearing effect
+set on external pin, and with partial refresh. The partial refresh is initialized to refresh
+the left part of the screen only by sending the appropriate DSI command.
+
+The example performs the following actions :
+  - Link the uSD disk I/O driver.
+  - Register the file system object (mount) to the FatFs module for the uSD drive.
+  - Open the mjpeg file "video.avi" in read access.
+  - if the file open succeed display a down count from 5 to 1 and then proceed to
+    the video decoding loop.
+
+  - In the video decoding loop and for each iteration , search for the offset of
+     the next jpeg frame in the mjpeg file (by looking for the next JPEG SOI marker).
+     If the frame offset is valid then start the decoding using the function "JPEG_Decode_DMA"
+     (Non blocking method).
+    Function "JPEG_Decode_DMA" is implemented in a separate module decode_dma.c.
+    This module is a wrapper on top of the JPEG HAL driver
+
+  - Once the decoding ends,
+    - if the decoded frame is the first one, call HAL routine "HAL_JPEG_GetInfo"
+      to retrieve the image parameters :
+      image width, image height, image quality (from 1% to 100%) color space and Chroma sampling.
+
+    - copy the decoded ARGB8888 result buffer to the LCD Frame buffer for display:
+        Using the DMA2D and positioning the image in the center of the LCD screen.
+        The DMA2D checks first if a DSI refresh of the LCD frame buffer is ongoing .
+        If it is the case, it waits for the end of the refresh before copying the new decoded frame
+        to the LCD frame buffer.
+
+    -  Once the DMLA2D transfer ends , ask for a display refresh using the following technique :
+        The DMA2D transfer is done in interrupt mode (not blocking). Once the DMA2D transfer is complete,
+        the corresponding callback is called. This latter callback sets the variable "pending_buffer" to "1".
+        to inform that the LCD frame buffer is ready for refresh then Unmask the Tearing effect pin
+        (by setting this pin to the right DSI alternate function).
+
+        When the Tearing Effect callback is asserted, first it masks the TE pin (setting the AF pin to 0).
+        Then ask for DSI refresh (calling HAL_DSI_Refresh function).
+        As consequence the DSI refreshes the LEFT part of the screen only . Once the left part of the screen
+        is refreshed , the refresh callback is asserted. This callback updates the LTDC setting and sends the
+        appropriate DSI command to switch the partial refresh to the RIGHT part of the screen, then as for a refresh again.
+        Once the RIGHT part of the screen is refreshed (so the full frame is refreshed left and right), the refresh
+        callback is asserted again . In this case, this callback switches the partial refresh setting back to LEFT part,
+        and sets the variable "pending_buffer" to "-1" to inform that the refresh has ends.
+
+     - The decoding and display has ends, go to the next frame processing.
+
+     - When the end of file is reached, close the jpg file and display the file decoding characteristics :
+       Resolution, JPEG quality, Chroma sampling, average decoding time and number of decoded frames.
+
+Note: To Run this example , you can use an MJPEG .avi file from
+      \Utilities\Media\Video or use your own MJPEG file.
+     This file must have the following properties:
+        - renamed as "video.avi"
+        - resolution : less or equal to the LCD-DSI screen (i.e 800x480 for the STM32F769I_EVAL board)
+        - Width  : &lt;= 800
+        - Height : &lt;= 480
+      The MJPEG file can be in AVI container format(without audio), or a sample MJPEG row file.
+
+Note: The jpeg HW decoder outputs are organized in YCbCr blocks.
+      The jpeg utilities functions implemented in "jpeg_utils.c" file are used to convert these YCbCr blocks
+      to RGB pixels to the destination JPEG output buffer.
+      The JPEG utilities files allowing to convert YCbCr blocks to RGB pixels are available under \Utilities\JPEG
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The example needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+Note: The STM32F7xx devices can reach a maximum clock frequency of 216MHz but as this example uses SDRAM,
+      the system clock is limited to 200MHz. Indeed proper functioning of the SDRAM is only guaranteed
+      at a maximum system clock frequency of 200MHz.
+
+Note: The compiler optimizations level could be set to High/Balanced giving a good trade-off between the code size and the performance (decode time).
+
+Note: In case of EVAL's LCD use in example code, the DATA_IN_ExtSDRAM define
+      need to be added  in the project preprocessor to avoid SDRAM multiple configuration
+     (the LCD uses SDRAM as frame buffer, and its configuration is done by the BSP_SDRAM_Init()).
+
+
+<u>Keywords</u>
+
+Display, Graphic, MJPEG, Video, Decoding, LCD, Hardware Decoder, DSI, Command mode, tearing effect,
+DMA, FatFS, File system, avi, YCbCr, RGB
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - JPEG/JPEG_MJPEG_VideoDecoding/Inc/stm32f7xx_hal_conf.h          HAL configuration file
+  - JPEG/JPEG_MJPEG_VideoDecoding/Inc/stm32f7xx_it.h                Interrupt handlers header file
+  - JPEG/JPEG_MJPEG_VideoDecoding/Inc/ffconf.h                      FAT file system module configuration file
+  - JPEG/JPEG_MJPEG_VideoDecoding/Inc/main.h                        Header for main.c module
+  - JPEG/JPEG_MJPEG_VideoDecoding/Inc/decode_dma.h                  Header for decode_dma.c module
+  - JPEG/JPEG_MJPEG_VideoDecoding/Inc/jpeg_utils_conf.h             JPEG utilities module configuration file
+
+  - JPEG/JPEG_MJPEG_VideoDecoding/Src/stm32f7xx_it.c                Interrupt handlers
+  - JPEG/JPEG_MJPEG_VideoDecoding/Src/main.c                        Main program
+  - JPEG/JPEG_MJPEG_VideoDecoding/Src/decode_dma.c                  JPEG Decoding with DMA module
+  - JPEG/JPEG_MJPEG_VideoDecoding/Src/stm32f7xx_hal_msp.c           HAL MSP module
+  - JPEG/JPEG_MJPEG_VideoDecoding/Src/system_stm32f7xx.c            STM32F7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F769xx/STM32F779xx devices.
+
+  - This example has been tested with STMicroelectronics STM32F769I_EVAL revB
+    evaluation boards and can be easily tailored to any other supported device
+    and development board.
+
+  - STM32F769I_EVAL Set-up
+  - Copy an MJPEG video file to the uSD card (under the root)
+      The file must have the following properties:
+        - named as "video.avi"
+        - resolution : less or equal to the LCD-DSI screen (i.e 800x480 for the STM32F769I_EVAL board)
+        - Width  : &lt;= 800
+        - Height : &lt;= 480
+      The MJPEG file can be in AVI container format(without audio), or a sample MJPEG raw file.
+  - Connect the uSD Card to the uSD1 connector (CN17).
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF7GettingStarted.pdf">Getting started with STM32CubeF7 Embedded Software for STM32F7xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF7 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32F7x9I-EVAL Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

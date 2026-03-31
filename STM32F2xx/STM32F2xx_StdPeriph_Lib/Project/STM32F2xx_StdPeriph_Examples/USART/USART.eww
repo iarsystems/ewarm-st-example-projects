@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/DataExchangeDMA/DataExchangeDMA.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/DataExchangeInterrupt/DataExchangeInterrupt.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/HyperTerminal_Interrupt/HyperTerminal_Interrupt.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/SmartCard/SmartCard.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/USART_Printf/USART_Printf.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>DataExchangeDMA</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+      <member>
+        <project>DataExchangeInterrupt</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+      <member>
+        <project>HyperTerminal_Interrupt</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+      <member>
+        <project>SmartCard</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+      <member>
+        <project>USART_Printf</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

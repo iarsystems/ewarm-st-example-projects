@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>TIM Workspace</h1>
+
+=====================================================================================
+<b>TIM_DMA</b>
+TIM DMA example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example provides a description of how to use DMA with TIMER Update request
+to transfer Data from memory to TIMER Capture Compare Register 3 (TIMx_CCR3).
+
+  The following configuration values are used in this example:
+
+    - TIM2CLK = SystemCoreClock
+    - Prescaler = 0
+    - TIM2 counter clock = SystemCoreClock
+    - SystemCoreClock is set to 32 MHz for STM32L1xx
+
+  The objective is to configure TIM2 channel 3 to generate a PWM (Pulse Width
+  Modulation) signal with a frequency equal to 17.57 KHz, and a variable duty
+  cycle that is changed by the DMA after each Update DMA request.
+
+  The PWM waveform can be displayed using an oscilloscope.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate
+      delay (in milliseconds) based on variable incremented in SysTick ISR. This
+      implies that if HAL_Delay() is called from a peripheral ISR process, then
+      the SysTick interrupt must have higher priority (numerically lower)
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - TIM/TIM_DMA/Inc/stm32l1xx_hal_conf.h    HAL configuration file
+  - TIM/TIM_DMA/Inc/stm32l1xx_it.h          Interrupt handlers header file
+  - TIM/TIM_DMA/Inc/main.h                  Header for main.c module
+  - TIM/TIM_DMA/Src/stm32l1xx_it.c          Interrupt handlers
+  - TIM/TIM_DMA/Src/main.c                  Main program
+  - TIM/TIM_DMA/Src/stm32l1xx_hal_msp.c     HAL MSP file
+  - TIM/TIM_DMA/Src/system_stm32l1xx.c      STM32L1xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32L152xE devices.
+
+  - This example has been tested with STMicroelectronics STM32L152RE-Nucleo Rev C
+    board and can be easily tailored to any other supported device
+    and development board.
+
+  - STM32L152RE-Nucleo Rev C Set-up
+    - Connect the TIM2 pin to an oscilloscope to monitor the different waveforms:
+    - TIM2 CH3 (PB.10)
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>TIM_PWMOutput</b>
+TIM PWM Output example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to configure the TIM peripheral in PWM (Pulse Width Modulation)
+mode.
+
+SystemCoreClock is set to 32 MHz for STM32L1xx Devices.
+
+    In this example TIM2 input clock (TIM2CLK) is set to APB1 clock (PCLK1),
+    since APB1 prescaler is equal to 1.
+      TIM2CLK = PCLK1
+      PCLK1 = HCLK
+      =&gt; TIM2CLK = HCLK = SystemCoreClock
+
+    To get TIM2 counter clock at 16 MHz, the prescaler is computed as follows:
+       Prescaler = (TIM2CLK / TIM2 counter clock) - 1
+       Prescaler = ((SystemCoreClock) /16 MHz) - 1
+
+    To get TIM2 output clock at 24 KHz, the period (ARR)) is computed as follows:
+       ARR = (TIM2 counter clock / TIM2 output clock) - 1
+           = 665
+
+    TIM2 Channel1 duty cycle = (TIM2_CCR1/ TIM2_ARR + 1)* 100 = 50%
+    TIM2 Channel2 duty cycle = (TIM2_CCR2/ TIM2_ARR + 1)* 100 = 37.5%
+    TIM2 Channel3 duty cycle = (TIM2_CCR3/ TIM2_ARR + 1)* 100 = 25%
+    TIM2 Channel4 duty cycle = (TIM2_CCR4/ TIM2_ARR + 1)* 100 = 12.5%
+
+The PWM waveforms can be displayed using an oscilloscope.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - TIM/TIM_PWMOutput/Inc/stm32l1xx_hal_conf.h    HAL configuration file
+  - TIM/TIM_PWMOutput/Inc/stm32l1xx_it.h          Interrupt handlers header file
+  - TIM/TIM_PWMOutput/Inc/main.h                  Header for main.c module
+  - TIM/TIM_PWMOutput/Src/stm32l1xx_it.c          Interrupt handlers
+  - TIM/TIM_PWMOutput/Src/main.c                  Main program
+  - TIM/TIM_PWMOutput/Src/stm32l1xx_hal_msp.c     HAL MSP file
+  - TIM/TIM_PWMOutput/Src/system_stm32l1xx.c      STM32L1xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32L152xE devices.
+
+  - This example has been tested with STMicroelectronics STM32L152RE-Nucleo Rev C
+    board and can be easily tailored to any other supported device
+    and development board.
+
+  - STM32L152RE-Nucleo Rev C Set-up
+   Connect the following pins to an oscilloscope to monitor the different waveforms:
+        - PA.05: (TIM2_CH1)
+        - PB.03: (TIM2_CH2)
+        - PB.10: (TIM2_CH3)
+        - PB.11: (TIM2_CH4)
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeL1GettingStarted.pdf">Getting started with STM32CubeL1 Embedded Software for STM32L1xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeL1 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32L152RE-Nucleo Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

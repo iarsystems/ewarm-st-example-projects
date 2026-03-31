@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/CORTEXM_ProcessStack/EWARM/CORTEXM_ProcessStack.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/CORTEXM_SysTick/EWARM/CORTEXM_SysTick.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>CORTEXM_ProcessStack</project>
+        <configuration>STM32F0308-Discovery</configuration>
+      </member>
+      <member>
+        <project>CORTEXM_SysTick</project>
+        <configuration>STM32F0308-Discovery</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<exampleInfo>
+  <copyDir>..\</copyDir>
+  <copyDir>..\..\..\..\..\Drivers\BSP\Components\Common\</copyDir>
+  <copyDir>..\..\..\..\..\Drivers\BSP\Components\cs43l22\</copyDir>
+  <copyDir>..\..\..\..\..\Drivers\BSP\Components\l3gd20\</copyDir>
+  <copyDir>..\..\..\..\..\Drivers\BSP\Components\lsm303c\</copyDir>
+  <copyDir>..\..\..\..\..\Drivers\BSP\Components\mfxstm32l152\</copyDir>
+  <copyDir>..\..\..\..\..\Drivers\BSP\Components\n25q128a\</copyDir>
+  <copyDir>..\..\..\..\..\Drivers\BSP\STM32L476G-Discovery\</copyDir>
+  <copyDir>..\..\..\..\..\Drivers\CMSIS\Device\ST\STM32L4xx\</copyDir>
+  <copyDir>..\..\..\..\..\Drivers\STM32L4xx_HAL_Driver\</copyDir>
+</exampleInfo>

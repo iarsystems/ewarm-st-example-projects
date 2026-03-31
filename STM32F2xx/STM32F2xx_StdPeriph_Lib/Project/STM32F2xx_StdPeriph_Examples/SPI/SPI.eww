@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/DataExchangeInterrupt/DataExchangeInterrupt.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/SPI_FLASH/SPI_FLASH.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>DataExchangeInterrupt</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+      <member>
+        <project>SPI_FLASH</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

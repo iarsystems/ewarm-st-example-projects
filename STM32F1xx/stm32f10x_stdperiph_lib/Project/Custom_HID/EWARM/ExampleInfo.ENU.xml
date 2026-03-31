@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<infocenter_data version="1.0">
+  <iar_name>Custom HID</iar_name>                                   <!--App-->
+  <iar_description>This Demo provides a description of how to use the USB-FS-Device on the STM32F10x devices</iar_description>                     <!--App short description-->
+  <iar_curdir>$CUR_DIR$</iar_curdir>
+</infocenter_data>

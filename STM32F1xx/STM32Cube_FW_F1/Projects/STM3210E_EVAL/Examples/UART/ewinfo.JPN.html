@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.JPN.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>UART Workspace</h1>
+
+=====================================================================================
+<b>UART_Printf</b>
+UART Printf example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to reroute the C library printf function to the UART. It
+outputs a message sent by the UART on the HyperTerminal.
+
+Board: STM3210E-EVAL RevD
+Tx Pin: PA.09
+Rx Pin: PA.10
+   _________________________
+  |           ______________|                       _______________
+  |          |USART         |                      | HyperTerminal |
+  |          |              |                      |               |
+  |          |           TX |______________________|RX             |
+  |          |              |                      |               |
+  |          |              |     RS232 Cable      |               |
+  |          |              |                      |               |
+  |          |           RX |______________________|TX             |
+  |          |              |                      |               |
+  |          |______________|                      |_______________|
+  |                         |
+  |                         |
+  |                         |
+  |                         |
+  |_STM32_Board_____________|
+
+The USART is configured as follows:
+    - BaudRate = 9600 baud
+    - Word Length = 8 Bits (7 data bit + 1 parity bit)
+    - One Stop Bit
+    - Odd parity
+    - Hardware flow control disabled (RTS and CTS signals)
+    - Reception and transmission are enabled in the time
+
+Note: USARTx/UARTx instance used and associated resources can be updated in "main.h"
+file depending hardware configuration used.
+
+Note: When the parity is enabled, the computed parity is inserted at the MSB
+position of the transmitted data.
+
+
+<u>Directory contents</u>
+
+  - UART/UART_Printf/Inc/stm32f1xx_hal_conf.h    HAL configuration file
+  - UART/UART_Printf/Inc/stm32f1xx_it.h          Interrupt handlers header file
+  - UART/UART_Printf/Inc/main.h                  Header for main.c module
+  - UART/UART_Printf/Src/stm32f1xx_it.c          Interrupt handlers
+  - UART/UART_Printf/Src/main.c                  Main program
+  - UART/UART_Printf/Src/stm32f1xx_hal_msp.c     HAL MSP module
+  - UART/UART_Printf/Src/system_stm32f1xx.c      STM32F1xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F103xG devices.
+
+  - This example has been tested with STM3210E-EVAL RevD board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM3210C_EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between the DB9 connector
+      CN12 (USART1) and PC serial port if you want to display data on the HyperTerminal.
+
+  - Hyperterminal configuration:
+    - Word Length = 7 Bits
+    - One Stop Bit
+    - Odd parity
+    - BaudRate = 9600 baud
+    - flow control: None
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF1GettingStarted.pdf">Getting started with STM32CubeF1 Embedded Software for STM32F1xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF1 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM3210E-EVAL Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

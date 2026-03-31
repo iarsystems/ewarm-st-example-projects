@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/AnalogVoltageMonitoring/AnalogVoltageMonitoring.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/COMP_AnalogWatchdog/COMP_AnalogWatchdog.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/COMP_Interrupt/COMP_Interrupt.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/PulseWidthMeasurement/PulseWidthMeasurement.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/PWMSignalControl/PWMSignalControl.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>COMP_AnalogWatchdog</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>COMP_AnalogWatchdog</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>COMP_Interrupt</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>COMP_Interrupt</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>AnalogVoltageMonitoring</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>AnalogVoltageMonitoring</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>PulseWidthMeasurement</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>PulseWidthMeasurement</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>PWMSignalControl</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>PWMSignalControl</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

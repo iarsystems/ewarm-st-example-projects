@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/DCMI_CaptureMode/EWARM/DCMI_CaptureMode.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/DCMI_SnapshotMode/EWARM/DCMI_SnapshotMode.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>DCMI_CaptureMode</project>
+        <configuration>STM32F769I_EVAL</configuration>
+      </member>
+      <member>
+        <project>DCMI_SnapshotMode</project>
+        <configuration>STM32F769I_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

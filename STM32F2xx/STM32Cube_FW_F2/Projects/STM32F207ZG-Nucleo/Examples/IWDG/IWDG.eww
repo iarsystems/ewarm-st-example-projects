@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/IWDG_Example/EWARM/IWDG_Example.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>IWDG_Example</project>
+        <configuration>STM32F207ZG_NUCLEO_144</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

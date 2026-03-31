@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/BOR/BOR.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/CurrentConsumption/CurrentConsumption.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/PVD/PVD.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/STANDBY/STANDBY.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/STOP/STOP.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>BOR</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>BOR</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>CurrentConsumption</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>CurrentConsumption</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>PVD</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>PVD</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>STANDBY</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>STANDBY</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>STOP</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>STOP</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

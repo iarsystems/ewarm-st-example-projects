@@ -1,0 +1,284 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>COMP Workspace</h1>
+
+=====================================================================================
+<b>COMP_AnalogWatchdog</b>
+COMP Analog Watchdog Example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to make an analog watchdog using the COMP peripherals in window mode.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+The SystemClock_Config() function is used to configure the system clock for STM32H743xx Devices :
+- The CPU at 400MHz
+- The HCLK for D1 Domain AXI and AHB3 peripherals , D2 Domain AHB1/AHB2 peripherals and D3 Domain AHB4  peripherals at 200MHz.
+- The APB clock dividers for D1 Domain APB3 peripherals, D2 Domain APB1 and APB2 peripherals and D3 Domain APB4 peripherals to  run at 100MHz
+
+  - The upper threshold is set to VREFINT (about 1.2V)
+  - The lower threshold is set to VREFINT / 4 (about 0.3V)
+      NB: For precise values of VREFINT &amp; VREFINT/4, please refer to datasheet.
+  - The input voltage is configured to be connected to pin PB.00
+
+The MCU wakes up from Stop mode when the input voltage is above the higher threshold and under the lower threshold.
+
+LEDs on STM32H743I-EVAL can be used to monitor the voltage level compared to comparators thresholds:
+
+- LED3 blinks when input voltage is above the higher threshold.
+- LED2 blinks if the input voltage is under the lower threshold.
+- If the input voltage is within the thresholds, the MCU is set in STOP mode. LED2 and LED3 don't blink.
+
+Note: Care must be taken when using HAL_Delay(), this function provides
+      accurate delay (in milliseconds) based on variable incremented in SysTick ISR.
+      This implies that if HAL_Delay() is called from a peripheral ISR process, then
+      the SysTick interrupt must have higher priority (numerically lower) than the
+      peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The example need to ensure that the SysTick time base is always set
+      to 1 millisecond to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - COMP/COMP_AnalogWatchdog/Inc/stm32h7xx_hal_conf.h    HAL configuration file
+  - COMP/COMP_AnalogWatchdog/Inc/stm32h7xx_it.h          COMP interrupt handlers header file
+  - COMP/COMP_AnalogWatchdog/Inc/main.h                  Header for main.c module
+  - COMP/COMP_AnalogWatchdog/Src/stm32h7xx_it.c          COMP interrupt handlers
+  - COMP/COMP_AnalogWatchdog/Src/main.c                  Main program
+  - COMP/COMP_AnalogWatchdog/Src/stm32h7xx_hal_msp.c     HAL MSP file
+  - COMP/COMP_AnalogWatchdog/Src/system_stm32h7xx.c      STM32H7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32H743xx devices.
+  - In this example, the clock is set to 400 MHz.
+
+  - This example has been tested with STM32H743I-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32H743I-EVAL Set-up
+    Use an external power supply and adjust supply voltage (above, within and below thresholds),
+    and connect it on PB.00 (PIN29 CN6)
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>COMP_Interrupt</b>
+COMP Interrupt example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to configure the COMP peripheral to compare the external
+voltage applied on a specific pin with the Internal Voltage Reference.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+The SystemClock_Config() function is used to configure the system clock for STM32H743xx Devices :
+- The CPU at 400MHz
+- The HCLK for D1 Domain AXI and AHB3 peripherals , D2 Domain AHB1/AHB2 peripherals and D3 Domain AHB4  peripherals at 200MHz.
+- The APB clock dividers for D1 Domain APB3 peripherals, D2 Domain APB1 and APB2 peripherals and D3 Domain APB4 peripherals to  run at 100MHz
+
+When the comparator input crosses (rising edge) the internal
+reference voltage VREFINT (1.22V), the comparator generates an interrupt
+and exit from STOP mode.
+
+The System enters STOP mode 5 seconds with LED1 off after the comparator is started and
+after any system wake-up triggered by the comparator interrupt.
+
+In this example, the comparator input is connected on the pin PB.00 the user
+shall apply a voltage on and each time the comparator input crosses VREFINT,MCU is awake,
+system clock is reconfigured and LED1 is ON.
+If LED3 is toggling continuously without any voltage update, it indicates that the system
+generated an error.
+
+Note: In case of noise on voltage applied on COMP_INPUT, The MCU
+may be awake at a voltage level with an uncertainty of tens of mV.
+
+Note: Care must be taken when using HAL_Delay(), this function provides
+      accurate delay (in milliseconds) based on variable incremented in SysTick ISR.
+      This implies that if HAL_Delay() is called from a peripheral ISR process, then
+      the SysTick interrupt must have higher priority (numerically lower) than the
+      peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The example need to ensure that the SysTick time base is always set
+      to 1 millisecond to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - COMP/COMP_Interrupt/Inc/stm32h7xx_hal_conf.h    HAL configuration file
+  - COMP/COMP_Interrupt/Inc/stm32h7xx_it.h          Interrupt handlers header file
+  - COMP/COMP_Interrupt/Inc/main.h                  Header for main.c module
+  - COMP/COMP_Interrupt/Src/stm32h7xx_it.c          Interrupt handlers
+  - COMP/COMP_Interrupt/Src/main.c                  Main program
+  - COMP/COMP_Interrupt/Src/stm32h7xx_hal_msp.c     HAL MSP file
+  - COMP/COMP_Interrupt/Src/system_stm32h7xx.c      STM32H7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32H743xx devices.
+
+  - This example has been tested with STM32H743I-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32H743I-EVAL Set-up
+
+     - Apply an external variable voltage on PB.00 (connected on pin 29 on CN6) with average voltage 1.22V.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>COMP_OutputBlanking</b>
+COMP output blanking example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to use the output blanking feature of COMP peripheral.
+The purpose of the output blanking feature in motor control is to prevent the
+current regulation to trip upon short current spikes at the beginning of the PWM
+period.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+The SystemClock_Config() function is used to configure the system clock for STM32H743xx Devices :
+- The CPU at 400MHz
+- The HCLK for D1 Domain AXI and AHB3 peripherals , D2 Domain AHB1/AHB2 peripherals and D3 Domain AHB4  peripherals at 200MHz.
+- The APB clock dividers for D1 Domain APB3 peripherals, D2 Domain APB1 and APB2 peripherals and D3 Domain APB4 peripherals to  run at 100MHz
+
+In this example COMP1 and TIM1 are used:
+COMP1 is configured as following:
+ - Non Inverting input is connected to PB0
+ - Inverting input is connected to VREFINT (1.22V)
+ - Output is available on PA8
+ - Blanking source is connected internally to TIM1 OC5
+
+SystemCoreClock is set to 400 MHz for STM32H7xx Devices.
+ - TIM1 is configured as following:
+
+   In this example TIM1 input clock (TIM1CLK) is set to APB2 clock (PCLK2),
+   since APB2 prescaler is equal to 2.
+      TIM1CLK = 2*PCLK2
+      PCLK2 = HCLK/2
+      =&gt; TIM1CLK = HCLK = SystemCoreClock/2
+
+   TIM1 period is HCLK / period = 200000000 / (49999 +1) = 4 KHz.
+
+ - TIM1 OC5 (internal channel: not available on GPIO) configured in PWM mode
+   with a frequency equal to 4 KHz and high level equal to
+   pulse / period = 2000 / 200000000 = 10 micro second.
+ - Timer channel intended to be connected to an external device (motor, ...) in user application:
+   TIM1 CH1 (PA9) configured in PWM mode with a frequency equal to 4KHz
+   and duty cycle pulse/period = 100 * (37500 / 50000) =  75%.
+
+Connection needed:
+ - either connect COMP1 input (PB0) to TIM1 CH1 (PA9).
+ - either connect COMP1 input (PB0) to a signal generator, at the frequency of TIM1 period (to have comparator input signal frequency matching blanking signal frequency. To do this, possibility to use TIM1 CH1 (PA9) as trigger of signal generator).
+
+Comparator output signal expected:
+ - Between t=0us and t=10 us: Comparator positive input at level high, blanking source at level high.
+   Blanking source is high, therefore comparator output is forced to level low.
+   (otherwise, as comparator positive input is higher than negative input, comparator output would have been high.)
+ - Between t=10 us and t=duty cycle pulse: Comparator positive input at level high, blanking source at level low.
+   Comparator positive input is higher than negative input, blanking source is low, therefore comparator output is high.
+ - Between t=duty cycle pulse and t=period: Comparator positive input at level low, blanking source at level low.
+   Comparator positive input is higher than negative input, therefore comparator output is low.
+
+Note: Care must be taken when using HAL_Delay(), this function provides
+      accurate delay (in milliseconds) based on variable incremented in SysTick ISR.
+      This implies that if HAL_Delay() is called from a peripheral ISR process, then
+      the SysTick interrupt must have higher priority (numerically lower) than the
+      peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The example need to ensure that the SysTick time base is always set
+      to 1 millisecond to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - COMP/COMP_OutputBlanking/Inc/stm32h7xx_hal_conf.h   HAL configuration file
+  - COMP/COMP_OutputBlanking/Inc/stm32h7xx_it.h         COMP interrupt handlers header file
+  - COMP/COMP_OutputBlanking/Inc/main.h                 Header for main.c module
+  - COMP/COMP_OutputBlanking/Src/stm32h7xx_it.c         COMP interrupt handlers
+  - COMP/COMP_OutputBlanking/Src/main.c                 Main program
+  - COMP/COMP_OutputBlanking/Src/stm32h7xx_hal_msp.c    HAL MSP file
+  - COMP/COMP_OutputBlanking/Src/system_stm32h7xx.c     STM32H7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32H743xx devices.
+
+  - This example has been tested with STM32H743I-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32H743I-EVAL Set-up
+    - Connect TIM1 CH1 (PA9) to a scope and to the input trigger of a wave generator
+    - Connect the wave generator output to COMP1 Non Inverting input (PB0)
+    - Configure the wave generator to output a pulse at rising edge event with
+      high level greater than VREFINT (1.22V) and pulse duration lower 10 micro second.
+      You can change the pulse delay and note that the break event is generated
+      only when the pulse is triggered after 10 micro second.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeH7GettingStarted.pdf">Getting started with STM32CubeH7 Embedded Software for STM32H7xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeH7 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32H743I-EVAL Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/DFSDM_AudioRecord/EWARM/DFSDM_AudioRecord.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>DFSDM_AudioRecord</project>
+        <configuration>STM32412xG-Discovery</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

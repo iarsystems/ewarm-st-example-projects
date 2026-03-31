@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+Flash
+
+DESCRIPTION
+===========
+   This example shows how to use some of the flash software library routines.
+  The program writes the value "0x12345678" to Bank 1 sector 0 address
+  0x400C0000 of the flash memory.
+
+  This example highlights the following features of the flash :
+   - Disable temporarily FLASH_B1F0 write protection,
+   - Erase Bank 1 sector 0,
+   - Program "0x12345678" word at 0x400C0000 Flash address,
+   - Read back the written value at address 0x400C0000 and display it on the
+     debugger output window.
+   - Enable permanently FLASH_B1F0 write protection (line commented out in
+     main.c)
+
+  CAUTION: THE WRITE PROTECTION CAN NOT BE DISABLED ON A PERMANENT WAY!! ONCE
+  ENABLED, IT CAN BE DISABLED ONLY TEMPORARILY.
+
+   In this example, write protection in main.c is intentionally commented,
+  since this line will set the permanent flash write protection. Once
+  activated, only temporarily write unprotection (showed in this example) will
+  allow to write in flash. Write protection will be reactivated automatically
+  after reset.
+
+COMPATIBILITY
+=============
+   This example works as standalone on the STR711/STR712 IAR boards. By default
+  the project is configured to use the J-Link JTAG interface
+
+CONFIGURATION
+=============
+  The application is downloaded to the RAM.
+
+GETTING STARTED
+===============
+  1) Connect the J-Link.
+  2) Power the board.
+  3) Build and download the example.
+  4) Run the example.
+
+   </pre>
+
+  </div>
+  </body>
+</html>
+

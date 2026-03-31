@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/EXTI.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>EXTI</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>EXTI</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

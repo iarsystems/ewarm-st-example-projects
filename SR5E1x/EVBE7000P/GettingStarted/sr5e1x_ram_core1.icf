@@ -1,0 +1,96 @@
+/****************************************************************************
+*
+* Copyright (c) 2022 STMicroelectronics - All Rights Reserved
+*
+* License terms: STMicroelectronics Proprietary in accordance with licensing
+* terms SLA0098 at www.st.com.
+*
+* THIS SOFTWARE IS DISTRIBUTED "AS IS," AND ALL WARRANTIES ARE DISCLAIMED,
+* INCLUDING MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+*
+* EVALUATION ONLY - NOT FOR USE IN PRODUCTION
+*****************************************************************************/
+
+/* SR5E1 Memory Regions */
+define symbol __region_core1_nvm_start__      = 0x08000000;
+define symbol __region_core1_nvm_end__        = 0x080EFFFF;
+define symbol __region_core2_nvm_start__      = 0x080F0000;
+define symbol __region_core2_nvm_end__        = 0x081DFFFF;
+define symbol __region_core1_ram_start__      = 0x24000000;
+define symbol __region_core1_ram_end__        = 0x2401FFFF;
+define symbol __region_core2_ram_start__      = 0x24020000;
+define symbol __region_core2_ram_end__        = 0x2403FFFF;
+define symbol __region_core1_itcm_dir_start__ = 0x00000000;
+define symbol __region_core1_itcm_dir_end__   = 0x00007FFF;
+define symbol __region_core1_itcm_ind_start__ = 0x5A000000;
+define symbol __region_core1_itcm_ind_end__   = 0x5A007FFF;
+define symbol __region_core1_dtcm_dir_start__ = 0x20000000;
+define symbol __region_core1_dtcm_dir_end__   = 0x2000FFFF;
+define symbol __region_core1_dtcm_ind_start__ = 0x5C000000;
+define symbol __region_core1_dtcm_ind_end__   = 0x5C00FFFF;
+define symbol __region_core2_itcm_dir_start__ = 0x00000000;
+define symbol __region_core2_itcm_dir_end__   = 0x00007FFF;
+define symbol __region_core2_itcm_ind_start__ = 0x5A040000;
+define symbol __region_core2_itcm_ind_end__   = 0x5A047FFF;
+define symbol __region_core2_dtcm_dir_start__ = 0x20000000;
+define symbol __region_core2_dtcm_dir_end__   = 0x2000FFFF;
+define symbol __region_core2_dtcm_ind_start__ = 0x5C040000;
+define symbol __region_core2_dtcm_ind_end__   = 0x5C04FFFF;
+
+define symbol __intvec_start__        = __region_core1_ram_start__;
+define symbol __reset_handler_start__ = __region_core1_ram_start__ + 0x400;
+define symbol __region_rom_start__    = __region_core1_ram_start__;
+define symbol __region_rom_end__      = __region_core1_ram_end__;
+define symbol __region_ram_start__    = __region_core1_ram_start__;
+define symbol __region_ram_end__      = __region_core1_ram_end__;
+define symbol __region_itcm_start__   = __region_core1_itcm_dir_start__;
+define symbol __region_itcm_end__     = __region_core1_itcm_dir_end__;
+define symbol __region_dtcm_start__   = __region_core1_dtcm_dir_start__;
+define symbol __region_dtcm_end__     = __region_core1_dtcm_dir_end__;
+
+define symbol __size_cstack__     = 4k;
+define symbol __size_proc_stack__ = 4k;
+define symbol __size_heap__       = 1k;
+
+define memory mem with size = 4G;
+define region ROM_region   = mem:[from __region_rom_start__  to __region_rom_end__];
+define region RAM_region   = mem:[from __region_ram_start__  to __region_ram_end__];
+define region ITCM_region  = mem:[from __region_itcm_start__ to __region_itcm_end__];
+define region DTCM_region  = mem:[from __region_dtcm_start__ to __region_dtcm_end__];
+
+define block CSTACK      with alignment = 8,  size = __size_cstack__      { };
+define block PROC_STACK  with alignment = 8,  size = __size_proc_stack__  { };
+define block HEAP        with alignment = 8,  size = __size_heap__        { };
+define block DATABSS     with alignment = 8                               { readwrite, zeroinit };
+define block ITCM                                                         { section .itcm };
+define block ITCM_INIT                                                    { section .itcm_init };
+define block DTCM                                                         { section .dtcm };
+define block DTCM_INIT                                                    { section .dtcm_init };
+
+define block RAM_BLOCKS with fixed order { block CSTACK, block PROC_STACK, block DATABSS, block HEAP };
+
+initialize by copy { readwrite };
+do not initialize { section .noinit };
+initialize manually { section .itcm };
+initialize manually { section .dtcm };
+
+keep { section .intvec };
+keep { section .reset_handler };
+
+place at address mem:__intvec_start__ { readonly section .intvec };
+place at address mem:__reset_handler_start__ { readonly section .reset_handler };
+
+place in ROM_region  { readonly };
+place in ROM_region  { block ITCM_INIT };
+place in ROM_region  { block DTCM_INIT };
+place in RAM_region  { block RAM_BLOCKS };
+place in ITCM_region { block ITCM };
+place in DTCM_region { block DTCM };
+
+define exported symbol __itcm_start__ = __region_itcm_start__;
+define exported symbol __itcm_len__   = __region_itcm_end__ - __region_itcm_start__ + 1;
+define exported symbol __itcm_end__   = __region_itcm_end__ + 1;
+
+define exported symbol __dtcm_start__ = __region_dtcm_start__;
+define exported symbol __dtcm_len__   = __region_dtcm_end__ - __region_dtcm_start__ + 1;
+define exported symbol __dtcm_end__   = __region_dtcm_end__ + 1;

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/SD_ReadWrite_DMA/EWARM/SD_ReadWrite_DMA.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/SD_ReadWrite_DMADoubleBuffer/EWARM/SD_ReadWrite_DMADoubleBuffer.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/SD_ReadWrite_DMA_HS/EWARM/SD_ReadWrite_DMA_HS.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/SD_ReadWrite_IT/EWARM/SD_ReadWrite_IT.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>SD_ReadWrite_DMA</project>
+        <configuration>STM32H743I_EVAL</configuration>
+      </member>
+      <member>
+        <project>SD_ReadWrite_DMADoubleBuffer</project>
+        <configuration>STM32H743I_EVAL</configuration>
+      </member>
+      <member>
+        <project>SD_ReadWrite_DMA_HS</project>
+        <configuration>STM32H743I_EVAL</configuration>
+      </member>
+      <member>
+        <project>SD_ReadWrite_IT</project>
+        <configuration>STM32H743I_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

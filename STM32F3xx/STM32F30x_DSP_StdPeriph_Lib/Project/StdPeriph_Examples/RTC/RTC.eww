@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/Calendar/Calendar.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/LSI/RTC_LSI.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/StopWatch/RTC_StopWatch.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/Timer/RTC_Timer.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/Tamper/Tamper.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>Calendar</project>
+        <configuration>STM32303C-EVAL</configuration>
+      </member>
+      <member>
+        <project>RTC_LSI</project>
+        <configuration>STM32303C-EVAL</configuration>
+      </member>
+      <member>
+        <project>RTC_StopWatch</project>
+        <configuration>STM32303C-EVAL</configuration>
+      </member>
+      <member>
+        <project>RTC_Timer</project>
+        <configuration>STM32303C-EVAL</configuration>
+      </member>
+      <member>
+        <project>Tamper</project>
+        <configuration>STM32303C-EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

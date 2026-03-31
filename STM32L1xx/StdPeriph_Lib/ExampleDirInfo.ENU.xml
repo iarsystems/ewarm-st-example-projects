@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<infocenter_data version="1.0">
+  <iar_template_variant>1</iar_template_variant>
+  <iar_name>STM32L1xxMD and STM32L1xxHD stdperiph lib 1.1.1</iar_name>                         <!--Family-->
+  <iar_title>Examples with STM32L1xx stdperiph lib</iar_title>                  <!--Manufacturer Family-->
+</infocenter_data>

@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+I2C
+
+DESCRIPTION
+===========
+   This example provides a basic example showing how to use the I2C software
+  library to communicate with an I2C EEPROM.
+
+   The associated software performs a write operation to the I2C EEPROM
+  followed by a read operation of the data already stored in the EEPROM.
+
+  The example is made of 4 main parts :
+   1)  I2C peripheral configuration.
+   2)  Write operation to the I2C EEPROM.
+   3)  Wait until the I2C EEPROM write operation is completed.
+   4)  Read and display, in the debugger output window, the data already stored
+       in the I2C EEPROM.
+
+COMPATIBILITY
+=============
+   This example works as standalone on the STR711/STR712 IAR boards. By default
+  the project is configured to use the J-Link JTAG interface.
+
+CONFIGURATION
+=============
+  The application is downloaded to the flash memory.
+
+  The user has to connect an I2C eeprom to I2C as follow:
+   - Connect EEPROM SDA line to the MICRO SDA line(SDA0 on the board)
+   - Connect EEPROM SCL line to the MICRO SCL line(SCL0 on the board)
+   - Connect address lines
+   - Connect EEPROM Vdd pin to VCC
+   - Connect EEPROM Vss pin to GND
+
+GETTING STARTED
+===============
+  1) Connect the J-Link.
+  2) Power the board.
+  3) Build and download the example.
+  4) Run the example.
+
+   </pre>
+
+  </div>
+  </body>
+</html>
+

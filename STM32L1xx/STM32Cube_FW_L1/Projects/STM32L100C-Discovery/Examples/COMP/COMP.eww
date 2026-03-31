@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/COMP_PulseWidthMeasurement/EWARM/COMP_PulseWidthMeasurement.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>COMP_PulseWidthMeasurement</project>
+        <configuration>STM32L100C-Discovery</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

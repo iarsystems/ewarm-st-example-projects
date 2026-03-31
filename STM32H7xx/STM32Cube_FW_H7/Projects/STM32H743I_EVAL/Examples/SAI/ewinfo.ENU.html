@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>SAI Workspace</h1>
+
+=====================================================================================
+<b>SAI_AudioPlay</b>
+Description of the SAI audio play example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to use the SAI HAL API to play an audio file using the DMA
+circular mode and how to handle the buffer update.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+The SystemClock_Config() function is used to configure the system clock for STM32H743xx Devices :
+ - The CPU at 400MHz
+ - The HCLK for D1 Domain AXI and AHB3 peripherals , D2 Domain AHB1/AHB2 peripherals
+   and D3 Domain AHB4  peripherals at 200MHz.
+ - The APB clock dividers for D1 Domain APB3 peripherals, D2 Domain APB1 and APB2 peripherals
+   and D3 Domain APB4 peripherals to  run at 100MHz
+
+      Plug a headphone to hear the sound  /!\ Take care of yours ears.
+      Default volume is 20%.
+      The audio file is played in loop
+      Note: Copy file 'audio.bin' (available in AudioFile) directly in the flash
+      at @0x08080000 using ST-Link utility
+      The sound is output on Headset connector CN17 of  STM32H743I-EVAL.
+
+In case of error, LED3 is on.
+
+Once started, LED1 is toggling on STM32H743I-EVAL.
+
+Note: Note the DMA runs in circular buffer mode and never stops. If you break with
+      the debugger, the DMA hw will keep running and a noise will be heard.
+
+Note: This example does not use BSP_AUDIO so the MspInit is coded in the main.c.
+
+
+<u>Keywords</u>
+
+Audio, SAI, DMA, Buffer update, play, headphone, audio protocol
+
+
+<u>Directory contents</u>
+
+  - SAI/SAI_AudioPlay/Src/main.c                  Main program
+  - SAI/SAI_AudioPlay/Src/system_stm32h7xx.c      STM32H7xx system source file
+  - SAI/SAI_AudioPlay/Src/stm32h7xx_it.c          Interrupt handlers
+  - SAI/SAI_AudioPlay/Inc/main.h                  Main program header file
+  - SAI/SAI_AudioPlay/Inc/stm32h7xx_hal_conf.h    HAL configuration file
+  - SAI/SAI_AudioPlay/Inc/stm32h7xx_it.h          Interrupt handlers header file
+  - SAI/SAI_AudioPlay/AudioFile/audio.bin         Audio wave extract.
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32H743xx devices.
+
+  - This example has been tested with STMicroelectronics STM32H743I-EVAL
+    board and can be easily tailored to any other supported device
+    and development board.
+
+  - STM32H743I-EVAL Set-up :
+    - Plug a headphone on CN17 connector (Headset).
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>SAI_AudioPlayback</b>
+Description of the SAI audio playback example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to use the SAI to playback audio data coming from two Microphones.
+In this example:
+- The SAI4 PDM interface receives audio data coming from two Microphones using the
+  BDMA in circular mode.
+- The audio PDM to PCM library is used to convert audio PDM data to PCM format.
+- The SAI1 transmits audio PCM data to the WM8994 Codec for playback using the DMA2 in
+  circular mode.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+The SystemClock_Config() function is used to configure the system clock for STM32H743xx Devices :
+ - The CPU at 400MHz
+ - The HCLK for D1 Domain AXI and AHB3 peripherals , D2 Domain AHB1/AHB2 peripherals
+   and D3 Domain AHB4  peripherals at 200MHz.
+ - The APB clock dividers for D1 Domain APB3 peripherals, D2 Domain APB1 and APB2 peripherals
+   and D3 Domain APB4 peripherals to  run at 100MHz
+
+Plug a headphone to hear the sound  /!\ Take care of yours ears. Default volume is 60%.
+
+Once started, LED1 is on during playback.
+If an error occured LED3 is turned ON.
+
+Note: Note the BDMA and the DMA run in circular buffer mode and never stop. If you break
+      with the debugger, they will keep running and a noise will be heard.
+
+Note: The Domain 3 BDMA has access to  Domain 3 SRAMs and peripherals only,  thus the
+      audioPdmBuf buffer has been placed in the D3SRAM (@0x38000000)
+
+Note: The PDM to PCM library is used to convert PDM data to PCM format.
+
+Note: This example does not use the BSP_AUDIO driver so the MspInit is coded in the
+      stm32h7xx_hal_msp.c.
+
+
+<u>Directory contents</u>
+
+  - SAI/SAI_AudioPlayback/Src/main.c                  Main program
+  - SAI/SAI_AudioPlayback/Src/system_stm32h7xx.c      STM32H7xx system source file
+  - SAI/SAI_AudioPlayback/Src/stm32h7xx_hal_msp.c     STM32H7xx MSP source file
+  - SAI/SAI_AudioPlayback/Src/stm32h7xx_it.c          Interrupt handlers
+  - SAI/SAI_AudioPlayback/Inc/main.h                  Main program header file
+  - SAI/SAI_AudioPlayback/Inc/stm32h7xx_hal_conf.h    HAL configuration file
+  - SAI/SAI_AudioPlayback/Inc/stm32h7xx_it.h          Interrupt handlers header file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example has been tested with STMicroelectronics STM32H743I-EVAL
+    board and can be easily tailored to any other supported device
+    and development board.
+
+  - STM32H743I-EVAL Set-up :
+    - Put the SW2 switch to PDM position
+    - Plug a headphone on CN17 connector (Headset).
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeH7GettingStarted.pdf">Getting started with STM32CubeH7 Embedded Software for STM32H7xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeH7 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32H743I-EVAL Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

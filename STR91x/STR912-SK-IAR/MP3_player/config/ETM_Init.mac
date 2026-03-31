@@ -1,0 +1,40 @@
+/******************** (C) COPYRIGHT 2006 STMicroelectronics ********************
+* File Name          : Readme.txt
+* Author             : MCD Application Team
+* Date First Issued  : 05/18/2006 : Version 1.0
+* Description        : ETM module Initialization.
+********************************************************************************
+* History:
+* 05/22/2007 : Version 1.2
+* 05/24/2006 : Version 1.1
+* 05/18/2006 : Version 1.0
+********************************************************************************
+* THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+* WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE TIME.
+* AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY DIRECT,
+* INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING FROM THE
+* CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING
+* INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+*******************************************************************************/
+
+
+execUserPreload(){
+
+  __message "ETM_Init\n";
+  
+  __writeMemory32(0x011dc000, 0x5C002018, "Memory"); //port clock enable(SCU_PCGR1)
+  
+  __writeMemory32(0x011dc000, 0x5C002020, "Memory");// port reset clear( SCU_PRR1)
+
+  __writeMemory32(0x0000ffff, 0x5C00204C, "Memory");//OUT2.[7..0] are all alt 3(etm 
+                                                    //trace sync, pipe status 0,1,2)(SCU_GPIOOUT2)
+                                                      
+ __writeMemory32(0x00003000, 0x5C00205C, "Memory");//OUT6.6 alt 3 function 
+                                                    //(trace clk out)(SCU_GPIOOUT6)
+
+// The external trigger is not driven by J-Trace and therefore should not be left floating.                                                      
+// __writeMemory32(0x00000080, 0x5C00207C, "Memory");//IN6.7  alt 1 function (trigger in)
+                                                   //(SCU_GPIOIN6)
+}
+
+/******************* (C) COPYRIGHT 2006 STMicroelectronics *****END OF FILE*****/

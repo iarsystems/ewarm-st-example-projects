@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/DAC_SignalsGeneration/DAC_SignalsGeneration.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>DAC_SignalsGeneration</project>
+        <configuration>STM324x7I_EVAL</configuration>
+      </member>
+      <member>
+        <project>DAC_SignalsGeneration</project>
+        <configuration>STM324xG_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

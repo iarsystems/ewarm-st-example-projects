@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/OPAMP_CALIBRATION/EWARM/OPAMP_CALIBRATION.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/OPAMP_PGA/EWARM/OPAMP_PGA.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>OPAMP_CALIBRATION</project>
+        <configuration>STM32303C_EVAL</configuration>
+      </member>
+      <member>
+        <project>OPAMP_PGA</project>
+        <configuration>STM32303C_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

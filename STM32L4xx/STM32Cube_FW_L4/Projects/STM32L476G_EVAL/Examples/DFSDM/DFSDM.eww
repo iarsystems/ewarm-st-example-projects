@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/DFSDM_AudioRecord/EWARM/DFSDM_AudioRecord.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/DFSDM_Thermometer/EWARM/DFSDM_Thermometer.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>DFSDM_AudioRecord</project>
+        <configuration>STM32L476G_EVAL</configuration>
+      </member>
+      <member>
+        <project>DFSDM_Thermometer</project>
+        <configuration>STM32L476G_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

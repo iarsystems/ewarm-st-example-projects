@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/Context_Swap/Context_Swap.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/HASH_SHA1_MD5/HASH_SHA1_MD5.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/HMAC_SHA1_MD5/HMAC_SHA1_MD5.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/SHA1_MD5_DMA/SHA1_MD5_DMA.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>Context_Swap</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+      <member>
+        <project>HASH_SHA1_MD5</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+      <member>
+        <project>HMAC_SHA1_MD5</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+      <member>
+        <project>SHA1_MD5_DMA</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

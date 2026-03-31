@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<infocenter_data version="1.0">
+  <iar_name>ADC</iar_name><!--App-->
+  <iar_description>This example describes how to use the ADC to perform a single ADC channel
+conversion, at each software start.</iar_description><!--App short description-->
+  <iar_curdir>$CUR_DIR$</iar_curdir>
+</infocenter_data>

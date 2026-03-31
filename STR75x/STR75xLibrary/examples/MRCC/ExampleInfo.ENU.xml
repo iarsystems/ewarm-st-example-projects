@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<infocenter_data version="1.0">
+  <iar_name>MRCC</iar_name>                                   <!--App-->
+  <iar_description>These examples shows how to configure the different system clocks and how to enter and exit the low power modes</iar_description>                     <!--App short description-->
+  <iar_curdir>$CUR_DIR$</iar_curdir>
+</infocenter_data>

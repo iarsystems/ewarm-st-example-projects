@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/CORTEXM_ModePrivilege/EWARM/CORTEXM_ModePrivilege.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/CORTEXM_MPU/EWARM/CORTEXM_MPU.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/CORTEXM_SysTick/EWARM/CORTEXM_SysTick.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>CORTEXM_ModePrivilege</project>
+        <configuration>STM32303C_EVAL</configuration>
+      </member>
+      <member>
+        <project>CORTEXM_MPU</project>
+        <configuration>STM32303C_EVAL</configuration>
+      </member>
+      <member>
+        <project>CORTEXM_SysTick</project>
+        <configuration>STM32303C_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

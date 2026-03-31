@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/Template_LL.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>Template_LL</project>
+        <configuration>STM32L011K4_NUCLEO</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

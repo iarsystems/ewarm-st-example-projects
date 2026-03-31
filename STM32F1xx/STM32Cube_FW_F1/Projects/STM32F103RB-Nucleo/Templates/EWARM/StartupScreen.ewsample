@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<exampleInfo>
+  <copyDir>..\</copyDir>
+  <copyDir>..\..\..\..\Drivers\BSP\Adafruit_Shield\</copyDir>
+  <copyDir>..\..\..\..\Drivers\BSP\Components\Common\</copyDir>
+  <copyDir>..\..\..\..\Drivers\BSP\Components\st7735\</copyDir>
+  <copyDir>..\..\..\..\Drivers\BSP\STM32F1xx_Nucleo\</copyDir>
+  <copyDir>..\..\..\..\Drivers\CMSIS\Device\ST\STM32F1xx\</copyDir>
+  <copyDir>..\..\..\..\Drivers\STM32F1xx_HAL_Driver\</copyDir>
+  <copyDir>..\..\..\..\Utilities\Fonts\</copyDir>
+</exampleInfo>

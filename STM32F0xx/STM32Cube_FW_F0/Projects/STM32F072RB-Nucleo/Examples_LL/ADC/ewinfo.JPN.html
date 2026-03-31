@@ -1,0 +1,803 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.JPN.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>ADC Workspace</h1>
+
+=====================================================================================
+<b>ADC_AnalogWatchdog</b>
+ADC example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to use a ADC peripheral with ADC analog watchdog
+to monitor a channel and detect when the corresponding conversion data is
+out of window thresholds;
+This example is based on the STM32F0xx ADC LL API;
+peripheral initialization done using LL unitary services functions
+for optimization purpose (performance and size).
+
+Example configuration:
+ADC is configured to convert a single channel, in continuous conversion mode,
+from SW trigger.
+Analog watchdog is configured to monitor all channels on group regular
+(therefore, including the selected channel),
+low threshold is set to 0V and high threshold is set to Vdda/2.
+ADC interruption enabled: Analog watchdog 1.
+
+Example execution:
+From the main program execution, the ADC converts the selected channel continuously.
+When conversion data is out of analog watchdog window, ADC interruption occurs.
+Into analog watchdog callback function, a status variable is set
+and a LED is turned-on.
+At each press on push button, the ADC analog watchdog is rearmed to be ready
+for another trig.
+
+Note: In case of noise on voltage applied on ADC channel input, ADC analog watchdog
+      may trig at a voltage level with an uncertainty of tens of mV.
+
+For debug: variables to monitor with debugger watch window:
+ - "ubAnalogWatchdog1Status": analog watchdog state
+
+Connection needed:
+None.
+Note: Optionally, a voltage can be supplied to the analog input pin (cf pin below),
+      between 0V and Vdda=3.3V, to perform a ADC conversion on a determined
+      voltage level.
+      Otherwise, this pin can be let floating (in this case ADC conversion data
+      will be undetermined).
+
+Other peripherals used:
+  1 GPIO for push button
+  1 GPIO for LED
+  1 GPIO for analog input: PA.04 (Arduino connector CN8 pin A2, Morpho connector CN7 pin 32)
+
+
+<u>Directory contents</u>
+
+  - ADC/ADC_AnalogWatchdog/Inc/stm32f0xx_it.h          Interrupt handlers header file
+  - ADC/ADC_AnalogWatchdog/Inc/main.h                  Header for main.c module
+  - ADC/ADC_AnalogWatchdog/Inc/stm32_assert.h          Template file to include assert_failed function
+  - ADC/ADC_AnalogWatchdog/Src/stm32f0xx_it.c          Interrupt handlers
+  - ADC/ADC_AnalogWatchdog/Src/main.c                  Main program
+  - ADC/ADC_AnalogWatchdog/Src/system_stm32f0xx.c      STM32F0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F072xx devices.
+
+  - This example has been tested with STM32F072RB-Nucleo RevC board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>ADC_ContinuousConversion_TriggerSW</b>
+ADC example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to use a ADC peripheral to perform
+continuous ADC conversions of a channel, from a SW start;
+This example is based on the STM32F0xx ADC LL API;
+peripheral initialization done using LL unitary services functions
+for optimization purpose (performance and size).
+
+Example configuration:
+ADC is configured to convert a single channel, in continuous conversion mode,
+from SW trigger.
+
+Example execution:
+From the first press on push button, the ADC converts the selected channel
+continuously.
+After the first trigger (software start in this example), following conversions
+are launched successively automatically, indefinitely.
+Software polls for the first conversion completion
+and stores it into a variable, LED is turned on.
+Main program reads frequently ADC conversion data
+(without waiting for end of each conversion: software reads data
+when main program execution pointer is available and can let
+some ADC conversions data unread and overwritten by newer data)
+and stores it into the same variable.
+
+For debug: variables to monitor with debugger watch window:
+ - "uhADCxConvertedData": ADC group regular conversion data
+ - "uhADCxConvertedData_Voltage_mVolt": ADC conversion data computation to physical values
+
+Connection needed:
+None.
+Note: Optionally, a voltage can be supplied to the analog input pin (cf pin below),
+      between 0V and Vdda=3.3V, to perform a ADC conversion on a determined
+      voltage level.
+      Otherwise, this pin can be let floating (in this case ADC conversion data
+      will be undetermined).
+
+Other peripherals used:
+  1 GPIO for push button
+  1 GPIO for LED
+  1 GPIO for analog input: PA.04 (Arduino connector CN8 pin A2, Morpho connector CN7 pin 32)
+
+
+<u>Directory contents</u>
+
+  - ADC/ADC_ContinuousConversion_TriggerSW/Inc/stm32f0xx_it.h          Interrupt handlers header file
+  - ADC/ADC_ContinuousConversion_TriggerSW/Inc/main.h                  Header for main.c module
+  - ADC/ADC_ContinuousConversion_TriggerSW/Inc/stm32_assert.h          Template file to include assert_failed function
+  - ADC/ADC_ContinuousConversion_TriggerSW/Src/stm32f0xx_it.c          Interrupt handlers
+  - ADC/ADC_ContinuousConversion_TriggerSW/Src/main.c                  Main program
+  - ADC/ADC_ContinuousConversion_TriggerSW/Src/system_stm32f0xx.c      STM32F0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F072xx devices.
+
+  - This example has been tested with STM32F072RB-Nucleo RevC board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>ADC_ContinuousConversion_TriggerSW_Init</b>
+ADC example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to use a ADC peripheral to perform
+continuous ADC conversions of a channel, from a SW start;
+This example is based on the STM32F0xx ADC LL API;
+peripheral initialization done using LL unitary services functions
+for optimization purpose (performance and size).
+
+Example configuration:
+ADC is configured to convert a single channel, in continuous conversion mode,
+from SW trigger.
+
+Example execution:
+From the first press on push button, the ADC converts the selected channel
+continuously.
+After the first trigger (software start in this example), following conversions
+are launched successively automatically, indefinitely.
+Software polls for the first conversion completion
+and stores it into a variable, LED is turned on.
+Main program reads frequently ADC conversion data
+(without waiting for end of each conversion: software reads data
+when main program execution pointer is available and can let
+some ADC conversions data unread and overwritten by newer data)
+and stores it into the same variable.
+
+For debug: variables to monitor with debugger watch window:
+ - "uhADCxConvertedData": ADC group regular conversion data
+ - "uhADCxConvertedData_Voltage_mVolt": ADC conversion data computation to physical values
+
+Connection needed:
+None.
+Note: Optionally, a voltage can be supplied to the analog input pin (cf pin below),
+      between 0V and Vdda=3.3V, to perform a ADC conversion on a determined
+      voltage level.
+      Otherwise, this pin can be let floating (in this case ADC conversion data
+      will be undetermined).
+
+Other peripherals used:
+  1 GPIO for push button
+  1 GPIO for LED
+  1 GPIO for analog input: PA.04 (Arduino connector CN8 pin A2, Morpho connector CN7 pin 32)
+
+
+<u>Directory contents</u>
+
+  - ADC/ADC_ContinuousConversion_TriggerSW_Init/Inc/stm32f0xx_it.h          Interrupt handlers header file
+  - ADC/ADC_ContinuousConversion_TriggerSW_Init/Inc/main.h                  Header for main.c module
+  - ADC/ADC_ContinuousConversion_TriggerSW_Init/Src/stm32f0xx_it.c          Interrupt handlers
+  - ADC/ADC_ContinuousConversion_TriggerSW_Init/Src/main.c                  Main program
+  - ADC/ADC_ContinuousConversion_TriggerSW_Init/Src/system_stm32f0xx.c      STM32F0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F072xx devices.
+
+  - This example has been tested with STM32F072RB-Nucleo RevC board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>ADC_ContinuousConversion_TriggerSW_LowPower</b>
+ADC example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to use a ADC peripheral with ADC low power features;
+This example is based on the STM32F0xx ADC LL API;
+peripheral initialization done using LL unitary services functions
+for optimization purpose (performance and size).
+
+Description of ADC low power features:
+ADC conversions occurrences are limited to the minimum necessary
+to reduce power consumption.
+These features are intended to be used by applications needing ADC
+conversions at few occurrences and without latency constraints.
+ADC low power features are used most commonly with programming
+model: polling.
+
+Example configuration:
+ADC is configured to convert a single channel, in continuous conversion mode,
+from SW trigger.
+ADC low power feature enabled: auto wait and auto power-off.
+These 2 low-power modes can be combined.
+Note: On this STM32 serie, ADC low power feature auto power-off is available,
+      additionally to feature auto wait.
+      This is not the case on all STM32 series.
+
+Example execution:
+From the first press on push button, the ADC converts the selected channel
+continuously, but with conversions managed by ADC mode low-power:
+After the first trigger (software start in this example), following conversions
+are not launched successively automatically: the ADC performs 1 conversion
+and remains idle (ADC does not perform any other conversion)
+until conversion data has been processed by user software.
+On this STM32 serie, on which ADC low power feature auto power-off is available,
+ADC is set automatically in mode power-off during idle phase.
+Then, when ADC conversion is required, ADC is set automatically in mode power-on.
+Note: this is the goal of low power feature auto-wait: to automatically adapt
+      the ADC conversions trigs to the speed of the software that reads the data.
+      Moreover, this avoids risk of overrun for low frequency applications.
+At each press of push button, software reads the ADC conversion data
+and stores it into a variable.
+This action automatically trigs another ADC conversion start.
+LED is turned on.
+Note: the ADC conversion data read is corresponding to previous
+      ADC conversion start, independently of delay during which ADC was idle.
+      Therefore, the ADC conversion data may be outdated: does not correspond
+      to the current voltage level on the selected ADC channel.
+
+For debug: variables to monitor with debugger watch window:
+ - "uhADCxConvertedData": ADC group regular conversion data
+ - "uhADCxConvertedData_Voltage_mVolt": ADC conversion data computation to physical values
+
+Connection needed:
+None.
+Note: Optionally, a voltage can be supplied to the analog input pin (cf pin below),
+      between 0V and Vdda=3.3V, to perform a ADC conversion on a determined
+      voltage level.
+      Otherwise, this pin can be let floating (in this case ADC conversion data
+      will be undetermined).
+
+Other peripherals used:
+  1 GPIO for push button
+  1 GPIO for LED
+  1 GPIO for analog input: PA.04 (Arduino connector CN8 pin A2, Morpho connector CN7 pin 32)
+
+
+<u>Directory contents</u>
+
+  - ADC/ADC_ContinuousConversion_TriggerSW_LowPower/Inc/stm32f0xx_it.h          Interrupt handlers header file
+  - ADC/ADC_ContinuousConversion_TriggerSW_LowPower/Inc/main.h                  Header for main.c module
+  - ADC/ADC_ContinuousConversion_TriggerSW_LowPower/Inc/stm32_assert.h          Template file to include assert_failed function
+  - ADC/ADC_ContinuousConversion_TriggerSW_LowPower/Src/stm32f0xx_it.c          Interrupt handlers
+  - ADC/ADC_ContinuousConversion_TriggerSW_LowPower/Src/main.c                  Main program
+  - ADC/ADC_ContinuousConversion_TriggerSW_LowPower/Src/system_stm32f0xx.c      STM32F0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F072xx devices.
+
+  - This example has been tested with STM32F072RB-Nucleo RevC board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>ADC_MultiChannelSingleConversion</b>
+ADC example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to use a ADC peripheral to convert several channels,
+ADC conversions are performed successively in a scan sequence;
+This example is based on the STM32F0xx ADC LL API;
+peripheral initialization done using LL unitary services functions
+for optimization purpose (performance and size).
+
+Example configuration:
+ADC is configured in single conversion mode, from SW trigger.
+Sequencer of group regular (default group available on ADC of all STM32 devices)
+is configured to convert 3 channels: 1 channel from GPIO, 2 internal channels:
+temperature sensor and VrefInt.
+DMA is configured to transfer conversion data in an array of size three (one array
+address for conversion data of each channel), in circular mode to update
+results array at each ADC sequence conversions.
+
+Example execution:
+At each press on push button, the ADC executes the scan sequence:
+ADC performs conversion of the three selected channels successively,
+in burst (discontinuous mode not enabled).
+The 3 ADC conversions data are transferred by DMA into the results array
+"aADCxConvertedData".
+ADC conversion data of each sequence rank is at an address of the array:
+ - aADCxConvertedData[0]: ADC channel set on rank1 (GPIO as analog input)
+ - aADCxConvertedData[2]: ADC channel set on rank3 (VrefInt)
+ - aADCxConvertedData[1]: ADC channel set on rank2 (Temperature sensor)
+LED is turned on when ADC conversions and DMA transfer of the sequence
+are completed.
+
+ADC conversions raw data are computed to physical values
+using LL ADC driver helper macro:
+ - Value of voltage on GPIO pin (on which is mapped ADC channel) (unit: mV)
+ - Value of internal voltage reference VrefInt (unit: mV)
+ - Value of temperature (unit: degree Celcius)
+ - Value of analog reference voltage (Vref+), connected to analog voltage supply Vdda (unit: mV)
+
+For debug: variables to monitor with debugger watch window:
+ - "aADCxConvertedData": ADC group regular conversion data
+ - "ubDmaTransferStatus": status of DMA transfer of ADC group regular conversions
+ - "uhADCxConvertedData_VoltageGPIO_mVolt":        Value of voltage on GPIO pin (on which is mapped ADC channel) (unit: mV)
+ - "uhADCxConvertedData_VrefInt_mVolt":            Value of internal voltage reference VrefInt (unit: mV)
+ - "hADCxConvertedData_Temperature_DegreeCelsius": Value of temperature (unit: degree Celcius)
+ - "uhADCxConvertedData_VrefAnalog_mVolt":         Value of analog reference voltage (Vref+), connected to analog voltage supply Vdda (unit: mV)
+
+Connection needed:
+None.
+Note: Optionally, a voltage can be supplied to the analog input pin (cf pin below),
+      between 0V and Vdda=3.3V, to perform a ADC conversion on a determined
+      voltage level.
+      Otherwise, this pin can be let floating (in this case ADC conversion data
+      will be undetermined).
+
+Other peripherals used:
+  1 GPIO for push button
+  1 GPIO for LED
+  1 GPIO for analog input: PA.04 (Arduino connector CN8 pin A2, Morpho connector CN7 pin 32)
+  DMA
+
+
+<u>Directory contents</u>
+
+  - ADC/ADC_MultiChannelSingleConversion/Inc/stm32f0xx_it.h          Interrupt handlers header file
+  - ADC/ADC_MultiChannelSingleConversion/Inc/main.h                  Header for main.c module
+  - ADC/ADC_MultiChannelSingleConversion/Inc/stm32_assert.h          Template file to include assert_failed function
+  - ADC/ADC_MultiChannelSingleConversion/Src/stm32f0xx_it.c          Interrupt handlers
+  - ADC/ADC_MultiChannelSingleConversion/Src/main.c                  Main program
+  - ADC/ADC_MultiChannelSingleConversion/Src/system_stm32f0xx.c      STM32F0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F072xx devices.
+
+  - This example has been tested with STM32F072RB-Nucleo RevC board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>ADC_SingleConversion_TriggerSW</b>
+ADC example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to use a ADC peripheral to perform
+a single ADC conversion of a channel, at each software start;
+Example using programming model: polling
+(for programming models interrupt or DMA transfer, refer to
+other examples);
+This example is based on the STM32F0xx ADC LL API;
+peripheral initialization done using LL unitary services functions
+for optimization purpose (performance and size).
+
+Example configuration:
+ADC is configured to convert a single channel, in single conversion mode,
+from SW trigger.
+
+Example execution:
+At each press on push button, the ADC performs 1 conversion of the selected channel.
+Software polls for conversion completion.
+When conversion is completed, main program reads conversion data
+from ADC data register and stores it into a variable, LED is turned on.
+
+For debug: variables to monitor with debugger watch window:
+ - "uhADCxConvertedData": ADC group regular conversion data
+ - "uhADCxConvertedData_Voltage_mVolt": ADC conversion data computation to physical values
+
+Connection needed:
+None.
+Note: Optionally, a voltage can be supplied to the analog input pin (cf pin below),
+      between 0V and Vdda=3.3V, to perform a ADC conversion on a determined
+      voltage level.
+      Otherwise, this pin can be let floating (in this case ADC conversion data
+      will be undetermined).
+
+Other peripherals used:
+  1 GPIO for push button
+  1 GPIO for LED
+  1 GPIO for analog input: PA.04 (Arduino connector CN8 pin A2, Morpho connector CN7 pin 32)
+
+
+<u>Directory contents</u>
+
+  - ADC/ADC_SingleConversion_TriggerSW/Inc/stm32f0xx_it.h          Interrupt handlers header file
+  - ADC/ADC_SingleConversion_TriggerSW/Inc/main.h                  Header for main.c module
+  - ADC/ADC_SingleConversion_TriggerSW/Inc/stm32_assert.h          Template file to include assert_failed function
+  - ADC/ADC_SingleConversion_TriggerSW/Src/stm32f0xx_it.c          Interrupt handlers
+  - ADC/ADC_SingleConversion_TriggerSW/Src/main.c                  Main program
+  - ADC/ADC_SingleConversion_TriggerSW/Src/system_stm32f0xx.c      STM32F0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F072xx devices.
+
+  - This example has been tested with STM32F072RB-Nucleo RevC board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>ADC_SingleConversion_TriggerSW_DMA</b>
+ADC example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to use a ADC peripheral to perform
+a single ADC conversion of a channel, at each software start;
+Example using programming model: DMA transfer
+(for programming models polling or interrupt, refer to
+other examples);
+This example is based on the STM32F0xx ADC LL API;
+peripheral initialization done using LL unitary services functions
+for optimization purpose (performance and size).
+
+Example configuration:
+ADC is configured to convert a single channel, in single conversion mode,
+from SW trigger.
+DMA is configured to transfer conversion data in an array, in circular mode.
+Note: In this example, array size can be set to 1 (equivalent to a single variable)
+      to have a scenario comparable to other ADC examples using programming model
+      polling or interruption.
+      Size of array can be modified with literal ADC_CONVERTED_DATA_BUFFER_SIZE).
+
+Example execution:
+At each press on push button, the ADC performs 1 conversion of the selected
+channel.
+DMA transfers conversion data to the array.
+When DMA reaches the selected number of transfers,
+DMA half transfer and transfer complete interruptions occurs.
+Data array is updated indefinitely (DMA in circular mode).
+LED is turned off at DMA half transfer and turned on at DMA transfer complete.
+
+For debug: variables to monitor with debugger watch window:
+ - "aADCxConvertedData": ADC group regular conversion data
+ - "aADCxConvertedData_Voltage_mVolt": ADC conversion data computation to physical values (array of data)
+
+Connection needed:
+None.
+Note: Optionally, a voltage can be supplied to the analog input pin (cf pin below),
+      between 0V and Vdda=3.3V, to perform a ADC conversion on a determined
+      voltage level.
+      Otherwise, this pin can be let floating (in this case ADC conversion data
+      will be undetermined).
+
+Other peripherals used:
+  1 GPIO for push button
+  1 GPIO for LED
+  1 GPIO for analog input: PA.04 (Arduino connector CN8 pin A2, Morpho connector CN7 pin 32)
+  DMA
+
+
+<u>Directory contents</u>
+
+  - ADC/ADC_SingleConversion_TriggerSW_DMA/Inc/stm32f0xx_it.h          Interrupt handlers header file
+  - ADC/ADC_SingleConversion_TriggerSW_DMA/Inc/main.h                  Header for main.c module
+  - ADC/ADC_SingleConversion_TriggerSW_DMA/Inc/stm32_assert.h          Template file to include assert_failed function
+  - ADC/ADC_SingleConversion_TriggerSW_DMA/Src/stm32f0xx_it.c          Interrupt handlers
+  - ADC/ADC_SingleConversion_TriggerSW_DMA/Src/main.c                  Main program
+  - ADC/ADC_SingleConversion_TriggerSW_DMA/Src/system_stm32f0xx.c      STM32F0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F072xx devices.
+
+  - This example has been tested with STM32F072RB-Nucleo RevC board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>ADC_SingleConversion_TriggerSW_IT</b>
+ADC example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to use a ADC peripheral to perform
+a single ADC conversion of a channel, at each software start;
+Example using programming model: interrupt
+(for programming models polling or DMA transfer, refer to
+other examples);
+This example is based on the STM32F0xx ADC LL API;
+peripheral initialization done using LL unitary services functions
+for optimization purpose (performance and size).
+
+Example configuration:
+ADC is configured to convert a single channel, in single conversion mode,
+from SW trigger.
+ADC interruption enabled: EOC (end of conversion of ADC group regular).
+
+Example execution:
+At each press on push button, the ADC performs 1 conversion of the selected channel.
+When conversion is completed, ADC interruption occurs.
+IRQ handler callback function reads conversion data from ADC data register
+and stores it into a variable, LED is turned on.
+
+For debug: variables to monitor with debugger watch window:
+ - "uhADCxConvertedData": ADC group regular conversion data
+ - "uhADCxConvertedData_Voltage_mVolt": ADC conversion data computation to physical values
+
+Connection needed:
+None.
+Note: Optionally, a voltage can be supplied to the analog input pin (cf pin below),
+      between 0V and Vdda=3.3V, to perform a ADC conversion on a determined
+      voltage level.
+      Otherwise, this pin can be let floating (in this case ADC conversion data
+      will be undetermined).
+
+Other peripherals used:
+  1 GPIO for push button
+  1 GPIO for LED
+  1 GPIO for analog input: PA.04 (Arduino connector CN8 pin A2, Morpho connector CN7 pin 32)
+
+
+<u>Directory contents</u>
+
+  - ADC/ADC_SingleConversion_TriggerSW_IT/Inc/stm32f0xx_it.h          Interrupt handlers header file
+  - ADC/ADC_SingleConversion_TriggerSW_IT/Inc/main.h                  Header for main.c module
+  - ADC/ADC_SingleConversion_TriggerSW_IT/Inc/stm32_assert.h          Template file to include assert_failed function
+  - ADC/ADC_SingleConversion_TriggerSW_IT/Src/stm32f0xx_it.c          Interrupt handlers
+  - ADC/ADC_SingleConversion_TriggerSW_IT/Src/main.c                  Main program
+  - ADC/ADC_SingleConversion_TriggerSW_IT/Src/system_stm32f0xx.c      STM32F0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F072xx devices.
+
+  - This example has been tested with STM32F072RB-Nucleo RevC board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>ADC_SingleConversion_TriggerTimer_DMA</b>
+ADC example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to use a ADC peripheral to perform
+a single ADC conversion of a channel, at each trigger event from timer;
+Conversion data are transferred by DMA into a table,
+indefinitely (circular mode);
+This example is based on the STM32F0xx ADC LL API;
+peripheral initialization done using LL unitary services functions
+for optimization purpose (performance and size).
+
+Example configuration:
+ADC is configured to convert a single channel, in single conversion mode,
+from HW trigger: timer peripheral.
+DMA is configured to transfer conversion data in an array, in circular mode.
+A timer is configured in time base and to generate TRGO events.
+
+Example execution:
+From the first press on push button, the ADC performs 1 conversion of the selected
+channel at each trig from timer.
+DMA transfers conversion data to the array.
+When DMA reaches the selected number of transfers,
+DMA half transfer and transfer complete interruptions occurs.
+Data array is updated indefinitely (DMA in circular mode).
+LED is turned off at DMA half transfer and turned on at DMA transfer complete.
+
+For debug: variables to monitor with debugger watch window:
+ - "aADCxConvertedData": ADC group regular conversion data
+ - "aADCxConvertedData_Voltage_mVolt": ADC conversion data computation to physical values (array of data)
+
+Connection needed:
+None.
+Note: Optionally, a voltage can be supplied to the analog input pin (cf pin below),
+      between 0V and Vdda=3.3V, to perform a ADC conversion on a determined
+      voltage level.
+      Otherwise, this pin can be let floating (in this case ADC conversion data
+      will be undetermined).
+
+Other peripherals used:
+  1 GPIO for push button
+  1 GPIO for LED
+  1 GPIO for analog input: PA.04 (Arduino connector CN8 pin A2, Morpho connector CN7 pin 32)
+  DMA
+  Timer
+
+
+<u>Directory contents</u>
+
+  - ADC/ADC_SingleConversion_TriggerTimer_DMA/Inc/stm32f0xx_it.h          Interrupt handlers header file
+  - ADC/ADC_SingleConversion_TriggerTimer_DMA/Inc/main.h                  Header for main.c module
+  - ADC/ADC_SingleConversion_TriggerTimer_DMA/Inc/stm32_assert.h          Template file to include assert_failed function
+  - ADC/ADC_SingleConversion_TriggerTimer_DMA/Src/stm32f0xx_it.c          Interrupt handlers
+  - ADC/ADC_SingleConversion_TriggerTimer_DMA/Src/main.c                  Main program
+  - ADC/ADC_SingleConversion_TriggerTimer_DMA/Src/system_stm32f0xx.c      STM32F0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F072xx devices.
+
+  - This example has been tested with STM32F072RB-Nucleo RevC board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>ADC_TemperatureSensor</b>
+ADC example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to use a ADC peripheral to perform
+a single ADC conversion of the internal temperature sensor
+and to calculate the temperature in Celsius degrees;
+Example using programming model: polling
+(for programming models interrupt or DMA transfer, refer to
+other examples);
+This example is based on the STM32F0xx ADC LL API;
+peripheral initialization done using LL unitary services functions
+for optimization purpose (performance and size).
+
+Example configuration:
+ADC is configured to convert a single channel, in single conversion mode,
+from SW trigger.
+Sequencer of group regular (default group available on ADC of all STM32 devices)
+is configured to convert 1 channel: internal channel temperature sensor.
+
+Example execution:
+At each press on push button, the ADC performs 1 conversion of the selected channel.
+Software polls for conversion completion.
+When conversion is completed, main program reads conversion data
+from ADC data register and stores it into a variable, LED is turned on.
+
+ADC conversions raw data are computed to physical values
+using LL ADC driver helper macro:
+ - Value of temperature (unit: degree Celcius)
+
+For debug: variables to monitor with debugger watch window:
+ - "uhADCxConvertedData": ADC group regular conversion data
+ - "hADCxConvertedData_Temperature_DegreeCelsius": Value of temperature (unit: degree Celcius)
+
+Connection needed:
+None.
+
+Other peripherals used:
+  1 GPIO for push button
+  1 GPIO for LED
+
+
+<u>Directory contents</u>
+
+  - ADC/ADC_TemperatureSensor/Inc/stm32f0xx_it.h          Interrupt handlers header file
+  - ADC/ADC_TemperatureSensor/Inc/main.h                  Header for main.c module
+  - ADC/ADC_TemperatureSensor/Inc/stm32_assert.h          Template file to include assert_failed function
+  - ADC/ADC_TemperatureSensor/Src/stm32f0xx_it.c          Interrupt handlers
+  - ADC/ADC_TemperatureSensor/Src/main.c                  Main program
+  - ADC/ADC_TemperatureSensor/Src/system_stm32f0xx.c      STM32F0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F072xx devices.
+
+  - This example has been tested with STM32F072RB-Nucleo RevC board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF0GettingStarted.pdf">Getting started with STM32CubeF0 Embedded Software for STM32F0xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF0 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32F072RB-Nucleo Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

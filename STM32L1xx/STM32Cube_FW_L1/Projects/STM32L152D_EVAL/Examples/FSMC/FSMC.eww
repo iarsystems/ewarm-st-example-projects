@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/FSMC_NOR/EWARM/FSMC_NOR.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/FSMC_SRAM/EWARM/FSMC_SRAM.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/FSMC_SRAM_DataMemory/EWARM/FSMC_SRAM_DataMemory.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>FSMC_NOR</project>
+        <configuration>STM32L152D_EVAL</configuration>
+      </member>
+      <member>
+        <project>FSMC_SRAM</project>
+        <configuration>STM32L152D_EVAL</configuration>
+      </member>
+      <member>
+        <project>FSMC_SRAM_DataMemory</project>
+        <configuration>STM32L152D_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/BitBand/BitBand.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/Mode_Privilege/Mode_Privilege.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/MPU/MPU.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>BitBand</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+      <member>
+        <project>Mode_Privilege</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+      <member>
+        <project>MPU</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

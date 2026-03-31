@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.JPN.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+XTI
+
+DESCRIPTION
+===========
+   This example demonstrates how to configure the XTI to generate IRQ
+  interrupts. This example highlights one of the features of the XTI which is to
+  generate an IRQ interrupts service routine and use the P0.15 pins (tied to the
+  wakeup button monted on the STR71x IAR board) to execute the interrupt code.
+  If the program work properly you will see the first led of the GPIO1 port pins
+  change state every time when you press the wakeup button.
+
+  This example demonstrates the following features of the XTI:
+
+   - Initialization,
+   - Line mode configuration,
+   - Line configuration,
+   - XTI mode configuration.
+
+COMPATIBILITY
+=============
+   This example works as standalone on the STR711/STR712 IAR boards. By default
+  the project is configured to use the J-Link JTAG interface.
+
+CONFIGURATION
+=============
+  The application is downloaded to the flash memory.
+
+  Put the Jumper Dis/Led on the position 1-2 (only for STR711 IAR Board)
+
+GETTING STARTED
+===============
+  1) Connect the J-Link.
+  2) Power the board.
+  3) Build and download the example.
+  4) Run the example.
+
+   </pre>
+
+  </div>
+  </body>
+</html>
+

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/MP3_Player.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>MP3_Player</project>
+        <configuration>Debug</configuration>
+      </member>
+      <member>
+        <project>MP3_Player</project>
+        <configuration>J-Trace debug</configuration>
+      </member>
+      <member>
+        <project>MP3_Player</project>
+        <configuration>Debug Remap Bank 1</configuration>
+      </member>
+      <member>
+        <project>MP3_Player</project>
+        <configuration>J-Trace debug Remap Bank 1</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

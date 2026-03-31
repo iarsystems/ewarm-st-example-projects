@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<infocenter_data version="1.0">
+  <iar_name>USB Demo</iar_name>                                   <!--App-->
+  <iar_description>Sample application using an endpoint programmed as INTERRUPT type giving to a PC a channel to read the status of a virtual HID mouse</iar_description><!--App short description-->
+  <iar_curdir>$CUR_DIR$</iar_curdir>
+</infocenter_data>

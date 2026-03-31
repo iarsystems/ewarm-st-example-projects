@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<infocenter_data version="1.0">
+  <iar_name>I2C</iar_name><!--App-->
+  <iar_description>This example describes how to perform I2C data buffer transmission/reception between master and 2 slaves with different Address size (7-bit or 10-bit) through
+the STM32L0xx HAL &amp; LL API (LL API used for performance improvement), using an interrupt.</iar_description><!--App short description-->
+  <iar_curdir>$CUR_DIR$</iar_curdir>
+</infocenter_data>

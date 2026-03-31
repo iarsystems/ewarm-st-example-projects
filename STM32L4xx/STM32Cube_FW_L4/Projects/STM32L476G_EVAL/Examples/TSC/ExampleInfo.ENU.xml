@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<infocenter_data version="1.0">
+  <iar_name>TSC</iar_name><!--App-->
+  <iar_description>This example describes how to use the HAL TSC to perform continuous acquisitions
+of one channel in interrupt mode.</iar_description><!--App short description-->
+  <iar_curdir>$CUR_DIR$</iar_curdir>
+</infocenter_data>

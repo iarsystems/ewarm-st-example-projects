@@ -1,0 +1,518 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>UART Workspace</h1>
+
+=====================================================================================
+<b>UART_TwoBoards_ComDMA</b>
+UART Two Boards Communication DMA example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes an UART transmission (transmit/receive) in DMA mode
+between two boards.
+
+Board: STM32F072RB-Nucleo RevC (embeds a STM32F072RBT6 device)
+Tx Pin: PA.09 (Pin 21 in CN10)
+Rx Pin: PA.10 (Pin 33 in CN10)
+   _________________________                       _________________________
+  |           ______________|                     |______________           |
+  |          |USART         |                     |         USART|          |
+  |          |              |                     |              |          |
+  |          |           TX |_____________________| RX           |          |
+  |          |              |                     |              |          |
+  |          |              |                     |              |          |
+  |          |              |                     |              |          |
+  |          |           RX |_____________________| TX           |          |
+  |          |              |                     |              |          |
+  |          |______________|                     |______________|          |
+  |                         |                     |                         |
+  |                      GND|_____________________|GND                      |
+  |_STM32_Board 1___________|                     |_STM32_Board 2___________|
+
+Two identical boards are connected as shown on the picture above.
+Board 1: transmitting then receiving board
+Board 2: receiving then transmitting board
+
+The user presses the User push-button on board 1.
+Then, board 1 sends in DMA mode a message to board 2 that sends it back to
+board 1 in DMA mode as well.
+Finally, board 1 and 2 compare the received message to that sent.
+If the messages are the same, the test passes.
+
+WARNING: as both boards do not behave the same way, "TRANSMITTER_BOARD" compilation
+switch is defined in /Src/main.c and must be enabled
+at compilation time before loading the executable in the board that first transmits
+then receives.
+The receiving then transmitting board needs to be loaded with an executable
+software obtained with TRANSMITTER_BOARD disabled.
+
+STM32F072RB-Nucleo RevC board LED is used to monitor the transfer status:
+- While board 1 is waiting for the user to press the User push-button, its LED2 is
+  blinking rapidly (100 ms period).
+- While board 2 is waiting for the message from board 1, its LED2 is emitting
+  a couple of flashes every half-second.
+- When the test passes, LED2 on both boards is turned on, otherwise the test has failed.
+- If there is an initialization or transfer error, LED2 is slowly blinking (1 sec. period).
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+Then the SystemClock_Config() function is used to configure the system
+clock (SYSCLK) to run at 48 MHz.
+
+The UART is configured as follows:
+    - BaudRate = 9600 baud
+    - Word Length = 8 bits (8 data bits, no parity bit)
+    - One Stop Bit
+    - No parity
+    - Hardware flow control disabled (RTS and CTS signals)
+    - Reception and transmission are enabled in the time
+
+Note: USARTx/UARTx instance used and associated resources can be updated in "main.h"
+file depending hardware configuration used.
+
+Note: When the parity is enabled, the computed parity is inserted at the MSB
+position of the transmitted data.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - UART/UART_TwoBoards_ComDMA/Inc/stm32f0xx_hal_conf.h    HAL configuration file
+  - UART/UART_TwoBoards_ComDMA/Inc/stm32f0xx_it.h          DMA interrupt handlers header file
+  - UART/UART_TwoBoards_ComDMA/Inc/main.h                  Header for main.c module
+  - UART/UART_TwoBoards_ComDMA/Src/stm32f0xx_it.c          DMA interrupt handlers
+  - UART/UART_TwoBoards_ComDMA/Src/main.c                  Main program
+  - UART/UART_TwoBoards_ComDMA/Src/stm32f0xx_hal_msp.c     HAL MSP module
+  - UART/UART_TwoBoards_ComDMA/Src/system_stm32f0xx.c      STM32F0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F0xx devices.
+  - This example has been tested with two STM32F072RB-Nucleo RevC boards embedding
+    a STM32F072RBT6 device and can be easily tailored to any other supported device
+    and development board.
+
+  - STM32F072RB-Nucleo RevC set-up
+    - Connect a wire between 1st board PA.09 (Pin 21 in CN10) pin (Uart Tx) and 2nd board PA.10 (Pin 33 in CN10) pin (Uart Rx)
+    - Connect a wire between 1st board PA.10 (Pin 33 in CN10) pin (Uart Rx) and 2nd board PA.09 (Pin 21 in CN10) pin (Uart Tx)
+    - Connect 1st board GND to 2nd Board GND
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+- Rebuild all files and load your image into target memory
+- Run the example
+
+
+=====================================================================================
+<b>UART_TwoBoards_ComIT</b>
+UART Two Boards Communication IT example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes an UART transmission (transmit/receive) in interrupt mode
+between two boards.
+
+Board: STM32F072RB-Nucleo RevC (embeds a STM32F072RBT6 device)
+Tx Pin: PA.09
+Rx Pin: PA.10
+   _________________________                       _________________________
+  |           ______________|                     |______________           |
+  |          |USART         |                     |         USART|          |
+  |          |              |                     |              |          |
+  |          |           TX |_____________________| RX           |          |
+  |          |              |                     |              |          |
+  |          |              |                     |              |          |
+  |          |              |                     |              |          |
+  |          |           RX |_____________________| TX           |          |
+  |          |              |                     |              |          |
+  |          |______________|                     |______________|          |
+  |                         |                     |                         |
+  |                         |                     |                         |
+  |_STM32_Board 1___________|                     |_STM32_Board 2___________|
+
+Two identical boards are connected as shown on the picture above.
+Board 1: transmitting then receiving board
+Board 2: receiving then transmitting board
+The user presses the USER BUTTON on board 1.
+Then, board 1 sends in interrupt mode a message to board 2 that sends it back to
+board 1 in interrupt mode as well.
+Finally, board 1 and 2 compare the received message to that sent.
+If the messages are the same, the test passes.
+
+WARNING: as both boards do not behave the same way, "TRANSMITTER_BOARD" compilation
+switch is defined in /Src/main.c and must be enabled
+at compilation time before loading the executable in the board that first transmits
+then receives.
+The receiving then transmitting board needs to be loaded with an executable
+software obtained with TRANSMITTER_BOARD disabled.
+
+STM32F072RB-Nucleo RevC board LED is used to monitor the transfer status:
+- While board 1 is waiting for the user to press the User push-button, its LED2 is
+  blinking rapidly (100 ms period).
+- While board 2 is waiting for the message from board 1, its LED2 is emitting
+  a couple of flashes every half-second.
+- When the test passes, LED2 on both boards is turned on, otherwise the test has failed.
+- If there is an initialization or transfer error, LED2 is slowly blinking (1 sec. period).
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+Then the SystemClock_Config() function is used to configure the system
+clock (SYSCLK) to run at 48 MHz.
+
+The UART is configured as follows:
+    - BaudRate = 9600 baud
+    - Word Length = 8 bits (8 data bits, no parity bit)
+    - One Stop Bit
+    - No parity
+    - Hardware flow control disabled (RTS and CTS signals)
+    - Reception and transmission are enabled in the time
+
+Note: USARTx/UARTx instance used and associated resources can be updated in "main.h"
+file depending hardware configuration used.
+
+Note: When the parity is enabled, the computed parity is inserted at the MSB
+position of the transmitted data.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - UART/UART_TwoBoards_ComIT/Inc/stm32f0xx_hal_conf.h    HAL configuration file
+  - UART/UART_TwoBoards_ComIT/Inc/stm32f0xx_it.h          IT interrupt handlers header file
+  - UART/UART_TwoBoards_ComIT/Inc/main.h                  Header for main.c module
+  - UART/UART_TwoBoards_ComIT/Src/stm32f0xx_it.c          IT interrupt handlers
+  - UART/UART_TwoBoards_ComIT/Src/main.c                  Main program
+  - UART/UART_TwoBoards_ComIT/Src/stm32f0xx_hal_msp.c     HAL MSP module
+  - UART/UART_TwoBoards_ComIT/Src/system_stm32f0xx.c      STM32F0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F072RB devices.
+  - This example has been tested with two STM32F072RB-Nucleo RevC boards embedding
+    a STM32F072RBT6 device and can be easily tailored to any other supported device
+    and development board.
+
+  - STM32F072RB-Nucleo RevC set-up
+    - Connect a wire between 1st board PA.09 pin (Uart Tx) and 2nd board PA.10 pin (Uart Rx)
+    - Connect a wire between 1st board PA.10 pin (Uart Rx) and 2nd board PA.09 pin (Uart Tx)
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>UART_TwoBoards_ComPolling</b>
+UART TwoBoards Communication Polling example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes an UART transmission (transmit/receive) in polling mode
+between two boards.
+
+Board: STM32F072RB-Nucleo RevC (embeds a STM32F072RBT6 device)
+Tx Pin: PA.09
+Rx Pin: PA.10
+   _________________________                       _________________________
+  |           ______________|                     |______________           |
+  |          |USART         |                     |         USART|          |
+  |          |              |                     |              |          |
+  |          |           TX |_____________________| RX           |          |
+  |          |              |                     |              |          |
+  |          |              |                     |              |          |
+  |          |              |                     |              |          |
+  |          |           RX |_____________________| TX           |          |
+  |          |              |                     |              |          |
+  |          |______________|                     |______________|          |
+  |                         |                     |                         |
+  |                         |                     |                         |
+  |_STM32_Board 1___________|                     |_STM32_Board 2___________|
+
+Two identical boards are connected as shown on the picture above.
+Board 1: transmitting then receiving board
+Board 2: receiving then transmitting board
+The user presses the USER BUTTON on board 1.
+Then, board 1 sends in polling mode a message to board 2 that sends it back to
+board 1 in polling mode as well.
+Finally, board 1 and 2 compare the received message to that sent.
+If the messages are the same, the test passes.
+
+WARNING: as both boards do not behave the same way, "TRANSMITTER_BOARD" compilation
+switch is defined in /Src/main.c and must be enabled
+at compilation time before loading the executable in the board that first transmits
+then receives.
+The receiving then transmitting board needs to be loaded with an executable
+software obtained with TRANSMITTER_BOARD disabled.
+
+STM32F072RB-Nucleo RevC board LED is used to monitor the transfer status:
+- While board 1 is waiting for the user to press the User push-button, its LED2 is
+  blinking rapidly (100 ms period).
+- When the test passes, LED2 on both boards is turned on, otherwise the test has failed.
+- If there is an initialization or transfer error, LED2 is slowly blinking (1 sec. period).
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+Then the SystemClock_Config() function is used to configure the system
+clock (SYSCLK) to run at 48 MHz.
+
+The UART is configured as follows:
+    - BaudRate = 9600 baud
+    - Word Length = 8 bits (8 data bits, no parity bit)
+    - One Stop Bit
+    - No parity
+    - Hardware flow control disabled (RTS and CTS signals)
+    - Reception and transmission are enabled in the time
+
+Note: USARTx/UARTx instance used and associated resources can be updated in "main.h"
+file depending hardware configuration used.
+
+Note: When the parity is enabled, the computed parity is inserted at the MSB
+position of the transmitted data.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - UART/UART_TwoBoards_ComPolling/Inc/stm32f0xx_hal_conf.h    HAL configuration file
+  - UART/UART_TwoBoards_ComPolling/Inc/stm32f0xx_it.h          interrupt handlers header file
+  - UART/UART_TwoBoards_ComPolling/Inc/main.h                  Header for main.c module
+  - UART/UART_TwoBoards_ComPolling/Src/stm32f0xx_it.c          interrupt handlers
+  - UART/UART_TwoBoards_ComPolling/Src/main.c                  Main program
+  - UART/UART_TwoBoards_ComPolling/Src/stm32f0xx_hal_msp.c     HAL MSP module
+  - UART/UART_TwoBoards_ComPolling/Src/system_stm32f0xx.c      STM32F0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F072RB devices.
+  - This example has been tested with two STM32F072RB-Nucleo RevC boards embedding
+    a STM32F072RBT6 device and can be easily tailored to any other supported device
+    and development board.
+
+  - STM32F072RB-Nucleo RevC set-up
+    - Connect a wire between 1st board PA.09 pin (Uart Tx) and 2nd board PA.10 pin (Uart Rx)
+    - Connect a wire between 1st board PA.10 pin (Uart Rx) and 2nd board PA.09 pin (Uart Tx)
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>UART_WakeUpFromStop</b>
+UART Wake up from Stop mode example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to configure an UART to wake up the MCU from STOP mode
+when a given stimulus is received.
+
+Board: STM32F072RB-Nucleo RevC (embeds a STM32F072RBT6 device)
+Tx Pin: PA.09
+Rx Pin: PA.10
+   _________________________                       _________________________
+  |           ______________|                     |______________           |
+  |          |USART         |                     |         USART|          |
+  |          |              |                     |              |          |
+  |          |           TX |_____________________| RX           |          |
+  |          |              |                     |              |          |
+  |          |              |                     |              |          |
+  |          |              |                     |              |          |
+  |          |           RX |_____________________| TX           |          |
+  |          |              |                     |              |          |
+  |          |______________|                     |______________|          |
+  |                         |                     |                         |
+  |                         |                     |                         |
+  | STM32 Board 1           |                     | STM32 Board 2           |
+  | (follows a sequence of  |                     | (sends stimuli to wake  |
+  | RUN/STOP modes)         |                     |  up STM32 Board 1)      |
+  |_________________________|                     |_________________________|
+
+Board 1 enters STOP mode and is awoken by Board 2 which sends
+the proper data to wake up the board 1 MCU.
+When the proper wake-up event is recognized, the WUF interrupt is triggered which wakes
+up board 1.
+To confirm its wake up, board 1 sends a confirmation message to board 2 which
+checks it is the expected message.
+This cycle is repeated 4 times to verify 4 different events
+1°) wake-up by RXNE flag rising
+2°) wake-up by Start Bit detection
+3°) wake-up by 7-bit long address match
+4°) wake-up by 4-bit long address match
+
+WARNING: as both boards do not behave the same way, "BOARD_IN_STOP_MODE"
+compilation switch is defined in UART/UART_WakeUpFromStop/Src/main.c and must be
+enabled at compilation time before loading the executable in board 1 (that which
+is set in STOP mode).
+The stimuli-transmitting board (board 2) needs to be loaded with an executable
+software obtained with BOARD_IN_STOP_MODE disabled.
+
+At the very beginning, board 1 LED2 is ON then is turned off.
+This means that board 1 has entered STOP mode.
+Parallely, board 2 LED2 is quickly blinking (100 ms period). The user has
+just to wait for board 1 LED2 to be turned off then to press board 2 USER
+push-button to send the first wake-up stimulus to board 1.
+This starts the test sequence and no more action is required from the user
+(a single USER push-button press is needed to start the full 4 wake-up events
+test sequence).
+
+Board 1 LED2 behavior as described below allows to follow the
+test progress:
+
+ON ____          _______          _______          _______          ____
+       |        |       |        |       |        |       |        |
+OFF    |________|       |________|       |________|       |________|
+      Enter    Exit    Enter    Exit    Enter    Exit    Enter    Exit
+      Stop     Stop    Stop     Stop    Stop     Stop    Stop     Stop
+      Mode     Mode    Mode     Mode    Mode     Mode    Mode     Mode
+            (RXNE flag)      (Start Bit      (7-bit add.       (4-bit add.
+                              Detection)        match)            match)
+
+Simultaneously, board 2 LED2 behavior shown below allows to follow the
+test progress on the other side:
+
+  BLINKING
+ON ****________          _______          _______          _______          ____
+               |        |       |        |       |        |       |        |
+OFF            |________|       |________|       |________|       |________|
+     USER     WkUp   2nd stim  WkUp   3rd stim  WkUp   4th stim  WkUp    LED ON
+     button   conf     sent    conf     sent    conf     sent    conf    to mark
+    pushed,   rcv'ed          rcv'ed           rcv'ed           rcv'ed   passed
+  1st stimulus                                                            test
+     sent
+  (RXNE flag)      (Start Bit       (7-bit add.      (4-bit add.
+                    Detection)         match)           match)
+
+- If the test fails or if there is an initialization or transfer error, LED2
+transmits a sequence of three dots, three dashes, three dots.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+Then the SystemClock_Config() function is used to configure the system
+clock (SYSCLK) to run at 48 MHz.
+
+The UART is configured as follows:
+    - BaudRate = 9600 baud
+    - Word Length = 8 bits (8 data bits, no parity bit)
+    - One Stop Bit
+    - Parity none
+    - Hardware flow control disabled (RTS and CTS signals)
+
+Note: USARTx/UARTx instance used and associated resources can be updated in "main.h"
+file depending hardware configuration used.
+
+Note: This example can not be used in DEBUG mode due to the fact that the
+    Cortex-M0 core is no longer clocked during low power mode and so debugging
+    features are not available.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - UART/UART_WakeUpFromStop/Inc/stm32f0xx_hal_conf.h    HAL configuration file
+  - UART/UART_WakeUpFromStop/Inc/stm32f0xx_it.h          Interrupt handlers header file
+  - UART/UART_WakeUpFromStop/Inc/main.h                  Header for main.c module
+  - UART/UART_WakeUpFromStop/Src/stm32f0xx_it.c          Interrupt handlers
+  - UART/UART_WakeUpFromStop/Src/main.c                  Main program
+  - UART/UART_WakeUpFromStop/Src/stm32f0xx_hal_msp.c     HAL MSP module
+  - UART/UART_WakeUpFromStop/Src/system_stm32f0xx.c      STM32F0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F072RB devices.
+  - This example has been tested with a couple of STM32F072RB-Nucleo RevC boards embedding a
+    STM32F072RBT6 device and can be easily tailored to any other supported device
+    and development board.
+
+  - STM32F072RB-Nucleo RevC set-up
+    - Connect a wire between 1st board PA.09 pin (USART1 Tx) and 2nd board PA.10 pin (USART1 Rx)
+    - Connect a wire between 1st board PA.10 pin (USART1 Rx) and 2nd board PA.09 pin (USART1 Tx)
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF0GettingStarted.pdf">Getting started with STM32CubeF0 Embedded Software for STM32F0xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF0 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32F072RB-Nucleo Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

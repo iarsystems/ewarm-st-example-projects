@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/IOToggle/IOToggle.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/JTAG_Remap/JTAG_Remap.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>IOToggle</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+      <member>
+        <project>JTAG_Remap</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

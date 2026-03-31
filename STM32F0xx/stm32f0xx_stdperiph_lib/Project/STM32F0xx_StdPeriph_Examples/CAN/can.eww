@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/DualFIFO/DualFIFO.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/FIFOExtension/FIFOExtension.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/LoopBack/LoopBack.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/Networking/Networking.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>DualFIFO</project>
+        <configuration>STM32F072</configuration>
+      </member>
+      <member>
+        <project>FIFOExtension</project>
+        <configuration>STM32F072</configuration>
+      </member>
+      <member>
+        <project>LoopBack</project>
+        <configuration>STM32F072</configuration>
+      </member>
+      <member>
+        <project>Networking</project>
+        <configuration>STM32F072</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/UART_TwoBoards_ComDMA/EWARM/UART_TwoBoards_ComDMA.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/UART_TwoBoards_ComIT/EWARM/UART_TwoBoards_ComIT.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/UART_TwoBoards_ComPolling/EWARM/UART_TwoBoards_ComPolling.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>UART_TwoBoards_ComDMA</project>
+        <configuration>STM32F411E-Discovery</configuration>
+      </member>
+      <member>
+        <project>UART_TwoBoards_ComIT</project>
+        <configuration>STM32F411E-Discovery</configuration>
+      </member>
+      <member>
+        <project>UART_TwoBoards_ComPolling</project>
+        <configuration>STM32F411E-Discovery</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

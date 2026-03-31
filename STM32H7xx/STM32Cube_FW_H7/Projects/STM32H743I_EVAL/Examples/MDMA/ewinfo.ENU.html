@@ -1,0 +1,832 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>MDMA Workspace</h1>
+
+=====================================================================================
+<b>MDMA_DMA2D_Triggering</b>
+MDMA with DMA2D Transfer complete flag used as MDMA trigger Example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to use the MDMA with HW trigger set to the DMA2D transfer complete flag.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+The SystemClock_Config() function is used to configure the system clock for STM32H743xx Devices :
+The CPU at 400MHz
+The HCLK for D1 Domain AXI and AHB3 peripherals , D2 Domain AHB1/AHB2 peripherals and D3 Domain AHB4  peripherals at 200MHz.
+The APB clock dividers for D1 Domain APB3 peripherals, D2 Domain APB1 and APB2 peripherals and D3 Domain APB4 peripherals to  run at 100MHz.
+
+The MDMA channel 0 is then configured in HW request mode with HW transfer request trigger
+set to DMA2D Transfer Complete flag.
+The MDMA is initialized to copy the DMA2D destination image to the LCD frame buffer at the bottom-center
+position with 180° rotation and mirror effect.
+Each block corresponds to a line of the source/destination image.
+The number of blocks corresponds to the number of lines of the image.
+
+The MDMA Request is set to DMA2D Transfer complete flag and the MDMA trigger Mode is set
+to Repeat block mode. As consequence each DMA2D transfer complete event
+(DMA2D has end copying an image to the Top-center of the LCD frame buffer ), the MDMA will start
+a repeat block transfer which correspond of copying the DMA2D destination image with 180°
+and rotation effect to the bottom-center of the LCD frame buffer.
+
+The DMA2D is initialized to copy an image from the internal flash to the Top-Center
+of the LCD frame buffer.
+In an infinite loop, each time a DMA2D transfer is started to copy a new image.
+As the MDMA Request is set to DMA2D Transfer complete flag each time the DMA2D ends
+transferring an image to the Top-center of the LCD frame buffer, the MDMA will use
+this DMA2D destination image to transfer it to the bottom-center of the LCD frame buffer
+with 180° rotation an mirror effect.
+A delay of 2sec is inserted after each DMA2D transfer
+
+AS consequence user can check that every 2sec a new image is transferred to the
+Top-Center of the LCD (Using the DMA2D) and the same image with 180° rotation and
+mirror effect is transferred to the bottom-center of the LCD (Using the MDMA)
+
+Note that in order to make the MDMA transfer infinite, a linked list node that have
+the same parameters as the initial transfer is created.
+The MDMA linked list is made circular by connecting this node to itself using HAL function
+HAL_MDMA_LinkedList_EnableCircularMode.
+The purpose of the linked list node is to create a circular list. the MDMA
+transfer will then loop infinitely. Each DMA2D Transfer complete flag will trig
+a Node transfer (a repeat block transfer) that correspond to a new image transfer.
+
+Note: the MDMA linked list Nodes addresses must be 64 bits aligned and must be in the AXI address space.
+this constraints must be respected when defining the MDMA_LinkNodeTypeDef nodes variables.
+As the MDMA Node descriptor "Xfer_Node" is located in the D1 AXI-SRAM which
+is cacheable, it is necessary to clean the data cache after creating and configuring the node
+in order to make sure that the MDMA will load up-to-date data from the linked list node.
+
+STM32H743I Eval board's LEDs can be used to monitor the transfer status:
+ - LED1 is ON when the MDMA transfer process is complete.
+ - LED3 is ON when there is an error in MDMA or DMA2D transfer process.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - MDMA/MDMA_DMA2D_Triggering/Inc/stm32h7xx_hal_conf.h        HAL configuration file
+  - MDMA/MDMA_DMA2D_Triggering/Inc/stm32h7xx_it.h              DMA  and MDMA interrupt handlers header file
+  - MDMA/MDMA_DMA2D_Triggering/Inc/main.h                      Header for main.c module
+  - MDMA/MDMA_DMA2D_Triggering/Inc/life_augmented_argb8888.h   Image 320x240 in ARGB8888 to display on LCD
+  - MDMA/MDMA_DMA2D_Triggering/Inc/image_320x240_argb8888.h    Image 320x240 in ARGB8888 to display on LCD
+  - MDMA/MDMA_DMA2D_Triggering/Src/stm32h7xx_it.c              MDMA interrupt handlers
+  - MDMA/MDMA_DMA2D_Triggering/Src/main.c                      Main program
+  - MDMA/MDMA_DMA2D_Triggering/Src/stm32h7xx_hal_msp.c         HAL MSP module
+  - MDMA/MDMA_DMA2D_Triggering/Src/system_stm32h7xx.c          STM32H7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32H743xx device.
+
+  - This example has been tested with STM32H743I-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>MDMA_GPDMA_Triggering</b>
+MDMA with GPDMA triggering Example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to use the MDMA with HW trigger set to D2 Domain GP-DMA
+transfer complete flag.
+
+Note that the MDMA has access to the  D-TCM RAM (Data Tightly Coupled Memory located @0x20000000)
+which is not the case of the D2 domain GP-DMAs.
+This examples shows how to receive data using a D2 GP-DMA
+(DMA1 stream 5 in this case) and transfer these data automatically to the D-TCM RAM
+where it can be processed by the CPU . Knowing that the CPU access to the D-TCM
+RAM is faster then any other RAM of the device, CPU data processing will be faster.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+The SystemClock_Config() function is used to configure the system clock for STM32H743xx Devices :
+The CPU at 400MHz
+The HCLK for D1 Domain AXI and AHB3 peripherals , D2 Domain AHB1/AHB2 peripherals and D3 Domain AHB4  peripherals at 200MHz.
+The APB clock dividers for D1 Domain APB3 peripherals, D2 Domain APB1 and APB2 peripherals and D3 Domain APB4 peripherals to  run at 100MHz.
+
+The UART peripheral configuration is ensured by the UART_Config() function.
+This later is calling the HAL_UART_Init() which in return calls HAL_UART_MspInit()
+function which core is implementing the configuration of the needed UART resources
+according to the used hardware .You may update the function HAL_UART_MspInit()
+to change UART configuration.
+Function UART_Config() send a start message to the user PC HyperTerminal to ask for
+sending 12 characters.
+
+The MDMA channel 0 is then configured in HW request mode with HW transfer request trigger
+set to DMA1 stream5 transfer complete flag. Meaning that the MDMA will proceed for the transfer
+once the DMA1 stream 5 ends its own transfer.
+The MDMA channel 0 is configured in block transfer mode with source and destination
+data size set to "byte".
+
+The MDMA transfer is then started to transfer content of "aUART_RxBuffer" buffer
+to "aMDMA_RxBuffer" buffer knowing that MDMA HW trigger is DMA1 stream 5 which is
+used for UART reception.
+As consequence MDMA transfer will be triggered once the UART received user message to
+"aUART_RxBuffer" buffer through the DMA1 stream 5, the MDMA will then automatically
+transfer it to the "aMDMA_RxBuffer" buffer.
+note that "aMDMA_RxBuffer" buffer is located in the D-TCM RAM (@0x20000000).
+
+The function HAL_UART_Receive_DMA() is then called to  allow
+the reception of Data from HyperTerminal to buffer "aUART_RxBuffer".
+Instead of waiting on the end of the UART reception operation, the program waits
+for the MDMA transfer operation ends or error. Indeed when MDMA transfer ends it means
+that the user message has been transferred using UART through the DMA1 stream 5 to
+"aUART_RxBuffer" buffer and the MDMA has transferred the content to the final
+destination "aMDMA_RxBuffer" buffer.
+
+the received MDMA Buffer "aMDMA_RxBuffer" is then sent back to the user using UART
+in polling model as the DMA1 has no access to the DTCM RAM where the  buffer "aMDMA_RxBuffer"
+is located.
+
+In the final step an ending message is sent to the user.
+
+STM32 Eval board's LEDs can be used to monitor the transfer status:
+ - LED1 is ON when the MDMA transfer process is complete.
+ - LED3 is ON when there is an error in transmission/reception process.
+
+The UART is configured as follows:
+    - BaudRate = 9600 baud
+    - Word Length = 8 Bits (7 data bit + 1 parity bit)
+    - One Stop Bit
+    - Odd parity
+    - Hardware flow control disabled (RTS and CTS signals)
+    - Reception and transmission are enabled in the time
+
+Note: USARTx/UARTx instance used and associated resources can be updated in "main.h"
+      file depending hardware configuration used.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - MDMA/MDMA_GPDMA_Triggering/Inc/stm32h7xx_hal_conf.h    HAL configuration file
+  - MDMA/MDMA_GPDMA_Triggering/Inc/stm32h7xx_it.h          DMA  and MDMA interrupt handlers header file
+  - MDMA/MDMA_GPDMA_Triggering/Inc/main.h                  Header for main.c module
+  - MDMA/MDMA_GPDMA_Triggering/Src/stm32h7xx_it.c          DMA and MDMA interrupt handlers
+  - MDMA/MDMA_GPDMA_Triggering/Src/main.c                  Main program
+  - MDMA/MDMA_GPDMA_Triggering/Src/stm32h7xx_hal_msp.c     HAL MSP module
+  - MDMA/MDMA_GPDMA_Triggering/Src/system_stm32h7xx.c      STM32H7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32H743xx device.
+
+  - This example has been tested with STM32H743I-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32H743I-EVAL Set-up
+      Connect a null-modem female/female RS232 cable between the DB9 connector
+      CN2 (USART1) and PC serial port if you want to display data on the HyperTerminal.
+
+Note: Make sure that jumper JP8 is on RX position for STM32H743I-EVAL RevB and jumper JP7 is on TX position.
+
+  - Hyperterminal configuration:
+    - Data Length = 7 Bits
+    - One Stop Bit
+    - Odd parity
+    - BaudRate = 9600 baud
+    - Flow control: None
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>MDMA_LinkedList</b>
+MDMA linked list transfer Example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to use the MDMA to perform a list of transfers. The transfer list is organized
+as a linked list , each time the current transfer ends the MDMA automatically relaod the next transfer parameters
+and starts it (without CPU intervention).
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+The SystemClock_Config() function is used to configure the system clock for STM32H743xx Devices :
+The CPU at 400MHz
+The HCLK for D1 Domain AXI and AHB3 peripherals , D2 Domain AHB1/AHB2 peripherals and D3 Domain AHB4  peripherals at 200MHz.
+The APB clock dividers for D1 Domain APB3 peripherals, D2 Domain APB1 and APB2 peripherals and D3 Domain APB4 peripherals to  run at 100MHz.
+
+The MDMA is configured using the function "MDMA_Config"
+This function configure the MDMA for a linked list transfer, the linked list contains 3 nodes.
+Node 0 transfer parameters are configured within the MDMA Handle init parameters.
+Next nodes are filled using HAL function "HAL_MDMA_LinkedList_CreateNode"
+Nodes are connected to the linked list using the HAL function "HAL_MDMA_LinkedList_AddNode"
+After setting all nodes parameters (node 0 using HAL_MDMA_Init and next nodes using HAL_MDMA_LinkedList_CreateNode/HAL_MDMA_LinkedList_AddNode)
+start the transfer in interrupt mode using function "HAL_MDMA_Start_IT".
+Note that the source and destination addresses given to the function HAL_MDMA_Start_IT
+must correspond to the node 0 source and destination addresses, same for the transfer data length.
+Note that using the MDMA the transfer data length is always expressed in bytes whatever
+is the source and data size (byte, half word, word or double word)
+
+Wait for end of the MDMA transmission or error interrupts ; the MDMA transmission ends when all the transfer nodes are served.
+
+STM32H743I Eval board's LEDs can be used to monitor the transfer status:
+ - LED1 is ON when transfer  is complete (all transfer nodes are served).
+
+ - LED3 is ON when there is an error in transmission process.
+
+Note: using the MDMA in linked list transfer the following requirement must be filled :
+- Node 0 parameters are always given within the MDMA handle init parameter and set during the function "HAL_MDMA_Init"
+- Next nodes must be defines as MDMA_LinkNodeTypeDef types and filled using function "HAL_MDMA_LinkedList_CreateNode".
+- Nodes addresses must be 64 bits aligned and must be in the AXI address space.
+  this constraints must be respected when defining the MDMA_LinkNodeTypeDef nodes variables.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - MDMA/MDMA_LinkedList/Inc/stm32h7xx_hal_conf.h    HAL configuration file
+  - MDMA/MDMA_LinkedList/Inc/stm32h7xx_it.h          MDMA interrupt handlers header file
+  - MDMA/MDMA_LinkedList/Inc/main.h                  Header for main.c module
+  - MDMA/MDMA_LinkedList/Src/stm32h7xx_it.c          MDMA interrupt handlers
+  - MDMA/MDMA_LinkedList/Src/main.c                  Main program
+  - MDMA/MDMA_LinkedList/Src/system_stm32h7xx.c      STM32H7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32H743xx device.
+
+  - This example has been tested with STM32H743I-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>MDMA</b>
+Linked list for colors decomposing example description
+=====================================================================================
+
+<u>Example Description</u>
+
+  This example demonstrates how to use the MDMA in linked list mode to extract Red/Green and blue
+  colors of an ARGB8888 image, resize each sub image (with a decimation factor /2) and
+  display the result Red/green/blue decimated sub-images on the LCD.
+
+  At the beginning of the main program the HAL_Init() function is called to reset
+  all the peripherals, initialize the Flash interface and the systick.
+  The SystemClock_Config() function is used to configure the system clock for STM32H743xx Devices :
+  The CPU at 400MHz
+  The HCLK for D1 Domain AXI and AHB3 peripherals , D2 Domain AHB1/AHB2 peripherals and D3 Domain AHB4  peripherals at 200MHz.
+  The APB clock dividers for D1 Domain APB3 peripherals, D2 Domain APB1 and APB2 peripherals and D3 Domain APB4 peripherals to  run at 100MHz.
+
+  After LCD initialization, the LCD layer 0 is configured for display.
+
+  The MDMA is configured in linked list mode as follow :
+
+  Node0 which corresponds to the MDMA initialization parameters is used to transfer the original image
+  to the top center of the display screen.
+
+  other linked list nodes are created using function "HAL_MDMA_LinkedList_CreateNode" then connected to each other using
+  function "HAL_MDMA_LinkedList_AddNode"
+
+  Node0_1,Node0_2 and Node0_3 are used to reset the 3 sub-images display area with default ARGB8888 color
+  0xFF000000 which corresponds to black.
+
+  Node1, Node2 and Node3 are respectively used to extract Red, Green and blue components from
+  the original image and to copy the result   to the display areas previously reset
+  by respectively Node0_1,Node0_2 and Node0_3.
+
+  Note that the nodes are configured also to subsample the original image by 2 horizontally and vertically.
+  The nodes are configured as follow :
+  - Source and destination data size set to byte : to copy one color component (Red, green or blue) only from the source image
+  - Source Data increment is set to double word (64 bits) : in order to jump one 32 bits word over 2.
+  - Destination data increment is set to Word (32bits)
+    knowing that an ARGB8888 pixel is defined on one word (32bits), this allows to decimate horizontally the original image by 2.
+  - The source block address offset is set Image_width * bytes_per_pixels = Image_width * 4. This allows
+    to jump one line over 2 from the source image allowing to decimate vertically the original image by 2.
+
+  Note : The parameter "pPrevNode" of function "HAL_MDMA_LinkedList_AddNode"
+  is set to zero in order to connect the given node to the end of the linked list.
+
+  The transfer is started using function "HAL_MDMA_Start_IT". The parameters source and destination addresses
+  correspond to the Node0 source and destination. for all other nodes, the source and destination are passed
+  during the node creation (function HAL_MDMA_LinkedList_CreateNode).
+
+  When the MDMA transfer ends the LCD will display the original image on (Top) then
+  3 images that correspond to Red/Green and Blue components decimated(resized) by 2 vertically and horizontally.
+
+ The STM32H743I Eval board's LED can be used to monitor the transfer status:
+  - LED1 is ON when the transfer ends without error.
+  - LED3 is ON when if a transfer error occurs.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The example need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+    - MDMA/MDMA_LinkedList_ColorsComp/Inc/stm32h7xx_hal_conf.h  HAL configuration file
+    - MDMA/MDMA_LinkedList_ColorsComp/Inc/stm32h7xx_it.h        Interrupt handlers header file
+    - MDMA/MDMA_LinkedList_ColorsComp/Inc/main.h                Main configuration file
+    - MDMA/MDMA_LinkedList_ColorsComp/image_320x240_argb8888.h  Image of size 320x240 and format ARGB8888 to be displayed on LCD
+    - MDMA/MDMA_LinkedList_ColorsComp/Src/stm32h7xx_it.c        Interrupt handlers
+    - MDMA/MDMA_LinkedList_ColorsComp/Src/main.c                Main program
+    - MDMA/MDMA_LinkedList_ColorsComp/Src/system_stm32h7xx.c    STM32H7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32H743xx device.
+
+  - This example has been tested with STM32H743I-EVAL  board revB and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>MDMA_LTDC_Triggering</b>
+MDMA with LTDC Line Interrupt Flag used as MDMA trigger Example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to use the MDMA with HW trigger set to the LTDC Line Interrupt Flag.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+The SystemClock_Config() function is used to configure the system clock for STM32H743xx Devices :
+The CPU at 400MHz
+The HCLK for D1 Domain AXI and AHB3 peripherals , D2 Domain AHB1/AHB2 peripherals and D3 Domain AHB4  peripherals at 200MHz.
+The APB clock dividers for D1 Domain APB3 peripherals, D2 Domain APB1 and APB2 peripherals and D3 Domain APB4 peripherals to  run at 100MHz.
+
+The LTDC is initialized and function "HAL_LTDC_ProgramLineEvent" is called in order to have the LTDC Line Interrupt Flag
+each time the LTDC reaches the middle of the LCD screen (LCD height/2)
+
+The MDMA channel 0 is configured as follow :
+- Initial transfer is configured using HAL_MDMA_Init function to clear the LCD frame buffer
+with default color (black).
+- A first transfer node is created and add to the linked list to copy an image (from image 0 to image22 )
+to the LCD frame buffer with MDMA transfer trigger set to LTDC Line Interrupt Flag.
+- A second transfer node is add with MDMA HW transfer trigger set to DMA1 stream1 transfer complete flag.
+  This transfer node is dummy one used to wait for node1 source address update which is done by a
+  DMA1 Stream 0.
+
+  The MDMA created linked list is made circular using function "HAL_MDMA_LinkedList_EnableCircularMode"
+
+The DMA1 stream 0 is configured to update the MDMA node1 source address with a new image each time.
+This DMA is triggered with the DMA Request generator 0 which is configured with trigger signal set to
+LPTIM1. LPTIM1 is configured with reload period set to 100ms. The DMA1 stream 0 transfer is configured
+in circular mode. the DMA1 stream 0 synchronization block is configured with Synchro disabled and
+with event generation enabled in order to generate and event after each transfer (each update of the MDMA Node1 source address).
+As consequence, each 100ms the DMA1 stream 0 will issue a transfer to update the MDMA Node1 source address
+with the new image address in the flash.
+An event is generated after each transfer (i.e after each update of the MDMA node 1 source address)
+
+The DMA1 Stream 1 is configured in circular transfer with transfer trigger set to DMA request generator 1
+which is configured with trigger signal set to DMA1 Stream 0 event.
+As consequence, each time DMA1 stream 0 transfer (MDMA node1 source address update) the DMA1 stream1 will
+issue a dummy transfer. The Transfer complete of this dummy transfer will trigger the MDMA Node2 transfer.
+as the MDMA transfer is a circular linked list, the MDMA will goes back to Node 1 to transfer a new image.
+
+To summarize,  after configuring the MDMA, DMA1 stream0 and DMA1 stream 1 :
+- First the Initial MDMA transfer will clear the LCD frame buffer.
+- Then the MDMA Node 1 transfer will issue a transfer to copy an image from the flash
+  to the LCD frame buffer with MDMA HW trigger set to the LTDC Line Interrupt Flag.
+- Then the MDMA Node2 will issue a dummy transfer with MDMA HW trigger set to DMA1 stream 1
+  transfer complete flag . meaning that the MDMA will wait for DMA1 stream 1 Transfer complete
+  before looping on Node 1 to transfer a new image.
+  The DMA1 stream 1 transfer is triggered once the DMA stream0 has issue a transfer to update the
+  MDMA Node 1 source address with the next image address. the DMA1 stream 0 is triggered with LPTIM1 i.e
+  each 100ms.
+
+As results the LCD will show a new image each 100ms giving an automated animation ( moving butterfly)
+without CPU load . The CPU can goe to sleep mode.
+
+Note: the MDMA linked list Nodes addresses must be 64 bits aligned and must be in the AXI address space.
+      this constraints must be respected when defining the MDMA_LinkNodeTypeDef nodes variables.
+      The MDMA Node descriptors "Xfer_Node", Xfer_DummyNode and the Nodes_SourceAddress table
+      are located in the D1 AXI-SRAM which is cacheable.
+
+Note: In order to make sure that the MDMA will load up-to-date data from the linked list node, The MPU is configured
+      for the D1 AXI-SRAM region in Write Through. This configuration allows the CPU to keep cache coherency
+      when updating the MDMA Node descriptors and the Nodes_SourceAddress table (located on the D1 AXI-SRAM).
+
+STM32H743I Eval board's LEDs can be used to monitor the transfer status:
+ - LED3 is ON when there is an error in MDMA transfer process.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - MDMA/MDMA_LTDC_Triggering/Inc/stm32h7xx_hal_conf.h        HAL configuration file
+  - MDMA/MDMA_LTDC_Triggering/Inc/stm32h7xx_it.h              DMA  and MDMA interrupt handlers header file
+  - MDMA/MDMA_LTDC_Triggering/Inc/main.h                      Header for main.c module
+  - MDMA/MDMA_LTDC_Triggering/Inc/Image01.h to Image22.h      Image 100x100 in ARGB8888 to display on LCD
+  - MDMA/MDMA_LTDC_Triggering/Src/stm32h7xx_it.c              MDMA interrupt handlers
+  - MDMA/MDMA_LTDC_Triggering/Src/main.c                      Main program
+  - MDMA/MDMA_LTDC_Triggering/Src/stm32h7xx_hal_msp.c         HAL MSP module
+  - MDMA/MDMA_LTDC_Triggering/Src/system_stm32h7xx.c          STM32H7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32H743xx device.
+
+  - This example has been tested with STM32H743I-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>MDMA</b>
+Repeat BLock Transfer Rotation example descreption
+=====================================================================================
+
+<u>Example Description</u>
+
+  This example provides a description of how to use the MDMA in repeat block trigger mode
+  in order to copy an RGB565 image to the LCD frame buffer.
+
+  The example demonstrates also the capabilities of the MDMA to increment/decrement
+  the source and destination address independently from the data size and the capability
+  to increment/decrement the source/destination address after each block.
+  By using these capabilities it is possible to apply mirror and/or 180° rotation effect
+  on the destination image.
+
+  At the beginning of the main program the HAL_Init() function is called to reset
+  all the peripherals, initialize the Flash interface and the systick.
+  The SystemClock_Config() function is used to configure the system clock for STM32H743xx Devices :
+  The CPU at 400MHz
+  The HCLK for D1 Domain AXI and AHB3 peripherals , D2 Domain AHB1/AHB2 peripherals and D3 Domain AHB4  peripherals at 200MHz.
+  The APB clock dividers for D1 Domain APB3 peripherals, D2 Domain APB1 and APB2 peripherals and D3 Domain APB4 peripherals to  run at 100MHz.
+
+  The LCD is initialized and configured for display in RGB565 format.
+  The LCD Frame buffer is located on the external SDRAM.
+
+  Each time the MDMA is initialized with different configuration and transfer is started:
+  The MDMA transfer is started using the HAL API HAL_MDMA_Start_IT. The BlockDataLength is set to the size of a line
+  in the LCD frame buffer (in bytes). The BlockCount is set to the number of lines.
+
+   - config 0:
+    The MDMA is initialized and started to clear the LCD frame buffer with a default color (Gray).
+    The MDMA is configured with SW trigger and trigger mode set to repeat block.
+
+    The Source and Destination data size are half word , 2 bytes that correspond to an RGB565 pixel 16 bpp.
+    The Source Increment is disabled : the source address always corresponds to the address of the uint16 variable
+    that holds the default color value.
+
+    The destination Increment is half word , 2 bytes that correspond to an RGB565 pixel 16 bpp.
+    The source and destination Block address offset are set to zero null, the source blocks are contiguous.
+
+  - config 1 :
+    The MDMA is initialized and started to copy the source image (located in the internal Flash)
+    to the LCD frame buffer at the center position.
+    Each block corresponds to a line of the source/destination image.
+    The number of blocks corresponds to the number of lines of the image.
+
+    The MDMA is configured with SW trigger and trigger mode set to repeat block.
+
+    The Source and destination data size are half word , 2 bytes that correspond to an RGB565 pixel 16 bpp.
+    The source and destination Increment are also set to half word.
+
+    The Source Block address offset is set to zero, the source blocks are contiguous
+
+    The Destination Block address offset is set in order to place the image at the center of the LCD frame buffer
+    The destination blocks are not contiguous.
+    The LCD_Offset is equal to LCD X size - image width.
+
+  - config 2 :
+    The MDMA is initialized and started to copy the source image to the LCD frame buffer at the center
+    position with mirror effect.
+    Each block corresponds to a line of the source/destination image.
+    The number of blocks corresponds to the number of lines of the image.
+
+    The Source and Destination data size are half word , 2 bytes that correspond to an RGB565 pixel 16 bpp
+
+    The Source Increment is half word , 2 bytes that correspond to an RGB565 pixel 16 bpp
+    Knowing that the source address is set to the source image start address.
+
+    The Destination Decrement by half word , 2 bytes that correspond to an RGB565 pixel 16 bpp
+    Knowing that the destination address is set to the last pixel address in the first line
+    of the destination image.
+
+    The Source Block address offset is zero, the source blocks are contiguous.
+
+    The Destination Block address offset is set in order to place the image in the center of the LCD frame buffer.
+    The destination blocks are not contiguous.
+    The LCD_Offset is = to LCD X size - image width.
+    Knowing that the destination address is set to the last pixel address in the first line
+    of the destination image, the destination block offset takes also into account that
+    the destination address is decrementing.
+
+ - config 3 :
+    The MDMA is initialized and started to copy the source image to the LCD frame buffer
+    at the center position with 180° rotation effect.
+    Each block corresponds to a line of the source/destination image.
+    The number of blocks corresponds to the number of lines of the image.
+
+    The Source and Destination data size are half word , 2 bytes that correspond to an RGB565 pixel 16 bpp
+
+    The Source Increment is half word , 2 bytes that correspond to an RGB565 pixel 16 bpp
+    Knowing that the source address is set to the source image start address.
+
+    The Destination Decrement by half word , 2 bytes that correspond to an RGB565 pixel 16 bpp
+    Knowing that the destination address is set to the last pixel of the destination image.
+
+    The Source Block address offset is zero, the source blocks are contiguous.
+
+    The Destination Block address offset is set in order to place the image in the center of the LCD frame buffer
+    The destination blocks are not contiguous. The LCD_Offset is = to LCD X size - image width.
+    Knowing that the destination address is set to  the last pixel address of
+    the destination image, the destination block offset takes also into account that the destination address is decrementing.
+
+ - config 4 :
+    The MDMA is initialized and started to copy the source image to the LCD frame buffer
+    at the center position with 180° rotation and mirror effect.
+    Each block corresponds to a line of the source/destination image.
+
+    The number of blocks corresponds to the number of lines of the image
+
+    The Source and Destination data size are half word , 2 bytes that correspond to an RGB565 pixel 16 bpp
+
+    The Source Increment is half word , 2 bytes that correspond to an RGB565 pixel 16 bpp
+    Knowing that the source address is set to the source image start address.
+
+    The Source Block address offset is zero, the source blocks are contiguous.
+
+    Source and Destination Increment is half word , 2 bytes that correspond to an RGB565 pixel 16 bpp
+    knowing that the destination address is set to the first pixel address of the last line
+    in the destination image.
+
+    The Destination Block address offset is set in order to place the image in the center of the LCD frame buffer
+    The destination blocks are not contiguous.
+    The LCD_Offset is = to LCD X size - image width.
+    Knowing that the destination address is set to the first pixel address of the last line
+    in the destination image, the destination block offset allows to decrement the destination address
+    after each block in order to start the next block at the previous line.
+
+STM32H743I Eval board's LED can be used to monitor the transfer status:
+ - LED3 is ON when there is an error in Init process or during the MDMA transfer.
+ - LED1 is ON when a process iteration is complete
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The example need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Keywords</u>
+
+Display, Graphic, MDMA, LCD, SDRAM, RGB565, Memory to memory, LTDC, Pixel, non contiguous,
+Repeat blocks
+
+
+<u>Directory contents</u>
+
+    - MDMA/MDMA_Repeat_BLock/Inc/stm32h7xx_hal_conf.h  HAL configuration file
+    - MDMA/MDMA_Repeat_BLock/Inc/stm32h7xx_it.h        Interrupt handlers header file
+    - MDMA/MDMA_Repeat_BLock/Inc/main.h                Main configuration file
+    - MDMA/MDMA_Repeat_BLock/Src/stm32h7xx_it.c        Interrupt handlers
+    - MDMA/MDMA_Repeat_BLock/Src/main.c                Main program
+    - MDMA/MDMA_Repeat_BLock/Src/stm32h7xx_hal_msp.c   HAL MSP module
+    - MDMA/MDMA_Repeat_BLock/Src/system_stm32h7xx.c    STM32H7xx system source file
+    - MDMA/MDMA_Repeat_BLock/Inc/RGB565_480x272.h      Image of size 480x272 and format RGB565 to be displayed on LCD
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32H743xx devices.
+
+  - This example has been tested with STM32H743I-EVAL board revB and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>MDMA</b>
+RepeatBlock ZoomOut example descreption
+=====================================================================================
+
+<u>Example Description</u>
+
+  This example provides a description of how to use the MDMA in repeat block trigger mode
+  in order to decimate an RGB565 image and copy it to the LCD frame buffer.
+
+  The example demonstrates the capabilities of the MDMA to increment/decrement
+  the source/destination address independently from the source/destination data size
+  and the capability to increment/decrement the source/destination address after each block.
+
+  Using these capabilities it is possible to decimate an RGB565 image by a factor of 2 or 4
+  on the destination image.
+
+  In this example the hal function HAL_MDMA_Start_IT is used to start a repeat block transfer
+  where each MDMA block corresponds to an image line.
+  The BlockDataLength corresponds to the number of bytes in a line (i.e number of pixel x bytesPerPixel)
+  The BlockCount corresponds to the total number of line in the image.
+
+  The principle is that each MDMA block represents an image line. and each data in the block
+  represents an RGB565 pixel (half word).
+  then by setting the source data size to half word and the source data increment to word (2 half-words)
+  it is possible to skip one pixel over two in each line.
+  by setting the source block offset to a line width it is possible to skip one line over 2.
+  The results gives a decimated image by 2 horizontally and vertically.
+
+  The same approach can be used to decimate an RGB565 image by 4. In this case
+  the source data increment is set to double word (4 half-words) allowing to skip 3 pixels
+  over 4 at the source. the source block offset is set to 3 lines width allowing to skip 3 lines
+  over 4 from the source image.
+  The results gives a decimated image by 4 horizontally and vertically.
+
+  At the beginning of the main program the HAL_Init() function is called to reset
+  all the peripherals, initialize the Flash interface and the systick.
+  The SystemClock_Config() function is used to configure the system clock for STM32H743xx Devices :
+  The CPU at 400MHz
+  The HCLK for D1 Domain AXI and AHB3 peripherals , D2 Domain AHB1/AHB2 peripherals and D3 Domain AHB4  peripherals at 200MHz.
+  The APB clock dividers for D1 Domain APB3 peripherals, D2 Domain APB1 and APB2 peripherals and D3 Domain APB4 peripherals to  run at 100MHz.
+
+  The LCD is initialized and configured for display in RGB565 format.
+  The LCD Frame buffer is located on the external SDRAM.
+
+  First the MDMA is initialized and started to clear the LCD frame buffer with a default color (Gray)
+  the MDMA is configured with SW trigger and trigger mode set to repeat block.
+  The Source and Destination data size are half word , 2 bytes that correspond to an RGB565 pixel 16 bpp.
+  The Source Increment is disabled : the source address always corresponds to the address of the uint16 variable
+  that holds the default color value.
+  The destination Increment is half word , 2 bytes that correspond to an RGB565 pixel 16 bpp.
+  The source and destination Block address offset are set to zero null, the source blocks are contiguous.
+
+  Then, each time the MDMA is initialized to decimate the source image by a factor of 2 or 4.
+  The decimation is possible thanks to the capability of the MDMA to increment the source and destination
+  address independently from the source/destination data size.
+  The Source and Destination data size are half word , 2 bytes that correspond to an RGB565 pixel 16 bpp.
+  In case of a decimation by 2, the source increment is set to WORD (2 half-words) allowing to skip one pixel over two.
+  In case of a decimation by 4, the source increment is set to DOUBLE WORD (4 half-words) allowing to skip 3 pixels.
+  knowing that an RGB565 pixel is defined on one half word (16bits), this allows to decimate horizontally the original image by 2 or 4.
+  - The source block address offset is set Image_width * bytes_per_pixels = Image_width * 4. This allows
+    to jump one line over 2 from the source image allowing to decimate vertically the original image by 2.
+
+  In case of a decimation by 2 , the source block address offset is set to :
+              Image_width * bytes_per_pixels = Image_width * 2.
+This allows  to jump one line over 2 from the source image allowing to decimate vertically the original image by 2.
+
+  In case of a decimation by 4 , the source block address offset is set to :
+             3 * Image_width * bytes_per_pixels = 3 * Image_width * 2.
+ This allows  to jump Three lines from the source image allowing to decimate vertically the original image by 4.
+
+  The destination block address offset is set to the "LCD_Offset" calculated in order to place the destination
+  image at the center of the LCD screen.
+
+STM32H743I Eval board's LED can be used to monitor the transfer status:
+ - LED3 is ON when there is an error in Init process or during the MDMA transfer.
+ - LED1 is ON when a process iteration is complete
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The example need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+Display, Graphic, MDMA, LCD, SDRAM, RGB565, Memory to memory, LTDC, Pixel, non-contiguous,
+Repeat blocks
+
+
+<u>Directory contents</u>
+
+    - MDMA/MDMA_RepeatBlock_ZoomOut/Inc/stm32h7xx_hal_conf.h  HAL configuration file
+    - MDMA/MDMA_RepeatBlock_ZoomOut/Inc/stm32h7xx_it.h        Interrupt handlers header file
+    - MDMA/MDMA_RepeatBlock_ZoomOut/Inc/main.h                Main configuration file
+    - MDMA/MDMA_RepeatBlock_ZoomOut/Src/stm32h7xx_it.c        Interrupt handlers
+    - MDMA/MDMA_RepeatBlock_ZoomOut/Src/main.c                Main program
+    - MDMA/MDMA_RepeatBlock_ZoomOut/Src/stm32h7xx_hal_msp.c   HAL MSP module
+    - MDMA/MDMA_RepeatBlock_ZoomOut/Src/system_stm32h7xx.c    STM32H7xx system source file
+    - MDMA/MDMA_RepeatBlock_ZoomOut/Inc/RGB565_480x272.h      Image of size 480x272 and format RGB565 to be displayed on LCD
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32H743xx devices.
+
+  - This example has been tested with STM32H743I-EVAL board revB and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeH7GettingStarted.pdf">Getting started with STM32CubeH7 Embedded Software for STM32H7xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeH7 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32H743I-EVAL Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

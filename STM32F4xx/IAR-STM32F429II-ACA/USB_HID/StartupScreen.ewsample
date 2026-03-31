@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<exampleInfo>
+  <copyDir>..\..\STM32F4xx_DSP_StdPeriph_Lib\Libraries\CMSIS\Device\</copyDir>
+  <copyDir>..\..\STM32F4xx_DSP_StdPeriph_Lib\Libraries\STM32F4xx_StdPeriph_Driver\</copyDir>
+  <copyDir>..\..\Libraries\STM32_USB_OTG_Driver\</copyDir>
+  <copyDir>..\..\Libraries\STM32_USB_Device_Library\</copyDir>
+</exampleInfo>

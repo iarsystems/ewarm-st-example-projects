@@ -1,0 +1,1417 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.JPN.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+USART DMA Interrupt example
+
+Example Description
+
+This example provides a basic communication between USARTy and USARTz using DMA
+capability, flags and interrupts. USARTy and USARTz can be USART1 and USART2 or
+USART2 and USART3, depending on the STMicroelectronics EVAL board you are using.
+
+First, the DMA transfers data from TxBuffer2 buffer to USARTz Transmit data register,
+then this data is sent to USARTy. Data received by USARTy is transferred using
+RXNE flag and stored in RxBuffer1 then compared with the sent ones and
+the result of this comparison is stored in the "TransferStatus1" variable.
+
+In the same time, the DMA transfers data from TxBuffer1 buffer to USARTy Transmit
+data register, then this data is sent to USARTz. Data received by USARTz is
+transferred using Receive interrupt and stored in RxBuffer2 then compared with
+the sent ones and the result of this comparison is stored in the "TransferStatus2"
+variable.
+
+USARTy and USARTz configured as follow:
+  - BaudRate = 230400 baud
+  - Word Length = 8 Bits
+  - One Stop Bit
+  - No parity
+  - Hardware flow control disabled (RTS and CTS signals)
+  - Receive and transmit enabled
+
+Directory contents
+
+  - USART/DMA_Interrupt/platform_config.h    Evaluation board specific configuration file
+  - USART/DMA_Interrupt/stm32f10x_conf.h     Library Configuration file
+  - USART/DMA_Interrupt/stm32f10x_it.h       Interrupt handlers header file
+  - USART/DMA_Interrupt/stm32f10x_it.c       Interrupt handlers
+  - USART/DMA_Interrupt/main.c               Main program
+  - USART/DMA_Interrupt/system_stm32f10x.c   STM32F10x system source file
+
+Hardware and Software environment
+
+  - This example runs on STM32F10x Connectivity line, High-Density, High-Density
+    Value line, Medium-Density, XL-Density, Medium-Density Value line, Low-Density
+    and Low-Density Value line Devices.
+
+  - This example has been tested with STMicroelectronics STM32100E-EVAL (High-Density
+    Value line), STM32100B-EVAL (Medium-Density Value line), STM3210C-EVAL (Connectivity line),
+    STM3210E-EVAL (High-Density and XL-Density) and STM3210B-EVAL (Medium-Density)
+    evaluation boards and can be easily tailored to any other supported device
+    and development board.
+    To select the STMicroelectronics evaluation board used to run the example,
+    uncomment the corresponding line in USART/DMA_Interrupt/platform_config.h file
+
+  - STM32100E-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between CN10 (USART1) and
+      CN5 (USART2).
+       note Make sure that jumper JP5 is not open.
+
+  - STM32100B-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between CN10 (USART1) and
+      CN9 (USART2).
+       note In this case USART2 Tx and Rx pins are remapped by software on PD.05
+            and PD.06 respectively.
+
+  - STM3210C-EVAL Set-up
+    - Connect USART2 Tx pin (PD.05) to USART3 Rx pin (PC.11)
+    - Connect USART2 Rx pin (PD.06) to USART3 Tx pin	(PC.10)
+       note In this case USART3 Tx and Rx pins are remapped by software.
+            Make sure that jumpers JP19 and JP18 are open.
+
+  - STM3210E-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between CN12 (USART1) and
+      CN8 (USART2).
+
+  - STM3210B-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between CN6 (USART1) and
+      CN5 (USART2).
+      - In this case USART2 Tx and Rx pins are remapped by software on PD.05
+        and PD.06 respectively.
+
+How to use it ?
+
+In order to make the program work, you must do the following :
+ - Copy all source files from this example folder to the template folder under
+   Project\STM32F10x_StdPeriph_Template
+ - Open your preferred toolchain
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+ note
+ - Low-density Value line devices are STM32F100xx microcontrollers where the
+   Flash memory density ranges between 16 and 32 Kbytes.
+ - Low-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 16 and 32 Kbytes.
+ - Medium-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 64 and 128 Kbytes.
+ - Medium-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 64 and 128 Kbytes.
+ - High-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - High-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - XL-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 512 and 1024 Kbytes.
+ - Connectivity line devices are STM32F105xx and STM32F107xx microcontrollers.
+
+
+***************************************************************************************************
+
+
+USART DMA Polling example
+
+Example Description
+
+This example provides a basic communication between USARTy and USARTz using DMA
+capability. USARTy and USARTz can be USART1 and USART2 or USART2 and USART3,
+depending on the STMicroelectronics EVAL board you are using.
+
+First, the DMA transfers data from TxBuffer2 buffer to USARTz Transmit data
+register, then this data is sent to USARTy. Data received by USARTy is transferred
+by DMA and stored in RxBuffer1 then compared with the send ones and the result
+of this comparison is stored in the "TransferStatus1" variable.
+
+In the same time, the DMA transfers data from TxBuffer1 buffer to USARTy Transmit
+data register, then this data is sent to USARTz. Data received by USARTz is
+transferred by DMA and stored in RxBuffer2 then compared with the send ones and
+the result of this comparison is stored in the "TransferStatus2" variable.
+
+USARTy and USARTz configured as follow:
+  - BaudRate = 230400 baud
+  - Word Length = 8 Bits
+  - One Stop Bit
+  - No parity
+  - Hardware flow control disabled (RTS and CTS signals)
+  - Receive and transmit enabled
+
+Directory contents
+
+  - USART/DMA_Polling/platform_config.h    Evaluation board specific configuration file
+  - USART/DMA_Polling/stm32f10x_conf.h     Library Configuration file
+  - USART/DMA_Polling/stm32f10x_it.h       Interrupt handlers header file
+  - USART/DMA_Polling/stm32f10x_it.c       Interrupt handlers
+  - USART/DMA_Polling/main.c               Main program
+  - USART/DMA_Polling/system_stm32f10x.c   STM32F10x system source file
+
+Hardware and Software environment
+
+  - This example runs on STM32F10x Connectivity line, High-Density, High-Density
+    Value line, Medium-Density, XL-Density, Medium-Density Value line, Low-Density
+    and Low-Density Value line Devices.
+
+  - This example has been tested with STMicroelectronics STM32100E-EVAL (High-Density
+    Value line), STM32100B-EVAL (Medium-Density Value line), STM3210C-EVAL (Connectivity line),
+    STM3210E-EVAL (High-Density and XL-Density) and STM3210B-EVAL (Medium-Density)
+    evaluation boards and can be easily tailored to any other supported device
+    and development board.
+    To select the STMicroelectronics evaluation board used to run the example,
+    uncomment the corresponding line in USART/DMA_Polling/platform_config.h file
+
+  - STM32100E-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between CN10 (USART1) and
+      CN5 (USART2).
+       note Make sure that jumper JP5 is not open.
+
+  - STM32100B-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between CN10 (USART1) and
+      CN9 (USART2).
+       note In this case USART2 Tx and Rx pins are remapped by software on PD.05
+            and PD.06 respectively.
+
+  - STM3210C-EVAL Set-up
+    - Connect USART2 Tx pin (PD.05) to USART3 Rx pin (PC.11)
+    - Connect USART2 Rx pin (PD.06) to USART3 Tx pin	(PC.10)
+       note In this case USART3 Tx and Rx pins are remapped by software.
+            Make sure that jumpers JP19 and JP18 are open.
+
+  - STM3210E-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between CN12 (USART1) and
+      CN8 (USART2).
+
+  - STM3210B-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between CN6 (USART1) and
+      CN5 (USART2).
+      - In this case USART2 Tx and Rx pins are remapped by software on PD.05
+        and PD.06 respectively.
+
+How to use it ?
+
+In order to make the program work, you must do the following :
+ - Copy all source files from this example folder to the template folder under
+   Project\STM32F10x_StdPeriph_Template
+ - Open your preferred toolchain
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+ note
+ - Low-density Value line devices are STM32F100xx microcontrollers where the
+   Flash memory density ranges between 16 and 32 Kbytes.
+ - Low-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 16 and 32 Kbytes.
+ - Medium-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 64 and 128 Kbytes.
+ - Medium-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 64 and 128 Kbytes.
+ - High-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - High-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - XL-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 512 and 1024 Kbytes.
+ - Connectivity line devices are STM32F105xx and STM32F107xx microcontrollers.
+
+
+***************************************************************************************************
+
+
+USART Half Duplex example
+
+Example Description
+
+This example provides a basic communication between USARTy and USARTz in
+Half-Duplex mode using flags. USARTy and USARTz can be USART1 and USART2 or
+USART2 and USART3, depending on the STMicroelectronics EVAL board you are using.
+
+First, the USARTy sends data from TxBuffer1 buffer to USARTz using TXE flag.
+Data received using RXNE flag by USARTz is stored in RxBuffer2 then compared with
+the sent ones and the result of this comparison is stored in the "TransferStatus1"
+variable.
+
+Then, the USARTz sends data from TxBuffer2 buffer to USARTy using TXE flag.
+Data received using RXNE flag by USARTy is stored in RxBuffer1 then compared with
+the sent ones and the result of this comparison is stored in the "TransferStatus2"
+variable.
+
+USARTy and USARTz configured as follow:
+  - BaudRate = 230400 baud
+  - Word Length = 8 Bits
+  - One Stop Bit
+  - Even parity
+  - Hardware flow control disabled (RTS and CTS signals)
+  - Receive and transmit enabled
+
+Directory contents
+
+  - USART/HalfDuplex/platform_config.h    Evaluation board specific configuration file
+  - USART/HalfDuplex/stm32f10x_conf.h     Library Configuration file
+  - USART/HalfDuplex/stm32f10x_it.h       Interrupt handlers header file
+  - USART/HalfDuplex/stm32f10x_it.c       Interrupt handlers
+  - USART/HalfDuplex/main.c               Main program
+  - USART/HalfDuplex/system_stm32f10x.c   STM32F10x system source file
+
+Hardware and Software environment
+
+  - This example runs on STM32F10x Connectivity line, High-Density, High-Density
+    Value line, Medium-Density, XL-Density, Medium-Density Value line, Low-Density
+    and Low-Density Value line Devices.
+
+  - This example has been tested with STMicroelectronics STM32100E-EVAL (High-Density
+    Value line), STM32100B-EVAL (Medium-Density Value line), STM3210C-EVAL (Connectivity line),
+    STM3210E-EVAL (High-Density and XL-Density) and STM3210B-EVAL (Medium-Density)
+    evaluation boards and can be easily tailored to any other supported device
+    and development board.
+    To select the STMicroelectronics evaluation board used to run the example,
+    uncomment the corresponding line in USART/HalfDuplex/platform_config.h file
+
+  - STM32100E-EVAL Set-up
+    - Connect USART1_Tx(PA.09) to USART2_Tx(PA.02).
+
+  - STM32100B-EVAL Set-up
+    - Connect USART1_Tx(PA.09) to USART2_Tx(PD.05).
+
+  - STM3210C-EVAL Set-up
+    - Connect USART2 Tx pin (PD.05) to USART3 Tx pin (PC.10) and connect a
+      pull-up resistor to this line (10K).
+       note In this case USART3 Tx pin is remapped by software.
+            Make sure that jumpers JP19 and JP18 are open.
+
+  - STM3210E-EVAL Set-up
+    - Connect USART1_Tx(PA.09) to USART2_Tx(PA.02) and connect a pull-up resistor to
+      this line (10K).
+
+  - STM3210B-EVAL Set-up
+    - Connect USART1_Tx(PA.09) to USART2_Tx(PD.05) and connect a pull-up resistor to
+      this line (10K).
+
+How to use it ?
+
+In order to make the program work, you must do the following :
+ - Copy all source files from this example folder to the template folder under
+   Project\STM32F10x_StdPeriph_Template
+ - Open your preferred toolchain
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+ note
+ - Low-density Value line devices are STM32F100xx microcontrollers where the
+   Flash memory density ranges between 16 and 32 Kbytes.
+ - Low-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 16 and 32 Kbytes.
+ - Medium-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 64 and 128 Kbytes.
+ - Medium-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 64 and 128 Kbytes.
+ - High-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - High-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - XL-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 512 and 1024 Kbytes.
+ - Connectivity line devices are STM32F105xx and STM32F107xx microcontrollers.
+
+
+***************************************************************************************************
+
+
+USART Hyperterminal Hardware Flow Control example
+
+Example Description
+
+This example provides a description of how to use the USART with hardware flow
+control and communicate with the Hyperterminal.
+First, the USART2 sends the TxBuffer to the hyperterminal and still waiting for
+a string from the hyperterminal that you must enter which must end by '\r'
+character (keypad ENTER button). The communication will end if received data exceed
+255 without sending the '\r' character. Each byte received is retransmitted to the
+Hyperterminal.
+The string that you have entered is stored in the RxBuffer array. The receive
+buffer have a RxBufferSize bytes as maximum.
+
+The USART2 is configured as follow:
+    - BaudRate = 115200 baud
+    - Word Length = 8 Bits
+    - One Stop Bit
+    - No parity
+    - Hardware flow control enabled (RTS and CTS signals)
+    - Receive and transmit enabled
+
+Directory contents
+
+  - USART/HyperTerminal_HwFlowControl/platform_config.h    Evaluation board specific configuration file
+  - USART/HyperTerminal_HwFlowControl/stm32f10x_conf.h     Library Configuration file
+  - USART/HyperTerminal_HwFlowControl/stm32f10x_it.h       Interrupt handlers header file
+  - USART/HyperTerminal_HwFlowControl/stm32f10x_it.c       Interrupt handlers
+  - USART/HyperTerminal_HwFlowControl/main.c               Main program
+  - USART/HyperTerminal_HwFlowControl/system_stm32f10x.c   STM32F10x system source file
+
+Hardware and Software environment
+
+  - This example runs on STM32F10x Connectivity line, High-Density, High-Density
+    Value line,Medium-Density, XL-Density, Medium-Density Value line, Low-Density
+    and Low-Density Value line Devices.
+
+  - This example has been tested with STMicroelectronics STM32100E-EVAL (High-Density
+    Value line), STM32100B-EVAL (Medium-Density Value line), STM3210E-EVAL
+    (High-Density and XL-Density) and STM3210B-EVAL (Medium-Density) evaluation
+    boards and can be easily tailored to any other supported device and development
+    board.
+    This example can't be tested with STM3210C-EVAL (Connectivity Line) evaluation board.
+    To select the STMicroelectronics evaluation board used to run the example,
+    uncomment the corresponding line in USART/HyperTerminal_HwFlowControl/platform_config.h file
+
+  - STM32100E-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between CN10 and PC serial
+      port.
+       note Make sure the Jumper 5 (JP5) is not open.
+
+  - STM32100B-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between CN9 and PC serial
+      port.
+       note In this case USART2 Tx, Rx, RTS and CTS pins are remapped by software
+            on PD.05, PD.06, PD.04 and PD.03 respectively.
+
+  - STM3210E-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between CN8 and PC serial
+      port.
+       note Make sure the Jumper 4 (JP4) is in position 2&lt;--&gt;3.
+
+  - STM3210B-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between CN5 and PC serial
+      port.
+       note In this case USART2 Tx, Rx, RTS and CTS pins are remapped by software
+            on PD.05, PD.06, PD.04 and PD.03 respectively.
+
+
+  - Hyperterminal configuration:
+    - Word Length = 8 Bits
+    - One Stop Bit
+    - No parity
+    - BaudRate = 115200 baud
+    - flow control: Hardware
+
+How to use it ?
+
+In order to make the program work, you must do the following :
+ - Copy all source files from this example folder to the template folder under
+   Project\STM32F10x_StdPeriph_Template
+ - Open your preferred toolchain
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+ note
+ - Low-density Value line devices are STM32F100xx microcontrollers where the
+   Flash memory density ranges between 16 and 32 Kbytes.
+ - Low-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 16 and 32 Kbytes.
+ - Medium-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 64 and 128 Kbytes.
+ - Medium-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 64 and 128 Kbytes.
+ - High-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - High-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - XL-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 512 and 1024 Kbytes.
+ - Connectivity line devices are STM32F105xx and STM32F107xx microcontrollers.
+
+
+***************************************************************************************************
+
+
+USART Hyperterminal interrupt example
+
+Example Description
+
+This example provides a description of how to use the EVAL_COM1 Transmit and Receive
+interrupts to communicate with the hyperterminal.
+EVAL_COM1 can be USART1 or USART2 depending on the STMicroelectronics EVAL board
+you are using.
+
+First, the EVAL_COM1 sends the TxBuffer to the hyperterminal and still waiting for
+a string from the hyperterminal that you must enter.
+The string that you have entered is stored in the RxBuffer array. The receive
+buffer have a RxBufferSize bytes as maximum (the reception is stopped when this
+maximum receive value is reached).
+
+The EVAL_COM1 is configured as follow:
+    - BaudRate = 9600 baud
+    - Word Length = 8 Bits (7 data bit + 1 parity bit)
+    - Two Stop Bit
+    - Odd parity
+    - Hardware flow control disabled (RTS and CTS signals)
+    - Receive and transmit enabled
+
+ note When the parity is enabled, the computed parity is inserted at the MSB
+position of the transmitted data.
+
+Directory contents
+
+  - USART/HyperTerminal_Interrupt/stm32f10x_conf.h    Library Configuration file
+  - USART/HyperTerminal_Interrupt/stm32f10x_it.h      Interrupt handlers header file
+  - USART/HyperTerminal_Interrupt/stm32f10x_it.c      Interrupt handlers source file
+  - USART/HyperTerminal_Interrupt/main.c              Main program
+  - USART/HyperTerminal_Interrupt/system_stm32f10x.c  STM32F10x system source file
+
+Hardware and Software environment
+
+  - This example runs on STM32F10x Connectivity line, High-Density, High-Density
+    Value line, Medium-Density, XL-Density, Medium-Density Value line, Low-Density
+    and Low-Density Value line Devices.
+
+  - This example has been tested with STMicroelectronics STM32100E-EVAL (High-Density
+    Value line), STM32100B-EVAL (Medium-Density Value line), STM3210C-EVAL (Connectivity line),
+    STM3210E-EVAL (High-Density and XL-Density) and STM3210B-EVAL (Medium-Density)
+    evaluation boards and can be easily tailored to any other supported device
+    and development board.
+    To select the STMicroelectronics evaluation board used to run the example,
+    uncomment the corresponding line in stm32_eval.h file
+
+  - STM32100B-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between the DB9 connector
+     CN10 and PC serial port.
+
+  - STM3210C-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between the DB9 connector
+      CN6 and PC serial port.
+       note Make sure that jumpers JP19 and JP18 are open.
+
+  - STM3210E-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between the DB9 connector
+     CN12 and PC serial port.
+
+  - STM3210B-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between the DB9 connector
+     CN6 and PC serial port.
+
+  - STM32100E-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between the DB9 connector
+     CN10 and PC serial port.
+
+  - Hyperterminal configuration:
+    - Word Length = 7 Bits
+    - Two Stop Bit
+    - Odd parity
+    - BaudRate = 9600 baud
+    - flow control: None
+
+How to use it ?
+
+In order to make the program work, you must do the following :
+ - Copy all source files from this example folder to the template folder under
+   Project\STM32F10x_StdPeriph_Template
+ - Open your preferred toolchain
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+ note
+ - Low-density Value line devices are STM32F100xx microcontrollers where the
+   Flash memory density ranges between 16 and 32 Kbytes.
+ - Low-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 16 and 32 Kbytes.
+ - Medium-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 64 and 128 Kbytes.
+ - Medium-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 64 and 128 Kbytes.
+ - High-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - High-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - XL-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 512 and 1024 Kbytes.
+ - Connectivity line devices are STM32F105xx and STM32F107xx microcontrollers.
+
+
+***************************************************************************************************
+
+
+USART Interrupts example
+
+Example Description
+
+This example provides a basic communication between USARTy and USARTz using
+interrupts. USARTy and USARTz can be USART1 and USART2 or USART2 and USART3,
+depending on the STMicroelectronics EVAL board you are using.
+
+USARTz sends TxBuffer2 to USARTy which sends TxBuffer1 to USARTz. The data received
+by USARTy and USARTz are stored respectively in RxBuffer1 and RxBuffer2. The data
+transfer is managed in USARTy_IRQHandler and USARTz_IRQHandler in stm32f10x_it.c file.
+
+USARTy and USARTz configured as follow:
+  - BaudRate = 9600 baud
+  - Word Length = 8 Bits
+  - One Stop Bit
+  - No parity
+  - Hardware flow control disabled (RTS and CTS signals)
+  - Receive and transmit enabled
+
+Directory contents
+
+  - USART/Interrupt/platform_config.h    Evaluation board specific configuration file
+  - USART/Interrupt/stm32f10x_conf.h     Library Configuration file
+  - USART/Interrupt/stm32f10x_it.h       Interrupt handlers header file
+  - USART/Interrupt/stm32f10x_it.c       Interrupt handlers
+  - USART/Interrupt/main.c               Main program
+  - USART/Interrupt/system_stm32f10x.c   STM32F10x system source file
+
+Hardware and Software environment
+
+  - This example runs on STM32F10x Connectivity line, High-Density, High-Density
+    Value line, Medium-Density, XL-Density, Medium-Density Value line, Low-Density
+    and Low-Density Value line Devices.
+
+  - This example has been tested with STMicroelectronics STM32100E-EVAL (High-Density
+    Value line), STM32100B-EVAL (Medium-Density Value line), STM3210C-EVAL (Connectivity line),
+    STM3210E-EVAL (High-Density and XL-Density) and STM3210B-EVAL (Medium-Density)
+    evaluation boards and can be easily tailored to any other supported device
+    and development board.
+    To select the STMicroelectronics evaluation board used to run the example,
+    uncomment the corresponding line in USART/Interrupt/platform_config.h file
+
+  - STM32100E-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between CN10 (USART1) and
+      CN5 (USART2).
+       note Make sure that jumper JP5 is not open.
+
+  - STM32100B-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between CN10 (USART1) and
+      CN9 (USART2).
+       note In this case USART2 Tx and Rx pins are remapped by software on PD.05
+            and PD.06 respectively.
+
+  - STM3210C-EVAL Set-up
+    - Connect USART2 Tx pin (PD.05) to USART3 Rx pin (PC.11)
+    - Connect USART2 Rx pin (PD.06) to USART3 Tx pin	(PC.10)
+       note In this case USART3 Tx and Rx pins are remapped by software.
+            Make sure that jumpers JP19 and JP18 are open.
+
+  - STM3210E-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between CN12 (USART1) and
+      CN8 (USART2).
+
+  - STM3210B-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between CN6 (USART1) and
+      CN5 (USART2).
+      - In this case USART2 Tx and Rx pins are remapped by software on PD.05
+        and PD.06 respectively.
+
+How to use it ?
+
+In order to make the program work, you must do the following :
+ - Copy all source files from this example folder to the template folder under
+   Project\STM32F10x_StdPeriph_Template
+ - Open your preferred toolchain
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+ note
+ - Low-density Value line devices are STM32F100xx microcontrollers where the
+   Flash memory density ranges between 16 and 32 Kbytes.
+ - Low-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 16 and 32 Kbytes.
+ - Medium-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 64 and 128 Kbytes.
+ - Medium-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 64 and 128 Kbytes.
+ - High-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - High-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - XL-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 512 and 1024 Kbytes.
+ - Connectivity line devices are STM32F105xx and STM32F107xx microcontrollers.
+
+
+***************************************************************************************************
+
+
+USART IrDA Receive example
+
+Example Description
+
+This example provides a basic communication USARTy IrDA receive mode. Four leds
+are used to show which byte is received. USARTy can be USART3 or USART2 depending
+on the STMicroelectronics EVAL board you are using.
+
+  - LED1 toggles when 0x05 is received
+  - LED2 toggles when 0x02 is received
+  - LED3 toggles when 0x03 is received
+  - LED4 toggles when 0x04 is received
+  - LED1, LED2, LED3 and LED4 toggle when 0x01 is received
+
+USARTy configured as follow:
+   - BaudRate = 115200 baud
+   - Word Length = 8 Bits
+   - One Stop Bit
+   - No parity
+   - Hardware flow control disabled (RTS and CTS signals)
+   - Receive and transmit enabled
+
+The USART IrDA example provides two IrDA program: transmitter&amp;receiver and
+requires two boards to be able to run the full demonstration:
+ - one board will act as IrDA transmitter
+ - one board will act as IrDA receiver
+
+Directory contents
+
+  - USART/IrDA/Receive/platform_config.h    Evaluation board specific configuration file
+  - USART/IrDA/Receive/stm32f10x_conf.h     Library Configuration file
+  - USART/IrDA/Receive/stm32f10x_it.h       Interrupt handlers header file
+  - USART/IrDA/Receive/stm32f10x_it.c       Interrupt handlers
+  - USART/IrDA/Receive/main.c               Main program
+  - USART/IrDA/Receive/system_stm32f10x.c   STM32F10x system source file
+
+Hardware and Software environment
+
+  - This example runs on STM32F10x Connectivity line, High-Density, High-Density
+    Value line, Medium-Density, XL-Density, Medium-Density Value line, Low-Density
+    and Low-Density Value line Devices.
+
+  - This example has been tested with STMicroelectronics STM32100E-EVAL (High-Density
+    Value line), STM32100B-EVAL (Medium-Density Value line), STM3210C-EVAL (Connectivity line),
+    STM3210E-EVAL (High-Density and XL-Density) and STM3210B-EVAL (Medium-Density)
+    evaluation boards and can be easily tailored to any other supported device
+    and development board.
+    To select the STMicroelectronics evaluation board used to run the example,
+    uncomment the corresponding line in USART/IrDA/Receive/platform_config.h or stm32_eval.h file
+
+  - STM32100E-EVAL Set-up
+    - Use an IrDA transceiver connected to the USART3 Tx pin (U16 connector, JP15
+      jumper must be fitted).
+    - Use LED1, LED2, LED3 and LED4 leds connected respectively to PC.06, PC.07,
+      PC.08 and PC.09 pins
+       note In this case USART3 Tx and Rx pins are remapped by software on PC.10
+            and PC.11 respectively.
+
+  - STM32100B-EVAL Set-up
+    - Use an IrDA transceiver connected to the USART3 Tx pin (U14 connector, JP11
+      jumper must be fitted).
+    - Use LED1, LED2, LED3 and LED4 leds connected respectively to PC.06, PC.07,
+      PC.08 and PC.09 pins
+       note In this case USART3 Tx and Rx pins are remapped by software on PC.10
+            and PC.11 respectively.
+
+  - STM3210C-EVAL Set-up
+    - Use an IrDA transceiver connected to the USART2 Tx and Rx pins (U12
+      connector, JP16 should be in position 1&lt;--&gt;2).
+    - Use LED1, LED2, LED3 and LED4 connected respectively to PD.07, PD.13, PF.03
+      and PD.04 pins
+
+  - STM3210E-EVAL Set-up
+    - Use an IrDA transceiver connected to the USART3 Tx pin (U13 connector, JP21
+      and JP22 jumper must be fitted).
+    - Use LED1, LED2, LED3 and LED4 leds connected respectively to PF.06, PF0.7,
+      PF.08 and PF.09 pins
+
+  - STM3210B-EVAL Set-up
+    - Use an IrDA transceiver connected to the USART3 Tx pin (U11 connector, JP5
+      jumper must be fitted).
+    - Use LED1, LED2, LED3 and LED4 leds connected respectively to PC.06, PC.07,
+      PC.08 and PC.09 pins
+
+How to use it ?
+
+In order to make the program work, you must do the following :
+ - Copy all source files from this example folder to the template folder under
+   Project\STM32F10x_StdPeriph_Template
+ - Open your preferred toolchain
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+ note
+ - Low-density Value line devices are STM32F100xx microcontrollers where the
+   Flash memory density ranges between 16 and 32 Kbytes.
+ - Low-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 16 and 32 Kbytes.
+ - Medium-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 64 and 128 Kbytes.
+ - Medium-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 64 and 128 Kbytes.
+ - High-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - High-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - XL-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 512 and 1024 Kbytes.
+ - Connectivity line devices are STM32F105xx and STM32F107xx microcontrollers.
+
+
+***************************************************************************************************
+
+
+USART IrDA Transmit example
+
+Example Description
+
+This example provides a basic communication USARTy IrDA transmit mode. Five pins,
+configured in input floating mode, are used to select the byte to be send at
+each pin state change. USARTy can be USART3 or USART2 depending on the
+STMicroelectronics EVAL board you are using.
+
+These bytes are:
+  - 0x00 if no key (JOY_NONE) pressed
+  - 0x01 if JOY_SEL pin state change
+  - 0x02 if JOY_DOWN pin state change
+  - 0x03 if JOY_LEFT pin state change
+  - 0x04 if JOY_RIGHT pin state change
+  - 0x05 if JOY_UP pin state change
+
+USARTy configured as follow:
+   - BaudRate = 115200 baud
+   - Word Length = 8 Bits
+   - One Stop Bit
+   - No parity
+   - Hardware flow control disabled (RTS and CTS signals)
+   - Receive and transmit enabled
+
+The USART IrDA example provides two IrDA program: transmitter&amp;receiver and requires two boards
+to be able to run the full demonstration:
+ - one board will act as IrDA transmitter
+ - one board will act as IrDA receiver
+
+Directory contents
+
+  - USART/IrDA/Transmit/platform_config.h    Evaluation board specific configuration file
+  - USART/IrDA/Transmit/stm32f10x_conf.h     Library Configuration file
+  - USART/IrDA/Transmit/stm32f10x_it.h       Interrupt handlers header file
+  - USART/IrDA/Transmit/stm32f10x_it.c       Interrupt handlers
+  - USART/IrDA/Transmit/main.c               Main program
+  - USART/IrDA/Transmit/system_stm32f10x.c   STM32F10x system source file
+
+Hardware and Software environment
+
+  - This example runs on STM32F10x Connectivity line, High-Density, High-Density
+    Value line, Medium-Density, XL-Density, Medium-Density Value line, Low-Density
+    and Low-Density Value line Devices.
+
+  - This example has been tested with STMicroelectronics STM32100E-EVAL (High-Density
+    Value line), STM32100B-EVAL (Medium-Density Value line), STM3210C-EVAL (Connectivity line),
+    STM3210E-EVAL (High-Density and XL-Density) and STM3210B-EVAL (Medium-Density)
+    evaluation boards and can be easily tailored to any other supported device
+    and development board.
+    To select the STMicroelectronics evaluation board used to run the example,
+    uncomment the corresponding line in USART/IrDA/Transmit/platform_config.h or the stm32_eval.h file
+
+  - STM32100E-EVAL Set-up
+    - Use DOWN push-button connected to pin PD.03
+    - Use UP push-button connected to pin PG.15
+    - Use SEL push-button connected to pin PG.07
+    - Use RIGHT push-button connected to pin PG.13
+    - Use RIGHT push-button connected to pin PG.14
+    - Use an IrDA transceiver connected to the USART3 Tx and Rx pins (U16
+      connector, JP15 jumper must be fitted).
+
+  - STM32100B-EVAL Set-up
+    - Use DOWN push-button connected to pin PD.14
+    - Use UP push-button connected to pin PD.08
+    - Use SEL push-button connected to pin PD.12
+    - Use RIGHT push-button connected to pin PE.01
+    - Use RIGHT push-button connected to pin PE.00
+    - Use an IrDA transceiver connected to the USART3 Tx and Rx pins (U14
+      connector, JP11 jumper must be fitted).
+
+  - STM3210C-EVAL Set-up
+    - The JoyStick push buttons are connected to the IO Expander on I2C.
+    - Use an IrDA transceiver connected to the USART2 Tx and Rx pins (U12
+      connector, JP16 should be in position 1&lt;--&gt;2).
+
+  - STM3210E-EVAL Set-up
+    - Use DOWN push-button connected to pin PD.03
+    - Use UP push-button connected to pin PG.15
+    - Use SEL push-button connected to pin PG.07
+    - Use RIGHT push-button connected to pin PG.13
+    - Use RIGHT push-button connected to pin PG.14
+    - Use an IrDA transceiver connected to the USART3 Tx and Rx pins (U13
+      connector, JP21 and JP22 jumper must be fitted).
+
+  - STM3210B-EVAL Set-up
+    - Use DOWN push-button connected to pin PD.14
+    - Use UP push-button connected to pin PD.08
+    - Use SEL push-button connected to pin PD.12
+    - Use RIGHT push-button connected to pin PE.00
+    - Use RIGHT push-button connected to pin PE.01
+    - Use an IrDA transceiver connected to the USART3 Tx and Rx pins (U11
+      connector, JP5 jumper must be fitted).
+
+How to use it ?
+
+In order to make the program work, you must do the following :
+ - Copy all source files from this example folder to the template folder under
+   Project\STM32F10x_StdPeriph_Template
+ - Open your preferred toolchain
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+ note
+ - Low-density Value line devices are STM32F100xx microcontrollers where the
+   Flash memory density ranges between 16 and 32 Kbytes.
+ - Low-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 16 and 32 Kbytes.
+ - Medium-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 64 and 128 Kbytes.
+ - Medium-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 64 and 128 Kbytes.
+ - High-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - High-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - XL-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 512 and 1024 Kbytes.
+ - Connectivity line devices are STM32F105xx and STM32F107xx microcontrollers.
+
+
+***************************************************************************************************
+
+
+USART Multi Processor example
+
+Example Description
+
+This example provides a description of how to use the USART in multi-processor mode.
+USARTy and USARTz can be USART1 and USART2 or USART2 and USART3 respectively,
+depending on the STMicroelectronics EVAL board you are using.
+
+First, the USARTy and USARTz address are set to 0x1 and 0x2. The USARTy send
+continuously the character 0x33 to the USARTz. The USARTz toggle LED1, LED2, LED3
+and LED4 pins while receiving 0x33.
+
+When a falling edge is applied on BUTTON_KEY EXTI line, an interrupt is generated
+and in the EXTI9_5_IRQHandler routine, the USARTz is entered in mute mode and still
+in this mode (no LED toggling) until a rising edge is applied on BUTTON_WAKEUP
+EXTI Line 0.
+In this interrupt routine the USARTy send the character of address mark (0x102)
+to wakeup USARTz. The LED restart toggling.
+
+USARTy and USARTz configured as follow:
+  - BaudRate = 9600 baud
+  - Word Length = 9 Bits
+  - One Stop Bit
+  - No parity
+  - Hardware flow control disabled (RTS and CTS signals)
+  - Receive and transmit enabled
+
+Directory contents
+
+  - USART/MultiProcessor/platform_config.h    Evaluation board specific configuration file
+  - USART/MultiProcessor/stm32f10x_conf.h     Library Configuration file
+  - USART/MultiProcessor/stm32f10x_it.h       Interrupt handlers header file
+  - USART/MultiProcessor/stm32f10x_it.c       Interrupt handlers
+  - USART/MultiProcessor/main.c               Main program
+  - USART/MultiProcessor/system_stm32f10x.c   STM32F10x system source file
+
+Hardware and Software environment
+
+  - This example runs on STM32F10x Connectivity line, High-Density, High-Density
+    Value line, Medium-Density, XL-Density, Medium-Density Value line, Low-Density
+    and Low-Density Value line Devices.
+
+  - This example has been tested with STMicroelectronics STM32100E-EVAL (High-Density
+    Value line), STM32100B-EVAL (Medium-Density Value line), STM3210C-EVAL (Connectivity line),
+    STM3210E-EVAL (High-Density and XL-Density) and STM3210B-EVAL (Medium-Density)
+    evaluation boards and can be easily tailored to any other supported device
+    and development board.
+    To select the STMicroelectronics evaluation board used to run the example,
+    uncomment the corresponding line in USART/MultiProcessor/platform_config.h or stm32_eval.h file.
+
+  - STM32100E-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between CN5 and CN10.
+    - Use Key push-button connected to pin PG.08 (EXTI Line8)
+    - Use Wakeup push-button connected to pin PA.00 (EXTI Line0)
+    - Use LED1, LED2, LED3 and LED4 leds connected respectively to PF.06, PF.07,
+      PF.08 and PF.09 pins
+       note Make sure that jumper JP5 is not open.
+            Make sure that jumper JP4 is in position 1&lt;--&gt;2.
+
+  - STM32100B-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between CN9 and CN10.
+       note In this case USART2 Tx and Rx pins are remapped by software on
+            PD.05 and PD.06 respectively.
+    - Use Key push-button connected to pin PB.09 (EXTI Line9)
+    - Use Wakeup push-button connected to pin PA.00 (EXTI Line0)
+    - Use LED1, LED2, LED3 and LED4 leds connected respectively to PC.06, PC.07,
+      PC.08 and PC.09 pins
+
+  - STM3210C-EVAL Set-up
+    - Connect USART2 Tx pin (PD.05) to USART3 Rx pin (PC.11)
+    - Connect USART2 Rx pin (PD.06) to USART3 Tx pin	(PC.10)
+    - Use Key push-button connected to pin PB.09 (EXTI Line9)
+    - Use Wakeup push-button connected to pin PA.00 (EXTI Line0)
+    - Use LED1, LED2, LED3 and LED4 connected respectively to PD.07, PD.13, PF.03
+      and PD.04 pins
+       note In this case USART3 Tx and Rx pins are remapped by software.
+            Make sure that jumpers JP19 and JP18 are open.
+            Make sure that the Jumper 14 (JP14) is in position 2&lt;--&gt;3.
+
+  - STM3210E-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between CN12 and CN8.
+    - Use Key push-button connected to pin PG.08 (EXTI Line8)
+    - Use Wakeup push-button connected to pin PA.00 (EXTI Line0)
+    - Use LED1, LED2, LED3 and LED4 leds connected respectively to PF.06, PF0.7, PF.08
+      and PF.09 pins
+       note Make sure that the Jumper 4 (JP4) is in position 1&lt;--&gt;2.
+
+  - STM3210B-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between CN5 and CN6.
+       note In this case USART2 Tx and Rx pins are remapped by software on
+            PD.05 and PD.06 respectively.
+    - Use Key push-button connected to pin PB.09 (EXTI Line9)
+    - Use Wakeup push-button connected to pin PA.00 (EXTI Line0)
+    - Use LED1, LED2, LED3 and LED4 leds connected respectively to PC.06, PC.07, PC.08
+      and PC.09 pins
+
+How to use it ?
+
+In order to make the program work, you must do the following :
+ - Copy all source files from this example folder to the template folder under
+   Project\STM32F10x_StdPeriph_Template
+ - Open your preferred toolchain
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+ note
+ - Low-density Value line devices are STM32F100xx microcontrollers where the
+   Flash memory density ranges between 16 and 32 Kbytes.
+ - Low-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 16 and 32 Kbytes.
+ - Medium-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 64 and 128 Kbytes.
+ - Medium-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 64 and 128 Kbytes.
+ - High-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - High-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - XL-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 512 and 1024 Kbytes.
+ - Connectivity line devices are STM32F105xx and STM32F107xx microcontrollers.
+
+
+***************************************************************************************************
+
+
+USART Polling example
+
+Example Description
+
+This example provides a basic communication between USARTy and USARTz using flags.
+USARTy and USARTz can be USART1 and USART2 or USART2 and USART3, depending on
+the STMicroelectronics EVAL board you are using.
+
+First, the USARTy sends TxBuffer to USARTz. The USARTz reads the received data and
+store it into RxBuffer.
+The received data is then compared with the send ones and the result of this
+comparison is stored in the "TransferStatus" variable.
+
+USARTy and USARTz configured as follow:
+  - BaudRate = 230400 baud
+  - Word Length = 8 Bits
+  - One Stop Bit
+  - Even parity
+  - Hardware flow control disabled (RTS and CTS signals)
+  - Receive and transmit enabled
+
+Directory contents
+
+  - USART/Polling/platform_config.h    Evaluation board specific configuration file
+  - USART/Polling/stm32f10x_conf.h     Library Configuration file
+  - USART/Polling/stm32f10x_it.h       Interrupt handlers header file
+  - USART/Polling/stm32f10x_it.c       Interrupt handlers
+  - USART/Polling/main.c               Main program
+  - USART/Polling/system_stm32f10x.c   STM32F10x system source file
+
+Hardware and Software environment
+
+  - This example runs on STM32F10x Connectivity line, High-Density, High-Density
+    Value line, Medium-Density, XL-Density, Medium-Density Value line, Low-Density
+    and Low-Density Value line Devices.
+
+  - This example has been tested with STMicroelectronics STM32100E-EVAL (High-Density
+    Value line), STM32100B-EVAL (Medium-Density Value line), STM3210C-EVAL (Connectivity line),
+    STM3210E-EVAL (High-Density and XL-Density) and STM3210B-EVAL (Medium-Density)
+    evaluation boards and can be easily tailored to any other supported device
+    and development board.
+    To select the STMicroelectronics evaluation board used to run the example,
+    uncomment the corresponding line in USART/Polling/platform_config.h file
+
+  - STM32100E-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between CN10 (USART1) and
+      CN5 (USART2).
+        note Make sure that jumper JP5 is not open.
+
+  - STM32100B-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between CN10 (USART1) and
+      CN9 (USART2).
+       note In this case USART2 Tx and Rx pins are remapped by software on PD.05
+            and PD.06 respectively.
+
+  - STM3210C-EVAL Set-up
+    - Connect USART2 Tx pin (PD.05) to USART3 Rx pin (PC.11)
+    - Connect USART2 Rx pin (PD.06) to USART3 Tx pin (PC.10)
+       note In this case USART3 Tx and Rx pins are remapped by software.
+            Make sure that jumpers JP19 and JP18 are open.
+
+  - STM3210E-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between CN12 (USART1) and
+      CN8 (USART2).
+
+  - STM3210B-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between CN6 (USART1) and
+      CN5 (USART2).
+      - In this case USART2 Tx and Rx pins are remapped by software on PD.05
+        and PD.06 respectively.
+
+How to use it ?
+
+In order to make the program work, you must do the following :
+ - Copy all source files from this example folder to the template folder under
+   Project\STM32F10x_StdPeriph_Template
+ - Open your preferred toolchain
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+ note
+ - Low-density Value line devices are STM32F100xx microcontrollers where the
+   Flash memory density ranges between 16 and 32 Kbytes.
+ - Low-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 16 and 32 Kbytes.
+ - Medium-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 64 and 128 Kbytes.
+ - Medium-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 64 and 128 Kbytes.
+ - High-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - High-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - XL-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 512 and 1024 Kbytes.
+ - Connectivity line devices are STM32F105xx and STM32F107xx microcontrollers.
+
+
+***************************************************************************************************
+
+
+USART Printf example
+
+Example Description
+
+This example shows how to retarget the C library printf function to the USART.
+This implementation output the printf message on the Hyperterminal using USARTx.
+USARTx can be USART1 or USART2 depending on the EVAL board you are using.
+
+The USARTx is configured as follow:
+    - BaudRate = 115200 baud
+    - Word Length = 8 Bits
+    - One Stop Bit
+    - No parity
+    - Hardware flow control disabled (RTS and CTS signals)
+    - Receive and transmit enabled
+
+Directory contents
+
+  - USART/Printf/stm32f10x_conf.h     Library Configuration file
+  - USART/Printf/stm32f10x_it.h       Interrupt handlers header file
+  - USART/Printf/stm32f10x_it.c       Interrupt handlers
+  - USART/Printf/main.c               Main program
+  - USART/Printf/system_stm32f10x.c   STM32F10x system source file
+
+Hardware and Software environment
+
+  - This example runs on STM32F10x Connectivity line, High-Density, High-Density
+    Value line, Medium-Density, XL-Density, Medium-Density Value line, Low-Density
+    and Low-Density Value line Devices.
+
+  - This example has been tested with STMicroelectronics STM32100E-EVAL (High-Density
+    Value line), STM32100B-EVAL (Medium-Density Value line), STM3210C-EVAL (Connectivity line),
+    STM3210E-EVAL (High-Density and XL-Density) and STM3210B-EVAL (Medium-Density)
+    evaluation boards and can be easily tailored to any other supported device
+    and development board.
+    To select the STMicroelectronics evaluation board used to run the example,
+    uncomment the corresponding line in stm32_eval.h file (under Utilities\STM32_EVAL)
+
+  - STM32100E-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between the DB9 connector
+     CN10 and PC serial port.
+
+  - STM32100B-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between the DB9 connector
+     CN10 and PC serial port.
+
+  - STM3210C-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between the DB9 connector
+      CN6 (USART2) and PC serial port.
+     note Make sure that jumpers JP19 and JP18 are open.
+
+  - STM3210E-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between the DB9 connector
+      CN12(when USART1 is used) and PC serial port.
+
+  - STM3210B-EVAL Set-up
+    - Connect a null-modem female/female RS232 cable between the DB9 connector
+      CN6(when USART1 is used) and PC serial port.
+
+  - Hyperterminal configuration:
+    - Word Length = 8 Bits
+    - One Stop Bit
+    - No parity
+    - BaudRate = 115200 baud
+    - flow control: None
+
+How to use it ?
+
+In order to make the program work, you must do the following :
+ - Copy all source files from this example folder to the template folder under
+   Project\STM32F10x_StdPeriph_Template
+ - Open your preferred toolchain
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+ note
+ - Low-density Value line devices are STM32F100xx microcontrollers where the
+   Flash memory density ranges between 16 and 32 Kbytes.
+ - Low-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 16 and 32 Kbytes.
+ - Medium-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 64 and 128 Kbytes.
+ - Medium-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 64 and 128 Kbytes.
+ - High-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - High-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - XL-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 512 and 1024 Kbytes.
+ - Connectivity line devices are STM32F105xx and STM32F107xx microcontrollers.
+
+
+***************************************************************************************************
+
+
+USART Smartcard example
+
+Example Description
+
+This example provides a description of how  to use the USART in Smartcard mode.
+The example gives only the possibility to read the ATR and decode it into
+predefined buffer.
+First, the code is waiting for an card insertion. If a card is detected through
+the EXTI Line interrupt (connected to the Smartcard detect pin), a reset signal
+is applied to the card through its reset pin.
+As response to this reset, the card transmit the ATR which will be stored in
+predefined buffer. Once the ATR is received, it is decoded and stored in a specific
+structure (SC_A2R) and the card protocol type is stored in a variable.
+ATRDecodeStatus variable must be equal to 1 (PASSED) when the sequence succeed.
+
+The used Smartcard should be ISO7816-3 T=0 compatible.
+
+SC_USART configured as follow:
+  - Word Length = 9 Bits
+  - 0.5 Stop Bit
+  - Even parity
+  - BaudRate = 12096 baud
+  - Hardware flow control disabled (RTS and CTS signals)
+  - Tx and Rx enabled
+  - USART Clock enabled
+  - USART CPOL: Clock is active low
+  - USART CPHA: Data is captured on the second edge
+  - USART LastBit: The clock pulse of the last data bit is not output to
+                   the SCLK pin
+
+Directory contents
+
+  - USART/Smartcard/platform_config.h    Evaluation board specific configuration file
+  - USART/Smartcard/stm32f10x_conf.h     Library Configuration file
+  - USART/Smartcard/stm32f10x_it.h       Interrupt handlers header file
+  - USART/Smartcard/stm32f10x_it.c       Interrupt handlers
+  - USART/Smartcard/main.c               Main program
+  - USART/Smartcard/system_stm32f10x.c   STM32F10x system source file
+
+Hardware and Software environment
+
+  - This example runs on STM32F10x Connectivity line, High-Density, High-Density
+    Value line, Medium-Density, XL-Density, Medium-Density Value line, Low-Density
+    and Low-Density Value line Devices.
+
+  - This example has been tested with STMicroelectronics STM3210C-EVAL (Connectivity line),
+    STM3210E-EVAL (High-Density and XL-Density) and STM3210B-EVAL (Medium-Density)
+    evaluation boards and can be easily tailored to any other supported device and
+    development board.
+    To select the STMicroelectronics evaluation board used to run the example,
+    uncomment the corresponding line in USART/Smartcard/platform_config.h file
+
+  - STM3210C-EVAL Set-up
+    - Plug a Smartcard (ISO7816-3 T=0 compatible) into  the dedicated Smartcard
+      connector CN5.
+       note In this case USART3 Tx and CK pins are full remapped by software.
+            Make sure that Jumper 11 (JP11), Jumper 12 (JP12) and Jumper 13 (JP13)
+            are in position 1&lt;--&gt;2.
+
+  - STM3210E-EVAL Set-up
+    - Plug a Smartcard (ISO7816-3 T=0 compatible) into  the dedicated Smartcard
+      connector CN18.
+       note Make sure that Jumper 15 (JP15) and Jumper 16 (JP16) are fitted.
+
+  - STM3210B-EVAL Set-up
+    - Plug a Smartcard (ISO7816-3 T=0 compatible) into the dedicated Smartcard
+      connector CN16.
+
+How to use it ?
+
+In order to make the program work, you must do the following :
+ - Copy all source files from this example folder to the template folder under
+   Project\STM32F10x_StdPeriph_Template
+ - Open your preferred toolchain
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+ note
+ - Low-density Value line devices are STM32F100xx microcontrollers where the
+   Flash memory density ranges between 16 and 32 Kbytes.
+ - Low-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 16 and 32 Kbytes.
+ - Medium-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 64 and 128 Kbytes.
+ - Medium-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 64 and 128 Kbytes.
+ - High-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - High-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - XL-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 512 and 1024 Kbytes.
+ - Connectivity line devices are STM32F105xx and STM32F107xx microcontrollers.
+
+
+***************************************************************************************************
+
+
+USART Synchronous example
+
+Example Description
+
+This example provides a basic communication between USARTy (Synchronous mode)
+and SPIy using flags. USARTy and SPIy can be USART1 and SPI1 or USART2 and SPI3,
+depending on the STMicroelectronics EVAL board you are using.
+
+First, the USARTy sends data from TxBuffer1 buffer to SPIy using USARTy TXE flag.
+Data received, using RXNE flag, by SPIy is stored in RxBuffer2 then compared with
+the sent ones and the result of this comparison is stored in the "TransferStatus1"
+variable.
+
+Then, the SPIy sends data from TxBuffer2 buffer to USARTy using SPIy TXE flag.
+Data received, using RXNE flag, by USARTy is stored in RxBuffer1 then compared with
+the sent ones and the result of this comparison is stored in the "TransferStatus2"
+variable.
+
+USARTy configured as follow:
+  - BaudRate = 115200 baud
+  - Word Length = 8 Bits
+  - One Stop Bit
+  - No parity
+  - Hardware flow control disabled (RTS and CTS signals)
+  - Receive and transmit enabled
+  - USART Clock enabled
+  - USART CPOL: Clock is active high
+  - USART CPHA: Data is captured on the second edge
+  - USART LastBit: The clock pulse of the last data bit is output to the SCLK pin
+
+SPIy configured as follow:
+  - Direction = 2 Lines FullDuplex
+  - Mode = Slave Mode
+  - DataSize = 8 Bits
+  - CPOL = Clock is active high
+  - CPHA = Data is captured on the second edge
+  - NSS = NSS Software
+  - First Bit = First Bit is the LSB
+
+Directory contents
+
+  - USART/Synchronous/platform_config.h    Evaluation board specific configuration file
+  - USART/Synchronous/stm32f10x_conf.h     Library Configuration file
+  - USART/Synchronous/stm32f10x_it.h       Interrupt handlers header file
+  - USART/Synchronous/stm32f10x_it.c       Interrupt handlers
+  - USART/Synchronous/main.c               Main program
+  - USART/Synchronous/system_stm32f10x.c   STM32F10x system source file
+
+Hardware and Software environment
+
+  - This example runs on STM32F10x Connectivity line, High-Density, High-Density
+    Value line, Medium-Density, XL-Density, Medium-Density Value line, Low-Density
+    and Low-Density Value line Devices.
+
+  - This example has been tested with STMicroelectronics STM32100E-EVAL (High-Density
+    Value line), STM32100B-EVAL (Medium-Density Value line), STM3210E-EVAL
+    (High-Density and XL-Density) and STM3210B-EVAL (Medium-Density) evaluation
+    boards and can be easily tailored to any other supported device and development
+    board.
+    This example can't be tested with STM3210C-EVAL (Connectivity Line) evaluation
+    board since the USART CK pins are already used by other on-board modules.
+    To select the STMicroelectronics evaluation board used to run the example,
+    uncomment the corresponding line in USART/Synchronous/platform_config.h file
+
+  - STM32100E-EVAL Set-up
+    - Connect USART1_Tx(PA.09) to SPI1_MOSI(PA.07), USART1_Rx(PA.10) to
+      SPI1_MISO(PA.06) and USART1_CK(PA.08) to SPI1_SCK(PA.05).
+
+  - STM32100B-EVAL Set-up
+    - Connect USART1_Tx(PA.09) to SPI1_MOSI(PA.07), USART1_Rx(PA.10) to
+      SPI1_MISO(PA.06) and USART1_CK(PA.08) to SPI1_SCK(PA.05).
+
+  - STM3210E-EVAL Set-up
+    - Connect USART1_Tx(PA.09) to SPI1_MOSI(PA.07), USART1_Rx(PA.10) to
+      SPI1_MISO(PA.06) and USART1_CK(PA.08) to SPI1_SCK(PA.05).
+
+  - STM3210B-EVAL Set-up
+    - Connect USART1_Tx(PA.09) to SPI1_MOSI(PA.07), USART1_Rx(PA.10) to
+      SPI1_MISO(PA.06) and USART1_CK(PA.08) to SPI1_SCK(PA.05).
+
+How to use it ?
+
+In order to make the program work, you must do the following :
+ - Copy all source files from this example folder to the template folder under
+   Project\STM32F10x_StdPeriph_Template
+ - Open your preferred toolchain
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+ note
+ - Low-density Value line devices are STM32F100xx microcontrollers where the
+   Flash memory density ranges between 16 and 32 Kbytes.
+ - Low-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 16 and 32 Kbytes.
+ - Medium-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 64 and 128 Kbytes.
+ - Medium-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 64 and 128 Kbytes.
+ - High-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - High-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - XL-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 512 and 1024 Kbytes.
+ - Connectivity line devices are STM32F105xx and STM32F107xx microcontrollers.
+
+</span>
+   </pre>
+  </div>
+  </body>
+</html>
+

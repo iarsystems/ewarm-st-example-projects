@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/Program/Program.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/WriteProtection/WriteProtection.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>Program</project>
+        <configuration>STM32303C-EVAL</configuration>
+      </member>
+      <member>
+        <project>WriteProtection</project>
+        <configuration>STM32303C-EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

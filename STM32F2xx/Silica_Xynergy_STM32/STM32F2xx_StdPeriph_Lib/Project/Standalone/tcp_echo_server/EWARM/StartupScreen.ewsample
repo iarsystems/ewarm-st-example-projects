@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<exampleInfo>
+  <copyDir>..\</copyDir>
+  <copyDir>..\..\..\..\Project\Standalone\httpserver\</copyDir>
+  <copyDir>..\..\..\..\Libraries\</copyDir>
+  <copyDir>..\..\..\..\Utilities\STM32_EVAL\</copyDir>
+  <copyDir>..\..\..\..\Utilities\Third_Party\lwip_v1.3.2\</copyDir>
+</exampleInfo>

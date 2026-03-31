@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/DAC_GenerateConstantSignal_TriggerSW/EWARM/DAC_GenerateConstantSignal_TriggerSW.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/DAC_GenerateWaveform_TriggerHW/EWARM/DAC_GenerateWaveform_TriggerHW.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/DAC_GenerateWaveform_TriggerHW_Init/EWARM/DAC_GenerateWaveform_TriggerHW_Init.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>DAC_GenerateConstantSignal_TriggerSW</project>
+        <configuration>STM32L073RZ_NUCLEO</configuration>
+      </member>
+      <member>
+        <project>DAC_GenerateWaveform_TriggerHW</project>
+        <configuration>STM32L073RZ_NUCLEO</configuration>
+      </member>
+      <member>
+        <project>DAC_GenerateWaveform_TriggerHW_Init</project>
+        <configuration>STM32L073RZ_NUCLEO</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

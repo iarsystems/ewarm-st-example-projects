@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/CRYP_AESModes/EWARM/CRYP_AESModes.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/CRYP_DMA/EWARM/CRYP_DMA.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>CRYP_AESModes</project>
+        <configuration>STM32L031K6_NUCLEO</configuration>
+      </member>
+      <member>
+        <project>CRYP_DMA</project>
+        <configuration>STM32L031K6_NUCLEO</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

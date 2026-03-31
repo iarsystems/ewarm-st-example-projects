@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<infocenter_data version="1.0">
+  <iar_name>RNG</iar_name>                                   									  <!--App-->
+  <iar_description>This example provides a short description of how to use the RNG peripheral to generate Random 32bit numbers.</iar_description><!--App short description-->
+  <iar_curdir>$CUR_DIR$</iar_curdir>
+</infocenter_data>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/Demo/EWARMv5/Flash_Loader.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/IOExpander/EWARMv5/Project.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>Flash_Loader</project>
+        <configuration>STM3210C-EVAL_FW</configuration>
+      </member>
+      <member>
+        <project>Project</project>
+        <configuration>STM32F10X_CL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

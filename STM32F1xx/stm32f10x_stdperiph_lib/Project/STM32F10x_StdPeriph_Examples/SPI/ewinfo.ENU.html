@@ -1,0 +1,557 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+SPI CRC example
+
+Example Description
+
+This example provides a description of how to set a communication between two
+SPIs in full-duplex mode and performs a transfer from Master to Slave and
+Slave to Master followed by CRC transmission.
+
+SPI1 is configured as master and SPI2 as slave and both are in full-duplex
+configuration mode with 16bit data size and a 4.5 Mbit/s communication speed
+(for Value line devices the speed is set at 1.5 Mbit/s).
+CRC calculation is enabled for both SPIs.
+
+After enabling both SPIs, the first data from SPI2_Buffer_Tx is transmitted from
+slave followed by the first data from SPI1_Buffer_Tx send by the master. A test
+on RxNE flag is done for both master and slave to check the reception of data on
+their respective data register. The same procedure is done for the remaining data
+to transfer except the last ones.
+
+Last data from SPI1_Buffer_Tx is transmitted followed by enabling CRC transmission
+for SPI1 and the last data from SPI2_Buffer_Tx is transmitted followed by enabling
+CRC transmission for SPI2: user must take care to reduce code on this phase for
+high speed communication.
+
+Last transmitted buffer data and CRC value are then received successively on
+master and slave data registers. The received CRC value are stored on CRC1Value
+and CRC2Value respectively for SPI1 and SPI2.
+
+Once the transfer is completed a comparison is done and TransferStatus1 and
+TransferStatus2 gives the data transfer status for each data transfer direction
+where it is PASSED if transmitted and received data are the same otherwise it
+is FAILED.
+A check of CRC error flag, for the master and the salve, is done after receiving
+CRC data.
+
+Directory contents
+
+  - SPI/CRC/stm32f10x_conf.h     Library Configuration file
+  - SPI/CRC/stm32f10x_it.c       Interrupt handlers
+  - SPI/CRC/stm32f10x_it.h       Header for stm32f10x_it.c
+  - SPI/CRC/main.c               Main program
+  - SPI/CRC/system_stm32f10x.c   STM32F10x system source file
+
+Hardware and Software environment
+
+  - This example runs on STM32F10x Connectivity line, High-Density, High-Density
+    Value line, Medium-Density, XL-Density, Medium-Density Value line, Low-Density
+    and Low-Density Value line Devices.
+
+  - This example has been tested with STMicroelectronics STM32100E-EVAL (High-Density
+    Value line), STM32100B-EVAL(STM32F10x Medium-Density Value line), STM3210E-EVAL
+    (STM32F10x High-Density) and STM3210B-EVAL (STM32F10x Medium-Density)
+    evaluation boards and can be easily tailored to any other supported
+    device and development board.
+    This example can't be tested with STMicroelectronics STM3210C-EVAL (STM32F10x
+    Connectivity Line) evaluation board.
+
+  - STM32100E-EVAL Set-up
+     - Connect SPI1 SCK (PA.05) pin to SPI2 SCK (PB.13) pin
+     - Connect SPI1 MISO (PA.06) pin to SPI2 MISO (PB.14) pin
+     - Connect SPI1 MOSI (PA.07) pin to SPI2 MOSI (PB.15) pin
+
+  - STM32100B-EVAL Set-up
+     - Connect SPI1 SCK (PA.05) pin to SPI2 SCK (PB.13) pin
+     - Connect SPI1 MISO (PA.06) pin to SPI2 MISO (PB.14) pin
+     - Connect SPI1 MOSI (PA.07) pin to SPI2 MOSI (PB.15) pin
+
+  - STM3210E-EVAL Set-up
+     - Connect SPI1 SCK (PA.05) pin to SPI2 SCK (PB.13) pin
+     - Connect SPI1 MISO (PA.06) pin to SPI2 MISO (PB.14) pin
+     - Connect SPI1 MOSI (PA.07) pin to SPI2 MOSI (PB.15) pin
+     note The jumper 14 (USB Disconnect) must be set in position 1&lt;-&gt;2 in order
+          to not interfer with SPI2 MISO pin PB14.
+
+  - STM3210B-EVAL Set-up
+     - Connect SPI1 SCK (PA.05) pin to SPI2 SCK (PB.13) pin
+     - Connect SPI1 MISO (PA.06) pin to SPI2 MISO (PB.14) pin
+     - Connect SPI1 MOSI (PA.07) pin to SPI2 MOSI (PB.15) pin
+
+How to use it ?
+
+In order to make the program work, you must do the following :
+ - Copy all source files from this example folder to the template folder under
+   Project\STM32F10x_StdPeriph_Template
+ - Open your preferred toolchain
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+ note
+ - Low-density Value line devices are STM32F100xx microcontrollers where the
+   Flash memory density ranges between 16 and 32 Kbytes.
+ - Low-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 16 and 32 Kbytes.
+ - Medium-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 64 and 128 Kbytes.
+ - Medium-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 64 and 128 Kbytes.
+ - High-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - High-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - XL-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 512 and 1024 Kbytes.
+ - Connectivity line devices are STM32F105xx and STM32F107xx microcontrollers.
+
+
+***************************************************************************************************
+
+
+SPI DMA example
+
+Example Description
+
+This example provides a description of how to set a communication between the two
+SPIs in simplex mode and performs a transfer from SPI_MASTER in polling mode to the
+SPI_SLAVE in DMA receive mode.
+
+SPI_MASTER and SPI_SLAVE can be SPI1 and SPI2 or SPI3 and SPI2, depending on the
+STMicroelectronics EVAL board you are using.
+
+Both SPIs are configured with 8bit data frame and a 18Mbit/s communication speed.
+SPI_MASTER is configured in bidirectional mode as transmitter only, while SPI_SLAVE
+is configured in bidirectional mode but as receiver only. Both master and slave NSS
+pins are managed by hardware.
+A dedicated DMA channel is configured for SPI_SLAVE Rx request to store received
+data in SPI_SLAVE_Buffer_Rx.
+
+SPI_MASTER starts by transferring the first data, once this data is received by the
+SPI_SLAVE the RxNE request will trigger the DMA to transfer this data and store it
+into SPI_SLAVE_Buffer_Rx. The same action is done for the rest of the buffer.
+
+Once the transfer is completed a comparison is done and TransferStatus gives the
+data transfer status where it is PASSED if transmitted and received data are the
+same otherwise it is FAILED.
+
+
+Directory contents
+
+  - SPI/DMA/platform_config.h   Evaluation board specific configuration file
+  - SPI/DMA/stm32f10x_conf.h    Library Configuration file
+  - SPI/DMA/stm32f10x_it.c      Interrupt handlers
+  - SPI/DMA/stm32f10x_it.h      Interrupt handlers header file
+  - SPI/DMA/main.c              Main program
+  - SPI/DMA/system_stm32f10x.c  STM32F10x system source file
+
+Hardware and Software environment
+
+  - This example runs on STM32F10x Connectivity line, High-Density, High-Density
+    Value line, Medium-Density, XL-Density, Medium-Density Value line, Low-Density
+    and Low-Density Value line Devices.
+
+  - This example has been tested with STMicroelectronics STM3210C-EVAL (Connectivity
+    line), STM3210E-EVAL (High-Density and XL-Density) and STM3210B-EVAL
+    (Medium-Density) evaluation boards and can be easily tailored to any other
+    supported device and development board.
+    This example can't be tested with STMicroelectronics STM32100E-EVAL (STM32F10x
+    High-Density Value line) and STM32100B-EVAL (STM32F10x Medium-Density Value line)
+    evaluation boards. To select the STMicroelectronics evaluation board used to
+    run the example,uncomment the corresponding line in SPI/DMA/platform_config.h file.
+
+
+  - STM3210C-EVAL Set-up
+    - Connect SPI2 NSS pin (PB.12) to SPI3 NSS pin	(PA.04)
+    - Connect SPI2 SCK pin (PB.13) to SPI3 SCK pin (PC.10)
+    - Connect SPI2 MISO pin (PB.14) to SPI3 MOSI pin (PC.12)
+     note In this case SPI3 pins are remapped by software.
+
+  - STM3210E-EVAL Set-up
+    - Connect SPI2 NSS pin (PB.12) to SPI1 NSS pin (PA.04)
+    - Connect SPI2 SCK pin (PB.13) to SPI1 SCK pin (PA.05)
+    - Connect SPI2 MISO pin (PB.14) to SPI1 MOSI pin (PA.07)
+     note The jumper 14 (USB Disconnect) must be set in position 1&lt;-&gt;2 in order
+          to not interfer with SPI2 MISO pin PB14.
+
+  - STM3210B-EVAL Set-up
+    - Connect SPI2 NSS pin (PB.12) to SPI1 NSS pin (PA.04)
+    - Connect SPI2 SCK pin (PB.13) to SPI1 SCK pin (PA.05)
+    - Connect SPI2 MISO pin (PB.14) to SPI1 MOSI pin (PA.07)
+
+How to use it ?
+
+In order to make the program work, you must do the following :
+ - Copy all source files from this example folder to the template folder under
+   Project\STM32F10x_StdPeriph_Template
+ - Open your preferred toolchain
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+ note
+ - Low-density Value line devices are STM32F100xx microcontrollers where the
+   Flash memory density ranges between 16 and 32 Kbytes.
+ - Low-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 16 and 32 Kbytes.
+ - Medium-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 64 and 128 Kbytes.
+ - Medium-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 64 and 128 Kbytes.
+ - High-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - High-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - XL-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 512 and 1024 Kbytes.
+ - Connectivity line devices are STM32F105xx and STM32F107xx microcontrollers.
+
+
+***************************************************************************************************
+
+
+SPI Full Duplex Software NSS example
+
+Example Description
+
+This example provides a description of how to set a communication between SPIy and
+SPIz in full-duplex mode and performs a transfer from Master to Slave and then
+Slave to Master in the same application with software NSS management.
+SPIy and SPIz can be SPI1 and SPI2 or SPI3 and SPI2, depending on the STMicroelectronics
+EVAL board you are using.
+
+Both SPIs are configured with 8bit data frame and a 9Mbit/s communication speed.
+(for Value line devices the speed is set at 6Mbit/s).
+In the first phase, the master SPIy starts the SPIy_Buffer_Tx transfer while the
+slave SPIz transmit SPIz_Buffer_Tx. Once the transfer is completed a comparison
+is done and TransferStatus1 and TransferStatus2 gives the data transfer status for
+each data transfer direction where it is PASSED if transmitted and received data
+are the same otherwise it is FAILED.
+
+As the NSS pin is managed by software, this permit to SPIy to become slave and SPIz
+to become master without hardware modification.
+In the second step, the slave SPIy starts the SPIy_Buffer_Tx transfer while the
+master SPIz transmit SPIz_Buffer_Tx. Once the transfer is completed a comparison
+is done and TransferStatus3 and TransferStatus4 gives the data transfer status for
+each data transfer direction where it is PASSED if transmitted and received data
+are the same otherwise it is FAILED.
+
+
+Directory contents
+
+  - SPI/FullDuplex_SoftNSS/platform_config.h   Evaluation board specific configuration file
+  - SPI/FullDuplex_SoftNSS/stm32f10x_conf.h    Library Configuration file
+  - SPI/FullDuplex_SoftNSS/stm32f10x_it.c      Interrupt handlers
+  - SPI/FullDuplex_SoftNSS/stm32f10x_it.h      Interrupt handlers header file
+  - SPI/FullDuplex_SoftNSS/main.c              Main program
+  - SPI/FullDuplex_SoftNSS/system_stm32f10x.c  STM32F10x system source file
+
+Hardware and Software environment
+
+  - This example runs on STM32F10x Connectivity line, High-Density, High-Density
+    Value line, Medium-Density, XL-Density, Medium-Density Value line, Low-Density
+    and Low-Density Value line Devices.
+
+  - This example has been tested with STMicroelectronics STM32100E-EVAL (High-Density
+    Value line), STM32100B-EVAL (Medium-Density Value line), STM3210C-EVAL (Connectivity line),
+    STM3210E-EVAL (High-Density and XL-Density) and STM3210B-EVAL (Medium-Density)
+    evaluation boards and can be easily tailored to any other supported device
+    and development board.
+    To select the STMicroelectronics evaluation board used to run the example,
+    uncomment the corresponding line in SPI/FullDuplex_SoftNSS/platform_config.h file.
+
+  - STM32100E-EVAL Set-up
+    - Connect SPI1 SCK pin (PA.05) to SPI2 SCK pin	(PB.13)
+    - Connect SPI1 MISO pin (PA.06) to SPI2 MISO pin (PB.14)
+    - Connect SPI1 MOSI pin (PA.07) to SPI2 MOSI pin (PB.15)
+
+  - STM32100B-EVAL Set-up
+    - Connect SPI1 SCK pin (PA.05) to SPI2 SCK pin	(PB.13)
+    - Connect SPI1 MISO pin (PA.06) to SPI2 MISO pin (PB.14)
+    - Connect SPI1 MOSI pin (PA.07) to SPI2 MOSI pin (PB.15)
+
+  - STM3210C-EVAL Set-up
+    - Connect SPI3 SCK pin (PC.10) to SPI2 SCK pin	(PB.13)
+    - Connect SPI3 MISO pin (PC.11) to SPI2 MISO pin (PB.14)
+    - Connect SPI3 MOSI pin (PC.12) to SPI2 MOSI pin (PB.15)
+     note In this case SPI3 pins are remapped by software.
+
+  - STM3210E-EVAL Set-up
+    - Connect SPI1 SCK pin (PA.05) to SPI2 SCK pin	(PB.13)
+    - Connect SPI1 MISO pin (PA.06) to SPI2 MISO pin (PB.14)
+    - Connect SPI1 MOSI pin (PA.07) to SPI2 MOSI pin (PB.15)
+     note The jumper 14 (USB Disconnect) must be set in position 1&lt;-&gt;2 in order
+          to not interfer with SPI2 MISO pin PB14.
+
+  - STM3210B-EVAL Set-up
+    - Connect SPI1 SCK pin (PA.05) to SPI2 SCK pin	(PB.13)
+    - Connect SPI1 MISO pin (PA.06) to SPI2 MISO pin (PB.14)
+    - Connect SPI1 MOSI pin (PA.07) to SPI2 MOSI pin (PB.15)
+
+How to use it ?
+
+In order to make the program work, you must do the following :
+ - Copy all source files from this example folder to the template folder under
+   Project\STM32F10x_StdPeriph_Template
+ - Open your preferred toolchain
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+ note
+ - Low-density Value line devices are STM32F100xx microcontrollers where the
+   Flash memory density ranges between 16 and 32 Kbytes.
+ - Low-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 16 and 32 Kbytes.
+ - Medium-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 64 and 128 Kbytes.
+ - Medium-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 64 and 128 Kbytes.
+ - High-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - High-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - XL-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 512 and 1024 Kbytes.
+ - Connectivity line devices are STM32F105xx and STM32F107xx microcontrollers.
+
+
+***************************************************************************************************
+
+
+SPI Simplex Interrupt example
+
+Example Description
+
+This example provides a description of how to set a communication between two
+SPIs in simplex mode and performs a data buffer transfer from SPI_MASTER to
+SPI_SLAVE using TxE interrupt for master and RxNE interrupt for slave.
+SPI_MASTER and SPI_SLAVE can be SPI1 and SPI2 or SPI3 and SPI2, depending on the
+STMicroelectronics EVAL board you are using.
+
+Both SPIs are configured with 8bit data frame and a 9Mbit/s communication speed
+(for Value line devices the communication speed is set to 3Mbit/s).
+The TxE interrupt is enabled for the master and the RxNE interrupt is enabled for
+the slave.
+
+Once both SPIs are enabled, first TxE interrupt is generated for the master
+and in its interrupt service routine the first data is sent from SPI_MASTER_Buffer_Tx.
+Once this data is received by the slave the RxNE interrupt is generated and in
+the routine this data is stored in the SPI_SLAVE_Buffer_Rx.
+
+The same procedure is followed for the remaining SPI_MASTER_Buffer_Tx data.
+Once all data buffer are received by the slave the TxE interrupt is disabled.
+A comparison is done and TransferStatus variable gives the data transfer status
+where it is PASSED if transmitted and received data are the same otherwise it is FAILED.
+
+Directory contents
+
+  - SPI/Simplex_Interrupt/platform_config.h    Evaluation board specific configuration file
+  - SPI/Simplex_Interrupt/stm32f10x_conf.h     Library Configuration file
+  - SPI/Simplex_Interrupt/stm32f10x_it.c       Interrupt handlers
+  - SPI/Simplex_Interrupt/stm32f10x_it.h       Header for stm32f10x_it.c
+  - SPI/Simplex_Interrupt/main.c               Main program
+  - SPI/Simplex_Interrupt/system_stm32f10x.c   STM32F10x system source file
+
+Hardware and Software environment
+
+  - This example runs on STM32F10x Connectivity line, High-Density, High-Density
+    Value line, Medium-Density, XL-Density, Medium-Density Value line, Low-Density
+    and Low-Density Value line Devices.
+
+  - This example has been tested with STMicroelectronics STM32100E-EVAL (High-Density
+    Value line), STM32100B-EVAL (Medium-Density Value line), STM3210C-EVAL (Connectivity line),
+    STM3210E-EVAL (High-Density and XL-Density) and STM3210B-EVAL (Medium-Density)
+    evaluation boards and can be easily tailored to any other supported device
+    and development board.
+    To select the STMicroelectronics evaluation board used to run the example,
+    uncomment the corresponding line in SPI/Simplex_Interrupt/platform_config.h file.
+
+  - STM32100E-EVAL Set-up
+    - Connect SPI1 SCK pin (PA.05) to SPI2 SCK pin (PB.13)
+    - Connect SPI1 MOSI pin (PA.07) to SPI2 MISO pin (PB.14)
+
+  - STM32100B-EVAL Set-up
+    - Connect SPI1 SCK pin (PA.05) to SPI2 SCK pin (PB.13)
+    - Connect SPI1 MOSI pin (PA.07) to SPI2 MISO pin (PB.14)
+
+  - STM3210C-EVAL Set-up
+    - Connect SPI3 SCK pin (PC.10) to SPI2 SCK pin (PB.13)
+    - Connect SPI3 MOSI pin (PC.12) to SPI2 MISO pin (PB.14)
+     note In this case SPI3 pins are remapped by software.
+
+  - STM3210E-EVAL Set-up
+    - Connect SPI1 SCK pin (PA.05) to SPI2 SCK pin (PB.13)
+    - Connect SPI1 MOSI pin (PA.07) to SPI2 MISO pin (PB.14)
+     note The jumper 14 (USB Disconnect) must be set in position 1&lt;-&gt;2 in order
+          to not interfer with SPI2 MISO pin PB14.
+
+  - STM3210B-EVAL Set-up
+    - Connect SPI1 SCK pin (PA.05) to SPI2 SCK pin (PB.13)
+    - Connect SPI1 MOSI pin (PA.07) to SPI2 MISO pin (PB.14)
+
+How to use it ?
+
+In order to make the program work, you must do the following :
+ - Copy all source files from this example folder to the template folder under
+   Project\STM32F10x_StdPeriph_Template
+ - Open your preferred toolchain
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+ note
+ - Low-density Value line devices are STM32F100xx microcontrollers where the
+   Flash memory density ranges between 16 and 32 Kbytes.
+ - Low-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 16 and 32 Kbytes.
+ - Medium-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 64 and 128 Kbytes.
+ - Medium-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 64 and 128 Kbytes.
+ - High-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - High-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - XL-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 512 and 1024 Kbytes.
+ - Connectivity line devices are STM32F105xx and STM32F107xx microcontrollers.
+
+
+***************************************************************************************************
+
+
+SPI FLASH example
+
+Example Description
+
+This example provides a basic example of how to use the SPI firmware library
+and an associate SPI FLASH driver to communicate with an M25P64 or M25P128 FLASH.
+
+The first step consist in reading the SPI Flash ID. A comparison between the ID
+read from SPI flash and the expected one is done and LED1 is turned on in case
+of success otherwise LED2 is turned on.
+
+Using this driver the program performs an erase of the sector to be accessed, a
+write of a Tx_Buffer, defined in the main.c file, to the memory followed by a read
+of the written data. Then data read from the memory stored in the Rx_Buffer are
+compared with the expected values of the Tx_Buffer. The result of this comparison
+is stored in the "TransferStatus1" variable.
+
+A second erase of the same sector is done at the end, and a test is done to be
+sure that all the data written there are erased further to the sector erase. All
+the data location are read and checked with 0xFF value. The result of this test
+is stored in "TransferStatus2" variable which is FAILED in case of error.
+
+The SPI1 is configured as Master with an 8-bit data size. The SPI1 baudrate
+is set to 18 Mbit/s (for Value line devices the baudrate is set to 12 Mbit/s).
+The FLASH_WriteAddress and the FLASH_ReadAddress where the program start the write
+and the read operations are defined in the main.c file.
+
+Directory contents
+
+  - SPI/SPI_FLASH/stm32f10x_conf.h     Library Configuration file
+  - SPI/SPI_FLASH/stm32f10x_it.c       Interrupt handlers
+  - SPI/SPI_FLASH/stm32f10x_it.h       Header for stm32f10x_it.c
+  - SPI/SPI_FLASH/main.c               Main program
+  - SPI/SPI_FLASH/system_stm32f10x.c   STM32F10x system source file
+
+Hardware and Software environment
+
+  - This example runs on STM32F10x Connectivity line, High-Density, High-Density
+    Value line, Medium-Density, XL-Density, Medium-Density Value line, Low-Density
+    and Low-Density Value line Devices.
+
+  - This example has been tested with STMicroelectronics STM32100E-EVAL (High-Density
+    Value line), STM32100B-EVAL (Medium-Density Value line), STM3210E-EVAL
+    (High-Density and XL-Density) and STM3210B-EVAL (Medium-Density) evaluation
+    boards and can be easily tailored to any other supported device
+    and development board.
+    This example can't be tested with STM3210C-EVAL (Connectivity Line)
+    evaluation board (no SPI FLASH available).
+    To select the STMicroelectronics evaluation board used to run the example,
+    uncomment the corresponding line in stm32_eval.h file.
+
+  - STM32100E-EVAL Set-up
+    - Use LED1 and LED2 connected respectively to PF.06 and PF.07 pins
+    - M25P128 FLASH is already available on this board.
+ note
+  - The SPI FLASH example is only working on STM32100E-EVAL Rev B.
+
+  - STM32100B-EVAL Set-up
+    - Use LED1 and LED2 connected respectively to PC.06 and PC.07 pins
+    - M25P128 FLASH is already available on this board.
+
+  - STM3210E-EVAL Set-up
+    - Use LED1 and LED2 connected respectively to PF.06 and PF.07 pins
+    - M25P64 FLASH is already available on this board.
+     note The jumper 14 (USB Disconnect) must be set in position 1&lt;-&gt;2 in order
+          to not interfere with SPI2 MISO pin PB14.
+
+  - STM3210B-EVAL Set-up
+    - Use LED1 and LED2 connected respectively to PC.06 and PC.07 pins
+    - M25P64 FLASH is already available on this board.
+
+
+  - Other platform Set-up
+    - Use STM3210B-EVAL hardware configuration defines.
+    - Connect LED1 and LED2 respectively to PD.07 and PD.13 pins
+    - Connect both SPI1 and SPI FLASH pins as following:
+      - Connect SPI1_NSS (PA.04) pin to SPI Flash chip select (pin1)
+      - Connect SPI1_SCLK (PA.05) pin to SPI Flash serial clock (pin6)
+      - Connect SPI1_MISO (PA.06) pin to SPI Flash serial data output (pin2)
+      - Connect SPI1_MOSI (PA.07) pin to SPI Flash serial data input (pin5)
+      - Connect SPI Flash Write Protect (pin3) to Vdd
+      - Connect SPI Flash Hold (pin7) to Vdd
+      - Connect SPI Flash Vcc (pin8) to Vdd
+      - Connect SPI Flash Vss (pin4) to Vss
+
+How to use it ?
+
+In order to make the program work, you must do the following :
+ - Copy all source files from this example folder to the template folder under
+   Project\STM32F10x_StdPeriph_Template
+ - Open your preferred toolchain
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+ note
+ - Low-density Value line devices are STM32F100xx microcontrollers where the
+   Flash memory density ranges between 16 and 32 Kbytes.
+ - Low-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 16 and 32 Kbytes.
+ - Medium-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 64 and 128 Kbytes.
+ - Medium-density devices are STM32F101xx, STM32F102xx and STM32F103xx
+   microcontrollers where the Flash memory density ranges between 64 and 128 Kbytes.
+ - High-density Value line devices are STM32F100xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - High-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 256 and 512 Kbytes.
+ - XL-density devices are STM32F101xx and STM32F103xx microcontrollers where
+   the Flash memory density ranges between 512 and 1024 Kbytes.
+ - Connectivity line devices are STM32F105xx and STM32F107xx microcontrollers.
+</span>
+   </pre>
+
+  </div>
+  </body>
+</html>
+

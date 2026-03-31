@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/Example1/SSP_Example1.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/Example2/SSP_Example2.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/Example3/SSP_Example3.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/Example4/SSP_Example4.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>SSP_Example1</project>
+        <configuration>Debug</configuration>
+      </member>
+      <member>
+        <project>SSP_Example2</project>
+        <configuration>Debug</configuration>
+      </member>
+      <member>
+        <project>SSP_Example3</project>
+        <configuration>Debug</configuration>
+      </member>
+      <member>
+        <project>SSP_Example4</project>
+        <configuration>Debug</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

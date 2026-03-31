@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<infocenter_data version="1.0">
+  <iar_name>APB</iar_name>                                                                                                                      <!--App-->
+  <iar_description>This example demonstrates how to use the APB software library and shows some features of the APB peripheral</iar_description><!--App short description-->
+  <iar_curdir>$CUR_DIR$</iar_curdir>
+</infocenter_data>

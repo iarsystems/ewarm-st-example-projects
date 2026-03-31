@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/OCMP/OCMP.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/OPM/OPM.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/PWMI/PWMI.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/PWMO/PWMO.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>OCMP</project>
+        <configuration>Debug</configuration>
+      </member>
+      <member>
+        <project>OPM</project>
+        <configuration>Debug</configuration>
+      </member>
+      <member>
+        <project>PWMI</project>
+        <configuration>Debug</configuration>
+      </member>
+      <member>
+        <project>PWMO</project>
+        <configuration>Debug</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace>
+    <WindowStorage>
+        <WIN_DEBUG_LOG>
+            <DebugLogLevel>2</DebugLogLevel>
+            <LiveFile>C:\iar\qtarm-10.2.1\arm\tutorials\GettingStarted\DebugLog.log</LiveFile>
+            <LiveLogEnabled>0</LiveLogEnabled>
+            <LiveFilterLevel>0</LiveFilterLevel>
+            <col-names>
+                <item>_I0</item>
+                <item>Log</item>
+            </col-names>
+            <col-widths>
+                <item>20</item>
+                <item>1249</item>
+            </col-widths>
+        </WIN_DEBUG_LOG>
+        <WIN_BUILD>
+            <BuildLogLevel>2</BuildLogLevel>
+            <LiveFile>C:\Users\kezetter\OneDrive - Qt Group\Documents\IAR Embedded Workbench\Workspaces\arm\LED_qt_IDE\ST\STM32F2xx\IAR-STM32F207ZG-SK\LCD\BuildLog.log</LiveFile>
+            <LiveLogEnabled>0</LiveLogEnabled>
+            <LiveFilterLevel>0</LiveFilterLevel>
+            <col-names>
+                <item>_I0</item>
+                <item>Messages</item>
+                <item>File</item>
+                <item>Line</item>
+            </col-names>
+            <col-widths>
+                <item>20</item>
+                <item>1012</item>
+                <item>184</item>
+                <item>40</item>
+            </col-widths>
+        </WIN_BUILD>
+        <WIN_CMAKE_CMSIS_LOG>
+            <col-names>
+                <item>_I0</item>
+                <item>Output</item>
+            </col-names>
+            <col-widths>
+                <item>20</item>
+                <item>377</item>
+            </col-widths>
+        </WIN_CMAKE_CMSIS_LOG>
+        <WIN_WORKSPACE>
+            <NodeDict>
+                <ExpandedNode></ExpandedNode>
+                <ExpandedNode>GettingStarted</ExpandedNode>
+                <ExpandedNode>GettingStarted/MMU</ExpandedNode>
+            </NodeDict>
+            <col-names>
+                <item>Files</item>
+                <item>_I1</item>
+            </col-names>
+            <col-widths>
+                <item>377</item>
+                <item>20</item>
+            </col-widths>
+        </WIN_WORKSPACE>
+        <TextEditorStorage>
+            <FindReplaceHistory>
+                <SearchTerms />
+                <ReplaceTerms />
+            </FindReplaceHistory>
+        </TextEditorStorage>
+        <ideStateOffline>%00%00%00%FF%00%00%00%00%FD%00%00%00%03%00%00%00%00%00%00%01%98%00%00%01w%FC%02%00%00%00%01%FB%00%00%00%1A%00W%00I%00N%00_%00W%00O%00R%00K%00S%00P%00A%00C%00E%01%00%00%00%40%00%00%01w%00%00%00%A3%00%FF%FF%FF%00%00%00%01%00%00%01%98%00%00%01~%FC%02%00%00%00%02%FB%00%00%00%16%00W%00I%00N%00_%00T%00E%00R%00M%00_%00I%00O%00%00%00%00%40%00%00%00%CF%00%00%00%00%00%00%00%00%FB%00%00%00%16%00W%00I%00N%00_%00W%00A%00T%00C%00H%00_%001%00%00%00%01%13%00%00%00%AB%00%00%00%00%00%00%00%00%00%00%00%03%00%00%05%00%00%00%01%00%FC%01%00%00%00%05%FC%00%00%00%00%00%00%05%00%00%00%00%7F%00%FF%FF%FF%FA%00%00%00%00%01%00%00%00%03%FB%00%00%00%12%00W%00I%00N%00_%00B%00U%00I%00L%00D%01%00%00%00%00%FF%FF%FF%FF%00%00%00l%00%FF%FF%FF%FB%00%00%00%1A%00W%00I%00N%00_%00D%00E%00B%00U%00G%00_%00L%00O%00G%01%00%00%00%00%FF%FF%FF%FF%00%00%00l%00%FF%FF%FF%FB%00%00%00%26%00W%00I%00N%00_%00C%00M%00A%00K%00E%00_%00C%00M%00S%00I%00S%00_%00L%00O%00G%01%00%00%00%00%FF%FF%FF%FF%00%00%00l%00%FF%FF%FF%FB%00%00%00%1E%00W%00I%00N%00_%00B%00R%00E%00A%00K%00P%00O%00I%00N%00T%00S%00%00%00%00%00%FF%FF%FF%FF%00%00%00%00%00%00%00%00%FB%00%00%00%1E%00W%00I%00N%00_%00D%00I%00S%00A%00S%00S%00E%00M%00B%00L%00Y%00%00%00%02%A4%00%00%010%00%00%00%00%00%00%00%00%FB%00%00%00%18%00W%00I%00N%00_%00M%00E%00M%00O%00R%00Y%00_%001%00%00%00%03%D8%00%00%01%28%00%00%00%00%00%00%00%00%FB%00%00%000%00W%00I%00N%00_%00S%00L%00I%00D%00I%00N%00G%00_%00T%00R%00A%00C%00E%00_%00W%00I%00N%00D%00O%00W%00%00%00%03%9B%00%00%01e%00%00%00%00%00%00%00%00%00%00%03d%00%00%01w%00%00%00%04%00%00%00%04%00%00%00%08%00%00%00%08%FC%00%00%00%01%00%00%00%02%00%00%00%01%00%00%00%18%00M%00a%00i%00n%00%20%00T%00o%00o%00l%00b%00a%00r%01%00%00%00%00%FF%FF%FF%FF%00%00%00%00%00%00%00%00</ideStateOffline>
+    </WindowStorage>
+    <Configuration>
+        <CurrentConfigs>
+            <ProjConf>GettingStarted/DDR2 Debug</ProjConf>
+        </CurrentConfigs>
+        <CurrentProj>GettingStarted</CurrentProj>
+    </Configuration>
+    <TextViewStorage>
+        <numberOfDocGroups>1</numberOfDocGroups>
+        <currentDocumentGroup>0</currentDocumentGroup>
+        <group0>
+            <numberOfTabs>1</numberOfTabs>
+            <currentTextView>0</currentTextView>
+            <tab0>
+                <editorTabType>scintillaTab</editorTabType>
+                <file>$WS_DIR$\board\ttbl.c</file>
+                <splitted>0</splitted>
+                <splitOrientation>vertical</splitOrientation>
+                <firstVisibleLine>55</firstVisibleLine>
+                <xOffset>0</xOffset>
+                <selectionStart>3223</selectionStart>
+                <selectionEnd>3223</selectionEnd>
+            </tab0>
+        </group0>
+    </TextViewStorage>
+    <VisibleWindows>WIN_BUILD WIN_CMAKE_CMSIS_LOG WIN_DEBUG_LOG WIN_WORKSPACE</VisibleWindows>
+</Workspace>

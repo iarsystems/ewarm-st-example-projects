@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/FMC_NOR/EWARM/FMC_NOR.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/FMC_SDRAM/EWARM/FMC_SDRAM.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/FMC_SDRAM_DataMemory/EWARM/FMC_SDRAM_DataMemory.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/FMC_SDRAM_LowPower/EWARM/FMC_SDRAM_LowPower.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/FMC_SRAM/EWARM/FMC_SRAM.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>FMC_NOR</project>
+        <configuration>STM32H743I_EVAL</configuration>
+      </member>
+      <member>
+        <project>FMC_SDRAM</project>
+        <configuration>STM32H743I_EVAL</configuration>
+      </member>
+      <member>
+        <project>FMC_SDRAM_DataMemory</project>
+        <configuration>STM32H743I_EVAL</configuration>
+      </member>
+      <member>
+        <project>FMC_SDRAM_LowPower</project>
+        <configuration>STM32H743I_EVAL</configuration>
+      </member>
+      <member>
+        <project>FMC_SRAM</project>
+        <configuration>STM32H743I_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

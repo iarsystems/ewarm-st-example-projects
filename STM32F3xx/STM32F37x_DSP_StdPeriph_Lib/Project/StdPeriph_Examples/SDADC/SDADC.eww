@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/SDADC_PressureMeasurement/SDADC_PressureMeasurement.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/SDADC_TempMeasurement/SDADC_TempMeasurement.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/SDADC_Voltmeter/SDADC_Voltmeter.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>SDADC_PressureMeasurement</project>
+        <configuration>STM32373C-EVAL</configuration>
+      </member>
+      <member>
+        <project>SDADC_TempMeasurement</project>
+        <configuration>STM32373C-EVAL</configuration>
+      </member>
+      <member>
+        <project>SDADC_Voltmeter</project>
+        <configuration>STM32373C-EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

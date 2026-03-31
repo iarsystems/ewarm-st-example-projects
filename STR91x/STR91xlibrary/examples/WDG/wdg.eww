@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/interrupt/wdg_int.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/polling/wdg_pol.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>wdg_int</project>
+        <configuration>Debug</configuration>
+      </member>
+      <member>
+        <project>wdg_pol</project>
+        <configuration>Debug</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

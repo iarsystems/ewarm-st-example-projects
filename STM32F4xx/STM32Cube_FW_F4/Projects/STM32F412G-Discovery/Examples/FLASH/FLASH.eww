@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/FLASH_WriteProtection/EWARM/FLASH_WriteProtection.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>FLASH_WriteProtection</project>
+        <configuration>STM32412G_DISCOVERY</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

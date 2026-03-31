@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/JPEG_DecodingUsingFs_DMA/EWARM/JPEG_DecodingUsingFs_DMA.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>JPEG_DecodingUsingFs_DMA</project>
+        <configuration>STM32F769I_Discovery</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

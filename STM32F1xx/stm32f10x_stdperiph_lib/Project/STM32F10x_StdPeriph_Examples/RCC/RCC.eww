@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/RCC.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>RCC</project>
+        <configuration>STM32100B-EVAL</configuration>
+      </member>
+      <member>
+        <project>RCC</project>
+        <configuration>STM32100E-EVAL</configuration>
+      </member>
+      <member>
+        <project>RCC</project>
+        <configuration>STM3210B-EVAL</configuration>
+      </member>
+      <member>
+        <project>RCC</project>
+        <configuration>STM3210C-EVAL</configuration>
+      </member>
+      <member>
+        <project>RCC</project>
+        <configuration>STM3210E-EVAL</configuration>
+      </member>
+      <member>
+        <project>RCC</project>
+        <configuration>STM3210E-EVAL_XL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

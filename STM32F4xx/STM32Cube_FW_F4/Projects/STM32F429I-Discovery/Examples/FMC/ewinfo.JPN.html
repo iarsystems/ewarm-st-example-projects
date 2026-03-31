@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.JPN.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>FMC Workspace</h1>
+
+=====================================================================================
+<b>FMC_SDRAM</b>
+SDRAM memory functionalities use example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to configure the FMC controller to access the SDRAM
+memory.
+
+This example guides you through the different configuration steps by mean of HAL API
+to configure the FMC controller to access the IS42S16400J SDRAM memory mounted
+on STM32429I-Discovery RevB Discovery board.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+Then the SystemClock_Config() function is used to configure the system
+clock (SYSCLK) to run at 180 MHz.
+
+The goal of this example is to explain the different steps to configure the FMC
+and make the SDRAM device ready for access, without using the MSP layer.
+
+In this example, the SDRAM device is configured and initialized explicitly
+following all initialization sequence steps. After initializing the device, user
+can perform read/write operations on it. A data buffer is written to the SDRAM
+memory, then read back and checked to verify its correctness.
+
+The user can choose his own configuration by commenting/uncommenting the defines for
+undesired/desired configurations in "main.h", for example, to configure the SDRAM
+data bus width as 8 bits, uncomment the define for the configuration
+"FMC_SDRAM_MEM_BUS_WIDTH_8".
+
+If the data is read correctly from SDRAM, the LED3 is on, otherwise the LED4 is on.
+
+Note: - The FMC mode register definition is configured using defines for the external
+        memory device mode register, defined in the main header file.
+      - The function "BSP_SDRAM_Initialization_Sequence()" is used to program the SDRAM
+        device. It is considered as a specific function which depends on the SDRAM device.
+        When changing the external device, you may have to apply some changes
+        in this function.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+ - FMC/FMC_SDRAM/Inc/stm32f4xx_hal_conf.h        Library Configuration file
+ - FMC/FMC_SDRAM/Inc/main.h                      Main program header file
+ - FMC/FMC_SDRAM/Inc/stm32f4xx_it.h              Interrupt handlers header file
+ - FMC/FMC_SDRAM/Src/main.c                      Main program
+ - FMC/FMC_SDRAM/Src/stm32f4xx_hal_msp.c         HAL MSP module
+ - FMC/FMC_SDRAM/Src/stm32f4xx_it.c              Interrupt handlers
+ - FMC/FMC_SDRAM/Src/system_stm32f4xx.c          STM32F4xx system clock configuration file
+
+  - This example runs on STM32F429xx devices.
+
+  - This example has been tested with STMicroelectronics STM32F429I-Discovery RevB
+    boards and can be easily tailored to any other supported device
+    and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>FMC_SDRAM_LowPower</b>
+SDRAM memory low power mode use example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to configure the FMC controller to access the SDRAM
+memory in low power mode (SDRAM Self Refresh mode).
+
+It gives a simple application of the FMC SDRAM low power mode use (self refresh mode)
+while the MCU is in a low power mode (STOP mode).
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+Then the SystemClock_Config() function is used to configure the system
+clock (SYSCLK) to run at 180 MHz.
+
+The purpose is to show how the SDRAM can retain data written after entering STOP mode.
+STOP mode is a CPU low power mode which stops all peripherals clocks in the 1.2V
+domain. Only internal SRAM and registers content are preserved in this mode.
+
+After SDRAM initialization, the data is written to the memory and a "self refresh"
+command is sent to the SDRAM. The program waits for USER button to be pushed
+to enter the CPU in STOP mode, the LED3/LED4 are then turned ON.
+The wakeup from STOP mode is done when pushing USER Button again (LED3/LED4 switch off)
+and the CPU returns to RUN mode. At this time, the system clock is reconfigured using
+the function SystemClock_Config().
+
+Finally, a "normal mode" command is send to SDRAM memory to exit self refresh mode.
+The data written to SDRAM is read back and checked.
+
+LEDs are used to indicate the system state as following:
+  - LED3/LED4 Off  : Wait for entering in STOP mode in pushing USER button
+  - LED3/LED4 on  : CPU enters STOP mode.
+  - LED3 on  : correct data transfer (PASS).
+  - LED4 on  : incorrect data transfer (FAIL).
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+ - FMC/FMC_SDRAM_LowPower/stm32f4xx_hal_conf.h        Library Configuration file
+ - FMC/FMC_SDRAM_LowPower/stm32f4xx_it.h              Interrupt handlers header file
+ - FMC/FMC_SDRAM_LowPower/main.h                      Main program header file
+ - FMC/FMC_SDRAM_LowPower/main.c                      Main program
+ - FMC/FMC_SDRAM_LowPower/stm32f4xx_it.c              Interrupt handlers
+ - FMC/FMC_SDRAM_LowPower/system_stm32f4xx.c          STM32F4xx system clock configuration file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F429xx devices.
+
+  - This example has been tested with STMicroelectronics STM32F429I-Discovery RevB
+    boards and can be easily tailored to any other supported device
+    and development board.
+
+
+<u>How to use it ?</u>
+
+ In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF4GettingStarted.pdf">Getting started with STM32CubeF4 Embedded Software for STM32F4xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF4 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32F429I-Discovery Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

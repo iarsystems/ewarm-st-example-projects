@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/ADC_TIM2/ADC_TIM2.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/FLASH_RAM/FLASH_RAM.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/FSMC/FSMC.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/RAM_DAC/RAM_DAC.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>ADC_TIM2</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>ADC_TIM2</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>FLASH_RAM</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>FLASH_RAM</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>FSMC</project>
+        <configuration>STM32L152D-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>FSMC</project>
+        <configuration>STM32L152D-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>RAM_DAC</project>
+        <configuration>STM32L152D-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>RAM_DAC</project>
+        <configuration>STM32L152D-EVAL RAM Debug</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

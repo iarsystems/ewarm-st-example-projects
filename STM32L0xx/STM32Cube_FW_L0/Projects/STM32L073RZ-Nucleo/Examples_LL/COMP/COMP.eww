@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/COMP_CompareWithInternalReference_IT/EWARM/COMP_CompareWithInternalReference_IT.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/COMP_CompareWithInternalReference_IT_Init/EWARM/COMP_CompareWithInternalReference_IT_Init.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>COMP_CompareWithInternalReference_IT</project>
+        <configuration>STM32L073RZ_NUCLEO</configuration>
+      </member>
+      <member>
+        <project>COMP_CompareWithInternalReference_IT_Init</project>
+        <configuration>STM32L073RZ_NUCLEO</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

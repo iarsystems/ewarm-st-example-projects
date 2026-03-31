@@ -1,0 +1,445 @@
+__var _USER;
+
+__var _Data0;
+__var _Data1;
+
+__var _WRP0;
+__var _WRP1;
+__var _WRP2;
+__var _WRP3;
+
+
+__var _DBGMCU_CR;
+
+__var _IWDG_KR;
+__var _IWDG_PR;
+__var _IWDG_RLR;
+__var _IWDG_SR;
+
+__var _FLASH_ACR;
+__var _FLASH_KEYR;
+__var _FLASH_OPTKEYR;
+__var _FLASH_SR;
+__var _FLASH_CR;
+__var _FLASH_AR;
+__var _FLASH_OBR;
+__var _FLASH_WRPR;
+
+
+_init()
+{
+__var reg;
+
+  _DBGMCU_CR      = 0xE0042004;
+  _IWDG_KR        = 0x40003000;
+  _IWDG_PR        = 0x40003004;
+  _IWDG_RLR       = 0x40003008;
+  _IWDG_SR        = 0x4000300C;
+  _FLASH_ACR      = 0x40022000;
+  _FLASH_KEYR     = 0x40022004;
+  _FLASH_OPTKEYR  = 0x40022008;
+  _FLASH_SR       = 0x4002200C;
+  _FLASH_CR       = 0x40022010;
+  _FLASH_AR       = 0x40022014;
+  _FLASH_OBR      = 0x4002201C;
+  _FLASH_WRPR     = 0x40022020;
+
+  __hwReset(0);
+  if(0 == ((1<<2) & __readMemory32(_FLASH_OBR,"Memory")))
+  {
+    // Stop WDT when CPU is halted
+    reg = __readMemory32(_DBGMCU_CR,"Memory");
+    reg|= 1<<8;
+    __writeMemory32(reg,_DBGMCU_CR,"Memory");
+  
+    // unlock WDT registers
+    __writeMemory32(0x5555,_IWDG_KR,"Memory");
+    // wait PVU reset
+    while(1 & __readMemory32(_IWDG_SR,"Memory"));
+    __writeMemory32(0x7,_IWDG_PR,"Memory");
+    // wait RVU reset
+    while(2 & __readMemory32(_IWDG_SR,"Memory"));
+    __writeMemory32(0xFFF,_IWDG_RLR,"Memory");
+    // reaload WDT
+    __writeMemory32(0xAAAA,_IWDG_KR,"Memory");
+  }
+}
+
+_store_opt()
+{
+__var reg;
+  reg = __readMemory32(_FLASH_OBR,"Memory");
+  _USER  =  reg      & 0x1F;
+  _Data0 = (reg>>10) & 0xFF;
+  _Data1 = (reg>>18) & 0xFF;
+  reg = __readMemory32(_FLASH_WRPR,"Memory");
+  _WRP0 = reg         & 0xFF;
+  _WRP1 = (reg >>  8) & 0xFF;
+  _WRP2 = (reg >> 16) & 0xFF;
+  _WRP3 = (reg >> 24) & 0xFF;
+}
+
+_wait_until_busy()
+{
+  while(1 & __readMemory32(_FLASH_SR,"Memory"));
+}
+
+_unlock()
+{
+  // Unlock the Flash program and erase controller (FPEC) first
+  __writeMemory32(0x45670123,_FLASH_KEYR,"Memory");
+  __writeMemory32(0xCDEF89AB,_FLASH_KEYR,"Memory");
+  // Authorize the programming of the option bytes
+  __writeMemory32(0x45670123,_FLASH_OPTKEYR,"Memory");
+  __writeMemory32(0xCDEF89AB,_FLASH_OPTKEYR,"Memory");
+}
+
+_erase_opt()
+{
+  _wait_until_busy();
+  _unlock();
+  // Set bits [5] and [9] of the FLASH_CR: OPTER (Option Byte Erase), OPTWRE (Option Bytes Write Enable)
+  __writeMemory32(0x00000220,_FLASH_CR,"Memory");
+  // Set bits [5], [6] and [9] of the FLASH_CR: OPTER (Option Byte Erase),
+  // STRT (Start, in order to start erase procedure), OPTWRE (Option Bytes Write Enable)
+  __writeMemory32(0x00000260,_FLASH_CR,"Memory");
+  _wait_until_busy();
+}
+
+_restore_opt()
+{
+__var reg;
+  _wait_until_busy();
+  _unlock();
+  reg = 0x00A5;
+  if((1<<1) & _USER)
+  {
+    reg = 0;
+  }
+  // Set bit [9] of the FLASH_CR: OPTWRE (Option Bytes Write Enable) bit
+  __writeMemory32(0x00000200,_FLASH_CR,"Memory");
+  // Set bit [4] of the FLASH_CR: OPTPG (Option Byte Programming) bit
+  // Confirms that the option bytes will be programmed
+  __writeMemory32(0x00000210,_FLASH_CR,"Memory");
+  __writeMemory16(reg,0x1FFFF800,"Memory");
+  _wait_until_busy();
+
+  reg = 0xF8 | (((1<<2) & _USER)?1:0) | (((1<<3) & _USER)?2:0) | (((1<<4) & _USER)?4:0);
+  //reg = 0xFF;
+  // Set bit [9] of the FLASH_CR: OPTWRE (Option Bytes Write Enable) bit
+  __writeMemory32(0x00000200,_FLASH_CR,"Memory");
+  // Set bit [4] of the FLASH_CR: OPTPG (Option Byte Programming) bit
+  // Confirms that the option bytes will be programmed
+  __writeMemory32(0x00000210,_FLASH_CR,"Memory");
+  __writeMemory16(reg,0x1FFFF802,"Memory");
+  _wait_until_busy();
+
+  // Set bit [9] of the FLASH_CR: OPTWRE (Option Bytes Write Enable) bit
+  __writeMemory32(0x00000200,_FLASH_CR,"Memory");
+  // Set bit [4] of the FLASH_CR: OPTPG (Option Byte Programming) bit
+  // Confirms that the option bytes will be programmed
+  __writeMemory32(0x00000210,_FLASH_CR,"Memory");
+  __writeMemory16(_Data0,0x1FFFF804,"Memory");
+  _wait_until_busy();
+
+  // Set bit [9] of the FLASH_CR: OPTWRE (Option Bytes Write Enable) bit
+  __writeMemory32(0x00000200,_FLASH_CR,"Memory");
+  // Set bit [4] of the FLASH_CR: OPTPG (Option Byte Programming) bit
+  // Confirms that the option bytes will be programmed
+  __writeMemory32(0x00000210,_FLASH_CR,"Memory");
+  __writeMemory16(_Data1,0x1FFFF806,"Memory");
+  _wait_until_busy();
+
+  // Set bit [9] of the FLASH_CR: OPTWRE (Option Bytes Write Enable) bit
+  __writeMemory32(0x00000200,_FLASH_CR,"Memory");
+  // Set bit [4] of the FLASH_CR: OPTPG (Option Byte Programming) bit
+  // Confirms that the option bytes will be programmed
+  __writeMemory32(0x00000210,_FLASH_CR,"Memory");
+  __writeMemory16(_WRP0,0x1FFFF808,"Memory");
+  _wait_until_busy();
+
+  // Set bit [9] of the FLASH_CR: OPTWRE (Option Bytes Write Enable) bit
+  __writeMemory32(0x00000200,_FLASH_CR,"Memory");
+  // Set bit [4] of the FLASH_CR: OPTPG (Option Byte Programming) bit
+  // Confirms that the option bytes will be programmed
+  __writeMemory32(0x00000210,_FLASH_CR,"Memory");
+  __writeMemory16(_WRP1,0x1FFFF80A,"Memory");
+  _wait_until_busy();
+
+  // Set bit [9] of the FLASH_CR: OPTWRE (Option Bytes Write Enable) bit
+  __writeMemory32(0x00000200,_FLASH_CR,"Memory");
+  // Set bit [4] of the FLASH_CR: OPTPG (Option Byte Programming) bit
+  // Confirms that the option bytes will be programmed
+  __writeMemory32(0x00000210,_FLASH_CR,"Memory");
+  __writeMemory16(_WRP2,0x1FFFF80C,"Memory");
+  _wait_until_busy();
+
+  // Set bit [9] of the FLASH_CR: OPTWRE (Option Bytes Write Enable) bit
+  __writeMemory32(0x00000200,_FLASH_CR,"Memory");
+  // Set bit [4] of the FLASH_CR: OPTPG (Option Byte Programming) bit
+  // Confirms that the option bytes will be programmed
+  __writeMemory32(0x00000210,_FLASH_CR,"Memory");
+  __writeMemory16(_WRP3,0x1FFFF80E,"Memory");
+  _wait_until_busy();
+}
+
+
+
+/*********************************************************************
+*
+*       High level functions
+*
+*       These functions should be called from the C-SPY debugger
+*       quick watch window.
+*       All output will go the the debug log window.
+*
+*       Note that the debugger will lose the connection with the ARM core
+*       when executing any of these commands. To recover, the debugger session
+*       must be terminated and the board must be power cycled.
+*
+**********************************************************************/
+
+// Read the option register.
+stm32_read_opt()
+{
+  _init();
+  _store_opt();
+  __message "-I- STM32 options bytes:\n";
+  __message "-I- \tUSER  = ", _USER:%x, "\n";
+  __message "-I- \tDATA0 = ", _Data0:%x,"\n";
+  __message "-I- \tDATA1 = ", _Data1:%x,"\n";
+  __message "-I- \tWRP0  = ", _WRP0:%x, "\n";
+  __message "-I- \tWRP1  = ", _WRP1:%x, "\n";
+  __message "-I- \tWRP2  = ", _WRP2:%x, "\n";
+  __message "-I- \tWRP3  = ", _WRP3:%x, "\n";
+}
+
+// read disable
+stm32_read_lock()
+{
+  _init();
+  _store_opt();
+  _erase_opt();
+  _USER |= 1<<1;  // read protection
+  _restore_opt();
+  // reload
+  _init();
+  _store_opt();
+  // check OPT
+  if(_USER & 1)
+  {
+    __message "-I- STM32 read protection enable ... fault\n";
+  }
+  else
+  {
+    __message "-I- STM32 read protection enable ... pass\n";
+  }
+}
+
+// read enable
+stm32_read_unlock()
+{
+  _init();
+  _store_opt();
+  _erase_opt();
+  _USER &= ~(1<<1);  // read protection disable
+  _restore_opt();
+  // reload
+  _init();
+  _store_opt();
+  // check OPT
+  if(_USER & 1)
+  {
+    __message "-I- STM32 read protection disable ... fault\n";
+  }
+  else
+  {
+    __message "-I- STM32 read protection disable ... pass\n";
+  }
+}
+
+// Enable WDT.
+stm32_iwdt_enable()
+{
+  _init();
+  _store_opt();
+  _erase_opt();
+  _USER &= ~(1<<2);  // iWDT enable
+  _restore_opt();
+  // reload
+  _init();
+  _store_opt();
+  // check OPT
+  if(_USER & 1)
+  {
+    __message "-I- STM32 independent WDT enable ... fault\n";
+  }
+  else
+  {
+    __message "-I- STM32 independent WDT enable ... pass\n";
+  }
+}
+
+// Disable WDT.
+stm32_iwdt_disable()
+{
+  _init();
+  _store_opt();
+  _erase_opt();
+  _USER |= (1<<2);  // iWDT disable
+  _restore_opt();
+  // reload
+  _init();
+  _store_opt();
+  // check OPT
+  if(_USER & 1)
+  {
+    __message "-I- STM32 independent WDT disable ... fault\n";
+  }
+  else
+  {
+    __message "-I- STM32 independent WDT disable ... pass\n";
+  }
+}
+
+// Enable reset at stop
+stm32_rst_stop_enable()
+{
+  _init();
+  _store_opt();
+  _erase_opt();
+  _USER &= ~(1<<3);  // nRST_STOP enable
+  _restore_opt();
+  // reload
+  _init();
+  _store_opt();
+  // check OPT
+  if(_USER & 1)
+  {
+    __message "-I- STM32 reset at stop enable ... fault\n";
+  }
+  else
+  {
+    __message "-I- STM32 reset at stop enable ... pass\n";
+  }
+}
+
+// Disable reset at stop
+stm32_rst_stopt_disable()
+{
+  _init();
+  _store_opt();
+  _erase_opt();
+  _USER |= (1<<3);  // nRST_STOP disable
+  _restore_opt();
+  // reload
+  _init();
+  _store_opt();
+  // check OPT
+  if(_USER & 1)
+  {
+    __message "-I- STM32 reset at stop disable ... fault\n";
+  }
+  else
+  {
+    __message "-I- STM32 reset at stop disable ... pass\n";
+  }
+}
+
+// Enable reset at stdby
+stm32_rst_stdby_enable()
+{
+  _init();
+  _store_opt();
+  _erase_opt();
+  _USER &= ~(1<<4);  // nRST_STDBY enable
+  _restore_opt();
+  // reload
+  _init();
+  _store_opt();
+  // check OPT
+  if(_USER & 1)
+  {
+    __message "-I- STM32 reset at stop enable ... fault\n";
+  }
+  else
+  {
+    __message "-I- STM32 reset at stop enable ... pass\n";
+  }
+}
+
+// Disable reset at stdby
+stm32_rst_stdby_disable()
+{
+  _init();
+  _store_opt();
+  _erase_opt();
+  _USER |= (1<<4);  // nRST_STDBY disable
+  _restore_opt();
+  // reload
+  _init();
+  _store_opt();
+  // check OPT
+  if(_USER & 1)
+  {
+    __message "-I- STM32 reset at stdby disable ... fault\n";
+  }
+  else
+  {
+    __message "-I- STM32 reset at stdby disable ... pass\n";
+  }
+}
+
+// Enable/disable sectors write protect.
+stm32_write_protect(protect)
+{
+  _init();
+  _store_opt();
+  _erase_opt();
+
+  // write protect data
+  _WRP0 =  protect      & 0xFF;
+  _WRP1 = (protect>> 8) & 0xFF;
+  _WRP2 = (protect>>16) & 0xFF;
+  _WRP3 = (protect>>24) & 0xFF;
+
+  _restore_opt();
+  // reload
+  _init();
+  _store_opt();
+  // check OPT
+  if(_USER & 1)
+  {
+    __message "-I- STM32 set write protect ... fault\n";
+  }
+  else
+  {
+    __message "-I- STM32 set write protect ... pass\n";
+  }
+}
+
+// Enable/disable sectors write protect.
+stm32_data(data)
+{
+  _init();
+  _store_opt();
+  _erase_opt();
+
+  // write protect data
+  _Data0 =  data      & 0xFF;
+  _Data1 = (data>> 8) & 0xFF;
+
+  _restore_opt();
+  // reload
+  _init();
+  _store_opt();
+  // check OPT
+  if(_USER & 1)
+  {
+    __message "-I- STM32 set data ... fault\n";
+  }
+  else
+  {
+    __message "-I- STM32 set data ... pass\n";
+  }
+}

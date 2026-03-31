@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/GPIO_EXTI/EWARM/GPIO_EXTI.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/GPIO_IOToggle/EWARM/GPIO_IOToggle.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>GPIO_EXTI</project>
+        <configuration>STM32303C_EVAL</configuration>
+      </member>
+      <member>
+        <project>GPIO_IOToggle</project>
+        <configuration>STM32303C_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

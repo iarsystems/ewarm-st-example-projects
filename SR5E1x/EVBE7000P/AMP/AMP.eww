@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workspace>
+    <project>
+        <path>$WS_DIR$/Core1/Core1.ewp</path>
+    </project>
+    <project>
+        <path>$WS_DIR$/Core2/Core2.ewp</path>
+    </project>
+    <batchBuild>
+        <batchDefinition>
+            <name>All</name>
+            <member>
+                <project>Core2</project>
+                <configuration>RAM Debug</configuration>
+            </member>
+            <member>
+                <project>Core1</project>
+                <configuration>RAM Debug</configuration>
+            </member>
+            <member>
+                <project>Core2</project>
+                <configuration>Flash Debug</configuration>
+            </member>
+            <member>
+                <project>Core1</project>
+                <configuration>Flash Debug</configuration>
+            </member>
+        </batchDefinition>
+        <batchDefinition>
+            <name>RAM Debug</name>
+            <member>
+                <project>Core2</project>
+                <configuration>RAM Debug</configuration>
+            </member>
+            <member>
+                <project>Core1</project>
+                <configuration>RAM Debug</configuration>
+            </member>
+        </batchDefinition>
+        <batchDefinition>
+            <name>Flash Debug</name>
+            <member>
+                <project>Core2</project>
+                <configuration>Flash Debug</configuration>
+            </member>
+            <member>
+                <project>Core1</project>
+                <configuration>Flash Debug</configuration>
+            </member>
+        </batchDefinition>
+    </batchBuild>
+</workspace>

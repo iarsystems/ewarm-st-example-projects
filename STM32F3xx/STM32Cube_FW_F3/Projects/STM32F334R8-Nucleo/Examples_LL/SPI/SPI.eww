@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/SPI_TwoBoards_FullDuplex_DMA/EWARM/SPI_TwoBoards_FullDuplex_DMA.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/SPI_TwoBoards_FullDuplex_IT/EWARM/SPI_TwoBoards_FullDuplex_IT.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>SPI_TwoBoards_FullDuplex_DMA</project>
+        <configuration>STM32F334R8-Nucleo</configuration>
+      </member>
+      <member>
+        <project>SPI_TwoBoards_FullDuplex_IT</project>
+        <configuration>STM32F334R8-Nucleo</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

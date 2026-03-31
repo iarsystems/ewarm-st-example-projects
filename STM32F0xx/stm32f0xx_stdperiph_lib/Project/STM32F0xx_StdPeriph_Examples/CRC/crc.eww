@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/32BitsCRCMessage/32BitsCRCMessage.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/8BitsCRCMessage/8BitsCRCMessage.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/TwoBoards/TwoBoards.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>32BitsCRCMessage</project>
+        <configuration>STM32F051</configuration>
+      </member>
+      <member>
+        <project>32BitsCRCMessage</project>
+        <configuration>STM32F072</configuration>
+      </member>
+      <member>
+        <project>8BitsCRCMessage</project>
+        <configuration>STM32F072</configuration>
+      </member>
+      <member>
+        <project>TwoBoards</project>
+        <configuration>STM32F051</configuration>
+      </member>
+      <member>
+        <project>TwoBoards</project>
+        <configuration>STM32F072</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

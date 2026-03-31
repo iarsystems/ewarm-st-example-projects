@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/GPIO_InfiniteLedToggling/EWARM/GPIO_InfiniteLedToggling.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/GPIO_InfiniteLedToggling_Init/EWARM/GPIO_InfiniteLedToggling_Init.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>GPIO_InfiniteLedToggling</project>
+        <configuration>STM32L152RE_NUCLEO</configuration>
+      </member>
+      <member>
+        <project>GPIO_InfiniteLedToggling_Init</project>
+        <configuration>STM32L152RE_NUCLEO</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

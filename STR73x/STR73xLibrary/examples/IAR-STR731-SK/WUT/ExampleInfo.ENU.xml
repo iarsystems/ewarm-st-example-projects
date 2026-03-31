@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<infocenter_data version="1.0">
+  <iar_name>WakeUp Timer</iar_name>                                   <!--App-->
+  <iar_description>This example provides a basic example of how to enter the MCU in Stop mode and to wake-up by the WUT End of Count(EC) event</iar_description>                     <!--App short description-->
+  <iar_curdir>$CUR_DIR$</iar_curdir>
+</infocenter_data>

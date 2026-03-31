@@ -1,0 +1,269 @@
+/*************************************************************************
+ *
+ *    Used with ICCARM and AARM.
+ *
+ *    (c) Copyright IAR Systems 2008
+ *
+ *    File name   : usb_desc.c
+ *    Description : usb decriptors module
+ *
+ *    History :
+ *    1. Date        : 30, July 2008
+ *       Author      : Stanimir Bonev
+ *       Description : Create
+ *
+ *    $Revision: 39 $
+ **************************************************************************/
+#include "usb_desc.h"
+
+const UsbStandardDeviceDescriptorStr_t UsbStandardDeviceDescriptorStr =
+{
+  sizeof(UsbStandardDeviceDescriptorStr_t),   // bLength
+  UsbDescriptorDevice,                        // bDescriptorType
+  0x110,                                      // bcdUSB
+  0,                                          // bDeviceClass
+  0,                                          // bDeviceSubClass
+  0,                                          // bDeviceProtocol
+  Ep0MaxSize,                                 // bMaxPacketSize0
+  0xFFFF,                                     // idVendor
+  0x0020,                                     // idProduct
+  0x0000,                                     // bcdDevice
+  iManufacturerStr,                           // iManufacturer
+  iProductStr,                                // iProduct
+  iSerialNumberStr,                           // iSerialNumber
+  1,                                          // bNumConfigurations
+};
+
+#pragma data_alignment=4
+static const u8 UsbFS_Cfg0[] =
+{
+  // Configuration Descriptor
+  sizeof(UsbStandardConfigurationDescriptor_t),
+  UsbDescriptorConfiguration,
+  _2BL(sizeof(UsbStandardConfigurationDescriptor_t) +
+       /* Interface 0 */
+       sizeof(UsbStandardInterfaceDescriptor_t) +
+       sizeof(UsbClassSpecificACInterfaceDescriptor_t) +
+       sizeof(UsbInputTerminalDescriptor_t) +
+       sizeof(UsbOutputTerminalDescriptor_t)+
+       sizeof(ClassSpecFeatureUnitDescriptor_t) + 3 +
+       /* Interface 1 */
+       sizeof(UsbStandardInterfaceDescriptor_t) +
+       sizeof(UsbStandardInterfaceDescriptor_t) +
+       sizeof(UsbClassSpecificASInterfaceDescriptor_t) +
+       sizeof(UsbTypeIFormatTypeDescriptor_t) + 3 +
+       sizeof(StandardASEndpointDescriptor_t) +
+       sizeof(ClassSpecASEndpointDescriptor_t)
+  ),
+  2,
+  1,
+  0,
+  UsbConfigurationCommmonAttr,
+  UsbConfigPower_mA(100),
+
+  // Interface 0 Standard AC Interface Descriptor
+  sizeof(UsbStandardInterfaceDescriptor_t),
+  UsbDescriptorInterface,
+  USB_CTRL_INTERFACE,
+  0,
+  0,
+  UsbDeviceClassAudio,
+  AUDIOCONTROL,
+  PR_PROTOCOL_UNDEFINED,
+  0,
+
+  // Class-Specific AC Interface Descriptor
+  sizeof(UsbClassSpecificACInterfaceDescriptor_t),
+  CS_INTERFACE,
+  HEADER,
+  _2BL(0x0100),
+  _2BL(sizeof(UsbClassSpecificACInterfaceDescriptor_t) +
+       sizeof(UsbInputTerminalDescriptor_t) +
+       sizeof(UsbOutputTerminalDescriptor_t)+
+       sizeof(ClassSpecFeatureUnitDescriptor_t) + 3),
+  1,
+  1,
+
+  // Input Terminal Descriptor - SPK
+  sizeof(UsbInputTerminalDescriptor_t),
+  CS_INTERFACE,
+  INPUT_TERMINAL,
+  SpkInTermID,
+  _2BL(AudioUsbStreaming),
+  0,
+  1,
+  _2BL(AUDIO_CHANNEL_M),
+  0,
+  0,
+
+  // Output Terminal Descriptor - SPK
+  sizeof(UsbOutputTerminalDescriptor_t),
+  CS_INTERFACE,
+  OUTPUT_TERMINAL,
+  SpkOutTermID,
+  _2BL(AudioOutputSpk),
+  0,
+  FeatUnit1Id,
+  0,
+
+  // Feature Unit Descriptor - SPK
+  sizeof(ClassSpecFeatureUnitDescriptor_t) + 3,
+  CS_INTERFACE,
+  FEATURE_UNIT,
+  FeatUnit1Id,
+  SpkInTermID,
+  1,
+  FeatUnitMute+FeatUnitVolume,
+  0,
+  0,
+
+  // Interface 1
+  // AudioStreaming Interface Descriptor
+  // Zero-bandwidth Alternate Setting 0
+  // Standard AS Interface Descriptor
+  sizeof(UsbStandardInterfaceDescriptor_t),
+  UsbDescriptorInterface,
+  USB_SPK_INTERFACE,
+  0,
+  0,
+  UsbDeviceClassAudio,
+  AUDIOSTREAMING,
+  PR_PROTOCOL_UNDEFINED,
+  0,
+
+  // Operational Alternate Setting 1
+  // Standard AS Interface Descriptor
+  sizeof(UsbStandardInterfaceDescriptor_t),
+  UsbDescriptorInterface,
+  1,
+  1,
+  1,
+  UsbDeviceClassAudio,
+  AUDIOSTREAMING,
+  PR_PROTOCOL_UNDEFINED,
+  0,
+
+  // Class-Specific AS General Interface Descriptor
+  sizeof(UsbClassSpecificASInterfaceDescriptor_t),
+  CS_INTERFACE,
+  AS_GENERAL,
+  SpkInTermID,
+  2,
+  _2BL(PCM),
+
+  // USB Spk Type I Format Type Descriptor
+  sizeof(UsbTypeIFormatTypeDescriptor_t)+ 3,
+  CS_INTERFACE,
+  FORMAT_TYPE,
+  FORMAT_TYPE_I,
+  1,
+  SubFrameSize,
+  8*SubFrameSize,
+  1,
+  (u8)(SampFreq),(u8)(SampFreq>>8),(u8)(SampFreq>>16),
+
+  // USB SPK Standard Endpoint Descriptor
+  sizeof(StandardASEndpointDescriptor_t),
+  UsbDescriptorEp,
+  UsbEpOut(SpkEp>>1),
+  (u8)UsbEpTransferIsochronous + (u8)UsbEpSynchAdaptive,
+  _2BL(SpkEpMaxSize),
+  1,
+  0,
+  0,
+
+  // USB SPK Class-Specific Isoc. Audio Data Endpoint Descriptor
+  sizeof(ClassSpecASEndpointDescriptor_t),
+  CS_ENDPOINT,
+  EP_GENERAL,
+  0,
+  0,
+  _2BL(0),
+
+  0,
+};
+
+static const u8 * const UsbFS_CfgArray[] =
+{
+  UsbFS_Cfg0,
+  NULL,
+};
+
+static const UsbEP_ExtDesc_t UsbEPExt_Cfg0EP1 =
+{
+  1,                  // Configuration
+  UsbEpOut(SpkEp>>1),  // EP address
+  {
+    EP_SLOT1, TRUE
+  }
+};
+
+static const UsbEP_ExtDesc_t * const UsbFS_EPExtArray[] =
+{
+  &UsbEPExt_Cfg0EP1,
+  NULL,
+};
+
+#pragma data_alignment=4
+const u8 UsbLanguagesStr [] =
+{
+  // Length of LanguagesStr + 2
+  4,
+  // Desciptor Type
+  UsbDescriptorString,
+  // Languages ID
+  // Languages1 ID English
+  0x09,0x04,
+};
+
+#pragma data_alignment=4
+const u8 ManufacturerStrLan1 [] =
+{
+  24, // length
+  UsbDescriptorString,  // Descriptor
+  'I',0,'A',0,'R',0,' ',0,'S',0,'y',0,'s',0,'t',0,'e',0,'m',0,'s',0
+};
+
+#pragma data_alignment=4
+const u8 ProductStrLan1 [] =
+{
+  38, //length
+  UsbDescriptorString, // Descriptor
+  'A',0,'u',0,'d',0,'i',0,'o',0,' ',0,'d',0,'e',0,'v',0,'i',0,'c',0,'e',0,' ',0,'c',0,'l',0,'a',0,'s',0,'s',0,
+};
+
+
+#pragma data_alignment=4
+const u8 SerialNumberStrLan1 [] =
+{
+  18, //length
+  UsbDescriptorString, // Descriptor
+  '0',0,'0',0,'0',0,'0',0,'0',0,'0',0,'0',0,'1',0, // Str
+};
+
+const u8 * const UsbLanguages1Strings[] =
+{
+  // iManufacturerStr
+  ManufacturerStrLan1,
+  // iProductStr
+  ProductStrLan1,
+  // iSerialNumberStr
+  SerialNumberStrLan1,
+  // Terminator
+  NULL
+};
+
+static const u8 * const * const UsbFS_StringArray[] =
+{
+  UsbLanguages1Strings,
+  NULL,
+};
+
+const void * const UsbDescArray[] =
+{
+  UsbFS_CfgArray,
+  UsbFS_EPExtArray,
+  UsbLanguagesStr,
+  UsbFS_StringArray,
+  NULL,
+};

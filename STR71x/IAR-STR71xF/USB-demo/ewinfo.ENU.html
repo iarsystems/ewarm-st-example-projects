@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+USB demo
+
+DESCRIPTION
+===========
+   MOUSE is a sample application using an endpoint programmed as INTERRUPT type
+  giving to a PC a channel to read the status of a virtual HID mouse. Motion
+  sensors are emulated by means of a PC terminal emulator connected to the UART0
+  of the STR71x.
+
+   During the enumeration phase, the PC detects the presence of the mouse device
+  and loads the associated software driver and then it periodically polls the
+  endpoint with IN tokens. Mouse is a device configured as a HID device.
+
+   To test this mouse tutorial, a minimal configuration is required :
+    -connect a PC serial port to the UART0
+    -on the PC, run a terminal emulation program (i.e. Hyperterminal) configured
+      with the following parameters :
+       -baud rate = 9600
+       -data bits = 8
+       -parity    = no
+       -stop bits = 1
+       -flow control = no
+
+
+    - run program
+    - use the USB cable to connect the PC to USB of the Board.
+
+  Mouse motion events are emulated with the following PC keyboard keys:
+  [A] = right
+  [D] = left
+  [W] = up
+  [X] = down
+
+   The first time the device is connected to a Windows computer the driver of this new
+  hardware is loaded. Relative windows driver is : USB Human Interface Device
+
+COMPATIBILITY
+=============
+   This example works as standalone on the IAR STR711F board. By default
+  the projects are configured to use the J-Link JTAG interface.
+
+CONFIGURATION
+=============
+  The application is downloaded to flash memory.
+
+  Put the jumper DIS/LED on the position 1-2 (only for STR711 IAR board)
+
+GETTING STARTED
+===============
+  1) Connect the J-Link.
+  2) Power the board.
+  3) Build and download the example.
+  4) Run the example.
+
+   </pre>
+
+  </div>
+  </body>
+</html>
+

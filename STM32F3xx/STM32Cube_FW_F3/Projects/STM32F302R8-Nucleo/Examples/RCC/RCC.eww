@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/RCC_ClockConfig/EWARM/RCC_ClockConfig.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/RCC_LSIConfig/EWARM/RCC_LSIConfig.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>RCC_ClockConfig</project>
+        <configuration>STM32F302R8-Nucleo</configuration>
+      </member>
+      <member>
+        <project>RCC_LSIConfig</project>
+        <configuration>STM32F302R8-Nucleo</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

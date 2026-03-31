@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="File-List" href="Library_files/filelist.xml">
+<link rel="Edit-Time-Data" href="Library_files/editdata.mso"><!--[if !mso]> <style> v\:* {behavior:url(#default#VML);} o\:* {behavior:url(#default#VML);} w\:* {behavior:url(#default#VML);} .shape {behavior:url(#default#VML);} </style> <![endif]-->
+
+
+
+<title>STM3210C-EVAL Demonstration Firmware</title><!--[if gte mso 9]><xml> <o:DocumentProperties> <o:Author>STMicroelectronics</o:Author> <o:LastAuthor>STMicroelectronics</o:LastAuthor> <o:Revision>37</o:Revision> <o:TotalTime>136</o:TotalTime> <o:Created>2009-02-27T19:26:00Z</o:Created> <o:LastSaved>2009-03-01T17:56:00Z</o:LastSaved> <o:Pages>1</o:Pages> <o:Words>522</o:Words> <o:Characters>2977</o:Characters> <o:Company>STMicroelectronics</o:Company> <o:Lines>24</o:Lines> <o:Paragraphs>6</o:Paragraphs> <o:CharactersWithSpaces>3493</o:CharactersWithSpaces> <o:Version>11.6568</o:Version> </o:DocumentProperties> </xml><![endif]--><!--[if gte mso 9]><xml> <w:WordDocument> <w:Zoom>110</w:Zoom> <w:ValidateAgainstSchemas/> <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid> <w:IgnoreMixedContent>false</w:IgnoreMixedContent> <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText> <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel> </w:WordDocument> </xml><![endif]--><!--[if gte mso 9]><xml> <w:LatentStyles DefLockedState="false" LatentStyleCount="156"> </w:LatentStyles> </xml><![endif]--><style>
+<!--
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+{mso-style-parent:"";
+margin:0in;
+margin-bottom:.0001pt;
+mso-pagination:widow-orphan;
+font-size:12.0pt;
+font-family:"Times New Roman";
+mso-fareast-font-family:"Times New Roman";}
+h2
+{mso-style-next:Normal;
+margin-top:12.0pt;
+margin-right:0in;
+margin-bottom:3.0pt;
+margin-left:0in;
+mso-pagination:widow-orphan;
+page-break-after:avoid;
+mso-outline-level:2;
+font-size:14.0pt;
+font-family:Arial;
+font-weight:bold;
+font-style:italic;}
+a:link, span.MsoHyperlink
+{color:blue;
+text-decoration:underline;
+text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+{color:blue;
+text-decoration:underline;
+text-underline:single;}
+p
+{mso-margin-top-alt:auto;
+margin-right:0in;
+mso-margin-bottom-alt:auto;
+margin-left:0in;
+mso-pagination:widow-orphan;
+font-size:12.0pt;
+font-family:"Times New Roman";
+mso-fareast-font-family:"Times New Roman";}
+@page Section1
+{size:8.5in 11.0in;
+margin:1.0in 1.25in 1.0in 1.25in;
+mso-header-margin:.5in;
+mso-footer-margin:.5in;
+mso-paper-source:0;}
+div.Section1
+{page:Section1;}
+-->
+</style><!--[if gte mso 10]> <style> /* Style Definitions */ table.MsoNormalTable {mso-style-name:"Table Normal"; mso-tstyle-rowband-size:0; mso-tstyle-colband-size:0; mso-style-noshow:yes; mso-style-parent:""; mso-padding-alt:0in 5.4pt 0in 5.4pt; mso-para-margin:0in; mso-para-margin-bottom:.0001pt; mso-pagination:widow-orphan; font-size:10.0pt; font-family:"Times New Roman"; mso-ansi-language:#0400; mso-fareast-language:#0400; mso-bidi-language:#0400;} </style> <![endif]--><!--[if gte mso 9]><xml> <o:shapedefaults v:ext="edit" spidmax="5122"/> </xml><![endif]--><!--[if gte mso 9]><xml> <o:shapelayout v:ext="edit"> <o:idmap v:ext="edit" data="1"/> </o:shapelayout></xml><![endif]--></head>
+<body style="" lang="EN-US" link="blue" vlink="blue">
+
+<div class="Section1">
+
+<div>
+
+<p class="MsoNormal"><span style="font-family: Arial;">&nbsp;<o:p></o:p></span></p>
+
+<div align="center">
+
+<table class="MsoNormalTable" style="width: 675pt;" border="0" cellpadding="0" cellspacing="0" width="900">
+ <tbody><tr style="">
+  <td style="padding: 0in;" valign="top">
+  <p class="MsoNormal"><span style="font-family: Arial;"><o:p>&nbsp;</o:p></span></p>
+  <table class="MsoNormalTable" style="width: 675pt;" border="0" cellpadding="0" cellspacing="0" width="900">
+   <tbody><tr style="">
+    <td style="padding: 1.5pt;">
+    <p class="MsoNormal" style="text-align: center;" align="center"><strong><span style="font-size: 24pt; color: rgb(51, 102, 255); font-family: Arial;"><u1:p></u1:p>STM3210C-EVAL
+    Demonstration Firmware<o:p></o:p></span></strong></p>
+    <p class="MsoNormal" style="text-align: center;" align="center"><span style="font-family: Arial;"><o:p>&nbsp;</o:p></span></p>
+    <p class="MsoNormal" style="text-align: center;" align="center"><span style="font-family: Arial;"><img id="_x0000_i1025" src="_htmresc/stm32.bmp" style="height: 274px; width: 365px;" border="0" height="495" width="660"></span><span style="font-size: 10pt; font-family: Arial;"><u1:p>&nbsp;</u1:p></span><span style="font-family: Arial;"><o:p></o:p></span></p>
+    <p class="MsoNormal" style="text-align: center;" align="center"><span style="font-size: 10pt; font-family: Arial;"><o:p>&nbsp;</o:p></span></p>
+    <p class="MsoNormal" style="text-align: center;" align="center"><span style="font-size: 10pt; font-family: Arial;">Copyright 2009
+    STMicroelectronics</span><span style="font-family: Arial;"><o:p></o:p></span></p>
+    <p class="MsoNormal" style="text-align: center;" align="center"><span style="font-size: 10pt; font-family: Arial;"><img id="_x0000_i1026" src="_htmresc/logo.bmp" border="0" height="65" width="86"></span><span style="font-family: Arial;"><o:p></o:p></span></p>
+    <p class="MsoNormal"><span style="font-family: Arial;"><u1:p><u1:p></u1:p>&nbsp;</u1:p><o:p></o:p></span></p>
+    </td>
+   </tr>
+  </tbody></table>
+  <p class="MsoNormal"><span style="display: none; font-family: Arial;"><u1:p>&nbsp;</u1:p></span><span style="font-family: Arial;"><o:p></o:p></span></p>
+  <table class="MsoNormalTable" style="width: 675pt;" border="0" cellpadding="0" width="900">
+   <tbody><tr style="">
+    <td style="padding: 0in;" valign="top">
+    <p><span style="font-size: 10pt; font-family: Arial;">The STM3210C-EVAL demonstration
+    firmware is targeted to demonstrate the capabilities of Connectivity Line&nbsp;STM32F107xx
+    microcontrollers and on-board peripherals. This </span><span style="font-size: 10pt; font-family: Arial;">demonstration is provided in binary format.<br></span><span style="font-size: 10pt; font-family: Arial;">For complete documentation on
+    this demonstration, please refer to the User Manual UM0713 available for download from the STMicroelectronics website:&nbsp;</span><span style="font-size: 10pt; font-family: Verdana;"><span style="color: black;"></span><u><span style="color: blue;"><a href="http://www.st.com/stm32" target="_blank">www.st.com/STM32</a></span></u></span></p>
+    
+    <p><span style="font-size: 10pt; font-family: Arial;">In case the STM3210C-EVAL
+    board was not factory-programmed or the demonstration application was
+    erased, you can reprogram it by following the steps described in the section below:<o:p></o:p></span></p><p class="MsoNormal" style="margin-left: 0.5in;"><span style="font-size: 10pt; font-family: Arial;"><img id="_x0000_i1027" src="_htmresc/ar_s.gif" style="border-style: solid; border-width: 0px; height: 12px; width: 14px;" height="12" width="14"></span><span style="font-size: 10pt;"><span style="">&nbsp;</span></span><span style="font-size: 10pt; color: blue; font-family: Arial;"><a href="_htmresc/stm3210c-eval_Package.htm">How to use the STM3210C-EVAL demonstration
+    firmware package</a><o:p></o:p></span></p>
+    <p class="MsoNormal"><span style="font-size: 10pt; font-family: Arial;"></span></p><p class="MsoNormal"><span style="font-size: 10pt; font-family: Arial;"></span></p><p class="MsoNormal"><span style="font-size: 10pt; font-family: Arial;">This package contains also&nbsp;an example on how to&nbsp;configure and use the IO Expander STMPE811
+in order to control input Joystick IOs, output IOs and the Touch Screen
+available on&nbsp;</span><span style="font-size: 10pt; font-family: Arial;">STM3210C-EVAL board.</span><span style="font-size: 10pt; font-family: Arial;"></span><span style="font-size: 10pt; font-family: Arial;"> &nbsp;</span></p><p class="MsoNormal"><span style="font-size: 10pt; font-family: Arial;"><comment title="[if !supportLineBreakNewLine]" xmlns="http://disruptive-innovations.com/zoo/nvu"><img src="chrome://editor/content/images/tag-comment.gif"><!--[if !supportLineBreakNewLine]--></comment><br style="">
+    <comment title="[endif]" xmlns="http://disruptive-innovations.com/zoo/nvu"><img src="chrome://editor/content/images/tag-comment.gif"><!--[endif]--></comment><o:p></o:p></span></p>
+    <p class="MsoNormal"><span style="font-size: 10pt; color: blue; font-family: Arial;"><a href="Release_Notes.html">Release Notes</a></span><span style="font-size: 10pt; font-family: Arial;"> for&nbsp;</span><span style="font-size: 10pt; font-family: Arial;">STM3210C-EVAL demonstration
+    firmware</span></p>
+    <h2><span style="font-size: 10pt; color: rgb(51, 102, 255);"><u1:p></u1:p><o:p>&nbsp;</o:p></span></h2>
+    <h2><span style="font-size: 10pt; color: rgb(51, 102, 255);">License<u1:p></u1:p></span><span style="font-size: 10pt;"><o:p></o:p></span></h2>
+    <p class="MsoNormal"><span style="font-size: 10pt; font-family: Arial;">The
+    enclosed firmware and all the related documentation are not covered by a
+    License Agreement, if you need such License you can contact your local
+    STMicroelectronics office.<u1:p></u1:p><o:p></o:p></span></p>
+    <p class="MsoNormal"><b><span style="font-size: 10pt; color: blue; font-family: Arial;"><u1:p>&nbsp;</u1:p></span></b><span style="font-family: Arial;"><o:p></o:p></span></p>
+    <p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Arial;">THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT
+    PROVIDING CUSTOMERS WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN
+    ORDER FOR THEM TO SAVE TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE
+    HELD LIABLE FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT
+    TO ANY CLAIMS ARISING FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE
+    BY CUSTOMERS OF THE CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH
+    THEIR PRODUCTS.</span></p><p class="MsoNormal"><span style="color: black;"><o:p>&nbsp;</o:p></span></p>
+<div class="MsoNormal" style="text-align: center;" align="center"><span style="color: black;">
+<hr align="center" size="2" width="100%"></span></div>
+<p class="MsoNormal" style="margin: 4.5pt 0cm 4.5pt 18pt; text-align: center;" align="center"><span style="font-size: 10pt; color: black; font-family: Verdana;">For
+Complete on </span><span style="font-size: 10pt; font-family: Verdana;">STM32(<span style="color: black;">CORTEX M3) 32-Bit Microcontrollers
+visit </span><u><span style="color: blue;"><a href="http://www.st.com/stm32" target="_blank">www.st.com/STM32</a></span></u></span></p><p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Arial;"><u1:p></u1:p></span><span style="font-family: Arial;"><o:p></o:p></span></p>
+    </td>
+   </tr>
+  </tbody></table>
+  <span style="font-size: 12pt; font-family: Arial;"><u1:p></u1:p></span>
+  <p class="MsoNormal"><span style="font-family: Arial;"><o:p></o:p></span></p>
+  </td>
+ </tr>
+</tbody></table>
+
+</div>
+
+<p class="MsoNormal"><u1:p><span style="font-family: Arial;">&nbsp;<o:p></o:p></span></u1:p></p>
+
+</div>
+
+</div>
+</body></html>

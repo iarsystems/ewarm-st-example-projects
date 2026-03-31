@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.JPN.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>TIM Workspace</h1>
+
+=====================================================================================
+<b>TIM_PWMInput</b>
+TIM PWM Input example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to use the TIM peripheral to measure the frequency and
+duty cycle of an external signal.
+
+The TIM4CLK frequency is set to SystemCoreClock (Hz), the Prescaler is 0 so the
+counter clock is SystemCoreClock (Hz).
+The SystemCoreClock is set to 100 MHz for STM32F411xEx Devices.
+
+TIM4 is configured in PWM Input Mode: the external signal is connected to
+TIM4 Channel2 used as input pin.
+To measure the frequency and the duty cycle we use the TIM4 CC2 interrupt request,
+so In the TIM4_IRQHandler routine, the frequency and the duty cycle of the external
+signal are computed.
+The "uwFrequency" variable contains the external signal frequency:
+TIM4 counter clock = SystemCoreClock,
+Frequency = TIM4 counter clock / TIM4_CCR2 in Hz,
+The "uwDutyCycle" variable contains the external signal duty cycle:
+DutyCycle = (TIM4_CCR1*100)/(TIM4_CCR2) in %.
+
+The minimum frequency value to measure is (TIM4 counter clock / CCR MAX)
+                                         = (100 MHz)/ 65535
+                                         = 1526 Hz
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+Note: The clock setting is configured to have the max product performance (max clock frequency)
+      so not optimized in term of power consumption.
+
+
+<u>Directory contents</u>
+
+  - TIM/TIM_PWMInput/Inc/stm32f4xx_hal_conf.h    HAL configuration file
+  - TIM/TIM_PWMInput/Inc/stm32f4xx_it.h          Interrupt handlers header file
+  - TIM/TIM_PWMInput/Inc/main.h                  Main program header file
+  - TIM/TIM_PWMInput/Src/stm32f4xx_it.c          Interrupt handlers
+  - TIM/TIM_PWMInput/Src/main.c                  Main program
+  - TIM/TIM_PWMInput/Src/stm32f4xx_hal_msp.c     HAL MSP module
+  - TIM/TIM_PWMInput/Src/system_stm32f4xx.c      STM32F4xx system clock configuration file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F411xEx devices.
+
+  - This example has been tested with STMicroelectronics STM32F4xx-Nucleo RevC
+    boards and can be easily tailored to any other supported device
+    and development board.
+
+  - STM32F4xx-Nucleo RevC Set-up
+    - Connect the external signal to measure to the TIM4 CH2 pin PB.07 (pin 21 in CN7
+      connector).
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF4GettingStarted.pdf">Getting started with STM32CubeF4 Embedded Software for STM32F4xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF4 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32F411RE-Nucleo Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

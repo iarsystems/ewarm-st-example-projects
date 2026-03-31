@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/OPM-PWM/tim.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/PWM/tim_pwm.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>tim</project>
+        <configuration>Debug</configuration>
+      </member>
+      <member>
+        <project>tim_pwm</project>
+        <configuration>Debug</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

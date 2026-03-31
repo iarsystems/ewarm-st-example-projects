@@ -1,0 +1,46 @@
+########################################################################
+#
+#                           MassStorage.eww
+#
+# $Revision: 1550 $
+#
+########################################################################
+
+DESCRIPTION
+===========
+   This example project shows how to use the IAR Embedded Workbench for ARM
+  to develop code for the IAR-STR912-SK evaluation board. It implements a
+  MMC/SD card drive. The first free drive letters will be used. For example,
+  if your PC configuration includes two hard disk partitions (in C:\ and D:\)
+  and a CD-ROM drive (in E:\), the memory card drive will appear as F:\.
+  During the board operation, the LCD backlight will indicate drive activity.
+
+   The first time a USB device is connected to your computer, Windows will
+  automatically load the proper device driver. In this case, the USB mass
+  storage device driver will be loaded.
+
+COMPATIBILITY
+=============
+   The MassStorage example project is compatible with, and works as a
+  standalone project, on the IAR-STR912-SK evaluation board. By default,
+  the project is configured to use the J-Link JTAG interface.
+
+CONFIGURATION
+=============
+   The MassStorage application is downloaded to the flash memory on the
+  evaluation board and executed.
+
+  Make sure that the following jumpers are correctly configured on the
+  IAR-STR912-SK evaluation board:
+
+  POWER_SELECT  - depends on the power source
+  USB_E/USB_P70 - USB_P70 (2-3)
+  RST-TRST      - unfilled
+  L15/ETM_P66,
+  L16/ETM_P67   - 2-3 (near prototype area) when jtrace is used
+
+GETTING STARTED
+===============
+  1) Build and download the example.
+  2) Run the example.
+  3) Use an USB cable to connect the evaluation board to your PC.

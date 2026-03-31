@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<exampleInfo>
+  <copyDir>..\..\..\..\Drivers\BSP\Components\Common\</copyDir>
+  <copyDir>..\..\..\..\Drivers\BSP\Components\mfxstm32l152\</copyDir>
+  <copyDir>..\..\..\..\Drivers\BSP\Components\n25q512a\</copyDir>
+  <copyDir>..\..\..\..\Drivers\BSP\Components\otm8009a\</copyDir>
+  <copyDir>..\..\..\..\Drivers\BSP\Components\s25fl512s\</copyDir>
+  <copyDir>..\..\..\..\Drivers\BSP\STM32469I_EVAL\</copyDir>
+  <copyDir>..\..\..\..\Drivers\CMSIS\Device\ST\STM32F4xx\</copyDir>
+  <copyDir>..\..\..\..\Drivers\STM32F4xx_HAL_Driver\</copyDir>
+  <copyDir>..\..\..\..\Utilities\Fonts\</copyDir>
+</exampleInfo>

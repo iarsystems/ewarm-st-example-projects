@@ -1,0 +1,439 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>QSPI Workspace</h1>
+
+=====================================================================================
+<b>QSPI_ExecuteInPlace</b>
+QSPI execute in place example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to execute a part of the code from the QSPI memory. To do this,
+a section is created where the function is stored.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+The SystemClock_Config() function is used to configure the system clock for STM32H743xx Devices :
+The CPU at 400MHz
+The HCLK for D1 Domain AXI and AHB3 peripherals , D2 Domain AHB1/AHB2 peripherals and D3 Domain AHB4  peripherals at 200MHz.
+The APB clock dividers for D1 Domain APB3 peripherals, D2 Domain APB1 and APB2 peripherals and D3 Domain APB4 peripherals to  run at 100MHz.
+
+At the startup, the QSPI memory is erased, then the data are copied from the initialization
+section of the flash to the QSPI memory. And finally the QSPI is configured in memory-mapped
+mode and the code in executed in a forever loop.
+
+LED1, LED2, LED3 and LED4 toggle in a forever loop.
+LED3 is on as soon as an error is returned by HAL API, and no more LED toggles.
+
+This example uses the QSPI memory in single mode. You may need to power Off/Power On the board after flashing
+this example if the previous setting of the QSPI memory is dual mode.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The example need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - QSPI/QSPI_ExecuteInPlace/Inc/stm32h7xx_hal_conf.h HAL configuration file
+  - QSPI/QSPI_ExecuteInPlace/Inc/stm32h7xx_it.h       Interrupt handlers header file
+  - QSPI/QSPI_ExecuteInPlace/Inc/main.h               Header for main.c module
+  - QSPI/QSPI_ExecuteInPlace/Src/stm32h7xx_it.c       Interrupt handlers
+  - QSPI/QSPI_ExecuteInPlace/Src/main.c               Main program
+  - QSPI/QSPI_ExecuteInPlace/Src/system_stm32h7xx.c   STM32H7xx system source file
+  - QSPI/QSPI_ExecuteInPlace/Src/stm32h7xx_hal_msp.c  HAL MSP file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32H743xx devices.
+
+  - This example has been tested with STM32H743I-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32H743I-EVAL Set-up :
+      Board is configured by default to access QSPI memory
+
+  - A specific region for the QSPI memory has been added in the linker file
+   for SystemWorkbench) in order to map functions in this memory.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>QSPI_MemoryMapped</b>
+QSPI memory mapped example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to erase part of the QSPI memory, write data in DMA mode and access to QSPI memory
+in memory-mapped mode to check the data in a forever loop.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+The SystemClock_Config() function is used to configure the system clock for STM32H743xx Devices :
+The CPU at 400MHz
+The HCLK for D1 Domain AXI and AHB3 peripherals , D2 Domain AHB1/AHB2 peripherals and D3 Domain AHB4  peripherals at 200MHz.
+The APB clock dividers for D1 Domain APB3 peripherals, D2 Domain APB1 and APB2 peripherals and D3 Domain APB4 peripherals to  run at 100MHz.
+
+This example uses the QSPI memory in single mode. You may need to power Off/Power On the board after flashing
+this example if the previous setting of the QSPI memory is dual mode.
+
+LED1 toggles each time the data have been checked
+LED3 is on as soon as a data is wrong
+LED3 is on as soon as an error is returned by HAL API
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The example need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - QSPI/QSPI_MemoryMapped/Inc/stm32h7xx_hal_conf.h HAL configuration file
+  - QSPI/QSPI_MemoryMapped/Inc/stm32h7xx_it.h       Interrupt handlers header file
+  - QSPI/QSPI_MemoryMapped/Inc/main.h               Header for main.c module
+  - QSPI/QSPI_MemoryMapped/Src/stm32h7xx_it.c       Interrupt handlers
+  - QSPI/QSPI_MemoryMapped/Src/main.c               Main program
+  - QSPI/QSPI_MemoryMapped/Src/system_stm32h7xx.c   STM32H7xx system source file
+  - QSPI/QSPI_MemoryMapped/Src/stm32h7xx_hal_msp.c  HAL MSP file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32H743xx devices.
+
+  - This example has been tested with STM32H743I-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32H743I-EVAL Set-up :
+    Board is configured by default to access QSPI memory
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>QSPI_MemoryMappedDual</b>
+QSPI memory mapped dual mode example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to erase part of the QSPI memory, write data in DMA mode and access to QSPI memory
+in memory-mapped dual mode to check the data in a forever loop.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+The SystemClock_Config() function is used to configure the system clock for STM32H743xx Devices :
+The CPU at 400MHz
+The HCLK for D1 Domain AXI and AHB3 peripherals , D2 Domain AHB1/AHB2 peripherals and D3 Domain AHB4  peripherals at 200MHz.
+The APB clock dividers for D1 Domain APB3 peripherals, D2 Domain APB1 and APB2 peripherals and D3 Domain APB4 peripherals to  run at 100MHz.
+
+This example uses the QSPI memory in dual mode. You may need to power Off/Power On the board after flashing
+this example if the previous setting of the QSPI memory is single mode.
+
+LED1 toggles each time the data have been checked
+LED3 is on as soon as a data is wrong
+LED3 is on as soon as an error is returned by HAL API
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The example need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - QSPI/QSPI_MemoryMappedDual/Inc/stm32h7xx_hal_conf.h HAL configuration file
+  - QSPI/QSPI_MemoryMappedDual/Inc/stm32h7xx_it.h       Interrupt handlers header file
+  - QSPI/QSPI_MemoryMappedDual/Inc/main.h               Header for main.c module
+  - QSPI/QSPI_MemoryMappedDual/Src/stm32h7xx_it.c       Interrupt handlers
+  - QSPI/QSPI_MemoryMappedDual/Src/main.c               Main program
+  - QSPI/QSPI_MemoryMappedDual/Src/system_stm32h7xx.c   STM32H7xx system source file
+  - QSPI/QSPI_MemoryMappedDual/Src/stm32h7xx_hal_msp.c  HAL MSP file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32H743xx devices.
+
+  - This example has been tested with STM32H743I-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32H743I-EVAL Set-up :
+    Board is configured by default to access QSPI memory
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>QSPI_ReadWriteDual_DMA</b>
+QSPI Read/Write in DMA mode example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to use QSPI interface in dual mode. It erases part of the QSPI memory,
+writes data in DMA mode, reads data in DMA mode and compares the result in a forever loop.
+In dual-flash mode,two Quad-SPI Flash memories are accessed simultaneously.
+Each of the Flash memories use the same CLK and optionally the same nCS signals, but
+each have separate IO0, IO1, IO2, and IO3 signals.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+The SystemClock_Config() function is used to configure the system clock for STM32H743xx Devices :
+The CPU at 400MHz
+The HCLK for D1 Domain AXI and AHB3 peripherals , D2 Domain AHB1/AHB2 peripherals and D3 Domain AHB4  peripherals at 200MHz.
+The APB clock dividers for D1 Domain APB3 peripherals, D2 Domain APB1 and APB2 peripherals and D3 Domain APB4 peripherals to  run at 100MHz.
+
+LED1 toggles each time a new comparison is good
+LED2 is on as soon as a comparison error occurs
+LED3 is on as soon as an error is returned by HAL API
+
+This example uses the QSPI memory in dual mode. You may need to power Off/Power On the board after flashing
+this example if the previous setting of the QSPI memory is single mode.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The example need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Keywords</u>
+
+Memory, QSPI, Erase, Read, Write, DMA
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - QSPI/QSPI_ReadWrite_DMA/Inc/stm32h7xx_hal_conf.h HAL configuration file
+  - QSPI/QSPI_ReadWrite_DMA/Inc/stm32h7xx_it.h       Interrupt handlers header file
+  - QSPI/QSPI_ReadWrite_DMA/Inc/main.h               Header for main.c module
+  - QSPI/QSPI_ReadWrite_DMA/Src/stm32h7xx_it.c       Interrupt handlers
+  - QSPI/QSPI_ReadWrite_DMA/Src/main.c               Main program
+  - QSPI/QSPI_ReadWrite_DMA/Src/system_stm32h7xx.c   STM32H7xx system source file
+  - QSPI/QSPI_ReadWrite_DMA/Src/stm32h7xx_hal_msp.c  HAL MSP file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32H743xx devices.
+
+  - This example has been tested with STM32H743I-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32H743I-EVAL Set-up :
+    - Board is configured by default to access DUAL QSPI memory
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>QSPI_ReadWrite_DMA</b>
+QSPI Read Write with DMA mode example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to erase part of the QSPI memory, read and write data in DMA mode.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+The SystemClock_Config() function is used to configure the system clock for STM32H743xx Devices :
+The CPU at 400MHz
+The HCLK for D1 Domain AXI and AHB3 peripherals , D2 Domain AHB1/AHB2 peripherals and D3 Domain AHB4  peripherals at 200MHz.
+The APB clock dividers for D1 Domain APB3 peripherals, D2 Domain APB1 and APB2 peripherals and D3 Domain APB4 peripherals to  run at 100MHz.
+
+LED1 toggles each time the data have been checked
+LED3 is on as soon as a data is wrong
+LED3 is on as soon as an error is returned by HAL API
+
+This example uses the QSPI memory in single mode. You may need to power Off/Power On the board after flashing
+this example if the previous setting of the QSPI memory is dual mode.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The example need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - QSPI/QSPI_ReadWrite_DMA/Inc/stm32h7xx_hal_conf.h HAL configuration file
+  - QSPI/QSPI_ReadWrite_DMA/Inc/stm32h7xx_it.h       Interrupt handlers header file
+  - QSPI/QSPI_ReadWrite_DMA/Inc/main.h               Header for main.c module
+  - QSPI/QSPI_ReadWrite_DMA/Src/stm32h7xx_it.c       Interrupt handlers
+  - QSPI/QSPI_ReadWrite_DMA/Src/main.c               Main program
+  - QSPI/QSPI_ReadWrite_DMA/Src/system_stm32h7xx.c   STM32H7xx system source file
+  - QSPI/QSPI_ReadWrite_DMA/Src/stm32h7xx_hal_msp.c  HAL MSP file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32H743xx devices.
+
+  - This example has been tested with STM32H743I-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32H743I-EVAL Set-up :
+    Board is configured by default to access QSPI memory
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>QSPI_ReadWrite_IT</b>
+QSPI Read/Write in interrupt mode example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to erase part of the QSPI memory, write data in Interrupt mode, read data
+in Interrupt mode and compare the result in a forever loop.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+The SystemClock_Config() function is used to configure the system clock for STM32H743xx Devices :
+The CPU at 400MHz
+The HCLK for D1 Domain AXI and AHB3 peripherals , D2 Domain AHB1/AHB2 peripherals and D3 Domain AHB4  peripherals at 200MHz.
+The APB clock dividers for D1 Domain APB3 peripherals, D2 Domain APB1 and APB2 peripherals and D3 Domain APB4 peripherals to  run at 100MHz.
+
+LED1 toggles each time a new comparison is good
+LED2 is on as soon as a comparison error occurs
+LED3 is on as soon as an error is returned by HAL API
+
+This example uses the QSPI memory in single mode. You may need to power Off/Power On the board after flashing
+this example if the previous setting of the QSPI memory is dual mode.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The example need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - QSPI/QSPI_ReadWrite_IT/Inc/stm32h7xx_hal_conf.h HAL configuration file
+  - QSPI/QSPI_ReadWrite_IT/Inc/stm32h7xx_it.h       Interrupt handlers header file
+  - QSPI/QSPI_ReadWrite_IT/Inc/main.h               Header for main.c module
+  - QSPI/QSPI_ReadWrite_IT/Src/stm32h7xx_it.c       Interrupt handlers
+  - QSPI/QSPI_ReadWrite_IT/Src/main.c               Main program
+  - QSPI/QSPI_ReadWrite_IT/Src/system_stm32h7xx.c   STM32H7xx system source file
+  - QSPI/QSPI_ReadWrite_IT/Src/stm32h7xx_hal_msp.c  HAL MSP file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32H743xx devices.
+
+  - This example has been tested with STM32H743I-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32H743I-EVAL Set-up :
+    None
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeH7GettingStarted.pdf">Getting started with STM32CubeH7 Embedded Software for STM32H7xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeH7 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32H743I-EVAL Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

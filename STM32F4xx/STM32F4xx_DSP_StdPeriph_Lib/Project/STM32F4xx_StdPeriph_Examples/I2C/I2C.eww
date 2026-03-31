@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/TwoBoards/DataExchangeDMA.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/EEPROM/EEPROM.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/IOE/IOE.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>DataExchangeDMA</project>
+        <configuration>STM324x7I_EVAL</configuration>
+      </member>
+      <member>
+        <project>DataExchangeDMA</project>
+        <configuration>STM324xG_EVAL</configuration>
+      </member>
+      <member>
+        <project>EEPROM</project>
+        <configuration>STM324x7I_EVAL</configuration>
+      </member>
+      <member>
+        <project>EEPROM</project>
+        <configuration>STM324xG_EVAL</configuration>
+      </member>
+      <member>
+        <project>IOE</project>
+        <configuration>STM324x9I_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

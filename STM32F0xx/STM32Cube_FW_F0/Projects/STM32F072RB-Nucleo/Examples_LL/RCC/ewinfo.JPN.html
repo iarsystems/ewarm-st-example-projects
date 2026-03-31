@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.JPN.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>RCC Workspace</h1>
+
+=====================================================================================
+<b>RCC_OutputSystemClockOnMCO</b>
+RCC example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to configure MCO pin (PA8) to output the system clock.
+
+At start-up, USER button and MCO pin are configured. The program configures SYSCLK
+to the max frequency using the PLL with HSI48 as clock source.
+
+The signal on PA8 (or pin 23 of CN10 connector) can be monitored with an oscilloscope
+to check the different MCO configuration set at each button press.
+Different configuration will be observed
+ - SYSCLK frequency with frequency value around @48MHz.
+ - HSI48 frequency value divided by 2, hence around @24MHz.
+ - PLLCLK frequency value divided by 4, hence around @12MHz.
+
+When user press User push-button, a LED toggle is done to indicate a change in MCO config.
+
+
+<u>Directory contents</u>
+
+  - RCC/RCC_OutputSystemClockOnMCO/Inc/stm32f0xx_it.h          Interrupt handlers header file
+  - RCC/RCC_OutputSystemClockOnMCO/Inc/main.h                  Header for main.c module
+  - RCC/RCC_OutputSystemClockOnMCO/Inc/stm32_assert.h          Template file to include assert_failed function
+  - RCC/RCC_OutputSystemClockOnMCO/Src/stm32f0xx_it.c          Interrupt handlers
+  - RCC/RCC_OutputSystemClockOnMCO/Src/main.c                  Main program
+  - RCC/RCC_OutputSystemClockOnMCO/Src/system_stm32f0xx.c      STM32F0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F072xB devices.
+
+  - This example has been tested with STM32F072RB-Nucleo RevC board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32F072RB-Nucleo RevC Set-up
+    - Connect the MCO pin to an oscilloscope to monitor the different waveforms:
+      - PA.08: connected to pin 23 of CN10 connector
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>RCC_UseHSEasSystemClock</b>
+RCC Clock Config example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to use the RCC LL API how to start the HSE
+and use it as system clock.
+
+At start-up, HSI clock is used as system clock (default clock after reset) and then Systick is
+configured at 1 ms using HSI_VALUE define.
+
+Then, HSE is started and we wait for ready state. System clock is set to HSE thanks to IT
+triggered by HSE ready.
+- LED2 is turned ON to indicate that HSE is ready.
+- LED2 is toggled with a timing of 1 second in case of error to switch SYSCLK to HSE or if HSE CSS
+failure is detected (through NMI IT).
+
+ Note: In HSE bypass mode, input clock will come from the MCO from
+       ST_LINK MCU. This frequency cannot be changed, and it is fixed
+       at 8 MHz. To use MCO from ST_LINK you need to check the Board
+       User Manual to know how to connect the MCO pin to the STM32 device.
+
+
+<u>Directory contents</u>
+
+  - RCC/RCC_UseHSEasSystemClock/Inc/stm32f0xx_it.h          Interrupt handlers header file
+  - RCC/RCC_UseHSEasSystemClock/Inc/main.h                  Header for main.c module
+  - RCC/RCC_UseHSEasSystemClock/Inc/stm32_assert.h          Template file to include assert_failed function
+  - RCC/RCC_UseHSEasSystemClock/Src/stm32f0xx_it.c          Interrupt handlers
+  - RCC/RCC_UseHSEasSystemClock/Src/main.c                  Main program
+  - RCC/RCC_UseHSEasSystemClock/Src/system_stm32f0xx.c      STM32F0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F072xB devices.
+
+  - This example has been tested with STM32F072RB-Nucleo RevC
+    board and can be easily tailored to any other supported device
+    and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>RCC_UseHSI_PLLasSystemClock</b>
+RCC example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to modify the PLL parameters in run time.
+
+In this example, the toggling frequency of the green LED depends on the system clock
+frequency and, each time the user-button is pressed, the PLL switches between two configurations.
+This make the led blinking speed to highlight the system clock frequency changes.
+
+In this example, after start-up, SYSCLK is configured to the max frequency using the PLL with
+HSI48 as clock source.
+Then, at user-button press, an automatic switch is done between PLL with HSI as clock source (SYSCLK
+set to 24MHz) and PLL with HSI as clock source (SYSCLK set to 48Hz).
+LED will toggle differently between the 2 configurations (quick toggle with HSI configuration at 48Hz).
+
+To detect a problem with PLL configuration, switch USE_TIMEOUT can be enabled. Then in case of issues,
+LED will toggle every 1 second.
+Note: "uwFrequency" variable can be added in LiveWatch to monitor the system clock frequency.
+
+
+<u>Directory contents</u>
+
+  - RCC/RCC_UseHSI_PLLasSystemClock/Inc/stm32f0xx_it.h          Interrupt handlers header file
+  - RCC/RCC_UseHSI_PLLasSystemClock/Inc/main.h                  Header for main.c module
+  - RCC/RCC_UseHSI_PLLasSystemClock/Inc/stm32_assert.h          Template file to include assert_failed function
+  - RCC/RCC_UseHSI_PLLasSystemClock/Src/stm32f0xx_it.c          Interrupt handlers
+  - RCC/RCC_UseHSI_PLLasSystemClock/Src/main.c                  Main program
+  - RCC/RCC_UseHSI_PLLasSystemClock/Src/system_stm32f0xx.c      STM32F0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F072xB devices.
+
+  - This example has been tested with STM32F072RB-Nucleo RevC board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF0GettingStarted.pdf">Getting started with STM32CubeF0 Embedded Software for STM32F0xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF0 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32F072RB-Nucleo Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

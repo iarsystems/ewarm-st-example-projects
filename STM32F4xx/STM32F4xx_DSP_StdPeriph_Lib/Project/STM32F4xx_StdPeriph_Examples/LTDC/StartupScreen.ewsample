@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<exampleInfo>
+  <copyDir>..\..\..\Utilities\STM32_EVAL\</copyDir>
+  <copyDir>..\..\..\Utilities\Third_Party\fat_fs\</copyDir>
+  <copyDir>..\..\..\Libraries\CMSIS\</copyDir>
+  <copyDir>..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\</copyDir>
+</exampleInfo>

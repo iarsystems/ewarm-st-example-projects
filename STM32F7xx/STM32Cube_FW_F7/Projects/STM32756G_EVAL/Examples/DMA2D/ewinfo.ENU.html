@@ -1,0 +1,523 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>DMA2D Workspace</h1>
+
+=====================================================================================
+<b>DMA2D_MemoryToMemory</b>
+DMA2D Memory to Memory example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example provides a description of how to configure DMA2D peripheral in
+Memory_to_Memory transfer mode.
+The example transfers with DMA2D an internal SRAM static texture array aBufferInput[] of size 16x32
+and format ARGB4444 (16 bpp) to destination buffer in internal SRAM in array aBufferResult[].
+The number of bytes transferred is then 16x32x2=1024 bytes.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the SYSTICK.
+Then the SystemClock_Config() function is used to configure the system
+clock (SYSCLK) to run at 216 MHz.
+
+In this basic example the goal is to explain the different fields of the DMA2D
+structure in the case of Memory_to_Memory transfer mode
+
+After DMA2D configuration, the data transfer is performed and then the transferred
+data is checked by byte to byte memory comparing of the source and destination buffers aBufferInput[] and aBufferResult[].
+
+STM327x6G-EVAL board revB's LEDs can be used to monitor the transfer status:
+ - LED1 is ON when the DMA2D transfer is complete.
+ - LED2 is ON when there is a DMA2D transfer error or when data are not correctly transferred.
+ - LED3 is ON when there is an error in DMA2D transfer/Init process.
+ - LED4 is ON when the data are correctly transferred : that is no error in comparison source and destination buffers.
+If everything all right, at the end of the test, LED1 and LED4 must be ON, LED2 and LED3 must be OFF.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Keywords</u>
+
+Display, Graphic, DMA2D, LCD, SRAM, ARGB4444, Memory to Memory
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - DMA2D/DMA2D_MemoryToMemory/Inc/stm32f7xx_hal_conf.h    HAL configuration file
+  - DMA2D/DMA2D_MemoryToMemory/Inc/stm32f7xx_it.h          Interrupt handlers header file
+  - DMA2D/DMA2D_MemoryToMemory/Inc/main.h                  Header for main.c module
+  - DMA2D/DMA2D_MemoryToMemory/Src/stm32f7xx_it.c          Interrupt handlers
+  - DMA2D/DMA2D_MemoryToMemory/Src/stm32f7xx_hal_msp.c     HAL MSP module
+  - DMA2D/DMA2D_MemoryToMemory/Src/main.c                  Main program
+  - DMA2D/DMA2D_MemoryToMemory/Src/system_stm32f7xx.c      STM32F7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F756xx/STM32F746xx devices.
+
+  - This example has been tested with STM327x6G-EVAL board revB and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files: Project-&gt;Rebuild all
+ - Load project image: Project-&gt;Download and Debug
+ - Run program: Debug-&gt;Go(F5)
+
+
+=====================================================================================
+<b>DMA2D_MemToMemWithBlending</b>
+DMA2D Memory to Memory with blending example
+=====================================================================================
+
+<u>Example Description</u>
+
+  This example provides a description of how to configure DMA2D peripheral in
+  Memory_to_Memory with blending transfer mode.
+
+  At the beginning of the main program the HAL_Init() function is called to reset
+  all the peripherals, initialize the Flash interface and the systick.
+  Then the SystemClock_Config() function is used to configure the system
+  clock (SYSCLK) to run at 216 MHz.
+
+  In this transfer mode two input sources are fetched : foreground and background.
+  In this example, the foreground and background are configured as following :
+   - Foreground object
+    - input memory address at FLASH memory (static image arrays coded in FLASH).
+    - Format : RGB565
+    - Size   : 240x130
+   - Background object
+    - input memory address at FLASH memory (static image arrays coded in FLASH).
+    - Format : RGB565
+    - Size   : 240x130
+   - The constant alpha for foreground is decreased to see the background.
+   - The alpha mode for foreground and background is configured to see two
+     superposed images in the resulting image out of the ChromArt DMA2D operation.
+
+  The DMA2D blends the two sources pixels from FLASH to internal FIFOs to compute
+  the resulting pixel in dedicated output FIFO.
+  The transferred data to the output memory address is the result of the blending
+  operation between background and foreground.
+
+  Next step in the pixel pipeline is the use of the LTDC with only 1 layer which
+  is the output of the DMA2D operation.
+  This in order to show on LCD panel the result of the blending of the
+  foreground and background.
+
+STM327x6G-EVAL board revB's LEDs can be used to monitor the transfer status:
+ - LED1 is ON when the DMA2D transfer is complete.
+ - LED2 is ON when there is a DMA2D transfer error.
+ - LED3 is ON when there is an error in LTDC transfer/Init process.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Keywords</u>
+
+Display, Graphic, DMA2D, LCD, SRAM, ARGB4444, Blending, Memory to memory, Foreground,
+Background, RGB565, LTDC, Pixel
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+    - DMA2D/DMA2D_MemToMemWithBlending/Inc/main.h                Main configuration file
+    - DMA2D/DMA2D_MemToMemWithBlending/Inc/stm32f7xx_it.h        Interrupt handlers header file
+    - DMA2D/DMA2D_MemToMemWithBlending/Inc/stm32f7xx_hal_conf.h  HAL configuration file
+    - DMA2D/DMA2D_MemToMemWithBlending/Inc/RGB565_230x170_1.h    Image used for DMAD2D validation
+    - DMA2D/DMA2D_MemToMemWithBlending/Inc/RGB565_230x170_2.h    Image used for DMAD2D validation
+    - DMA2D/DMA2D_MemToMemWithBlending/Src/main.c                Main program
+    - DMA2D/DMA2D_MemToMemWithBlending/Src/stm32f7xx_it.c        Interrupt handlers
+    - DMA2D/DMA2D_MemToMemWithBlending/Src/stm32f7xx_hal_msp.c   HAL MSP module
+    - DMA2D/DMA2D_MemToMemWithBlending/Src/system_stm32f7xx.c    STM32F7xx system clock configuration file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F756xx/STM32F746xx devices.
+
+  - This example has been tested with STM327x6G-EVAL board revBs and can be easily
+    tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files: Project-&gt;Rebuild all
+ - Load project image: Project-&gt;Download and Debug
+ - Run program: Debug-&gt;Go(F5)
+
+
+=====================================================================================
+<b>DMA2D_MemToMemWithLCD</b>
+DMA2D Memory to Memory with LCD example
+=====================================================================================
+
+<u>Example Description</u>
+
+  This example provides a description of how to configure DMA2D peripheral in
+  Memory_to_Memory transfer mode and display the result on LCD.
+  The source buffer in format ARGB4444 and size 150x150 located in Flash is copied in Memory to Memory mode
+  by the DMA2D in SRAM Destination buffer of same size and format.
+  This SRAM buffer is then displayed by the LTDC centered on LCD screen.
+
+  At the beginning of the main program the HAL_Init() function is called to reset
+  all the peripherals, initialize the Flash interface and the systick.
+  Then the SystemClock_Config() function is used to configure the system
+  clock (SYSCLK) to run at 216 MHz.
+
+  In this basic example the goal is to explain the different fields of the DMA2D
+  structure in the case of Memory_to_Memory transfer mode.
+
+  After DMA2D configuration, the data transfer Memory to Memory is performed from FLASH memory to
+  SRAM. Then the LTDC is configured to display obtained DMA2D output buffer in SRAM on LCD.
+  (more details about LCD configuration in LCD examples)
+
+ =&gt; Output offset is the number of pixel to be skipped after each transferred line
+
+ how to calculate the size of the transferred data ?
+ =&gt; selected color mode gives the number of bits per pixel and we have
+    (ARGB4444 =&gt; 16bits/pixel) the number of pixel per line and the number of line,
+    therefore :
+
+    data_size = (bits per pixel) X (pixel per line + output offset) X (number of line)
+
+STM327x6G-EVAL board revB's LEDs can be used to monitor the transfer status:
+ - LED1 is ON when the DMA2D transfer is complete.
+ - LED2 is ON when there is a DMA2D transfer error.
+ - LED3 is ON when there is an error in LTDC transfer/Init process.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Keywords</u>
+
+Display, Graphic, DMA2D, LCD, SRAM, ARGB4444, Blending, Memory to memory, LTDC, Pixel
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+    - DMA2D/DMA2D_MemToMemWithLCD/Inc/main.h                Main configuration file
+    - DMA2D/DMA2D_MemToMemWithLCD/Inc/stm32f7xx_it.h        Interrupt handlers header file
+    - DMA2D/DMA2D_MemToMemWithLCD/Inc/stm32f7xx_hal_conf.h  HAL configuration file
+    - DMA2D/DMA2D_MemToMemWithLCD/Inc/ARGB4444_150x150.h    Texture in Flash to be transferred by DMA2D in SRAM
+    - DMA2D/DMA2D_MemToMemWithLCD/Src/main.c                Main program
+    - DMA2D/DMA2D_MemToMemWithLCD/Src/stm32f7xx_it.c        Interrupt handlers
+    - DMA2D/DMA2D_MemToMemWithLCD/Src/stm32f7xx_hal_msp.c   HAL MSP module
+    - DMA2D/DMA2D_MemToMemWithLCD/Src/system_stm32f7xx.c    STM32F7xx system clock configuration file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F756xx/STM32F746xx devices.
+
+  - This example has been tested with STMicroelectronics STM327x6G-EVAL revB
+    evaluation board and can be easily tailored to any other supported device
+    and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>DMA2D_MemToMemWithPFC</b>
+DMA2D Memory to Memory with PFC example
+=====================================================================================
+
+<u>Example Description</u>
+
+  This example provides a description of how to configure DMA2D peripheral for transfer
+  in Memory_to_Memory with Pixel Format Conversion (PFC) Mode.
+
+  At the beginning of the main program the HAL_Init() function is called to reset
+  all the peripherals, initialize the Flash interface and the systick.
+  Then the SystemClock_Config() function is used to configure the system
+  clock (SYSCLK) to run at 216 MHz.
+
+  In this basic example the goal is to explain the different fields of the DMA2D
+  structure in the case of Memory_to_Memory with pixel format conversion (PFC) transfer mode
+  and the difference between pixel coded on 32bits (ARGB8888 format) and coded on 16bits (ARGB4444 format).
+
+  An image is transferred with DMA2D from Flash memory to internal SRAM and during the transfer,
+  a pixel format conversion is applied from ARGB8888 (32 bpp) to ARGB4444 (16 bpp).
+  The original image and the DMA2D output image are displayed on the LCD in two layers
+  translated on screen in order to visually see the difference between an image coded
+  on 16 bits (ARGB4444) and an image of higher color resolution coded on 32 bits (ARGB8888).
+
+ In this example two LTDC layers are used to display the original ARGB8888 and the DMA2D color converted
+ ARGB4444 images as following :
+  - Layer 1 is configured to display the original image with ARGB8888 as
+    pixel format and 320x120 size.
+  - Layer 2 is configured to display the converted image with ARGB4444 as
+    pixel format and 320x120 size.
+
+  Note: :
+  how to calculate the size of the transferred data ?
+  =&gt; selected color mode gives the number of bits per pixel and we have
+    the number of pixel per line and the number of line, therefore :
+
+    data_size = (bits per pixel) X (pixel per line) X (number of line)
+
+ How to convert pixel format from ARGB8888 to ARGB4444 ?
+ =&gt; only the four MSB are taken into account
+ eg : 0x AB  CD  12  34 --&gt; 0x A   C   1   3
+        |_| |_| |_| |_|       |_| |_| |_| |_|
+         A   R   G   B         A   R   G   B
+
+ In general,
+ =&gt; if the number of bits per pixel in source data is more then the number of
+    bits per pixel in destination data, only the MSB are taken into account
+
+ =&gt; else, if the number of bits per pixel in source data is less then the number
+    of bits per pixel in destination data, a bit replication of MSB in LSB is applied
+
+    eg : from ARGB1555 to ARGB8888       PFC
+    0xAB35 --&gt; 0b1 01010 11001 10101   -------&gt; 0b11111111 01010010 11001110 10101101
+                 A   R     G     B          --&gt; 0xFF       52       CE       AD
+
+STM327x6G-EVAL board revB's LEDs can be used to monitor the transfer status:
+ - LED1 is ON when the DMA2D transfer is complete.
+ - LED2 is ON when there is a DMA2D transfer error.
+ - LED3 is ON when there is an error in LTDC transfer/Init process.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Keywords</u>
+
+Display, Graphic, DMA2D, LCD, SRAM, ARGB4444, PFC, Memory to memory, Foreground,
+Background, RGB565, LTDC, Pixel format conversion, pixel
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+    - DMA2D/DMA2D_MemToMemWithPFC/Inc/main.h                Main configuration file
+    - DMA2D/DMA2D_MemToMemWithPFC/Inc/stm32f7xx_it.h        Interrupt handlers header file
+    - DMA2D/DMA2D_MemToMemWithPFC/Inc/stm32f7xx_hal_conf.h  HAL configuration file
+    - DMA2D/DMA2D_MemToMemWithPFC/Inc/ARGB8888_300x120.h    image to be converted and transferred by DMA2D.
+    - DMA2D/DMA2D_MemToMemWithPFC/Src/main.c                Main program
+    - DMA2D/DMA2D_MemToMemWithPFC/Src/stm32f7xx_it.c        Interrupt handlers
+    - DMA2D/DMA2D_MemToMemWithPFC/Src/stm32f7xx_hal_msp.c   HAL MSP module
+    - DMA2D/DMA2D_MemToMemWithPFC/Src/system_stm32f7xx.c    STM32F7xx system clock configuration file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F756xx/STM32F746xx devices.
+
+  - This example has been tested with STM327x6G-EVAL board revBs and can be easily
+    tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>DMA2D_RegToMemWithLCD</b>
+DMA2D Register to Memory with LCD example
+=====================================================================================
+
+<u>Example Description</u>
+
+  This example provides a description of how to configure DMA2D peripheral in
+  Register_to_Memory transfer mode and display the result on LCD.
+
+  The register to Memory mode of the DMA2D is used to copy a fixed color in format ARGB4444 (16 bpp).
+  The fixed color value used is 0xF0FF. It is copied from register to a SRAM memory area aBufferResult[]
+  of 100x100 pixels in same format ARGB4444 which is filled by the DMA2D with fixed pattern ARGB4444 0xF0FF.
+  The LTDC is then used to display the aBufferResult[] which is a 100x100 ARGB4444 fixed color image on LCD.
+
+  At the beginning of the main program the HAL_Init() function is called to reset
+  all the peripherals, initialize the Flash interface and the systick.
+  Then the SystemClock_Config() function is used to configure the system
+  clock (SYSCLK) to run at 216 MHz.
+
+  The Register_to_Memory transfer mode, is used to fill a user defined area by a
+  fixed color.
+
+  After DMA2D configuration, the data transfer is performed and then the LCD is
+  configured to display color zone created after this transfer on LCD.
+  (more details about LCD configuration in LCD examples)
+
+  Note:
+  =&gt; Output offset is the number of pixel to be skipped after each transferred line
+
+  how to calculate the size of the transferred data ?
+  =&gt; selected color mode gives the number of bits per pixel and we have
+     (ARGB4444 =&gt; 16bits/pixel) the number of pixel per line and the number of line,
+     therefore :
+
+     data_size = (bits per pixel) X (pixel per line + output offset) X (number of line)
+
+STM327x6G-EVAL board revB's LEDs can be used to monitor the transfer status:
+ - LED1 is ON when the DMA2D transfer is complete.
+ - LED2 is ON when there is a DMA2D transfer error.
+ - LED3 is ON when there is an error in LTDC transfer/Init process.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Keywords</u>
+
+Display, Graphic, DMA2D, LCD, ARGB4444, Blending, Register to memory, LTDC, Pixel
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+    - DMA2D/DMA2D_RegToMemWithLCD/Inc/main.h                Main configuration file
+    - DMA2D/DMA2D_RegToMemWithLCD/Inc/stm32f7xx_it.h        Interrupt handlers header file
+    - DMA2D/DMA2D_RegToMemWithLCD/Inc/stm32f7xx_hal_conf.h  HAL configuration file
+    - DMA2D/DMA2D_RegToMemWithLCD/Src/main.c                Main program
+    - DMA2D/DMA2D_RegToMemWithLCD/Src/stm32f7xx_it.c        Interrupt handlers
+    - DMA2D/DMA2D_RegToMemWithLCD/Src/stm32f7xx_hal_msp.c   HAL MSP module
+    - DMA2D/DMA2D_RegToMemWithLCD/Src/system_stm32f7xx.c    STM32F7xx system clock configuration file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F756xx/STM32F746xx devices.
+
+  - This example has been tested with STM327x6G-EVAL board revBs and can be easily
+    tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF7GettingStarted.pdf">Getting started with STM32CubeF7 Embedded Software for STM32F7xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF7 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM327x6G-EVAL Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

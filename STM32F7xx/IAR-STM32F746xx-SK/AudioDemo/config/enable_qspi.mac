@@ -1,0 +1,118 @@
+//
+// Enable QSPI module in Memory-mapped mode
+//
+
+__setup_QSPI()
+{
+__var Reg;
+
+  __message "---- Setup QSPI ----" ;
+
+  Reg = __readMemory32(0x40023838, "Memory");  // RCC.AHB3ENR enable QSPI
+  Reg |= (0x02UL);
+  __writeMemory32(Reg, 0x40023838, "Memory");
+
+  Reg = __readMemory32(0x40023830, "Memory");  // RCC.AHB1ENR enable GPIOB & GPIOF
+  Reg |= (0x22UL);
+  __writeMemory32(Reg, 0x40023830, "Memory");
+
+  Reg = __readMemory32(0x40023818, "Memory");  // RCC.AHB3RSTR reset assert QSPI
+  Reg |= (0x02UL);
+  __writeMemory32(Reg, 0x40023818, "Memory");
+
+  Reg = __readMemory32(0x40023818, "Memory");  // RCC.AHB3RSTR reset release QSPI
+  Reg &= ~(0x02UL);
+  __writeMemory32(Reg, 0x40023818, "Memory");
+
+  /* CS pin */
+  Reg = __readMemory32(0x40020420, "Memory");  // GPIOB.AFR[0]
+  Reg &= ~(0x0FUL << 24);
+  Reg |=  (0x0AUL << 24);
+  __writeMemory32(Reg, 0x40020420, "Memory");
+
+  Reg = __readMemory32(0x40020400, "Memory");  // GPIOB.MODER
+  Reg &= ~(0x03UL << 12);
+  Reg |=  (0x02UL << 12);
+  __writeMemory32(Reg, 0x40020400, "Memory");
+
+  Reg = __readMemory32(0x40020404, "Memory");  // GPIOB.OTYPER
+  Reg &= ~(1UL << 6);
+  __writeMemory32(Reg, 0x40020404, "Memory");
+
+  Reg = __readMemory32(0x40020408, "Memory");  // GPIOB.OSPEEDR
+  Reg |= (0x3UL << 12);
+  __writeMemory32(Reg, 0x40020408, "Memory");
+
+  Reg = __readMemory32(0x4002040C, "Memory");  // GPIOB.PUPDR
+  Reg &= ~(0x03UL << 12);
+  Reg |=  (0x01UL << 12);
+  __writeMemory32(Reg, 0x4002040C, "Memory");
+
+  /* CLK pin */
+  Reg = __readMemory32(0x40020420, "Memory");  // GPIOB.AFR[0]
+  Reg &= ~(0x0FUL << 8);
+  Reg |=  (0x09UL << 8);
+  __writeMemory32(Reg, 0x40020420, "Memory");
+
+  Reg = __readMemory32(0x40020400, "Memory");  // GPIOB.MODER
+  Reg &= ~(0x03UL << 4);
+  Reg |=  (0x02UL << 4);
+  __writeMemory32(Reg, 0x40020400, "Memory");
+
+  Reg = __readMemory32(0x40020404, "Memory");  // GPIOB.OTYPER
+  Reg &= ~(1UL << 2);
+  __writeMemory32(Reg, 0x40020404, "Memory");
+
+  Reg = __readMemory32(0x40020408, "Memory");  // GPIOB.OSPEEDR
+  Reg |= (0x3UL << 4);
+  __writeMemory32(Reg, 0x40020408, "Memory");
+
+  Reg = __readMemory32(0x4002040C, "Memory");  // GPIOB.PUPDR
+  Reg &= ~(0x03UL << 4);
+  __writeMemory32(Reg, 0x4002040C, "Memory");
+
+  /* D0-D3 pin */
+  Reg = __readMemory32(0x40021420, "Memory");  // GPIOF.AFR[0]
+  Reg &= ~(0xFFUL << 24);
+  Reg |=  (0x99UL << 24);
+  __writeMemory32(Reg, 0x40021420, "Memory");
+
+  Reg = __readMemory32(0x40021424, "Memory");  // GPIOF.AFR[1]
+  Reg &= ~(0xFFUL);
+  Reg |=  (0xAAUL);
+  __writeMemory32(Reg, 0x40021424, "Memory");
+
+  Reg = __readMemory32(0x40021400, "Memory");  // GPIOF.MODER
+  Reg &= ~(0xFFUL << 12);
+  Reg |=  (0xAAUL << 12);
+  __writeMemory32(Reg, 0x40021400, "Memory");
+
+  Reg = __readMemory32(0x40021404, "Memory");  // GPIOF.OTYPER
+  Reg &= ~(0x0FUL << 6);
+  __writeMemory32(Reg, 0x40021404, "Memory");
+
+  Reg = __readMemory32(0x40021408, "Memory");  // GPIOF.OSPEEDR
+  Reg |= (0xFFUL << 12);
+  __writeMemory32(Reg, 0x40021408, "Memory");
+
+  Reg = __readMemory32(0x4002140C, "Memory");  // GPIOF.PUPDR
+  Reg &= ~(0xFFUL << 12);
+  __writeMemory32(Reg, 0x4002140C, "Memory");
+
+
+  Reg = ((0x2UL << 24) | 1UL);
+  __writeMemory32(Reg, 0xA0001000, "Memory");    // QUADSPI_CR - PRESCALER=2(AHB/3), EN=1
+
+  Reg = (0x18UL << 16);
+  __writeMemory32(Reg, 0xA0001004, "Memory");    // QUADSPI_DCR - FSIZE=24(32MB), CSHT=0(1-cycle), CKMODE=0
+
+  Reg = ((3UL << 26) | (3UL << 24) | (8UL << 18) | (2UL << 12) | (1UL << 10) | (1UL << 8) | (0x6BUL));
+  __writeMemory32(Reg, 0xA0001014, "Memory");    // QUADSPI_CCR - IMODE=1(1-line), ADMODE=1(1-line), ADSIZE=2(24-bit),
+                                                 //              ABMODE=0, ABSIZE=0, DCYC=8, DMODE=3(4-line),
+                                                 //              FMODE=3(mem-mapped), SIOO=0, DHHC=0, DDRM=0
+}
+
+execUserPreload()
+{
+  __setup_QSPI();
+}

@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.JPN.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>ADC Workspace</h1>
+
+=====================================================================================
+<b>ADC_RegularConversion_DMA</b>
+ADC3 conversion using DMA for Data transfer
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to use the ADC and DMA to transfer continuously
+converted data from ADC to memory.
+
+This example describes how to use the ADC3 and DMA to transfer continuously
+converted data from ADC3 to memory.
+The ADC3 is configured to convert continuously channel7(for STM32F429I-DISCOVERY)
+/channel8(for STM32F429I-DISCOVERY RevB).
+Each time an end of conversion occurs the DMA transfers, in circular mode, the
+converted data from ADC3 DR register to the uhADCxConvertedValue variable.
+
+In this example, the system clock is 144MHz, APB2 = 72MHz and ADC clock = APB2/2.
+Since ADC3 clock is 36 MHz and sampling time is set to 3 cycles, the conversion
+time to 12bit data is 12 cycles so the total conversion time is (12+3)/36= 0.41us(2.4Msps).
+
+User can vary the ADC3 channel8(for STM32429i-Discovery) voltage probing external
+power supply on PF10 Gpio pin.
+
+STM32 Discovery board's LEDs can be used to monitor the transfer status:
+ - LED3 is ON when the conversion is complete.
+ - LED4 is ON when there are an error in initialization.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - ADC/ADC_RegularConversion_DMA/Inc/stm32f4xx_hal_conf.h    HAL configuration file
+  - ADC/ADC_RegularConversion_DMA/Inc/stm32f4xx_it.h          Interrupt handlers header file
+  - ADC/ADC_RegularConversion_DMA/Inc/main.h                  Main program header file
+  - ADC/ADC_RegularConversion_DMA/Src/stm32f4xx_it.c          Interrupt handlers
+  - ADC/ADC_RegularConversion_DMA/Src/main.c                  Main program
+  - ADC/ADC_RegularConversion_DMA/Src/stm32f4xx_hal_msp.c     HAL MSP module
+  - ADC/ADC_RegularConversion_DMA/Src/system_stm32f4xx.c      STM32F4xx system clock configuration file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F429xx devices.
+
+  - This example has been tested with STMicroelectronics STM32F429I-Discovery RevB
+    boards and can be easily tailored to any other supported device
+    and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF4GettingStarted.pdf">Getting started with STM32CubeF4 Embedded Software for STM32F4xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF4 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32F429I-Discovery Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

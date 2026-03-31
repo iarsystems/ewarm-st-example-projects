@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.JPN.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>CAN Workspace</h1>
+
+=====================================================================================
+<b>CAN_LoopBack</b>
+CAN LoopBack example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example provides a description of how to set a communication with the CAN
+in loopback mode.
+
+The CAN cell first performs a transmission and a reception of a standard data
+frame by polling at 175 Kbps. The received frame is checked and some LEDs light
+up to indicate whether the communication was successful.
+
+STM32 Eval board's LEDs can be used to monitor the transfer status:
+ - LED1 is ON when the transfer is complete.
+ - LED2 is ON when there is a transfer error occurred.
+ - LED3 is ON when there is an initialization error occurred.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - CAN/CAN_LoopBack/Inc/stm32f4xx_hal_conf.h    HAL configuration file
+  - CAN/CAN_LoopBack/Inc/stm32f4xx_it.h          Interrupt handlers header file
+  - CAN/CAN_LoopBack/Inc/main.h                  Main program header file
+  - CAN/CAN_LoopBack/Src/stm32f4xx_it.c          Interrupt handlers
+  - CAN/CAN_LoopBack/Src/main.c                  Main program
+  - CAN/CAN_LoopBack/Src/stm32f4xx_hal_msp.c     HAL MSP module
+  - CAN/CAN_LoopBack/Src/system_stm32f4xx.c      STM32F4xx system clock configuration file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F429xx/STM32F439xx devices.
+
+  - This example has been tested with STM324x9I-EVAL RevB evaluation board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>CAN_Networking</b>
+CAN Networking example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to configure the CAN peripheral to send and receive
+CAN frames in normal mode. The sent frames are used to control LEDs by pressing
+key push button.
+
+The CAN serial communication link is a bus to which a number of units may be
+connected. This number has no theoretical limit. Practically the total number
+of units will be limited by delay times and/or electrical loads on the bus line.
+
+This program behaves as follows:
+  - After reset, all LEDs are OFF on the N eval boards
+  - By Pressing on KEY Button : LED1 turns ON and all other LEDs are OFF, on the N
+    eval boards connected to the bus.
+  - Press on KEY Button again to send CAN Frame to command LEDn+1 ON, all other LEDs
+    are OFF on the N eval boards.
+
+ Note: This example is tested with a bus of 3 units. The same program example is
+       loaded in all units to send and receive frames.
+ Note: Any unit in the CAN bus may play the role of sender (by pressing KEY button)
+       or receiver.
+
+The CAN is configured as follows:
+  - ID Filter  = All identifiers are allowed
+  - RTR = Data
+  - DLC = 1 byte
+  - Data: LED number that should be turned ON
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - CAN/CAN_Networking/Inc/stm32f4xx_hal_conf.h    HAL configuration file
+  - CAN/CAN_Networking/Inc/stm32f4xx_it.h          Interrupt handlers header file
+  - CAN/CAN_Networking/Inc/main.h                  Main program header file
+  - CAN/CAN_Networking/Src/stm32f4xx_it.c          Interrupt handlers
+  - CAN/CAN_Networking/Src/main.c                  Main program
+  - CAN/CAN_Networking/Src/stm32f4xx_hal_msp.c     HAL MSP module
+  - CAN/CAN_Networking/Src/system_stm32f4xx.c      STM32F4xx system clock configuration file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F429xx/STM32F439xx devices.
+
+  - This example has been tested with STM324x9I-EVAL RevB evaluation board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM324x9I-EVAL RevB Set-up
+    - Use LED1, LED2, LED3 and LED4 connected respectively to PG.06, PG.07, PG.10
+      and PG.12 pins
+    - Use KEY Push Button connected to PC13
+    - Connect a female/female CAN cable between at least 2 EVAL CAN connectors (CN22)
+    - Please ensure that jumper JP10 is in position 1-2
+    - Please ensure that jumper JP11 is fitted.
+    - Please ensure that jumper JP16 is fitted.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF4GettingStarted.pdf">Getting started with STM32CubeF4 Embedded Software for STM32F4xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF4 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM324x9I-EVAL Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

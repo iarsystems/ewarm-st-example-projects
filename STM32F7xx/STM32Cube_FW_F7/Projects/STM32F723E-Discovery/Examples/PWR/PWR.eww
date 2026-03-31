@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/PWR_CurrentConsumption/EWARM/PWR_CurrentConsumption.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>PWR_CurrentConsumption</project>
+        <configuration>STM32F723E_DISCOVERY</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

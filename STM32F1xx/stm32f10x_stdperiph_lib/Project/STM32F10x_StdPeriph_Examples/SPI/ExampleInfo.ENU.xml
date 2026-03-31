@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<infocenter_data version="1.0">
+  <iar_name>SPI</iar_name>                                   <!--App-->
+  <iar_description>These examples show how to set communication between two SPIs in simplex mode or in full-duplex mode,
+  how to use DMA and how to use the SPI firmware library and an associate SPI FLASH driver to communicate with an M25P64 FLASH</iar_description>                     <!--App short description-->
+  <iar_curdir>$CUR_DIR$</iar_curdir>
+</infocenter_data>

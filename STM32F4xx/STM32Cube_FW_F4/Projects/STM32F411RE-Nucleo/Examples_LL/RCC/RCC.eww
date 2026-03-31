@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/RCC_OutputSystemClockOnMCO/EWARM/RCC_OutputSystemClockOnMCO.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/RCC_UseHSEasSystemClock/EWARM/RCC_UseHSEasSystemClock.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/RCC_UseHSI_PLLasSystemClock/EWARM/RCC_UseHSI_PLLasSystemClock.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>RCC_OutputSystemClockOnMCO</project>
+        <configuration>STM32F411-Nucleo</configuration>
+      </member>
+      <member>
+        <project>RCC_UseHSEasSystemClock</project>
+        <configuration>STM32F411-Nucleo</configuration>
+      </member>
+      <member>
+        <project>RCC_UseHSI_PLLasSystemClock</project>
+        <configuration>STM32F411-Nucleo</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

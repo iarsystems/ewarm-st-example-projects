@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/BKP_Domain/BKP_Domain.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/HW_Calendar/HW_Calendar.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/RTC_LSI/RTC_LSI.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/Tamper/Tamper.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/TimeStamp/TimeStamp.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>BKP_Domain</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+      <member>
+        <project>HW_Calendar</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+      <member>
+        <project>RTC_LSI</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+      <member>
+        <project>Tamper</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+      <member>
+        <project>TimeStamp</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

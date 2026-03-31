@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+WakeUp Timer
+
+DESCRIPTION
+===========
+   This example provides a basic example of how to enter the MCU in Stop mode
+  and to wake-up by the WUT End of Count(EC) event.
+  In the associated software, the TB0 is programmed to toggle the P0.4 pin each
+  250 ms and the WUT is configured to wake-up the MCU from Stop mode in 10s.
+  The P0.4 pin is used to indicate whether the MCU is in Stop or RUN mode.
+
+   In an infinite loop, the MCU enters and exit from Stop mode as the following:
+  The P0.4 pin starts toggling then after a time delay the MCU enters Stop mode
+  causing the P0.4 pin to stop toggling. However, the WUT is still working and
+  when the counter reaches the End of Count condition (10s elapsed) it generates
+  an internal wake-up causing the MCU to exit from Stop mode. As result, the
+  P0.4 pin restarts toggling.
+
+  The system clock(MCLK) is set to 2 MHz using a 4 MHz external quartz.
+
+COMPATIBILITY
+=============
+  The project is compatible with the IAR STR730-SK evaluation board.
+  The project is by default configured to use the J-Link JTAG interface.
+
+CONFIGURATION
+=============
+  The application is downloaded to the flash memory.
+
+  Jumpers:
+   EXT/JLINK - the correct jumper position depends on the power source used
+
+GETTING STARTED
+===============
+  1) Connect the J-Link.
+  2) Power the board.
+  3) Build and download the example.
+  4) Run the example.
+
+   </pre>
+
+  </div>
+  </body>
+</html>
+

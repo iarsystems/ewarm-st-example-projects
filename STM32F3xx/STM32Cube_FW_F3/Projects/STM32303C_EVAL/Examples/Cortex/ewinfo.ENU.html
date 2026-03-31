@@ -1,0 +1,205 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>Cortex Workspace</h1>
+
+=====================================================================================
+<b>CortexM_Mode_Privilege</b>
+Cortex-M4 Mode Privilege example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to modify Thread mode privilege access and stack. Thread
+mode is entered on reset or when returning from an exception.
+
+The associated program is used to:
+
+1. Switch the Thread mode stack from Main stack to Process stack
+
+2. Switch the Thread mode from Privileged to Unprivileged
+
+3. Switch the Thread mode from Unprivileged back to Privileged
+
+To monitor the stack used and the privileged or unprivileged access level of code
+in Thread mode, a set of variables is available within the program. It is also
+possible to use the 'Cortex register' window of the debugger.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - CORTEXM/CORTEXM_ModePrivilege/Inc/stm32f3xx_hal_conf.h    HAL configuration file
+  - CORTEXM/CORTEXM_ModePrivilege/Inc/stm32f3xx_it.h          Interrupt handlers header file
+  - CORTEXM/CORTEXM_ModePrivilege/Inc/main.h                  Header for main.c module
+  - CORTEXM/CORTEXM_ModePrivilege/Src/stm32f3xx_it.c          Interrupt handlers
+  - CORTEXM/CORTEXM_ModePrivilege/Src/main.c                  Main program
+  - CORTEXM/CORTEXM_ModePrivilege/Src/system_stm32f3xx.c      STM32F3xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F303xC devices.
+
+  - This example has been tested with STM32303C-EVAL RevC board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+- Rebuild all files and load your image into target memory
+- Run the example
+
+
+=====================================================================================
+<b>CortexM_MPU</b>
+Cortex-M4 MPU example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example presents the MPU feature. Its purpose is to configure a memory area
+as privileged read-only area and attempt to perform read and write operations
+in different modes.
+
+If the access is permitted LED1 is toggling. If the access is not permitted,
+a memory management fault is generated and LED2 is ON.
+
+To generate an MPU memory fault exception due to an access right error, uncomment
+the following line "PrivilegedReadOnlyArray[0] = 'e';" in the "stm32_mpu.c" file.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - CortexM/MPU/Inc/stm32f3xx_hal_conf.h    HAL configuration file
+  - CortexM/MPU/Inc/stm32f3xx_it.h          Interrupt handlers header file
+  - CortexM/MPU/Inc/main.h                  Header for main.c module
+  - CortexM/MPU/Inc/stm32_mpu.h             MPU management
+  - CortexM/MPU/Src/stm32f3xx_it.c          Interrupt handlers
+  - CortexM/MPU/Src/main.c                  Main program
+  - CortexM/MPU/Src/system_stm32f3xx.c      STM32F3xx system source file
+  - CortexM/MPU/Src/stm32_mpu.c             MPU management
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F303xC devices.
+
+  - This example has been tested with STM32303C-EVAL RevC board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Add the required example files
+   - stm32_mpu.c
+
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>CORTEXM_SysTick</b>
+CORTEXM SysTick example
+=====================================================================================
+
+<u>Example Description</u>
+
+  This example shows how to use the default SysTick configuration with a 1 ms timebase
+  to toggle LEDs.
+
+  The system clock is set to 72 MHz for STM32F3xx devices, the SysTick is
+  clocked by the AHB clock(HCLK).
+
+  A "HAL_Delay" function is implemented based on the SysTick end-of-count event.
+  Four LEDs are toggled with a timing defined by the HAL_Delay function.
+
+Note: Caution, the SysTick time base 1 msec must not be changed due to use
+      of these time base by HAL driver.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - CortexM/CORTEXM_SysTick/Inc/stm32f3xx_hal_conf.h    HAL configuration file
+  - CortexM/CORTEXM_SysTick/Inc/stm32f3xx_it.h          Interrupt handlers header file
+  - CortexM/CORTEXM_SysTick/Inc/main.h                  Header for main.c module
+  - CortexM/CORTEXM_SysTick/Src/stm32f3xx_it.c          Interrupt handlers
+  - CortexM/CORTEXM_SysTick/Src/main.c                  Main program
+  - CortexM/CORTEXM_SysTick/Src/system_stm32f3xx.c      STM32F3xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F303xC devices.
+
+  - This example has been tested with STM32303C-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+- Rebuild all files and load your image into target memory
+- Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF3GettingStarted.pdf">Getting started with STM32CubeF3 Embedded Software for STM32F3xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF3 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32303C-EVAL Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

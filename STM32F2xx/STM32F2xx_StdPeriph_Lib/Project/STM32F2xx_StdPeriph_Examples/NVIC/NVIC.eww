@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/DMA_WFIMode/DMA_WFIMode.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/IRQ_Mask/IRQ_Mask.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/IRQ_Priority/IRQ_Priority.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/VectorTable_Relocation/VectorTable_Relocation.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>DMA_WFIMode</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+      <member>
+        <project>IRQ_Mask</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+      <member>
+        <project>IRQ_Priority</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+      <member>
+        <project>VectorTable_Relocation</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/AES_MODES/AES_MODES.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/EncryptDecrypt/EncryptDecrypt.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/AES_TwoBoards/EncryptedDataExchangeInterrupt/EncryptedDataExchangeInterrupt.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>EncryptDecrypt</project>
+        <configuration>STM32L152D-EVAL</configuration>
+      </member>
+      <member>
+        <project>AES_MODES</project>
+        <configuration>STM32L152D-EVAL</configuration>
+      </member>
+      <member>
+        <project>EncryptedDataExchangeInterrupt</project>
+        <configuration>STM32L152D-EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

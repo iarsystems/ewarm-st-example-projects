@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/Cascade_Synchro/Cascade_Synchro.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/ExternalTrigger_Synchro/ExternalTrigger_Synchro.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/InputCapture/InputCapture.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/InputCaptureRouting/InputCaptureRouting.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/OCActive/OCActive.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/OCInactive/OCInactive.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/OCToggle/OCToggle.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/OnePulse/OnePulse.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/Parallel_Synchro/Parallel_Synchro.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/PWM_Input/PWM_Input.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/PWM_Output/PWM_Output.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/TIM11_PWM_Output/TIM11_PWM_Output.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/TIM9_ETR_LSE/TIM9_ETR_LSE.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/TIM9_OCToggle/TIM9_OCToggle.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/TIM9_Toggle/TIM9_Toggle.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/TimeBase/TimeBase.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>Cascade_Synchro</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>Cascade_Synchro</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>ExternalTrigger_Synchro</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>ExternalTrigger_Synchro</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>InputCapture</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>InputCapture</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>InputCaptureRouting</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>InputCaptureRouting</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>OCActive</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>OCActive</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>OCInactive</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>OCInactive</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>OCToggle</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>OCToggle</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>OnePulse</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>OnePulse</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>Parallel_Synchro</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>Parallel_Synchro</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>PWM_Input</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>PWM_Input</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>PWM_Output</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>PWM_Output</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>TIM11_PWM_Output</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>TIM11_PWM_Output</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>TIM9_ETR_LSE</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>TIM9_ETR_LSE</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>TIM9_OCToggle</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>TIM9_OCToggle</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>TIM9_Toggle</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>TIM9_Toggle</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>TimeBase</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>TimeBase</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

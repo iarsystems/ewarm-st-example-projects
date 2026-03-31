@@ -1,0 +1,368 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>CRYP Workspace</h1>
+
+=====================================================================================
+<b>CRYP_AESModes</b>
+Encrypt and Decrypt data using AES Algo in ECB/CBC/CTR
+chaining modes with all possible key sizes example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example provides a short description of how to use the CRYPTO peripheral to
+encrypt and decrypt data using AES in chaining modes (ECB, CBC, CTR) and all key
+sizes (128, 192, 256) Algorithm.
+
+For this example, a firmware is used to interface with the Crypto peripheral
+in polling mode.
+
+This program behaves as follows:
+
+1. ECB mode:
+   - AES128 ECB Encryption
+   - AES192 ECB Encryption
+   - AES256 ECB Encryption
+
+   - AES128 ECB Decryption
+   - AES192 ECB Decryption
+   - AES256 ECB Decryption
+
+2. CBC mode:
+   - AES128 CBC Encryption
+   - AES192 CBC Encryption
+   - AES256 CBC Encryption
+
+   - AES128 CBC Decryption
+   - AES192 CBC Decryption
+   - AES256 CBC Decryption
+
+3. CTR mode:
+   - AES128 CTR Encryption
+   - AES192 CTR Encryption
+   - AES256 CTR Encryption
+
+   - AES128 CTR Decryption
+   - AES192 CTR Decryption
+   - AES256 CTR Decryption
+
+The Plain data, encrypted data and decrypted data can be displayed on a PC
+HyperTerminal using the UART.
+
+The USARTx is configured as follows:
+    - BaudRate = 115200 baud
+    - Word Length = 8 Bits
+    - One Stop Bit
+    - No parity
+    - Hardware flow control disabled (RTS and CTS signals)
+    - Receive and transmit enabled
+
+Note: To ensure right functionality of this example, please ensure that used
+      buffers are 32-bit aligned, once enabling the DMA capability.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - CRYP/CRYP_AESModes/Inc/stm32f4xx_hal_conf.h    HAL configuration file
+  - CRYP/CRYP_AESModes/Inc/stm32f4xx_it.h          Interrupt handlers header file
+  - CRYP/CRYP_AESModes/Inc/main.h                  Main program header file
+  - CRYP/CRYP_AESModes/Src/stm32f4xx_it.c          Interrupt handlers
+  - CRYP/CRYP_AESModes/Src/main.c                  Main program
+  - CRYP/CRYP_AESModes/Src/stm32f4xx_hal_msp.c     HAL MSP module
+  - CRYP/CRYP_AESModes/Src/system_stm32f4xx.c      STM32F4xx system clock configuration file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F417xx devices.
+
+  - This example has been tested with STMicroelectronics STM32417G-EVAL RevC
+    evaluation boards and can be easily tailored to any other supported device
+    and development board.
+
+  - Hyperterminal configuration:
+    - BaudRate = 115200 baud
+    - Word Length = 8 Bits
+    - One Stop Bit
+    - No parity
+    - Hardware flow control disabled (RTS and CTS signals)
+    - Receive and transmit enabled
+
+  - STM32417G-EVAL RevC Set-up
+    - Please ensure that jumper JP22 is in position RS232.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>CRYP_AES_DMA</b>
+Encrypt and Decrypt data using AES Algo in ECB chaining
+modes using DMA example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example provides a short description of how to use the CRYPTO peripheral to
+encrypt and decrypt data using AES-128 Algorithm with ECB chaining mode.
+
+For this example, DMA is used to transfer data from memory to the CRYPTO
+processor IN FIFO and also to transfer data from CRYPTO processor OUT FIFO
+to memory.
+
+The data to be encrypted is a 256-bit data (8 words), which correspond to
+2x AES-128 Blocks.
+
+This example behaves as below:
+- AES Encryption (Plain Data --&gt; Encrypted Data)
+- AES Key preparation for decryption (Encryption Key --&gt; Decryption Key)
+- AES Decryption (Encrypted Data --&gt; Decrypted Data)
+
+STM32 Eval board's LEDs can be used to monitor the transfer status:
+ - LED1 is ON when encryption is right.
+ - LED2 is ON when encryption is wrong.
+ - LED3 is ON when there is an initialization error occurred.
+
+The Plain data, encrypted data and decrypted data can be displayed on a PC
+HyperTerminal using the USART (CN16).
+
+Note: To ensure right functionality of this example, please ensure that used
+      buffers are 32-bit aligned, once enabling the DMA capability.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - CRYP/CRYP_AES_DMA/Inc/stm32f4xx_hal_conf.h    HAL configuration file
+  - CRYP/CRYP_AES_DMA/Inc/stm32f4xx_it.h          Interrupt handlers header file
+  - CRYP/CRYP_AES_DMA/Inc/main.h                  Main program header file
+  - CRYP/CRYP_AES_DMA/Src/stm32f4xx_it.c          Interrupt handlers
+  - CRYP/CRYP_AES_DMA/Src/main.c                  Main program
+  - CRYP/CRYP_AES_DMA/Src/stm32f4xx_hal_msp.c     HAL MSP module
+  - CRYP/CRYP_AES_DMA/Src/system_stm32f4xx.c      STM32F4xx system clock configuration file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F417xx devices.
+
+  - This example has been tested with STMicroelectronics STM32417G-EVAL RevC
+    evaluation boards and can be easily tailored to any other supported device
+    and development board.
+
+  - STM324xG-EVAL RevC Set-up
+    - Please ensure that jumper JP22 is in position RS232.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>CRYP_DESTDESmodes</b>
+Encrypt and Decrypt data using DES and TDES Algorithms
+in all chaining modes example.
+=====================================================================================
+
+<u>Example Description</u>
+
+This example provides a short description of how to use the CRYPTO peripheral to
+encrypt and decrypt data using DES and TDES in all modes (ECB, CBC) Algorithm.
+
+For this example, a firmware is used to interface with the Crypto peripheral
+in polling mode.
+
+This program behaves as follows:
+1. DES
+  - DES ECB Encryption
+  - DES ECB Decryption
+  - DES CBC Encryption
+  - DES CBC Decryption
+2. TDES
+  - TDES ECB Encryption
+  - TDES ECB Decryption
+  - TDES CBC Encryption
+  - TDES CBC Decryption
+
+The Plain data, encrypted data and decrypted data can be displayed on a PC
+HyperTerminal using the USART.
+
+The USARTx is configured as follows:
+    - BaudRate = 115200 baud
+    - Word Length = 8 Bits
+    - One Stop Bit
+    - No parity
+    - Hardware flow control disabled (RTS and CTS signals)
+    - Receive and transmit enabled
+
+Note: To ensure right functionality of this example, please ensure that used
+      buffers are 32-bit aligned, once enabling the DMA capability.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - CRYP/CRYP_DESTDESmodes/Inc/stm32f4xx_hal_conf.h    HAL configuration file
+  - CRYP/CRYP_DESTDESmodes/Inc/stm32f4xx_it.h          Interrupt handlers header file
+  - CRYP/CRYP_DESTDESmodes/Inc/main.h                  Main program header file
+  - CRYP/CRYP_DESTDESmodes/Src/stm32f4xx_it.c          Interrupt handlers
+  - CRYP/CRYP_DESTDESmodes/Src/main.c                  Main program
+  - CRYP/CRYP_DESTDESmodes/Src/stm32f4xx_hal_msp.c     HAL MSP module
+  - CRYP/CRYP_DESTDESmodes/Src/system_stm32f4xx.c      STM32F4xx system clock configuration file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F417xx devices.
+
+  - This example has been tested with STMicroelectronics STM32417G-EVAL RevC
+    evaluation boards and can be easily tailored to any other supported device
+    and development board.
+
+  - Hyperterminal configuration:
+    - BaudRate = 115200 baud
+    - Word Length = 8 Bits
+    - One Stop Bit
+    - No parity
+    - Hardware flow control disabled (RTS and CTS signals)
+    - Receive and transmit enabled
+
+  - STM32417G-EVAL RevC Set-up
+    - Please ensure that jumper JP22 is in position RS232.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>CRYP_TDES_DMA</b>
+Encrypt data using TDES Algo in ECB mode, with DMA example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example provides a short description of how to use the CRYPTO peripheral to
+encrypt data using TDES Algorithm.
+
+For this example, DMA is used to transfer data from memory to the CRYPTO processor
+IN FIFO and also to transfer data from CRYPTO processor OUT FIFO to memory.
+
+The data to be encrypted is a 384 bit data, which correspond to 6 TDES Blocks.
+
+This program behaves as follows:
+- TDES Encryption   (PlainData --&gt; EncryptedData)
+
+STM32 Eval board's LEDs can be used to monitor the transfer status:
+ - LED1 is ON when encryption is right.
+ - LED2 is ON when encryption is wrong.
+ - LED3 is ON when there is an initialization error occurred.
+
+Note: To ensure right functionality of this example, please ensure that used
+      buffers are 32-bit aligned, once enabling the DMA capability.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - CRYP/CRYP_TDES_DMA/Inc/stm32f4xx_hal_conf.h    HAL configuration file
+  - CRYP/CRYP_TDES_DMA/Inc/stm32f4xx_it.h          Interrupt handlers header file
+  - CRYP/CRYP_TDES_DMA/Inc/main.h                  Main program header file
+  - CRYP/CRYP_TDES_DMA/Src/stm32f4xx_it.c          Interrupt handlers
+  - CRYP/CRYP_TDES_DMA/Src/main.c                  Main program
+  - CRYP/CRYP_TDES_DMA/Src/stm32f4xx_hal_msp.c     HAL MSP module
+  - CRYP/CRYP_TDES_DMA/Src/system_stm32f4xx.c      STM32F4xx system clock configuration file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F417xx devices.
+
+  - This example has been tested with STMicroelectronics STM32417G-EVAL RevC
+    evaluation boards and can be easily tailored to any other supported device
+    and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF4GettingStarted.pdf">Getting started with STM32CubeF4 Embedded Software for STM32F4xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF4 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM324xG-EVAL Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

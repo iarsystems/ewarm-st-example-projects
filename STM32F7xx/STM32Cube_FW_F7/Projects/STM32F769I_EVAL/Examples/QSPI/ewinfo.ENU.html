@@ -1,0 +1,494 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>QSPI Workspace</h1>
+
+=====================================================================================
+<b>QSPI_ExecuteInPlace</b>
+QSPI execute in place example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to execute a part of the code from the QSPI memory. To do this,
+a section is created where the function is stored.
+
+At the startup, the QSPI memory is erased, then the data are copied from the initialization
+section of the flash to the QSPI memory. And finally the QSPI is configured in memory-mapped
+mode and the code in executed in a forever loop.
+
+LED1, LED2, LED3 and LED4 toggle in a forever loop.
+LED3 is on as soon as an error is returned by HAL API, and no more LED toggles.
+
+In this example, HCLK is configured at 216 MHz.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Keywords</u>
+
+Memory, QSPI, Execute in place, Erase, section, sector, memory-mapped mode
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - QSPI/QSPI_ExecuteInPlace/Inc/stm32f7xx_hal_conf.h HAL configuration file
+  - QSPI/QSPI_ExecuteInPlace/Inc/stm32f7xx_it.h       Interrupt handlers header file
+  - QSPI/QSPI_ExecuteInPlace/Inc/main.h               Header for main.c module
+  - QSPI/QSPI_ExecuteInPlace/Src/stm32f7xx_it.c       Interrupt handlers
+  - QSPI/QSPI_ExecuteInPlace/Src/main.c               Main program
+  - QSPI/QSPI_ExecuteInPlace/Src/system_stm32f7xx.c   STM32F7xx system source file
+  - QSPI/QSPI_ExecuteInPlace/Src/stm32f7xx_hal_msp.c  HAL MSP file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F779xx/STM32F777xx/STM32F767xx/STM32F769xx devices.
+
+  - This example has been tested with STM32F769I-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32F769I-EVAL Set-up :
+      Board is configured by default to access QSPI memory
+
+  - A specific region for the QSPI memory has been added in the linker file
+  in order to map functions in this memory:
+      * STM32F779xx/STM32F777xx/STM32F767xx/STM32F769xx_flash.icf for IAR toolchain
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>QSPI_MemoryMapped</b>
+QSPI memory mapped example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to erase part of the QSPI memory, write data in DMA mode and access to QSPI memory
+in memory-mapped mode to check the data in a forever loop.
+
+LED1 toggles each time the data have been checked
+LED3 is on as soon as a data is wrong
+LED3 is on as soon as an error is returned by HAL API
+
+In this example, HCLK is configured at 216 MHz.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Keywords</u>
+
+Memory, QSPI, Erase, Write, DMA, sector, memory-mapped mode
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - QSPI/QSPI_MemoryMapped/Inc/stm32f7xx_hal_conf.h HAL configuration file
+  - QSPI/QSPI_MemoryMapped/Inc/stm32f7xx_it.h       Interrupt handlers header file
+  - QSPI/QSPI_MemoryMapped/Inc/main.h               Header for main.c module
+  - QSPI/QSPI_MemoryMapped/Src/stm32f7xx_it.c       Interrupt handlers
+  - QSPI/QSPI_MemoryMapped/Src/main.c               Main program
+  - QSPI/QSPI_MemoryMapped/Src/system_stm32f7xx.c   STM32F7xx system source file
+  - QSPI/QSPI_MemoryMapped/Src/stm32f7xx_hal_msp.c  HAL MSP file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F769xx/STM32F779xx/STM32F777xx/STM32F767xx devices.
+
+  - This example has been tested with STM32F769I-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32F769I-EVAL Set-up :
+    Board is configured by default to access QSPI memory
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>QSPI_PreInitConfig</b>
+QSPI PreInit Config example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to execute a part of the code from the QSPI memory. To do this,
+a section is created where the function is stored.
+
+The QSPI is configured in memory-mapped mode before to call main() function and QSPI memory
+is then available after the reset.
+
+The configuration of the QSPI is done in the file system_stm32f7xx.c file in the
+function SystemInit_ExtMemCtl(). It is called by the function SystemInit(), which
+is the first function called by the Reset_Handler.
+
+The code in executed in a forever loop. It is the same code as GPIO_IOToggle example
+with some code mapped in QSPI mode and other in Flash, to show the jump from one
+memory to the other.
+
+LED1, LED2, LED3 and LED4 toggle in this forever loop.
+
+In this example, HCLK is configured at 216 MHz.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Keywords</u>
+
+Memory, QSPI, Erase, Write, DMA, section, memory-mapped mode, PreInit configuration, Jump
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - QSPI/QSPI_PreInitConfig/Inc/stm32f7xx_hal_conf.h HAL configuration file
+  - QSPI/QSPI_PreInitConfig/Inc/stm32f7xx_it.h       Interrupt handlers header file
+  - QSPI/QSPI_PreInitConfig/Inc/main.h               Header for main.c module
+  - QSPI/QSPI_PreInitConfig/Src/stm32f7xx_it.c       Interrupt handlers
+  - QSPI/QSPI_PreInitConfig/Src/main.c               Main program
+  - QSPI/QSPI_PreInitConfig/Src/system_stm32f7xx.c   STM32F7xx system source file
+  - QSPI/QSPI_PreInitConfig/Src/stm32f7xx_hal_msp.c  HAL MSP file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F779xx/STM32F777xx/STM32F767xx/STM32F769xx devices.
+
+  - This example has been tested with STM32F769I-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32F769I-EVAL Set-up :
+      Board is configured by default to access QSPI memory
+
+  - A specific region for the SRAM memory has been added in the linker file
+    (STM32F779xx/STM32F777xx/STM32F767xx/STM32F769xx_flash.icf for IAR toolchain,
+
+The QSPI external flash loader is not integrated with supported toolchains, its only supported with STM32
+ST-Link Utility V3.9.0
+To load the example, use STM32 ST-Link Utility to program both internal Flash and external QSPI memory:
+1- Open STM32 ST-Link Utility V3.9.0, click on "External Loader" from the bar menu then check
+   "MT25QL512A_STM32F769I-EVAL" box
+2- Connect the STM32F769I-EVAL board to PC with USB cable through CN22
+3- Compile the projcet to generatethe "STM32F769I_EVAL.hex" file under Exe with STM32 ST-Link Utility
+   to program both internal Flash and external QSPI memory
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>QSPI_ReadWriteDual_DMA</b>
+QSPI Read/Write in DMA mode example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to use QSPI interface in dual mode. It erases part of the QSPI memory,
+writes data in DMA mode, reads data in DMA mode and compares the result in a forever loop.
+In dual-flash mode,two external Quad-SPI Flash memories are accessed simultaneously.
+Each of the Flash memories use the same CLK and optionally the same nCS signals, but
+each have separate IO0, IO1, IO2, and IO3 signals.
+
+LED1 toggles each time a new comparison is good
+LED2 is on as soon as a comparison error occurs
+LED3 is on as soon as an error is returned by HAL API
+
+In this example, HCLK is configured at 216 MHz.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Keywords</u>
+
+Memory, QSPI, Erase, Read, Write, DMA, Dual mode
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - QSPI/QSPI_ReadWriteDual_DMA/Inc/stm32f7xx_hal_conf.h HAL configuration file
+  - QSPI/QSPI_ReadWriteDual_DMA/Inc/stm32f7xx_it.h       Interrupt handlers header file
+  - QSPI/QSPI_ReadWriteDual_DMA/Inc/main.h               Header for main.c module
+  - QSPI/QSPI_ReadWriteDual_DMA/Src/stm32f7xx_it.c       Interrupt handlers
+  - QSPI/QSPI_ReadWriteDual_DMA/Src/main.c               Main program
+  - QSPI/QSPI_ReadWriteDual_DMA/Src/system_stm32f7xx.c   STM32F7xx system source file
+  - QSPI/QSPI_ReadWriteDual_DMA/Src/stm32f7xx_hal_msp.c  HAL MSP file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F767xx/STM32F769xx/STM32F777xx/STM32F779xx devices.
+
+  - This example has been tested with STM32769I-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32769I-EVAL Set-up :
+    - A Daughter Board, in which two external QSPI Flash memories are mounted, is needed for this example.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>QSPI_ReadWrite_DMA</b>
+QSPI Read/Write in DMA mode example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to erase part of the QSPI memory, write data in DMA mode, read data in DMA mode
+and compare the result in a forever loop.
+
+LED1 toggles each time a new comparison is good
+LED2 is on as soon as a comparison error occurs
+LED3 is on as soon as an error is returned by HAL API
+
+In this example, HCLK is configured at 216 MHz.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Keywords</u>
+
+Memory, QSPI, Erase, Read, Write, DMA
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - QSPI/QSPI_ReadWrite_DMA/Inc/stm32f7xx_hal_conf.h HAL configuration file
+  - QSPI/QSPI_ReadWrite_DMA/Inc/stm32f7xx_it.h       Interrupt handlers header file
+  - QSPI/QSPI_ReadWrite_DMA/Inc/main.h               Header for main.c module
+  - QSPI/QSPI_ReadWrite_DMA/Src/stm32f7xx_it.c       Interrupt handlers
+  - QSPI/QSPI_ReadWrite_DMA/Src/main.c               Main program
+  - QSPI/QSPI_ReadWrite_DMA/Src/system_stm32f7xx.c   STM32F7xx system source file
+  - QSPI/QSPI_ReadWrite_DMA/Src/stm32f7xx_hal_msp.c  HAL MSP file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F767xx/STM32F769xx/STM32F777xx/STM32F779xx devices.
+
+  - This example has been tested with STM32F769I-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32F769I-EVAL Set-up :
+    - Board is configured by default to access QSPI memory
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>QSPI_ReadWrite_IT</b>
+QSPI Read/Write in interrupt mode example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to erase part of the QSPI memory, write data in IT mode, read data in IT mode
+and compare the result in a forever loop.
+
+LED1 toggles each time a new comparison is good
+LED3 is on as soon as a comparison error occurs
+LED3 is on as soon as an error is returned by HAL API
+
+In this example, HCLK is configured at 216 MHz.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Keywords</u>
+
+Memory, QSPI, Erase, Read, Write, Interrupt
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - QSPI/QSPI_ReadWrite_IT/Inc/stm32f7xx_hal_conf.h HAL configuration file
+  - QSPI/QSPI_ReadWrite_IT/Inc/stm32f7xx_it.h       Interrupt handlers header file
+  - QSPI/QSPI_ReadWrite_IT/Inc/main.h               Header for main.c module
+  - QSPI/QSPI_ReadWrite_IT/Src/stm32f7xx_it.c       Interrupt handlers
+  - QSPI/QSPI_ReadWrite_IT/Src/main.c               Main program
+  - QSPI/QSPI_ReadWrite_IT/Src/system_stm32f7xx.c   STM32F7xx system source file
+  - QSPI/QSPI_ReadWrite_IT/Src/stm32f7xx_hal_msp.c  HAL MSP file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F769xx/STM32F779xx/STM32F777xx/STM32F767xx devices.
+
+  - This example has been tested with STM32F769I-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32F769I-EVAL Set-up :
+    Board is configured by default to access QSPI memory.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF7GettingStarted.pdf">Getting started with STM32CubeF7 Embedded Software for STM32F7xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF7 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32F7x9I-EVAL Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

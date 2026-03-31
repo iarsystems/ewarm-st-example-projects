@@ -1,0 +1,574 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.JPN.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>UART Workspace</h1>
+
+=====================================================================================
+<b>UART_HyperTerminal_DMA</b>
+UART Hyperterminal DMA Example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to ensure UART Data buffer transmission and reception with
+DMA. The communication is done with the Hyperterminal PC application.
+
+Board: STM32VL-Discovery
+Tx Pin: PA.09
+Rx Pin: PA.10
+   _________________________
+  |           ______________|                       _______________
+  |          |USART         |                      | HyperTerminal |
+  |          |              |                      |               |
+  |          |           TX |______________________|RX             |
+  |          |              |                      |               |
+  |          |              |     RS232 Cable      |               |
+  |          |              |                      |               |
+  |          |           RX |______________________|TX             |
+  |          |              |                      |               |
+  |          |______________|                      |_______________|
+  |                         |
+  |                         |
+  |                         |
+  |                         |
+  |_STM32_Board_____________|
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+Then the SystemClock_Config() function is used to configure the system
+clock (SYSCLK) to run at 24 MHz.
+
+The UART peripheral configuration is ensured by the HAL_UART_Init() function.
+This later is calling the HAL_UART_MspInit()function which core is implementing
+the configuration of the needed UART resources according to the used hardware (CLOCK,
+GPIO, DMA and NVIC). You may update this function to change UART configuration.
+
+The UART/Hyperterminal communication is then initiated.
+The HAL_UART_Receive_DMA() and the HAL_UART_Transmit_DMA() functions allow respectively
+the reception of Data from Hyperterminal and the transmission of a predefined data
+buffer.
+
+The Asynchronous communication aspect of the UART is clearly highlighted as the
+data buffers transmission/reception to/from Hyperterminal are done simultaneously.
+
+For this example the TxBuffer is predefined and the RxBuffer size is limited to
+10 data by the mean of the RXBUFFERSIZE define in the main.c file.
+
+In a first step the received data will be stored in the RxBuffer buffer and the
+TxBuffer buffer content will be displayed in the Hyperterminal interface.
+In a second step the received data in the RxBuffer buffer will be sent back to
+Hyperterminal and displayed.
+The end of this two steps are monitored through the HAL_UART_GetState() function
+result.
+
+STM32 board's LEDs can be used to monitor the transfer status:
+ - LED3 turns ON when the transmission process is complete.
+ - LED4 turns ON if transmission/reception is complete and OK.
+ - LED4 turns OFF when there is an error in transmission/reception process (HAL_UART_ErrorCallback is called).
+ - LED4 toggles when there another error is detected.
+
+The UART is configured as follows:
+    - BaudRate = 9600 baud
+    - Word Length = 8 Bits (7 data bit + 1 parity bit)
+    - One Stop Bit
+    - Odd parity
+    - Hardware flow control disabled (RTS and CTS signals)
+    - Reception and transmission are enabled in the time
+
+Note: USARTx/UARTx instance used and associated resources can be updated in "main.h"
+file depending hardware configuration used.
+
+Note: When the parity is enabled, the computed parity is inserted at the MSB
+position of the transmitted data.
+
+
+<u>Directory contents</u>
+
+  - UART/UART_HyperTerminal_DMA/Inc/stm32f1xx_hal_conf.h    HAL configuration file
+  - UART/UART_HyperTerminal_DMA/Inc/stm32f1xx_it.h          DMA interrupt handlers header file
+  - UART/UART_HyperTerminal_DMA/Inc/main.h                  Header for main.c module
+  - UART/UART_HyperTerminal_DMA/Src/stm32f1xx_it.c          DMA interrupt handlers
+  - UART/UART_HyperTerminal_DMA/Src/main.c                  Main program
+  - UART/UART_HyperTerminal_DMA/Src/stm32f1xx_hal_msp.c     HAL MSP module
+  - UART/UART_HyperTerminal_DMA/Src/system_stm32f1xx.c      STM32F1xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F100xB devices.
+
+  - This example has been tested with STM32VL-Discovery board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32_VL_DISCOVERY Set-up
+    - Connect USART1 TX (PA9) to RX pin of PC serial port (or USB to UART adapter)
+      and USART1 RX (PA10) to TX pin of PC serial port.
+
+  - Hyperterminal configuration:
+    - Word Length = 7 Bits
+    - One Stop Bit
+    - Odd parity
+    - BaudRate = 9600 baud
+    - flow control: None
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>UART_Printf</b>
+UART Printf example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to reroute the C library printf function to the UART. It
+outputs a message sent by the UART on the HyperTerminal.
+
+Board: STM32VL-Discovery
+Tx Pin: PA.09
+Rx Pin: PA.10
+   _________________________
+  |           ______________|                       _______________
+  |          |USART         |                      | HyperTerminal |
+  |          |              |                      |               |
+  |          |           TX |______________________|RX             |
+  |          |              |                      |               |
+  |          |              |     RS232 Cable      |               |
+  |          |              |                      |               |
+  |          |           RX |______________________|TX             |
+  |          |              |                      |               |
+  |          |______________|                      |_______________|
+  |                         |
+  |                         |
+  |                         |
+  |                         |
+  |_STM32_Board_____________|
+
+The USART is configured as follows:
+    - BaudRate = 9600 baud
+    - Word Length = 8 Bits (7 data bit + 1 parity bit)
+    - One Stop Bit
+    - Odd parity
+    - Hardware flow control disabled (RTS and CTS signals)
+    - Reception and transmission are enabled in the time
+
+Note: USARTx/UARTx instance used and associated resources can be updated in "main.h"
+file depending hardware configuration used.
+
+Note: When the parity is enabled, the computed parity is inserted at the MSB
+position of the transmitted data.
+
+
+<u>Directory contents</u>
+
+  - UART/UART_Printf/Inc/stm32f1xx_hal_conf.h    HAL configuration file
+  - UART/UART_Printf/Inc/stm32f1xx_it.h          Interrupt handlers header file
+  - UART/UART_Printf/Inc/main.h                  Header for main.c module
+  - UART/UART_Printf/Src/stm32f1xx_it.c          Interrupt handlers
+  - UART/UART_Printf/Src/main.c                  Main program
+  - UART/UART_Printf/Src/stm32f1xx_hal_msp.c     HAL MSP module
+  - UART/UART_Printf/Src/system_stm32f1xx.c      STM32F1xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F100xB devices.
+
+  - This example has been tested with STM32VL-Discovery board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32_VL_DISCOVERY Set-up
+    - If you want to display data on the HyperTerminal, please connect USART1 TX (PA9)
+      to RX pin of PC serial port (or USB to UART adapter).
+      USART1 RX (PA10) could be connected similarly to TX pin of PC serial port.
+
+  - Hyperterminal configuration:
+    - Word Length = 7 Bits
+    - One Stop Bit
+    - Odd parity
+    - BaudRate = 9600 baud
+    - flow control: None
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>UART_TwoBoards_ComDMA</b>
+UART Two Boards Communication DMA example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes an UART transmission (transmit/receive) in DMA mode
+between two boards.
+
+Board: STM32VL-Discovery (embeds a STM32F100xB device)
+Tx Pin: PA.09
+Rx Pin: PA.10
+   _________________________                       _________________________
+  |           ______________|                     |______________           |
+  |          |USART         |                     |         USART|          |
+  |          |              |                     |              |          |
+  |          |           TX |_____________________| RX           |          |
+  |          |              |                     |              |          |
+  |          |              |                     |              |          |
+  |          |              |                     |              |          |
+  |          |           RX |_____________________| TX           |          |
+  |          |              |                     |              |          |
+  |          |______________|                     |______________|          |
+  |                         |                     |                         |
+  |                      GND|_____________________|GND                      |
+  |_STM32_Board 1___________|                     |_STM32_Board 2___________|
+
+Two identical boards are connected as shown on the picture above.
+Board 1: transmitting then receiving board
+Board 2: receiving then transmitting board
+
+The user presses the User push-button on board 1.
+Then, board 1 sends in DMA mode a message to board 2 that sends it back to
+board 1 in DMA mode as well.
+Finally, board 1 and 2 compare the received message to that sent.
+If the messages are the same, the test passes.
+
+WARNING: as both boards do not behave the same way, "TRANSMITTER_BOARD" compilation
+switch is defined in /Src/main.c and must be enabled
+at compilation time before loading the executable in the board that first transmits
+then receives.
+The receiving then transmitting board needs to be loaded with an executable
+software obtained with TRANSMITTER_BOARD disabled.
+
+STM32VL-Discovery board LEDs are used to monitor the transfer status:
+- While board 1 is waiting for the user to press the User push-button, its LED3 is
+  blinking rapidly (100 ms period).
+- While board 2 is waiting for the message from board 1, its LED3 is emitting
+  a couple of flashes every half-second.
+- When the test passes, LED4 on both boards is turned on, otherwise the test has failed.
+- When the transmission or reception process are complete, LED3 is turned on.
+- If there is an initialization or transfer error, LED3 is slowly blinking (1 sec. period).
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+Then the SystemClock_Config() function is used to configure the system
+clock (SYSCLK) to run at 24 MHz.
+
+The UART is configured as follows:
+    - BaudRate = 9600 baud
+    - Word Length = 8 bits (8 data bits, no parity bit)
+    - One Stop Bit
+    - No parity
+    - Hardware flow control disabled (RTS and CTS signals)
+    - Reception and transmission are enabled in the time
+
+Note: USARTx/UARTx instance used and associated resources can be updated in "main.h"
+file depending hardware configuration used.
+
+Note: When the parity is enabled, the computed parity is inserted at the MSB
+position of the transmitted data.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - UART/UART_TwoBoards_ComDMA/Inc/stm32f1xx_hal_conf.h    HAL configuration file
+  - UART/UART_TwoBoards_ComDMA/Inc/stm32f1xx_it.h          DMA interrupt handlers header file
+  - UART/UART_TwoBoards_ComDMA/Inc/main.h                  Header for main.c module
+  - UART/UART_TwoBoards_ComDMA/Src/stm32f1xx_it.c          DMA interrupt handlers
+  - UART/UART_TwoBoards_ComDMA/Src/main.c                  Main program
+  - UART/UART_TwoBoards_ComDMA/Src/stm32f1xx_hal_msp.c     HAL MSP module
+  - UART/UART_TwoBoards_ComDMA/Src/system_stm32f1xx.c      STM32F1xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F100xB devices.
+  - This example has been tested with two STM32VL-Discovery boards embedding
+    a STM32F100xB device and can be easily tailored to any other supported device
+    and development board.
+
+  - STM32VL-Discovery set-up
+    - Connect a wire between 1st board PA.09 pin (Uart Tx) and 2nd board PA.10 pin (Uart Rx)
+    - Connect a wire between 1st board PA.10 pin (Uart Rx) and 2nd board PA.09 pin (Uart Tx)
+    - Connect 1st board GND to 2nd Board GND
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+- Rebuild all files and load your image into target memory
+- Run the example
+
+
+=====================================================================================
+<b>UART_TwoBoards_ComIT</b>
+UART Two Boards Communication IT example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes a UART transmission (transmit/receive) in interrupt mode
+between two boards.
+
+Board: STM32VL-Discovery (embeds a STM32F100xB device)
+Tx Pin: PA.09
+Rx Pin: PA.10
+   _________________________                       _________________________
+  |           ______________|                     |______________           |
+  |          |USART         |                     |         USART|          |
+  |          |              |                     |              |          |
+  |          |           TX |_____________________| RX           |          |
+  |          |              |                     |              |          |
+  |          |              |                     |              |          |
+  |          |              |                     |              |          |
+  |          |           RX |_____________________| TX           |          |
+  |          |              |                     |              |          |
+  |          |______________|                     |______________|          |
+  |                         |                     |                         |
+  |                         |                     |                         |
+  |_STM32_Board 1___________|                     |_STM32_Board 2___________|
+
+Two identical boards are connected as shown on the picture above.
+Board 1: transmitting then receiving board
+Board 2: receiving then transmitting board
+The user presses the User push-button on board 1.
+Then, board 1 sends in interrupt mode a message to board 2 that sends it back to
+board 1 in interrupt mode as well.
+Finally, board 1 and 2 compare the received message to that sent.
+If the messages are the same, the test passes.
+
+WARNING: as both boards do not behave the same way, "TRANSMITTER_BOARD" compilation
+switch is defined in /Src/main.c and must be enabled
+at compilation time before loading the executable in the board that first transmits
+then receives.
+The receiving then transmitting board needs to be loaded with an executable
+software obtained with TRANSMITTER_BOARD disabled.
+
+STM32VL-Discovery board LEDs are used to monitor the transfer status:
+- While board 1 is waiting for the user to press the User push-button, its LED3 is
+  blinking rapidly (100 ms period).
+- While board 2 is waiting for the message from board 1, its LED3 is emitting
+  a couple of flashes every half-second.
+- When the test passes, LED4 on both boards is turned on, otherwise the test has failed.
+- When the transmission or reception process are complete, LED3 is turned on.
+- If there is an initialization or transfer error, LED3 is slowly blinking (1 sec. period).
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+Then the SystemClock_Config() function is used to configure the system
+clock (SYSCLK) to run at 24 MHz.
+
+The UART is configured as follows:
+    - BaudRate = 9600 baud
+    - Word Length = 8 bits (8 data bits, no parity bit)
+    - One Stop Bit
+    - No parity
+    - Hardware flow control disabled (RTS and CTS signals)
+    - Reception and transmission are enabled in the time
+
+Note: USARTx/UARTx instance used and associated resources can be updated in "main.h"
+file depending hardware configuration used.
+
+Note: When the parity is enabled, the computed parity is inserted at the MSB
+position of the transmitted data.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - UART/UART_TwoBoards_ComIT/Inc/stm32f1xx_hal_conf.h    HAL configuration file
+  - UART/UART_TwoBoards_ComIT/Inc/stm32f1xx_it.h          IT interrupt handlers header file
+  - UART/UART_TwoBoards_ComIT/Inc/main.h                  Header for main.c module
+  - UART/UART_TwoBoards_ComIT/Src/stm32f1xx_it.c          IT interrupt handlers
+  - UART/UART_TwoBoards_ComIT/Src/main.c                  Main program
+  - UART/UART_TwoBoards_ComIT/Src/stm32f1xx_hal_msp.c     HAL MSP module
+  - UART/UART_TwoBoards_ComIT/Src/system_stm32f1xx.c      STM32F1xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F100xB devices.
+  - This example has been tested with two STM32VL-Discovery boards embedding
+    a STM32F100xB device and can be easily tailored to any other supported device
+    and development board.
+
+  - STM32VL-Discovery set-up
+    - Connect a wire between 1st board PA.09 pin (Uart Tx) and 2nd board PA.10 pin (Uart Rx)
+    - Connect a wire between 1st board PA.10 pin (Uart Rx) and 2nd board PA.09 pin (Uart Tx)
+    - Connect 1st board GND to 2nd Board GND
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>UART_TwoBoards_ComPolling</b>
+UART TwoBoards Communication Polling example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes a UART transmission (transmit/receive) in polling mode
+between two boards.
+
+Board: STM32VL-Discovery (embeds a STM32F100xB device)
+Tx Pin: PA.09
+Rx Pin: PA.10
+   _________________________                       _________________________
+  |           ______________|                     |______________           |
+  |          |USART         |                     |         USART|          |
+  |          |              |                     |              |          |
+  |          |           TX |_____________________| RX           |          |
+  |          |              |                     |              |          |
+  |          |              |                     |              |          |
+  |          |              |                     |              |          |
+  |          |           RX |_____________________| TX           |          |
+  |          |              |                     |              |          |
+  |          |______________|                     |______________|          |
+  |                         |                     |                         |
+  |                         |                     |                         |
+  |_STM32_Board 1___________|                     |_STM32_Board 2___________|
+
+Two identical boards are connected as shown on the picture above.
+Board 1: transmitting then receiving board
+Board 2: receiving then transmitting board
+The user presses the User push-button on board 1.
+Then, board 1 sends in polling mode a message to board 2 that sends it back to
+board 1 in polling mode as well.
+Finally, board 1 and 2 compare the received message to that sent.
+If the messages are the same, the test passes.
+
+WARNING: as both boards do not behave the same way, "TRANSMITTER_BOARD" compilation
+switch is defined in /Src/main.c and must be enabled
+at compilation time before loading the executable in the board that first transmits
+then receives.
+The receiving then transmitting board needs to be loaded with an executable
+software obtained with TRANSMITTER_BOARD disabled.
+
+STM32VL-Discovery board LEDs are used to monitor the transfer status:
+- While board 1 is waiting for the user to press the User push-button, its LED3 is
+  blinking rapidly (100 ms period).
+- When the test passes, LED4 on both boards is turned on, otherwise the test has failed.
+- When the transmission or reception process are complete, LED3 is turned on.
+- If there is an initialization or transfer error, LED3 is slowly blinking (1 sec. period).
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+Then the SystemClock_Config() function is used to configure the system
+clock (SYSCLK) to run at 24 MHz.
+
+The UART is configured as follows:
+    - BaudRate = 9600 baud
+    - Word Length = 8 bits (8 data bits, no parity bit)
+    - One Stop Bit
+    - No parity
+    - Hardware flow control disabled (RTS and CTS signals)
+    - Reception and transmission are enabled in the time
+
+Note: USARTx/UARTx instance used and associated resources can be updated in "main.h"
+file depending hardware configuration used.
+
+Note: When the parity is enabled, the computed parity is inserted at the MSB
+position of the transmitted data.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - UART/UART_TwoBoards_ComPolling/Inc/stm32f1xx_hal_conf.h    HAL configuration file
+  - UART/UART_TwoBoards_ComPolling/Inc/stm32f1xx_it.h          interrupt handlers header file
+  - UART/UART_TwoBoards_ComPolling/Inc/main.h                  Header for main.c module
+  - UART/UART_TwoBoards_ComPolling/Src/stm32f1xx_it.c          interrupt handlers
+  - UART/UART_TwoBoards_ComPolling/Src/main.c                  Main program
+  - UART/UART_TwoBoards_ComPolling/Src/stm32f1xx_hal_msp.c     HAL MSP module
+  - UART/UART_TwoBoards_ComPolling/Src/system_stm32f1xx.c      STM32F1xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F100xB devices.
+  - This example has been tested with two STM32VL-Discovery boards embedding
+    a STM32F100xB device and can be easily tailored to any other supported device
+    and development board.
+
+  - STM32VL-Discovery set-up
+    - Connect a wire between 1st board PA.09 pin (Uart Tx) and 2nd board PA.10 pin (Uart Rx)
+    - Connect a wire between 1st board PA.10 pin (Uart Rx) and 2nd board PA.09 pin (Uart Tx)
+    - Connect 1st board GND to 2nd Board GND
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF1GettingStarted.pdf">Getting started with STM32CubeF1 Embedded Software for STM32F1xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF1 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32VL-Discovery Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

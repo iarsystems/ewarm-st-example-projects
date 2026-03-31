@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>CAN Workspace</h1>
+
+=====================================================================================
+<b>CAN_Networking</b>
+CAN Networking example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to configure the CAN peripheral to send and receive
+CAN frames in normal mode.
+
+The sent frames are used to control LEDs by pressing Key push-button.
+
+The CAN serial communication link is a bus to which a number of units may be
+connected. This number has no theoretical limit. Practically the total number
+of units will be limited by delay times and/or electrical loads on the bus line.
+
+This program behaves as follows:
+  - After reset, all LEDs are OFF on the N eval boards
+  - By Pressing on Key push-button : LED1 turns ON and all other LEDs are OFF, on the N
+    eval boards connected to the bus.
+  - Press on Key push-button again to send CAN Frame to command LEDn+1 ON, all other LEDs
+    are OFF on the N eval boards.
+
+Note: This example is tested with a bus of 3 units. The same program example is
+      loaded in all units to send and receive frames.
+Note: Any unit in the CAN bus may play the role of sender (by pressing Key push-button)
+      or receiver.
+
+  The CAN is configured as follows:
+    - Bit Rate   = 1 Mbit/s
+    - CAN Clock  = external clock (HSE)
+    - ID Filter  = All identifiers are allowed
+    - RTR = Data
+    - DLC = 1 byte
+    - Data: Led number that should be turned ON
+
+
+<u>Directory contents</u>
+
+  - CAN/CAN_Networking/Inc/stm32f3xx_hal_conf.h    HAL configuration file
+  - CAN/CAN_Networking/Inc/stm32f3xx_it.h          DMA interrupt handlers header file
+  - CAN/CAN_Networking/Inc/main.h                  Header for main.c module
+  - CAN/CAN_Networking/Src/stm32f3xx_it.c          DMA interrupt handlers
+  - CAN/CAN_Networking/Src/main.c                  Main program
+  - CAN/CAN_Networking/Src/stm32f3xx_hal_msp.c     HAL MSP file
+  - CAN/CAN_Networking/Src/system_stm32f3xx.c      STM32F3xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F373xC devices.
+  - This example has been tested with STM32373C-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32373C-EVAL Set-up
+    - Use LED1, LED2, LED3 and LED4 connected respectively to PC.00, PC.01, PC.02
+      and PC.03 pins
+    - Use Key push-button connected to PA.02
+    - Connect a female/female CAN cable between at least 2 EVAL CAN connectors (CN5)
+    - You have to configure the jumpers as follows:
+
+       +-------------------------------+
+       |   Jumper    |       CAN1      |
+       +-------------------------------+
+       |   JP3       |       1-2       |
+       |   JP2       |      fitted     |
+       +-------------------------------+
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following:
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF3GettingStarted.pdf">Getting started with STM32CubeF3 Embedded Software for STM32F3xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF3 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32373C-EVAL Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

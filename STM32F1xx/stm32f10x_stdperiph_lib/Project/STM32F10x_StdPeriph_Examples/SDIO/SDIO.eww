@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/SDIO.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>SDIO</project>
+        <configuration>STM3210E-EVAL</configuration>
+      </member>
+      <member>
+        <project>SDIO</project>
+        <configuration>STM3210E-EVAL_XL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

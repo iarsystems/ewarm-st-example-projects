@@ -1,0 +1,387 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>I2C Workspace</h1>
+
+=====================================================================================
+<b>I2C_EEPROM</b>
+I2C EEPROM DMA example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to perform I2C data buffer transmission/reception via
+DMA. The communication uses an I2C EEPROM memory.
+
+SCL Pin: PB.06
+SDA Pin: PB.07
+
+   __________________________________________________________________________
+  |           ______________                        ______________           |
+  |          | I2C1         |                      |    I2C_EEPROM|          |
+  |          |              |                      |              |          |
+  |          |           SCL|______________________|CLOCK         |          |
+  |          |              |                      |              |          |
+  |          |              |                      |              |          |
+  |          |              |                      |              |          |
+  |          |           SDA|______________________|DATA          |          |
+  |          |              |                      |              |          |
+  |          |______________|                      |______________|          |
+  |      __                                                                  |
+  |     |__|                                                                 |
+  |    TAMPER                                                                |
+  |                                                                          |
+  |__________________________________________________________________________|
+      STM32091C-EVAL
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+Then the SystemClock_Config() function is used to configure the system
+clock (SYSCLK) to run at 48 MHz.
+
+The I2C peripheral configuration is ensured by the HAL_I2C_Init() function.
+This later is calling the HAL_I2C_MspInit()function which core is implementing
+the configuration of the needed I2C resources according to the used hardware (CLOCK,
+GPIO, DMA and NVIC). You may update this function to change I2C configuration.
+
+The I2C/EEPROM communication is then initiated.
+The HAL_I2C_Mem_Read_DMA() and the HAL_I2C_Mem_Write_DMA() functions allow respectively
+the reception of Data from EEPROM and the transmission of a predefined data
+buffer.
+
+For this example the TxBuffer is predefined and the aRxBuffer size is same as aTxBuffer.
+
+In a first step the I2C writes the aTxBuffer by group of 4 bytes (RF EEPROM
+Page size) using HAL_I2C_Mem_Write_DMA() then read back the data through aRxBuffer
+using HAL_I2C_Mem_Read_DMA().
+The end of this two steps are monitored through the HAL_I2C_GetState() function
+result.
+Finally, aRxBuffer and aRxBuffer are compared through Buffercmp() in order to
+check buffers correctness.
+
+STM32 Eval board's LEDs can be used to monitor the transfer status:
+ - LED1 is ON when the transmission process is complete.
+ - LED2 is ON when the reception process is complete.
+ - LED3 is ON when there is an error in transmission/reception process.
+
+ Note: I2Cx instance used and associated resources can be updated in "main.h"
+       file depending hardware configuration used.
+
+
+<u>Directory contents</u>
+
+  - I2C/I2C_EEPROM/Inc/stm32f0xx_hal_conf.h    HAL configuration file
+  - I2C/I2C_EEPROM/Inc/stm32f0xx_it.h          Interrupt handlers header file
+  - I2C/I2C_EEPROM/Inc/main.h                  Header for main.c module
+  - I2C/I2C_EEPROM/Src/stm32f0xx_it.c          Interrupt handlers
+  - I2C/I2C_EEPROM/Src/main.c                  Main program
+  - I2C/I2C_EEPROM/Src/system_stm32f0xx.c      STM32F0xx system source file
+  - I2C/I2C_EEPROM/Src/stm32f0xx_hal_msp.c     HAL MSP file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F0xx devices.
+
+  - This example has been tested with STM32091C-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32091C-EVAL Set-up
+    - When communicating with M24LR64 EEPROM, make sure that ANT7-M24LR (MB1020 A-02) is inserted in CN2 connector.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files: Project-&gt;Rebuild all
+ - Load project image: Project-&gt;Download and Debug
+ - Run program: Debug-&gt;Go(F5)
+
+
+=====================================================================================
+<b>I2C_TwoBoards_AdvComIT</b>
+I2C Two Boards Advanced Communication IT example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to perform I2C data buffer transmission/reception
+between two boards, using an interrupt.
+
+Board: STM32091C-EVAL (embeds a STM32F091VC device)
+SCL Pin: PB6 (CN6)
+SDA Pin: PB7 (CN6)
+
+   _________________________                       _________________________
+  |           ______________|                     |______________           |
+  |          |I2C1          |                     |          I2C1|          |
+  |          |              |                     |              |          |
+  |          |          SCL |_____________________| SCL          |          |
+  |          |              |                     |              |          |
+  |          |              |                     |              |          |
+  |          |              |                     |              |          |
+  |          |          SDA |_____________________| SDA          |          |
+  |          |              |                     |              |          |
+  |          |______________|                     |______________|          |
+  |                         |                     |                         |
+  |                      GND|_____________________|GND                      |
+  |_STM32_Board 1___________|                     |_STM32_Board 2___________|
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+Then the SystemClock_Config() function is used to configure the system
+clock (SYSCLK) to run at 48 MHz.
+
+The I2C peripheral configuration is ensured by the HAL_I2C_Init() function.
+This later is calling the HAL_I2C_MspInit()function which core is implementing
+the configuration of the needed I2C resources according to the used hardware (CLOCK,
+GPIO and NVIC). You may update this function to change I2C configuration.
+
+The I2C communication is then initiated.
+The project is split in two parts: the Master Board and the Slave Board
+- Master Board
+  The HAL_I2C_Master_Receive_IT() and the HAL_I2C_Master_Transmit_IT() functions
+  allow respectively the reception and the transmission of a predefined data buffer
+  in Master mode using interrupt.
+- Slave Board
+  The HAL_I2C_Slave_Receive_IT() and the HAL_I2C_Slave_Transmit_IT() functions
+  allow respectively the reception and the transmission of a predefined data buffer
+  in Slave mode using interrupt.
+The user can choose between Master and Slave through "#define MASTER_BOARD"
+in the "main.c" file:
+- Uncomment "#define MASTER_BOARD" to select Master board.
+- Comment "#define MASTER_BOARD" to select Slave board.
+
+For this example two buffers are used
+- aTxBuffer buffer contains the data to be transmitted
+- aRxBuffer buffer is used to save the received data
+Note that both buffers have same size
+
+On Master board side:
+ - Wait Tamper push-button to be pressed (used for only synchronization at startup)
+ - Request write operation by sending specific command "MASTER_REQ_WRITE" to Slave
+ - Send the number of data to be written
+ - Transmit aTxBuffer buffer to slave
+ - Request read operation by sending specific command "MASTER_REQ_READ" to Slave
+ - Send the number of data to be read
+ - Receive data from Slave in aRxBuffer
+ - Check the correctness of data and Toggle LED1 when data is received correctly,
+   otherwise LED3 is turned ON and communication is stopped (using infinite loop)
+
+On Slave board side:
+ - Receive request from Master
+ - Receive the request operation from Master and depending on the operation type (write or read):
+   - If Master requests write operation:
+      - Receive number of data to be written by Master
+      - Receive data from master in aRxBuffer
+      - Check the correctness of data and Toggle LED1 when data is received correctly,
+        otherwise LED3 is turned ON and communication is stopped (using infinite loop)
+   - If Master request read operation:
+      - Receive number of data to be written to Master
+      - Transmit aTxBuffer buffer to master
+
+These operations are repeated periodically and the start of communication is triggered
+by pushing the key button of the Master board.
+
+ Note: In Master side, only Acknowledge failure error is handled. When this error
+       occurs Master restart the current operation until Slave acknowledges it's
+       address.
+
+ Note: I2Cx instance used and associated resources can be updated in "main.h"
+       file depending hardware configuration used.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - I2C/I2C_TwoBoards_AdvComIT/Inc/stm32f0xx_hal_conf.h    HAL configuration file
+  - I2C/I2C_TwoBoards_AdvComIT/Inc/stm32f0xx_it.h          I2C interrupt handlers header file
+  - I2C/I2C_TwoBoards_AdvComIT/Inc/main.h                  Header for main.c module
+  - I2C/I2C_TwoBoards_AdvComIT/Src/stm32f0xx_it.c          I2C interrupt handlers
+  - I2C/I2C_TwoBoards_AdvComIT/Src/main.c                  Main program
+  - I2C/I2C_TwoBoards_AdvComIT/Src/system_stm32f0xx.c      STM32F0xx system source file
+  - I2C/I2C_TwoBoards_AdvComIT/Src/stm32f0xx_hal_msp.c     HAL MSP file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F0xx devices.
+
+  - This example has been tested with STM32091C-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32091C-EVAL Set-up
+    - Connect I2C_SCL line of Master board (PB6, CN6) to I2C_SCL line of Slave Board (PB6, CN6).
+    - Connect I2C_SDA line of Master board (PB7, CN6) to I2C_SDA line of Slave Board (PB7, CN6).
+    - Connect GND of Master board to GND of Slave Board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+    o Uncomment "#define MASTER_BOARD" and load the project in Master Board
+    o Comment "#define MASTER_BOARD" and load the project in Slave Board
+ - Run the example
+
+
+=====================================================================================
+<b>I2C_WakeUpFromStop</b>
+I2C Two Boards Communication IT Example on Stop Mode
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to perform I2C data buffer transmission/reception between
+two boards using an interrupt when the device is in STOP mode.
+
+   _________________________                        _________________________
+  |           ______________|                      |______________           |
+  |          | I2C1         |                      |          I2C1|          |
+  |          |              |                      |              |          |
+  |          |      SCL(PB6)|______________________|(PB6)SCL      |          |
+  |          |              |                      |              |          |
+  |          |              |                      |              |          |
+  |          |              |                      |              |          |
+  |          |      SDA(PB7)|______________________|(PB7)SDA      |          |
+  |          |              |                      |              |          |
+  |          |______________|                      |______________|          |
+  |      __                 |                      |             __          |
+  |     |__|                |                      |            |__|         |
+  |     USER             GND|______________________|GND         USER         |
+  |                         |                      |                         |
+  |_STM32091C_EVAL__________|                      |_STM32091C_EVAL__________|
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+Then the SystemClock_Config() function is used to configure the system
+clock (SYSCLK) to run at 48 MHz. When The system is wakeup from stop mode,
+system clock is 8 Mhz. The I2C peripheral is directly clocked by HSI.
+
+The I2C peripheral configuration is ensured by the HAL_I2C_Init() function.
+This later is calling the HAL_I2C_MspInit()function which core is implementing
+the configuration of the needed I2C resources according to the used hardware (CLOCK,
+GPIO and NVIC). You may update this function to change I2C configuration.
+
+The I2C communication is then initiated.
+The project is splitted in two parts the Master Board and the Slave Board
+- Master Board
+  The HAL_I2C_Master_Receive_IT() and the HAL_I2C_Master_Transmit_IT() functions
+  allow respectively the reception and the transmission of a predefined data buffer
+  in Master mode using interrupt.
+- Slave Board
+  The HAL_I2C_Slave_Receive_IT() and the HAL_I2C_Slave_Transmit_IT() functions
+  allow respectively the reception and the transmission of a predefined data buffer
+  in Slave mode using interrupt.
+The user can choose between Master and Slave through "#define MASTER_BOARD"
+in the "main.c" file:
+- Uncomment "#define MASTER_BOARD" to select Master board.
+- Comment "#define MASTER_BOARD" to select Slave board.
+
+For this example the aTxBuffer is predefined and the aRxBuffer size is same as aTxBuffer.
+
+In a first step after the user presses the Tamper push-button on the Master Board, I2C Master
+starts the communication by sending aTxBuffer through HAL_I2C_Master_Transmit_IT() to
+I2C Slave which wakes up from stop mode and receives aRxBuffer through HAL_I2C_Slave_Receive_IT().
+The second step starts when the user presses the Tamper push-button on the Master Board,
+the I2C Slave after wake up from stop mode at address match, sends aTxBuffer through HAL_I2C_Slave_Transmit_IT()
+to the I2C Master which receives aRxBuffer through HAL_I2C_Master_Receive_IT().
+
+The end of this two steps are monitored through the HAL_I2C_GetState() function
+result.
+Finally, aTxBuffer and aRxBuffer are compared through Buffercmp() in order to
+check buffers correctness.
+
+STM32091C-EVAL's LEDs can be used to monitor the transfer status on the Slave Board :
+ - LED1 is ON when the Transmission process is complete.
+ - LED1 is OFF when the Reception process is complete.
+ - LED3 is ON when there is an error in transmission/reception process.
+ - LED4 is ON when Slave enters stop mode.
+ - LED4 is OFF when Slave wakes up from stop.
+
+Note: I2Cx instance used and associated resources can be updated in "main.h"
+file depending hardware configuration used.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - I2C/I2C_WakeUpFromStop/Inc/stm32f0xx_hal_conf.h    HAL configuration file
+  - I2C/I2C_WakeUpFromStop/Inc/stm32f0xx_it.h          I2C interrupt handlers header file
+  - I2C/I2C_WakeUpFromStop/Inc/main.h                  Header for main.c module
+  - I2C/I2C_WakeUpFromStop/Src/stm32f0xx_it.c          I2C interrupt handlers
+  - I2C/I2C_WakeUpFromStop/Src/main.c                  Main program
+  - I2C/I2C_WakeUpFromStop/Src/system_stm32f0xx.c      STM32F0xx system source file
+  - I2C/I2C_WakeUpFromStop/Src/stm32f0xx_hal_msp.c     HAL MSP file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F0xx devices.
+
+  - This example has been tested with STM32091C-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+  -STM32091C-EVAL Set-up
+    - Connect Master board PB6 to Slave Board PB6
+    - Connect Master board PB7 to Slave Board PB7
+    - Connect Master board GND to Slave Board GND
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+    o Uncomment "#define MASTER_BOARD" and load the project in Master Board
+    o Comment "#define MASTER_BOARD" and load the project in Slave Board
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF0GettingStarted.pdf">Getting started with STM32CubeF0 Embedded Software for STM32F0xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF0 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32091C-EVAL Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

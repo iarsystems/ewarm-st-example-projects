@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/DMA_ADCToTIM3Transfer/DMA_ADCToTIM3Transfer.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/DMA_FLASHToRAMTransfer/DMA_FLASHToRAMTransfer.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/DMA_RAMToDACTransfer/DMA_RAMToDACTransfer.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>DMA_ADCToTIM3Transfer</project>
+        <configuration>STM32373C-EVAL</configuration>
+      </member>
+      <member>
+        <project>DMA_FLASHToRAMTransfer</project>
+        <configuration>STM32373C-EVAL</configuration>
+      </member>
+      <member>
+        <project>DMA_RAMToDACTransfer</project>
+        <configuration>STM32373C-EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/FLASH_Program/FLASH_Program.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/FLASH_WriteProtection/FLASH_WriteProtection.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>FLASH_Program</project>
+        <configuration>STM32373C-EVAL</configuration>
+      </member>
+      <member>
+        <project>FLASH_WriteProtection</project>
+        <configuration>STM32373C-EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

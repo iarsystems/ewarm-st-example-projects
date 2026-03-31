@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/Example1/MRCC_Example1.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/Example2/MRCC_Example2.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/Example3/MRCC_Example3.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/Example4/MRCC_Example4.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>MRCC_Example1</project>
+        <configuration>Debug</configuration>
+      </member>
+      <member>
+        <project>MRCC_Example2</project>
+        <configuration>Debug</configuration>
+      </member>
+      <member>
+        <project>MRCC_Example3</project>
+        <configuration>Debug</configuration>
+      </member>
+      <member>
+        <project>MRCC_Example4</project>
+        <configuration>Debug</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

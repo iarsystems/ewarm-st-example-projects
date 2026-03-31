@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/71x_LPWFI/71x_LPWFI.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/71x_StandBy/71x_StandBy.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/71x_STOP/71x_STOP.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>71x_LPWFI</project>
+        <configuration>Debug</configuration>
+      </member>
+      <member>
+        <project>71x_StandBy</project>
+        <configuration>Debug</configuration>
+      </member>
+      <member>
+        <project>71x_STOP</project>
+        <configuration>Debug</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

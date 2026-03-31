@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/PWR_EnterStandbyMode/EWARM/PWR_EnterStandbyMode.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/PWR_EnterStopMode/EWARM/PWR_EnterStopMode.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>PWR_EnterStandbyMode</project>
+        <configuration>NUCLEO-F207ZG</configuration>
+      </member>
+      <member>
+        <project>PWR_EnterStopMode</project>
+        <configuration>NUCLEO-F207ZG</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

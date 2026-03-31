@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/DMA2D_M2M_Blending/DMA2D_M2M_Blending.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/DMA2D_M2M_LCD/DMA2D_M2M_LCD.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/DMA2D_M2M_PFC/DMA2D_M2M_PFC.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/DMA2D_R2M_LCD/DMA2D_R2M_LCD.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>DMA2D_M2M_Blending</project>
+        <configuration>STM324x9I_EVAL</configuration>
+      </member>
+      <member>
+        <project>DMA2D_M2M_LCD</project>
+        <configuration>STM324x9I_EVAL</configuration>
+      </member>
+      <member>
+        <project>DMA2D_M2M_PFC</project>
+        <configuration>STM324x9I_EVAL</configuration>
+      </member>
+      <member>
+        <project>DMA2D_R2M_LCD</project>
+        <configuration>STM324x9I_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/Example1/SMI_Example1.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/Example2/SMI_Example2.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>SMI_Example1</project>
+        <configuration>Debug</configuration>
+      </member>
+      <member>
+        <project>SMI_Example2</project>
+        <configuration>Debug</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

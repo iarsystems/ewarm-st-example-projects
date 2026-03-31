@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/DMA_FLASHToRAM/EWARM/DMA_FLASHToRAM.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/DMA_RAMToDAC/EWARM/DMA_RAMToDAC.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>DMA_FLASHToRAM</project>
+        <configuration>STM32L053R8_NUCLEO</configuration>
+      </member>
+      <member>
+        <project>DMA_RAMToDAC</project>
+        <configuration>STM32L053R8_NUCLEO</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

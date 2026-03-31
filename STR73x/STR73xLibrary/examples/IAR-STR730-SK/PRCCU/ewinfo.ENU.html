@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+PRCCU
+
+DESCRIPTION
+===========
+   This example shows how to use the PRCCU peripheral in order to configure the
+  system clocks and to enter/exit from LPWFI (Low Power Wait For Interrupt)
+  mode.
+
+  It is made of 5 steps :
+  1) GPIO configuration
+     - All GPIO0 pins as Output push-pull (Leds)
+    - GPIO2: Pins P2.12 and P2.13 as Input Tri-TTL
+
+  2) EIC configuration
+     - configure EXTIT14 and EXTIT15 channels priority,
+     - Configure External IT Trigger for EXTIT14 and EXTIT15 channels,
+     - Enable EXTIT14 and EXTIT15 interrupts,
+     - Enable Interrupts.
+
+  3) CMU Clock input selection
+           + Select the Main oscillator=4MHz as CMU input clock
+
+  4) PRCCU MCLK configuration
+           + Configure the DIV2, PLL multiplier, PLLdivider, Free running mode
+           for PLL(MCLK=12MHz)
+
+  5) Start GPIO0 toggling  with a MCLK frequency = 12MHz
+    - To enter in LPWFI mode press B3 button
+    - The system enters in LPWFI mode
+           + PLL is stopped and CK2_16 divider is enabled: MCLK=2MHz/16=125KHz
+           + CPU is stopped while all enabled peripherals still running under
+       MCLK=125KHz
+    - To exit LPWFI mode press B4 button
+           + PLL still stopped and CK2_16 divider disabled: MCLK=CLOCK2=2MHz
+           + In the Interrupt handler the MCLK frequency is again reconfigured
+             to 12MHz as in step (4)
+
+    - To re-enter in LPWFI mode press B3 button (The same procedure could be
+      done)
+
+COMPATIBILITY
+=============
+  The project is compatible with the IAR STR730-SK evaluation board.
+  The project is by default configured to use the J-Link JTAG interface.
+
+CONFIGURATION
+=============
+  The application is downloaded to the flash memory.
+
+  Jumpers:
+   EXT/JLINK - the correct jumper position depends on the power source used
+
+GETTING STARTED
+===============
+  1) Connect the J-Link.
+  2) Power the board.
+  3) Build and download the example.
+  4) Run the example.
+
+   </pre>
+
+  </div>
+  </body>
+</html>
+

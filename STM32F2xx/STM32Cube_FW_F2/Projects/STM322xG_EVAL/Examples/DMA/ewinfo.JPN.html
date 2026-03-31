@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.JPN.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>DMA Workspace</h1>
+
+=====================================================================================
+<b>DMA_FIFOMode</b>
+DMA FIFO mode example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example provides a description of how to use a DMA channel to transfer
+a word data buffer from Flash memory to embedded SRAM with FIFO mode
+enabled through the STM32F2xx HAL API.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+Then the SystemClock_Config() function is used to configure the system
+clock (SYSCLK) to run at 120 MHz.
+
+DMA2 Stream0 channel0 is configured to transfer the contents of a 32-word data
+buffer stored in Flash memory to the reception buffer declared in RAM.
+
+In this example the FIFO mode is enabled and the FIFO threshold is configured
+as "FULL". Also an incremental burst transfer of 4 beats is requested.
+
+The start of transfer is triggered by software. DMA2 Stream0 channel0 memory-to-memory
+transfer is enabled. Source and destination addresses incrementing is also enabled.
+The transfer is started by setting the Channel enable bit for DMA2 Stream0 channel0.
+At the end of the transfer a Transfer Complete interrupt is generated since it
+is enabled and the callback function (customized by user) is called.
+
+STM32 Eval board's LEDs can be used to monitor the transfer status:
+ - LED1 is ON when the transfer is complete (into the Transfer Complete interrupt
+   routine).
+ - LED2 is ON when there are an error of the transfer (into the Transfer error
+   interrupt routine)
+ - LED3 is ON when there are an error in the transfer process or in initialisation
+  (into the Transfer error interrupt routine)
+
+It is possible to select a different Stream and/or channel for the DMA transfer
+example by modifying defines values in the file main.h.
+Note that only DMA2 Streams are able to perform Memory-to-Memory transfers.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - DMA/DMA_FIFOMode/Src/system_stm32f2xx.c    STM32F2xx system clock configuration file
+  - DMA/DMA_FIFOMode/Src/stm32f2xx_it.c        Interrupt handlers
+  - DMA/DMA_FIFOMode/Src/main.c                Main program
+  - DMA/DMA_FIFOMode/Inc/stm32f2xx_hal_conf.h  HAL Configuration file
+  - DMA/DMA_FIFOMode/Inc/stm32f2xx_it.h        Interrupt handlers header file
+  - DMA/DMA_FIFOMode/Inc/main.h                Main program header file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F207xx/217xx device.
+
+  - This example has been tested with STMicroelectronics STM322xG-EVAL
+    evaluation boards and can be easily tailored to any other supported device
+    and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>DMA_FLASHToRAM</b>
+DMA FLASH to RAM example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example provides a description of how to use a DMA channel to transfer
+a word data buffer from Flash memory to an embedded SRAM through
+the HAL API.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+Then the SystemClock_Config() function is used to configure the system
+clock (SYSCLK) to run at 120 MHz.
+
+DMA2 Stream0 channel0 is configured to transfer the contents of a 32-word data
+buffer stored in Flash memory to the reception buffer declared in RAM.
+
+The start of transfer is triggered by software. DMA2 Stream0 channel0 memory-to-memory
+transfer is enabled. Source and destination addresses incrementing is also enabled.
+The transfer is started by setting the Channel enable bit for DMA2 Stream0 channel0.
+At the end of the transfer a Transfer Complete interrupt is generated since it
+is enabled and the callback function (customized by user) is called.
+
+STM32 Eval board's LEDs can be used to monitor the transfer status:
+ - LED1 is ON when the transfer is complete (into the Transfer Complete interrupt
+   routine).
+ - LED2 is ON when there are an error of the transfer (into the Transfer error
+   interrupt routine)
+ - LED3 is ON when there are an error in the transfer process or in initialisation
+  (into the Transfer error interrupt routine)
+
+It is possible to select a different Stream and/or channel for the DMA transfer
+example by modifying defines values in the file main.h.
+Note that only DMA2 Streams are able to perform Memory-to-Memory transfers.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - DMA/DMA_FLASHToRAM/Src/system_stm32f2xx.c    STM32F2xx system clock configuration file
+  - DMA/DMA_FLASHToRAM/Src/stm32f2xx_it.c        Interrupt handlers
+  - DMA/DMA_FLASHToRAM/Src/main.c                Main program
+  - DMA/DMA_FLASHToRAM/Inc/stm32f2xx_hal_conf.h  HAL Configuration file
+  - DMA/DMA_FLASHToRAM/Inc/stm32f2xx_it.h        Interrupt handlers header file
+  - DMA/DMA_FLASHToRAM/Inc/main.h                Main program header file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F207xx/217xx device.
+
+  - This example has been tested with STMicroelectronics STM322xG-EVAL
+    evaluation boards and can be easily tailored to any other supported device
+    and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF2GettingStarted.pdf">Getting started with STM32CubeF2 Embedded Software for STM32F2xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF2 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM322xG-EVAL Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

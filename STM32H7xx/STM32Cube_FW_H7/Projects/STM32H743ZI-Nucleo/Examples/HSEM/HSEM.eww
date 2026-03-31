@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/HSEM_ProcessSync/EWARM/HSEM_ProcessSync.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/HSEM_ReadLock/EWARM/HSEM_ReadLock.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>HSEM_ProcessSync</project>
+        <configuration>STM32H743ZI-Nucleo</configuration>
+      </member>
+      <member>
+        <project>HSEM_ReadLock</project>
+        <configuration>STM32H743ZI-Nucleo</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

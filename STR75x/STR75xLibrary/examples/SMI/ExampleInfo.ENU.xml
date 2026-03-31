@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<infocenter_data version="1.0">
+  <iar_name>SMI</iar_name>                                   <!--App-->
+  <iar_description>These examples show how to use the SMI controller to perform write, read and erase operations on an SPI based FLASH and how to how to boot from the external Serial Flash connected to SMI Bank0</iar_description><!--App short description-->
+  <iar_curdir>$CUR_DIR$</iar_curdir>
+</infocenter_data>

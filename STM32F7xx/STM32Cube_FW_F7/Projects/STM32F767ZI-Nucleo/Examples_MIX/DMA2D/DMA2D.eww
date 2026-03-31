@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/DMA2D_MemToMemWithLCD/EWARM/DMA2D_MemToMemWithLCD.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/DMA2D_MemToMemWithRBSwap/EWARM/DMA2D_MemToMemWithRBSwap.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>DMA2D_MemToMemWithLCD</project>
+        <configuration>NUCLEO-F767ZI</configuration>
+      </member>
+      <member>
+        <project>DMA2D_MemToMemWithRBSwap</project>
+        <configuration>NUCLEO-F767ZI</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

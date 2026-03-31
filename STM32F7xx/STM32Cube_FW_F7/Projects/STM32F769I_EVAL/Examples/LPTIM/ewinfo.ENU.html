@@ -1,0 +1,376 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>LPTIM Workspace</h1>
+
+=====================================================================================
+<b>LPTIM_PulseCounter</b>
+Low power timer pulse counter example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to configure and use LPTIM to count pulses through
+the LPTIM HAL API.
+
+To reduce power consumption, MCU enters stop mode after starting counting. Each
+time the counter reachs the maximum value (Period/Autoreload), an interruption
+is generated, the MCU is woke up from stop mode and LED1 toggles the last state.
+
+In this example Period value is set to 1000, so each time the counter counts
+(1000 + 1) rising edges on LPTIM1_IN1 pin, an interrupt is generated and LED1
+toggles.
+
+In this example the internal clock provided to the LPTIM1 is LSI (32 Khz),
+so the external input is sampled with LSI clock. In order not to miss any event,
+the frequency of the changes on the external Input1 signal should never exceed the
+frequency of the internal clock provided to the LPTIM1 (LSI for the
+present example).
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate
+      delay (in milliseconds) based on variable incremented in SysTick ISR. This
+      implies that if HAL_Delay() is called from a peripheral ISR process, then
+      the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Keywords</u>
+
+Timer, Low Power, Pulse Counter, Stop mode, Interrupt,
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - LPTIM/LPTIM_PulseCounter/Inc/stm32f7xx_hal_conf.h    HAL configuration file
+  - LPTIM/LPTIM_PulseCounter/Inc/stm32f7xx_it.h          Interrupt handlers header file
+  - LPTIM/LPTIM_PulseCounter/Inc/main.h                  Header for main.c module
+  - LPTIM/LPTIM_PulseCounter/Src/stm32f7xx_it.c          Interrupt handlers
+  - LPTIM/LPTIM_PulseCounter/Src/main.c                  Main program
+  - LPTIM/LPTIM_PulseCounter/Src/stm32f7xx_hal_msp.c     HAL MSP module
+  - LPTIM/LPTIM_PulseCounter/Src/system_stm32f7xx.c      STM32F7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F769xx/STM32F779xx/STM32F777xx/STM32F767xx devices.
+
+  - This example has been tested with STMicroelectronics STM32F769I-EVAL
+    board and can be easily tailored to any other supported device
+    and development board.
+
+  - Generate pulses on PD12 (). (Connect a square waveform).
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>LPTIM_PWMExternalClock</b>
+LPTIM PWM External clock example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to configure and use LPTIM to generate a PWM at the
+lowest power consumption, using an external counter clock, through the HAL LPTIM API.
+
+The Autorelaod equal to 99 so the output frequency (OutputFrequency) will
+be equal to the external counter clock (InputFrequency) divided by (99+1).
+
+  OutputFrequency = InputFrequency / (Autoreload + 1)
+                  = InputFrequency / 100
+
+Pulse value equal to 49 and the duty cycle (DutyCycle) is computed as follow:
+
+  DutyCycle = 1 - [(PulseValue + 1)/ (Autoreload + 1)]
+  DutyCycle = 50%
+
+To minimize the power consumption, after starting generating the PWM signal,
+the MCU enters in STOP mode. Note that GPIOs are configured in Low Speed to
+lower the consumption.
+
+Wkup/Tamper push-button pin (PC.13)is configured as input with external interrupt (EXTI_Line10-15),
+falling edge. When Wkup/Tamper push-button is pressed, wakeup event is generated and PWM signal
+generation is stopped.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate
+      delay (in milliseconds) based on variable incremented in SysTick ISR. This
+      implies that if HAL_Delay() is called from a peripheral ISR process, then
+      the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Keywords</u>
+
+Timer, Low Power, PWM, Stop mode, Interrupt, External Clock, Output, Duty Cycle
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - LPTIM/LPTIM_PWMExternalClock/Inc/stm32f7xx_hal_conf.h    HAL configuration file
+  - LPTIM/LPTIM_PWMExternalClock/Inc/stm32f7xx_it.h          Interrupt handlers header file
+  - LPTIM/LPTIM_PWMExternalClock/Inc/main.h                  Header for main.c module
+  - LPTIM/LPTIM_PWMExternalClock/Src/stm32f7xx_it.c          Interrupt handlers
+  - LPTIM/LPTIM_PWMExternalClock/Src/main.c                  Main program
+  - LPTIM/LPTIM_PWMExternalClock/Src/stm32f7xx_hal_msp.c     HAL MSP module
+  - LPTIM/LPTIM_PWMExternalClock/Src/system_stm32f7xx.c      STM32F7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F769xx/STM32F779xx/STM32F777xx/STM32F767xx devices.
+
+  - This example has been tested with STMicroelectronics STM32F769I-EVAL
+    board and can be easily tailored to any other supported device
+    and development board.
+
+  - Connect an external square clock signal(GBF) to PD.12.
+  - Connect PD.13 to an oscilloscope to monitor the LPTIM output waveform.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>LPTIM_PWM_LSE</b>
+LPTIM PWM Low Power example with LSE clock source
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to configure and use LPTIM to generate a PWM in low power mode
+using the LSE as a counter clock, through the HAL LPTIM API.
+
+In this example, the LPTIM instance used is LPTIM1 and the low power mode is Stop mode.
+
+The counter clock is LSE (32.768 KHz), Autoreload equal to 99 so the output
+frequency (FrequencyOutput) will be equal to 327.680.
+
+  FrequencyOutput = Counter Clock Frequency / (Autoreload + 1)
+                  = 32768 / 100
+                  = 327.680 Hz
+
+Pulse value equal to 49 and the duty cycle (DutyCycle) is computed as follow:
+
+  DutyCycle = 1 - ((PulseValue + 1)/ (Autoreload + 1))
+  DutyCycle = 50%
+
+To minimize the power consumption, after starting generating the PWM signal,
+the MCU enters in Stop mode. Note that GPIOs are configured in Low Speed to
+enhance the consumption.
+
+Tamper push-button pin (PC.13)is configured as input with external interrupt (EXTI15_10),
+falling edge. When Tamper push-button is pressed, wakeup event is generated and PWM signal
+generation is stopped.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate
+      delay (in milliseconds) based on variable incremented in SysTick ISR. This
+      implies that if HAL_Delay() is called from a peripheral ISR process, then
+      the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Keywords</u>
+
+Timer, Low Power, PWM, Stop mode, Interrupt, LSE, Output, Duty Cycle
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - LPTIM/LPTIM_PWM_LSE/Inc/stm32f7xx_hal_conf.h    HAL configuration file
+  - LPTIM/LPTIM_PWM_LSE/Inc/stm32f7xx_it.h          Interrupt handlers header file
+  - LPTIM/LPTIM_PWM_LSE/Inc/main.h                  Header for main.c module
+  - LPTIM/LPTIM_PWM_LSE/Src/stm32f7xx_it.c          Interrupt handlers
+  - LPTIM/LPTIM_PWM_LSE/Src/main.c                  Main program
+  - LPTIM/LPTIM_PWM_LSE/Src/stm32f7xx_hal_msp.c     HAL MSP module
+  - LPTIM/LPTIM_PWM_LSE/Src/system_stm32f7xx.c      STM32F7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F769xx/STM32F779xx/STM32F777xx/STM32F767xx devices.
+
+  - This example has been tested with STMicroelectronics STM32F769I-EVAL
+    board and can be easily tailored to any other supported device
+    and development board.
+
+  - Connect PD.13 (pin 31 in CN10connector) to an oscilloscope to monitor the LPTIM1 output waveform.
+
+  - LSE oscillator must be mounted on the board, else this example does not work.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>LPTIM_Timeout</b>
+LPTIM Timeout example with LSE clock source
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to implement a low power timeout to wake-up the
+system using the LPTIMER, through the HAL LPTIM API.
+
+The main() set the LPTIMER and goes in STOP mode.
+In order to start the timer a first trigger is needed.
+Any successive trigger event on (PG.14) (LPTIM_ETR) will reset the counter and the timer
+will restart. The timeout value corresponds to the compare value (32768)
+if (after first trigger) next trigger does not occurs within the expected time frame,
+the MCU is woken-up by the compare match event and LED1 toggles.
+
+In this example the LPTIM is clocked by the LSE
+
+  Timeout = (Compare + 1) / LPTIM_Clock
+          = (32767 + 1) / LSE_Clock_Frequency
+
+Once the system is waken up it remains in run mode. The LED1 keeps toggling each time the timer expires.
+LED3 is on in case of initialisation error.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate
+      delay (in milliseconds) based on variable incremented in SysTick ISR. This
+      implies that if HAL_Delay() is called from a peripheral ISR process, then
+      the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Keywords</u>
+
+Timer, Low Power Timer, Wake up, Stop mode, LSI, Run mode,
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - LPTIM/LPTIM_Timeout/Inc/stm32f7xx_hal_conf.h    HAL configuration file
+  - LPTIM/LPTIM_Timeout/Inc/stm32f7xx_it.h          Interrupt handlers header file
+  - LPTIM/LPTIM_Timeout/Inc/main.h                  Header for main.c module
+  - LPTIM/LPTIM_Timeout/Src/stm32f7xx_it.c          Interrupt handlers
+  - LPTIM/LPTIM_Timeout/Src/main.c                  Main program
+  - LPTIM/LPTIM_Timeout/Src/stm32f7xx_hal_msp.c     HAL MSP module
+  - LPTIM/LPTIM_Timeout/Src/system_stm32f7xx.c      STM32F7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F769xx/STM32F779xx/STM32F777xx/STM32F767xx devices.
+
+  - This example has been tested with STMicroelectronics STM32F769I-EVAL
+    board and can be easily tailored to any other supported device
+    and development board.
+
+  - Connect an external trigger (ETR) to PG.14.
+    If trigegr is higher then 1Hz, the counter is regularly reset, the system stays in STOP mode.
+    If trigegr is lower then 1Hz, the counter expires and the system is woken up.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF7GettingStarted.pdf">Getting started with STM32CubeF7 Embedded Software for STM32F7xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF7 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32F7x9I-EVAL Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

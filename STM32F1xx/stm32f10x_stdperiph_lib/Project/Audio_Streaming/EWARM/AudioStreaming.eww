@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/AudioStreaming.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>USB-Package-AudioStreaming</name>
+      <member>
+        <project>AudioStreaming</project>
+        <configuration>STM3210C-EVAL-14MHz</configuration>
+      </member>
+      <member>
+        <project>AudioStreaming</project>
+        <configuration>STM3210C-EVAL-25MHz</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

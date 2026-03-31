@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/OneNAND/OneNAND.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/SRAM/SRAM.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/SRAM_DataMemory/SRAM_DataMemory.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>OneNAND</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+      <member>
+        <project>SRAM</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+      <member>
+        <project>SRAM_DataMemory</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<infocenter_data version="1.0">
+  <iar_name>PCU</iar_name>                                                                                                           <!--App-->
+  <iar_description>This example how to put the chip in stop mode and use the wakeup pin to resume program execution</iar_description><!--App short description-->
+  <iar_curdir>$CUR_DIR$</iar_curdir>
+</infocenter_data>

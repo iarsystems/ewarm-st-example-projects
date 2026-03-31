@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/DataExchangeDMA/DataExchangeDMA.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/DataExchangeInterrupt/DataExchangeInterrupt.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>DataExchangeDMA</project>
+        <configuration>STM32F051</configuration>
+      </member>
+      <member>
+        <project>DataExchangeDMA</project>
+        <configuration>STM32F072</configuration>
+      </member>
+      <member>
+        <project>DataExchangeInterrupt</project>
+        <configuration>STM32F051</configuration>
+      </member>
+      <member>
+        <project>DataExchangeInterrupt</project>
+        <configuration>STM32F072</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

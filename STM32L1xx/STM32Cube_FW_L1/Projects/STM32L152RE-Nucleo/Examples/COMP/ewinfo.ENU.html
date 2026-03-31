@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>COMP Workspace</h1>
+
+=====================================================================================
+<b>COMP_PWMSignalControl</b>
+COMP PWM Signal control example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to configure COMP peripheral to automatically hold
+TIMER PWM output on safe state (low level) as soon as comparator output is set
+at high level.
+
+  - COMP2 is configured as following:
+     - Inverting input is internally connected to VREFINT = 1.22V
+     - Non Inverting input is connected to pin PB.05
+     - Output is internally connected to TIM2 TIM_CHANNEL_2 OCRef clear input.
+
+  - TIM2 counter is used for PWM signal generation.
+     - Timer frequency is set to 1kHz, PWM duty cycle 25%. Frequency can be tuned using defined label "TIMER_FREQUENCY_HZ" (unit: Hz).
+     - TIM2 channel TIM_CHANNEL_2 is configured in PWM output mode, connected to pin PB.03.
+
+Board settings:
+  - STM32L152RE-Nucleo Rev C Set-up
+      Note: This example run in stand alone mode.
+    - Set voltage level on pin PB.05 (comparator input): above or below Vrefint (1.22V).
+      Note: to avoid the need of a power supply, possibility to connect a wire between this pin to a pin of the board: Vdda pin (3.3V) or ground pin (0V).
+    - Watch waveform on pin PB.03 (timer PWM output) with an oscilloscope, or watch average value mith a multimeter (Vdda=3.3v and duty cycle 25% should give a=n average voltage of 0.825V)
+
+Expected results:
+If voltage on comparator input is lower than Vrefint (1.22V), then timer PWM output if running normally.
+If voltage on comparator input is higher than Vrefint (1.22V), then timer PWM output if forced to 0V.
+
+STM32L152RE-Nucleo Rev C board's LED is be used to monitor the program execution status:
+ - Error: In case of error, LED2 is toggling at a frequency of 1Hz.
+
+Note: To have a precise value of the pulse, HSI as a source of clock system should be
+calibrated or use an external clock.
+
+Note: Care must be taken when using HAL_Delay(), this function provides
+      accurate delay (in milliseconds) based on variable incremented in SysTick ISR.
+      This implies that if HAL_Delay() is called from a peripheral ISR process, then
+      the SysTick interrupt must have higher priority (numerically lower) than the
+      peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set
+      to 1 millisecond to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - COMP/COMP_PWMSignalControl/Inc/stm32l1xx_hal_conf.h    HAL configuration file
+  - COMP/COMP_PWMSignalControl/Inc/stm32l1xx_it.h          COMP interrupt handlers header file
+  - COMP/COMP_PWMSignalControl/Inc/main.h                  Header for main.c module
+  - COMP/COMP_PWMSignalControl/Src/stm32l1xx_it.c          COMP interrupt handlers
+  - COMP/COMP_PWMSignalControl/Src/main.c                  Main program
+  - COMP/COMP_PWMSignalControl/Src/stm32l1xx_hal_msp.c     HAL MSP file
+  - COMP/COMP_PWMSignalControl/Src/system_stm32l1xx.c      STM32L1xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32L1xx devices.
+
+  - This example has been tested with STM32L152RE-Nucleo Rev C board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeL1GettingStarted.pdf">Getting started with STM32CubeL1 Embedded Software for STM32L1xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeL1 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32L152RE-Nucleo Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

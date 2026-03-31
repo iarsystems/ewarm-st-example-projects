@@ -1,0 +1,584 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>TIM Workspace</h1>
+
+=====================================================================================
+<b>TIM_DMA</b>
+TIM DMA example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example provides a description of how to use DMA with TIMER Update request
+to transfer Data from memory to TIMER Capture Compare Register 3 (TIMx_CCR3).
+
+  The following configuration values are used in this example:
+
+    - TIM3CLK = SystemCoreClock
+    - Counter repetition = 3
+    - Prescaler = 0
+    - TIM3 counter clock = SystemCoreClock
+    - SystemCoreClock is set to 100 MHz for STM32F413xx/STM32F423xx
+
+  The objective is to configure TIM3 channel 3 to generate complementary PWM
+  (Pulse Width Modulation) signal with a frequency equal to 17.57 KHz, and a variable
+  duty cycle that is changed by the DMA after a specific number of Update DMA request.
+
+  The number of this repetitive requests is defined by the TIM3 Repetition counter,
+  each 4 Update Requests, the TIM3 Channel 3 Duty Cycle changes to the next new
+  value defined by the aCCValue_Buffer.
+
+  The PWM waveform can be displayed using an oscilloscope.
+
+  In nominal mode (except at start) , it should looks like this :
+
+       .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .
+        ___________     _______         ___             ___________    __
+      _|           |___|       |_______|   |___________|           |__|
+       &lt;----57us -----&gt;&lt;----57us -----&gt;&lt;----57us -----&gt;&lt;----57us -----&gt;
+
+Note: PWM signal frequency value mentioned above is theoretical (obtained when the system clock frequency
+      is exactly 100 MHz). Since the generated system clock frequency may vary from one board to another observed
+      PWM signal frequency might be slightly different.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate
+      delay (in milliseconds) based on variable incremented in SysTick ISR. This
+      implies that if HAL_Delay() is called from a peripheral ISR process, then
+      the SysTick interrupt must have higher priority (numerically lower)
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - TIM/TIM_DMA/Inc/stm32f4xx_hal_conf.h    HAL configuration file
+  - TIM/TIM_DMA/Inc/stm32f4xx_it.h          Interrupt handlers header file
+  - TIM/TIM_DMA/Inc/main.h                  Header for main.c module
+  - TIM/TIM_DMA/Src/stm32f4xx_it.c          Interrupt handlers
+  - TIM/TIM_DMA/Src/main.c                  Main program
+  - TIM/TIM_DMA/Src/stm32f4xx_hal_msp.c     HAL MSP file
+  - TIM/TIM_DMA/Src/system_stm32f4xx.c      STM32F4xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F413xx/STM32F423xx devices.
+  - In this example, the clock is set to 100 MHz.
+
+  - This example has been tested with STMicroelectronics STM32F413ZH-Nucleo
+    board and can be easily tailored to any other supported device
+    and development board.
+
+  - STM32F413ZH-Nucleo Set-up
+    - Connect the TIM3 pin to an oscilloscope to monitor the different waveforms:
+    - TIM3 CH3 (PB.00): PB0 is connected to pin31 in CN10 connector.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>TIM_InputCapture</b>
+Input Capture example
+=====================================================================================
+
+<u>Example Description</u>
+
+  This example shows how to use the TIM peripheral to measure the frequency of
+  an external signal.
+
+  The TIM3CLK frequency is set to SystemCoreClock (Hz), the Prescaler is 0,
+  so the TIM3 counter clock is SystemCoreClock (Hz).
+  SystemCoreClock is set to 100 MHz for STM32F413xx/STM32F423xx Devices.
+
+  TIM3 is configured in Input Capture Mode: the external signal is connected to
+  TIM3 Channel2 used as input pin.
+  To measure the frequency we use the TIM3 CC2 interrupt request, so in the
+  TIM3_IRQHandler routine, the frequency of the external signal is computed.
+
+  The "uwFrequency" variable contains the external signal frequency:
+  uwFrequency = TIM3 counter clock / uwDiffCapture (Hz),
+  where "uwDiffCapture" is the difference between two consecutive TIM3 captures.
+
+  The minimum frequency value to measure is TIM3 counter clock / CCR MAX
+                                              = 100 MHz / 65535
+
+  Due to TIM3_IRQHandler processing time (around 2.5us), the maximum
+  frequency value to measure is around 400kHz.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - TIM/TIM_InputCapture/Inc/stm32f4xx_hal_conf.h    HAL configuration file
+  - TIM/TIM_InputCapture/Inc/stm32f4xx_it.h          Interrupt handlers header file
+  - TIM/TIM_InputCapture/Inc/main.h                  Header for main.c module
+  - TIM/TIM_InputCapture/Src/stm32f4xx_it.c          Interrupt handlers
+  - TIM/TIM_InputCapture/Src/main.c                  Main program
+  - TIM/TIM_InputCapture/Src/stm32f4xx_hal_msp.c     HAL MSP file
+  - TIM/TIM_InputCapture/Src/system_stm32f4xx.c      STM32F4xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F413xx/STM32F423xx devices.
+  - In this example, the clock is set to 100 MHz.
+
+  - This example has been tested with STMicroelectronics STM32F413ZH-Nucleo
+    board and can be easily tailored to any other supported device
+    and development board.
+
+  - STM32F413ZH-Nucleo Set-up
+    - Connect the external signal to measure to the TIM3 CH2 pin (PB.05).
+      PB05 is connected to pin13 in CN7 connector.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>TIM_OCActive</b>
+TIM_OCActive example
+=====================================================================================
+
+<u>Example Description</u>
+
+  This example shows how to configure the TIM peripheral in Output Compare Active
+  mode (when the counter matches the capture/compare register, the concerned output
+  pin is set to its active state).
+
+  The TIM3 frequency is set to SystemCoreClock, and the objective is
+  to get TIM3 counter clock at 10 kHz so the Prescaler is computed as following:
+     - Prescaler = (TIM3CLK /TIM3 counter clock) - 1
+
+  SystemCoreClock is set to 100 MHz for STM32F413xx/STM32F423xx Devices.
+
+  The TIM3 CCR1 register value is equal to 10000:
+  TIM3_CH1 delay = CCR1_Val/TIM3 counter clock  = 1s
+  so the TIM3 Channel 1 generates a signal with a delay equal to 1s.
+
+  The TIM3 CCR2 register value is equal to 5000:
+  TIM3_CH2 delay = CCR2_Val/TIM3 counter clock = 500 ms
+  so the TIM3 Channel 2 generates a signal with a delay equal to 500 ms.
+
+  The TIM3 CCR3 register value is equal to 2500:
+  TIM3_CH3 delay = CCR3_Val/TIM3 counter clock = 250 ms
+  so the TIM3 Channel 3 generates a signal with a delay equal to 250 ms.
+
+  The TIM3 CCR4 register value is equal to 1250:
+  TIM3_CH4 delay = CCR4_Val/TIM3 counter clock = 125 ms
+  so the TIM3 Channel 4 generates a signal with a delay equal to 125 ms.
+
+  The delay correspond to the time difference between PB.07 rising edge and
+  TIM3_CHx signal rising edges. PB.07 is connected to pin21 in CN11 connector.
+
+Note: Delay values mentioned above are theoretical (obtained when the system clock frequency
+      is exactly 100 MHz). Since the generated system clock frequency may vary from one board to another observed
+      delay might be slightly different.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - TIM/TIM_OCActive/Inc/stm32f4xx_hal_conf.h    HAL configuration file
+  - TIM/TIM_OCActive/Inc/stm32f4xx_it.h          Interrupt handlers header file
+  - TIM/TIM_OCActive/Inc/main.h                  Header for main.c module
+  - TIM/TIM_OCActive/Src/stm32f4xx_it.c          Interrupt handlers
+  - TIM/TIM_OCActive/Src/main.c                  Main program
+  - TIM/TIM_OCActive/Src/stm32f4xx_hal_msp.c     HAL MSP file
+  - TIM/TIM_OCActive/Src/system_stm32f4xx.c      STM32F4xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F413xx/STM32F423xx devices.
+
+  - This example has been tested with STMicroelectronics NUCLEO-F413ZH
+    board and can be easily tailored to any other supported device
+    and development board.
+
+  - NUCLEO-F413ZH Set-up
+   Connect the following pins to an oscilloscope to monitor the different waveforms:
+      - Use LED2 connected to PB.07 (Reference)
+      - PB.04: (TIM3_CH1) (connected to PB.04 (pin 19 in CN7 connector))
+      - PB.05: (TIM3_CH2) (connected to PB.05 (pin 13 in CN7 connector))
+      - PB.00: (TIM3_CH3) (connected to PB.00 (pin 31 in CN10 connector))
+      - PB.01: (TIM3_CH4) (connected to PB.01 (pin 7 in CN10 connector))
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>TIM_OCToggle</b>
+TIM_OCToggle example
+=====================================================================================
+
+<u>Example Description</u>
+
+  This example shows how to configure the TIM peripheral to generate four different
+  signals with four different frequencies.
+
+  The TIM3 frequency is set to SystemCoreClock, and the objective is
+  to get TIM3 counter clock at 12.5 MHz so the Prescaler is computed as following:
+     - Prescaler = (TIM3CLK /TIM3 counter clock) - 1
+
+  SystemCoreClock is set to 100 MHz for STM32F413xx/STM32F423xx Devices.
+
+  The TIM3 CCR1 register value is equal to 32051:
+  CC1 update rate = TIM3 counter clock / CCR1_Val = 390 Hz,
+  so the TIM3 Channel 1 generates a periodic signal with a frequency equal to 195 Hz.
+
+  The TIM3 CCR2 register value is equal to 16025:
+  CC2 update rate = TIM3 counter clock / CCR2_Val = 780 Hz,
+  so the TIM3 channel 2 generates a periodic signal with a frequency equal to 390 Hz.
+
+  The TIM3 CCR3 register value is equal to 8012:
+  CC3 update rate = TIM3 counter clock / CCR3_Val = 1560 Hz,
+  so the TIM3 channel 3 generates a periodic signal with a frequency equal to 780 Hz.
+
+  The TIM3 CCR4 register value is equal to 4006:
+  CC4 update rate = TIM3 counter clock / CCR4_Val =  3120 Hz,
+  so the TIM3 channel 4 generates a periodic signal with a frequency equal to 1560 Hz.
+
+Note: PWM signal frequency values mentioned above are theoretical (obtained when the system clock frequency
+      is exactly 100 MHz). Since the generated system clock frequency may vary from one board to another observed
+      PWM signal frequency might be slightly different.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - TIM/TIM_OCToggle/Inc/stm32f4xx_hal_conf.h    HAL configuration file
+  - TIM/TIM_OCToggle/Inc/stm32f4xx_it.h          Interrupt handlers header file
+  - TIM/TIM_OCToggle/Inc/main.h                  Header for main.c module
+  - TIM/TIM_OCToggle/Src/stm32f4xx_it.c          Interrupt handlers
+  - TIM/TIM_OCToggle/Src/main.c                  Main program
+  - TIM/TIM_OCToggle/Src/stm32f4xx_hal_msp.c     HAL MSP file
+  - TIM/TIM_OCToggle/Src/system_stm32f4xx.c      STM32F4xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F413xx/STM32F423xx devices.
+
+  - This example has been tested with STMicroelectronics STM32F413ZH-Nucleo
+    board and can be easily tailored to any other supported device
+    and development board.
+
+  - STM32F413ZH-Nucleo Set-up
+   Connect the following pins to an oscilloscope to monitor the different waveforms:
+      - PB.04: (TIM3_CH1) (connected to PB.04 (pin 19 in CN7 connector))
+      - PB.05: (TIM3_CH2) (connected to PB.05 (pin 13 in CN7 connector))
+      - PB.00: (TIM3_CH3) (connected to PB.00 (pin 31 in CN10 connector))
+      - PB.01: (TIM3_CH4) (connected to PB.01 (pin 7 in CN10 connector))
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>TIM_OnePulse</b>
+TIM One Pulse example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to use the TIMER peripheral to generate a single pulse when
+a rising edge of an external signal is received on the TIMER Input pin.
+
+Clock setup for TIM3
+================================
+
+  TIM3CLK = SystemCoreClock = 100 MHz.
+
+  Prescaler = (TIM3CLK /TIM3 counter clock) - 1
+
+  The prescaler value is computed in order to have TIM3 counter clock
+  set at 25000000 Hz.
+
+  The Autoreload value is 65535 (TIM3-&gt;ARR), so the maximum frequency value to
+  trigger the TIM3 input is 25000000/65535 [Hz].
+
+Configuration of TIM3 in One Pulse Mode
+===================================================
+
+  - The external signal is connected to TIM3_CH2 pin (PB.05),
+    and a rising edge on this input is used to trigger the Timer.
+  - The One Pulse signal is output on TIM3_CH1 (PB.04).
+
+  The delay value is fixed to:
+   - Delay =  CCR1/TIM3 counter clock
+           = 16383 / 25000000 [sec]
+
+  The pulse value is fixed to :
+   - Pulse value = (TIM_Period - TIM_Pulse)/TIM3 counter clock
+                 = (65535 - 16383) / 25000000 [sec]
+
+  The one pulse waveform can be displayed using an oscilloscope and it looks
+  like this.
+
+                               ____
+                               |   |
+  CH2 _________________________|   |__________________________________________
+
+                                             ___________________________
+                                            |                           |
+  CH1 ______________________________________|                           |_____
+                               &lt;---Delay----&gt;&lt;------Pulse---------------&gt;
+
+
+<u>Directory contents</u>
+
+  - TIM/TIM_OnePulse/Inc/stm32f4xx_hal_conf.h    HAL configuration file
+  - TIM/TIM_OnePulse/Inc/stm32f4xx_it.h          Interrupt handlers header file
+  - TIM/TIM_OnePulse/Inc/main.h                  Header for main.c module
+  - TIM/TIM_OnePulse/Src/stm32f4xx_it.c          Interrupt handlers
+  - TIM/TIM_OnePulse/Src/main.c                  Main program
+  - TIM/TIM_OnePulse/Src/stm32f4xx_hal_msp.c     HAL MSP file
+  - TIM/TIM_OnePulse/Src/system_stm32f4xx.c      STM32F4xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+   - This example runs on STM32F413xx/STM32F423xx devices.
+   - In this example, the clock is set to 100 MHz.
+
+  - This example has been tested with STM32F413ZH-Nucleo board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32F413ZH-Nucleo Set-up
+   - Connect the external signal to the TIM3_CH2 pin (PB.05) (CN7, pin 13)
+   - Connect the TIM3_CH1 pin(PB.04) (CN7, pin 19) to an oscilloscope to monitor the waveform.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files: Project-&gt;Rebuild all
+ - Load project image: Project-&gt;Download and Debug
+ - Run program: Debug-&gt;Go(F5)
+
+
+=====================================================================================
+<b>TIM_PWMInput</b>
+TIM PWM Input example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to use the TIM peripheral to measure the frequency and
+duty cycle of an external signal.
+
+The TIM3CLK frequency is set to SystemCoreClock (Hz), the Prescaler is 0 so the
+counter clock is SystemCoreClock (Hz).
+SystemCoreClock is set to 100 MHz for STM32F413xx/STM32F423xx Devices.
+
+TIM3 is configured in PWM Input Mode: the external signal is connected to
+TIM3 Channel2 used as input pin.
+To measure the frequency and the duty cycle, we use the TIM3 CC2 interrupt request,
+so in the TIM3_CC_IRQHandler routine, the frequency and the duty cycle of the external
+signal are computed.
+
+"uwFrequency" variable contains the external signal frequency:
+TIM3 counter clock = SystemCoreClock,
+uwFrequency = TIM3 counter clock / TIM3_CCR2 in Hz,
+
+"uwDutyCycle" variable contains the external signal duty cycle:
+uwDutyCycle = (TIM3_CCR1*100)/(TIM3_CCR2) in %.
+
+The minimum frequency value to measure is (TIM3 counter clock / CCR MAX)
+                                         = (100 MHz)/ 65535
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - TIM/TIM_PWMInput/Inc/stm32f4xx_hal_conf.h    HAL configuration file
+  - TIM/TIM_PWMInput/Inc/stm32f4xx_it.h          Interrupt handlers header file
+  - TIM/TIM_PWMInput/Inc/main.h                  Header for main.c module
+  - TIM/TIM_PWMInput/Src/stm32f4xx_it.c          Interrupt handlers
+  - TIM/TIM_PWMInput/Src/main.c                  Main program
+  - TIM/TIM_PWMInput/Src/stm32f4xx_hal_msp.c     HAL MSP file
+  - TIM/TIM_PWMInput/Src/system_stm32f4xx.c      STM32F4xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F413xx/STM32F423xx devices.
+
+  - This example has been tested with STMicroelectronics STM32F413ZH-Nucleo
+    board and can be easily tailored to any other supported device
+    and development board.
+
+  - STM32F413ZH-Nucleo Set-up
+    - Connect the external signal to measure to the TIM3 CH2 pin (PB.05) (connect to pin 13 in CN7 connector).
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>TIM_PWMOutput</b>
+TIM PWM Output example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to configure the TIM peripheral in PWM (Pulse Width Modulation)
+mode.
+
+SystemCoreClock is set to 100 MHz for STM32F413xx/STM32F423xx Devices.
+
+    In this example TIM3 input clock (TIM3CLK) is set to APB1 clock x 2,
+    since APB1 prescaler is equal to 2.
+      TIM3CLK = APB1CLK*2
+      APB1CLK = HCLK/2
+      =&gt; TIM3CLK = HCLK = SystemCoreClock
+
+    To get TIM3 counter clock at 20 MHz, the prescaler is computed as follows:
+       Prescaler = (TIM3CLK / TIM3 counter clock) - 1
+       Prescaler = ((SystemCoreClock) /20 MHz) - 1
+
+    To get TIM3 output clock at 24 KHz, the period (ARR)) is computed as follows:
+       ARR = (TIM3 counter clock / TIM3 output clock) - 1
+           = 832
+
+    TIM3 Channel1 duty cycle = (TIM3_CCR1/ TIM3_ARR + 1)* 100 = 50%
+    TIM3 Channel2 duty cycle = (TIM3_CCR2/ TIM3_ARR + 1)* 100 = 37.5%
+    TIM3 Channel3 duty cycle = (TIM3_CCR3/ TIM3_ARR + 1)* 100 = 25%
+    TIM3 Channel4 duty cycle = (TIM3_CCR4/ TIM3_ARR + 1)* 100 = 12.5%
+
+The PWM waveforms can be displayed using an oscilloscope.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - TIM/TIM_PWMOutput/Inc/stm32f4xx_hal_conf.h    HAL configuration file
+  - TIM/TIM_PWMOutput/Inc/stm32f4xx_it.h          Interrupt handlers header file
+  - TIM/TIM_PWMOutput/Inc/main.h                  Header for main.c module
+  - TIM/TIM_PWMOutput/Src/stm32f4xx_it.c          Interrupt handlers
+  - TIM/TIM_PWMOutput/Src/main.c                  Main program
+  - TIM/TIM_PWMOutput/Src/stm32f4xx_hal_msp.c     HAL MSP file
+  - TIM/TIM_PWMOutput/Src/system_stm32f4xx.c      STM32F4xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F413xx/STM32F423xx devices.
+  - In this example, the clock is set to 100 MHz.
+
+  - This example has been tested with STMicroelectronics STM32F413ZH-Nucleo
+    board and can be easily tailored to any other supported device
+    and development board.
+
+  - STM32F413ZH-Nucleo Set-up
+   Connect the following pins to an oscilloscope to monitor the different waveforms:
+        - TIM3_CH1 : PB.04 (pin 19 in CN7 connector)
+        - TIM3_CH2 : PB.05 (pin 13 in CN7 connector)
+        - TIM3_CH3 : PB.00 (pin 31 in CN10 connector)
+        - TIM3_CH4 : PB.01 (pin 7 in CN10 connector)
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF4GettingStarted.pdf">Getting started with STM32CubeF4 Embedded Software for STM32F4xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF4 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32F413ZH-Nucleo Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

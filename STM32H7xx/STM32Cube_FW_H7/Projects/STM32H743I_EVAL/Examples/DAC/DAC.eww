@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/DAC_DualConversion/EWARM/DAC_DualConversion.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/DAC_SignalsGeneration/EWARM/DAC_SignalsGeneration.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/DAC_SimpleConversion/EWARM/DAC_SimpleConversion.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>DAC_DualConversion</project>
+        <configuration>STM32H743I_EVAL</configuration>
+      </member>
+      <member>
+        <project>DAC_SignalsGeneration</project>
+        <configuration>STM32H743I_EVAL</configuration>
+      </member>
+      <member>
+        <project>DAC_SimpleConversion</project>
+        <configuration>STM32H743I_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/ADC_RegularConversion_DMA/EWARM/ADC_RegularConversion_DMA.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/ADC_RegularConversion_Interrupt/EWARM/ADC_RegularConversion_Interrupt.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>ADC_RegularConversion_DMA</project>
+        <configuration>STM32F429ZI_NUCLEO_144</configuration>
+      </member>
+      <member>
+        <project>ADC_RegularConversion_Interrupt</project>
+        <configuration>STM32F429ZI_NUCLEO_144</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

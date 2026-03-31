@@ -1,0 +1,647 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>HRTIM Workspace</h1>
+
+=====================================================================================
+<b>HRTIM</b>
+HRTIM_BasicPWM
+=====================================================================================
+
+<u>Example Description</u>
+
+  This example describes how to generate basic PWM waveforms with the HRTIM,
+  using HRTIM Cookbook basic examples.
+
+  5 basic examples are provided. Its is necessary to uncomment one of the
+  following 5 #define statement at the beginning of the main.c module:
+
+  #define HRTIM_CHECK: basic HRTIM outputs check
+  #define SINGLE_PWM: elementary PWM generation
+  #define MULTIPLE_PWM: PWM on multiple outputs
+  #define PWM_MASTER: PWM generation with timers other than the timing unit itself
+  #define ARBITRARY_WAVEFORM: non-PWM waveform example
+
+  The PWM and waveforms are generated on the TD1 and TD2 outputs
+  (resp. PB14 and PB15) and TA1 and TA2 outputs (resp. PA8 and PA9), depending
+  on example.
+
+  Green LED: blinks during normal operation
+  Red LED: ON when the ERROR handler is entered
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - HRTIM/HRTIM_DualBuck/Inc/stm32f3xx_hal_conf.h    HAL configuration file
+  - HRTIM/HRTIM_DualBuck/Inc/stm32f3xx_it.h          PPP interrupt handlers header file
+  - HRTIM/HRTIM_DualBuck/Inc/main.h                  Header for main.c module
+  - HRTIM/HRTIM_DualBuck/Src/stm32f3xx_it.c          PPP interrupt handlers
+  - HRTIM/HRTIM_DualBuck/Src/main.c                  Main program
+  - HRTIM/HRTIM_DualBuck/Src/stm32f3xx_hal_msp.c     HAL MSP file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F334x4/STM32F334x6/STM32F334x8 devices.
+
+  - This example has been tested with STM32F3348-DISCO
+    board and can be easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>HRTIM</b>
+HRTIM_BuckBoost
+=====================================================================================
+
+<u>Example Description</u>
+
+  This example shows how to configure the HRTIM to control a non-inverting
+  buck-boost converter timer.
+
+  This is done using timer unit A and B and TA1/TA2/TB1/TB2 outputs
+  (resp. PA8, PA9, PA10, PA11).
+
+  The FAULT1 input is enabled on PA12 (active low) to demonstrate PWM shut down
+  (low level sensitive), for all outputs.
+  When the fault is triggered (PA12 input connected to GND, TA1, TA2, TB1, TB2
+  signals are shut-down. The system can be re-armed by pressing the user button.
+
+  The ADC is configured to have conversions triggered in the middle of the
+  converter ON time, on PA1 (Vin) and PA3 (Vout) inputs.
+
+  To run the demo, the Vin input pin of the BUCK-BOOST converter must be connected
+  to the 5V_O supply. The resulting voltage is available on Vout pin.
+
+  The demo starts in BUCK mode, and the duty cycle is slowly adjusted in the
+  TIMA IRQ handler to have Vout continuously varying below Vin value.
+  If the push-button is pressed and the voltage is below 5V, the boost mode is
+  enabled (this is to prevent exceeding the discovery kit max output voltage.
+  The voltage is increased above Vin value (with a fixed duty cycle).
+  If the push-button is pressed again, the output capacitor is first de-energized
+  down to 2.5V before re-enabling the buck mode.
+
+  LEDs are indicating the following:
+  Green LED5: blinks during BUCK operation
+  Blue LED6: blinks during BOOST operation
+  Red LED3: blinks when FAULT is triggered
+  Orange LED4: indicates the occurrence and duration of the PWM update ISR.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - HRTIM/HRTIM_BuckBoost/Inc/stm32f3xx_hal_conf.h    HAL configuration file
+  - HRTIM/HRTIM_BuckBoost/Inc/stm32f3xx_it.h          PPP interrupt handlers header file
+  - HRTIM/HRTIM_BuckBoost/Inc/main.h                  Header for main.c module
+  - HRTIM/HRTIM_BuckBoost/Src/stm32f3xx_it.c          PPP interrupt handlers
+  - HRTIM/HRTIM_BuckBoost/Src/main.c                  Main program
+  - HRTIM/HRTIM_BuckBoost/Src/stm32f3xx_hal_msp.c     HAL MSP file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F334x4/STM32F334x6/STM32F334x8 devices.
+
+  - This example has been tested with STM32F3348-DISCO
+    board and can be easily tailored to any other supported device and development board.
+
+  - STM32F3348-DISCO Set-up: PA12 must be briefly tied to ground to simulate a fault event
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>HRTIM</b>
+HRTIM_BuckBoost
+=====================================================================================
+
+<u>Example Description</u>
+
+  This example is related to AN4449 Buck-boost converter.
+
+  It demonstrated the buck-boost DC/DC converter application.
+  HRTIM is fully configured to control the H-bridge power switching stage.
+  Any Vin range [3;15]Vdc can be converted into Vout range [3;15]Vdc with different
+  operating modes such as BUCK, BOOST or MIXED (buck-boost).
+  User has to enter a VOUT_TARGET parameter in main.h and the application will regulate this value
+  whatever the conditions on Vin.
+  External power supply is needed for Vin.
+  See AN4449 for furhter details.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - HRTIM/HRTIM_BuckBoost/Inc/stm32f3xx_hal_conf.h    HAL configuration file
+  - HRTIM/HRTIM_BuckBoost/Inc/stm32f3xx_it.h          PPP interrupt handlers header file
+  - HRTIM/HRTIM_BuckBoost/Inc/main.h                  Header for main.c module
+  - HRTIM/HRTIM_BuckBoost/Src/stm32f3xx_it.c          PPP interrupt handlers
+  - HRTIM/HRTIM_BuckBoost/Src/main.c                  Main program
+  - HRTIM/HRTIM_BuckBoost/Src/stm32f3xx_hal_msp.c     HAL MSP file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F334x4/STM32F334x6/STM32F334x8 devices.
+
+  - This example has been tested with STM32F3348-DISCO
+    board and can be easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>HRTIM</b>
+HRTIM_BuckSyncRect
+=====================================================================================
+
+<u>Example Description</u>
+
+  This example shows how to configure the HRTIM to control a buck converter
+  with synchronous rectification.
+  This is done using timer unit A and TA1/TA2 outputs (resp. PA8 and PA9).
+  The duty cycle on TA1 is continuously varied in an interrupt service routine
+  generated on repetition event, to mimic a real converter management.
+  The FAULT1 input is enabled on PA12 (active low) to demonstrate PWM shut down
+  (low level sensitive), for both TA1 and TA2.
+  When the fault is triggered (PA12 input connected to GND, TA1 and TA2 signals
+  are shut-down. The system can be re-armed by pressing the user button.
+  LEDs are indicating the following:
+  Blue LED: blinks during normal operation
+  Red LED: blinks when FAULT is triggered
+  Orange LED: indicates the occurrence and duration of the PWM update ISR.
+
+  The ADC is configured to have conversions triggered in the middle of the
+  converter ON time, on PA1 (Vin) and PA3 (Vout) inputs.
+
+  To run the demo, the Vin input of the BUCK-BOOST converter must be connected
+  to the 5V_O supply. The resulting voltage is available on Vout pin.
+  NB: to have the BOOST stage bypassed, the PA11 pin must be forced at 1 (to
+  have the T6 PMOS switched ON).
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - HRTIM/HRTIM_BuckSyncRect/Inc/stm32f3xx_hal_conf.h    HAL configuration file
+  - HRTIM/HRTIM_BuckSyncRect/Inc/stm32f3xx_it.h          PPP interrupt handlers header file
+  - HRTIM/HRTIM_BuckSyncRect/Inc/main.h                  Header for main.c module
+  - HRTIM/HRTIM_BuckSyncRect/Src/stm32f3xx_it.c          PPP interrupt handlers
+  - HRTIM/HRTIM_BuckSyncRect/Src/main.c                  Main program
+  - HRTIM/HRTIM_BuckSyncRect/Src/stm32f3xx_hal_msp.c     HAL MSP file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F334x4/STM32F334x6/STM32F334x8 devices.
+
+  - This example has been tested with STM32F3348-DISCO
+    board and can be easily tailored to any other supported device and development board.
+
+  - STM32F3348-DISCO Set-up: PA12 must be briefly tied to ground to simulate a fault event
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>HRTIM</b>
+HRTIM_DualBuck
+=====================================================================================
+
+<u>Example Description</u>
+
+  This example shows how to configure the HRTIM to have 2 buck converters
+  controlled by a single timer unit.
+  This is done using a single timer unit (Timer D), with the TD1 and TD2 outputs
+  (resp. PB14 and PB15).
+  The duty cycle on TD1 is continuously varied in an interrupt service routine
+  generated on repetition event, to mimic a real converter management. A low-pass
+  filtered signal reflecting the PWM duty cycle can be monitored on TP3.
+  The FAULT1 input is enabled on PA12 (active low) to demonstrate PWM shut down
+  (low level sensitive).
+  When the fault is triggered (PA12 input connected to GND, TD1 signal only is
+  stopped. The system can be re-armed by pressing the user button.
+  LEDs are indicating the following:
+  Blue LED: blinks during normal operation
+  Red LED: blinks when FAULT is triggered
+  Orange LED: indicates the occurrence and duration of the PWM refresh ISR
+
+  The ADC is configured to have conversions triggered in the middle of the
+  ON time of each converter (non-overlapping PWM signals), on PA4 input.
+  The RC filtered PWM can be connected to PA4 for monitoring ADC conversions.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - HRTIM/HRTIM_DualBuck/Inc/stm32f3xx_hal_conf.h    HAL configuration file
+  - HRTIM/HRTIM_DualBuck/Inc/stm32f3xx_it.h          PPP interrupt handlers header file
+  - HRTIM/HRTIM_DualBuck/Inc/main.h                  Header for main.c module
+  - HRTIM/HRTIM_DualBuck/Src/stm32f3xx_it.c          PPP interrupt handlers
+  - HRTIM/HRTIM_DualBuck/Src/main.c                  Main program
+  - HRTIM/HRTIM_DualBuck/Src/stm32f3xx_hal_msp.c     HAL MSP file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F334x4/STM32F334x6/STM32F334x8 devices.
+
+  - This example has been tested with STM32F3348-DISCO
+    board and can be easily tailored to any other supported device and development board.
+
+  - STM32F3348-DISCO Set-up: PA12 must be briefly tied to ground to simulate a fault event
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>HRTIM</b>
+HRTIM_LLC_HalfBridge
+=====================================================================================
+
+<u>Example Description</u>
+
+  This example shows how to configure the HRTIM to control a half-bridge LLC
+  converter with synchronous rectification, using timer units A and B and
+  TA1/TA2/TB1/TB2 outputs.
+
+  IMPORTANT NOTE: the Vin input pin of the discovery kit MUST NOT BE CONNECTED.
+  This demo only aims at showing signal generation, the discovery kit does not
+  include the hardware for demoing a LLC converter. For a functional demo,
+  however, the discovery kit can be coupled and control a LLC converter with the
+  resources given here-after.
+
+  The TA1 and TA2 outputs (resp. PA8, PA9)are complementary PWM outputs for
+  controlling the primary side half-bridge switches.
+  The TB1 and TB2 outputs (resp. PA10, PA11) are independent PWM signals for
+  controlling the synchronous rectification FETs on the secondary side.
+
+  The ADC is configured to do 8 conversions per switching cycle, at the
+  following time:
+  - 250ns before SR1 turn-on, 250ns after SR1 turn-on, 250ns before SR1 turn-off
+  and 250ns after SR1 turn-off
+  - same applies for SR2 also
+
+  The FAULT1 input is enabled on PA12 (active low) to demonstrate PWM shut down
+  (low level sensitive), for all outputs.
+  When the fault is triggered (PA12 input connected to GND) TA1, TA2, TB1, TB2
+  signals are shut-down. The system can be re-armed by pressing the user button.
+
+  The circuit is also protected from over-current on the primary side with the
+  comparator 2, on PA7 input, in delayed idle protection mode.
+
+  The demo starts in RUN mode, and the LLC switching frequency is slowly
+  adjusted in the Master IRQ handler to simulate a control loop adjusting the
+  operating point in real-time and show that all events are synchronized with
+  the primary side (SR FETs and ADC sampling points).
+
+  LEDs are indicating the following:
+  Green LED5: blinks during RUN operation
+  Red LED3: blinks when FAULT is triggered
+  Orange LED4: indicates the occurrence and duration of the PWM update ISR.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - HRTIM/HRTIM_LLC_HalfBridge/Inc/stm32f3xx_hal_conf.h    HAL configuration file
+  - HRTIM/HRTIM_LLC_HalfBridge/Inc/stm32f3xx_it.h          PPP interrupt handlers header file
+  - HRTIM/HRTIM_LLC_HalfBridge/Inc/main.h                  Header for main.c module
+  - HRTIM/HRTIM_LLC_HalfBridge/Src/stm32f3xx_it.c          PPP interrupt handlers
+  - HRTIM/HRTIM_LLC_HalfBridge/Src/main.c                  Main program
+  - HRTIM/HRTIM_LLC_HalfBridge/Src/stm32f3xx_hal_msp.c     HAL MSP file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F334x4/STM32F334x6/STM32F334x8 devices.
+
+  - This example has been tested with STM32F3348-DISCO
+    board and can be easily tailored to any other supported device and development board.
+
+  - STM32F3348-DISCO Set-up: PA12 must be briefly tied to ground to simulate a fault event
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>HRTIM</b>
+HRTIM_Multiphase
+=====================================================================================
+
+<u>Example Description</u>
+
+  This example shows how to configure the HRTIM to control a multiphase
+  buck converter. It handles here 5-phases on timer unit A, B C and D
+  and outputs TA2, TB1, TC2, TD1, TD2.
+
+  The FAULT1 input is enabled on PA12 (active low) to demonstrate PWM shut down
+  (low level sensitive), for all outputs.
+  When the fault is triggered (PA12 input connected to GND),
+  TA2, TB1, TC2, TD1, TD2 (resp. PA9, PA10, PB13, PB14 and PB15) signals
+  are shut-down. The system can be re-armed by pressing the user button.
+
+  The ADC is configured to have conversions triggered in the middle of the
+  converter ON time of each of 5 phases, on PA2 input, for this example
+  (usually a sequence of 5 conversion on 5 inputs).
+
+  The demo starts in 5-phase mode.
+  If the push-button is pressed, the demo mode changes so that all phase shedding
+  options are scanned: from 5 to 1-phase, and finally burst mode.
+
+  LEDs are indicating the following:
+  Green LED5 blinking: 5-phase operation
+  Blue LED6 blinking: 4-phase operation
+  Green LED5 continuous: 3-phase operation
+  Blue LED6 continuous: 2-phase operation
+  Both Blue and Green LEDs continuous: 1-phase operation
+  Both Blue and Green LEDs blinking: Burst mode operation
+  Red LED3: blinks when FAULT is triggered
+  Orange LED4: indicates the occurrence and duration of the PWM update ISR.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - HRTIM/HRTIM_Multiphase/Inc/stm32f3xx_hal_conf.h    HAL configuration file
+  - HRTIM/HRTIM_Multiphase/Inc/stm32f3xx_it.h          PPP interrupt handlers header file
+  - HRTIM/HRTIM_Multiphase/Inc/main.h                  Header for main.c module
+  - HRTIM/HRTIM_Multiphase/Src/stm32f3xx_it.c          PPP interrupt handlers
+  - HRTIM/HRTIM_Multiphase/Src/main.c                  Main program
+  - HRTIM/HRTIM_Multiphase/Src/stm32f3xx_hal_msp.c     HAL MSP file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F334x4/STM32F334x6/STM32F334x8 devices.
+
+  - This example has been tested with STM32F3348-DISCO
+    board and can be easily tailored to any other supported device and development board.
+
+  - STM32F3348-DISCO Set-up: PA12 must be briefly tied to ground to simulate a fault event
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>HRTIM</b>
+HRTIM_Snippets
+=====================================================================================
+
+<u>Example Description</u>
+
+  This example describes how to generate basic PWM waveforms with the HRTIM,
+  using HRTIM Cookbook basic examples.
+
+  5 basic examples are provided. Its is necessary to uncomment one of the
+  following 5 #define statement at the beginning of the main.c module:
+
+  #define HRTIM_CHECK: basic HRTIM outputs check
+  #define SINGLE_PWM: elementary PWM generation
+  #define MULTIPLE_PWM: PWM on multiple outputs
+  #define PWM_MASTER: PWM generation with timers other than the timing unit itself
+  #define ARBITRARY_WAVEFORM: non-PWM waveform example
+
+  The PWM and waveforms are generated on the TD1 and TD2 outputs
+  (resp. PB14 and PB15) and TA1 and TA2 outputs (resp. PA8 and PA9), depending
+  on example.
+
+  Green LED: blinks during normal operation
+  Red LED: blinks when the ERROR handler is entered
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - HRTIM/HRTIM_DualBuck/Inc/stm32f3xx_hal_conf.h    HAL configuration file
+  - HRTIM/HRTIM_DualBuck/Inc/stm32f3xx_it.h          PPP interrupt handlers header file
+  - HRTIM/HRTIM_DualBuck/Inc/main.h                  Header for main.c module
+  - HRTIM/HRTIM_DualBuck/Src/stm32f3xx_it.c          PPP interrupt handlers
+  - HRTIM/HRTIM_DualBuck/Src/main.c                  Main program
+  - HRTIM/HRTIM_DualBuck/Src/stm32f3xx_hal_msp.c     HAL MSP file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F334x4/STM32F334x6/STM32F334x8 devices.
+
+  - This example has been tested with STM32F3348-DISCO
+    board and can be easily tailored to any other supported device and development board.
+
+  - STM32F3348-DISCO Set-up: PA12 must be briefly tied to ground to simulate a fault event
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>HRTIM</b>
+HRTIM_TM_PFC
+=====================================================================================
+
+<u>Example Description</u>
+
+  This example shows how to configure the HRTIM to control a transition mode PFC.
+
+  This is done with the TD1 output (PB14).
+  The TD1 control signal has a constant Ton time and variable frequency.
+
+  To exercice fully the demo, it is necessary to simulate the feedback signals:
+  - Over-current signal ("OC", on EEV3/PB7)
+  - Zero-crossing detection signal ("ZCD", on EEV4/PB6)
+
+  The OC signal is filtered so has to have a minimum ON time guaranteed and
+  filter-out noise occuring at the Turn on time.
+  The ZCD signal is conditioned so as to have:
+  - a maximum operating frequency in case of too frequent ZCD information
+  - a timeout in case no ZCD is present
+
+  The various operating modes can be tested with function generator:
+  - if the OC signal is generated during the Ton time, the pulse will be shortened
+  - the ZCD signal is resetting the timer counter and will cause the switching
+  frequency to be changed accordingly.
+
+  The FAULT1 input is enabled on PA12 (active low) to demonstrate PWM shut down
+  (low level sensitive).
+  When the fault is triggered (PA12 input connected to GND, TD1 signal only is
+  stopped. The system can be re-armed by pressing the user button.
+
+  LEDs are indicating the following:
+  Green LED: blinks during normal operation
+  Orange LED: blinks when FAULT is triggered
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - HRTIM/HRTIM_TM_PFC/Inc/stm32f3xx_hal_conf.h    HAL configuration file
+  - HRTIM/HRTIM_TM_PFC/Inc/stm32f3xx_it.h          PPP interrupt handlers header file
+  - HRTIM/HRTIM_TM_PFC/Inc/main.h                  Header for main.c module
+  - HRTIM/HRTIM_TM_PFC/Src/stm32f3xx_it.c          PPP interrupt handlers
+  - HRTIM/HRTIM_TM_PFC/Src/main.c                  Main program
+  - HRTIM/HRTIM_TM_PFC/Src/stm32f3xx_hal_msp.c     HAL MSP file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F334x4/STM32F334x6/STM32F334x8 devices.
+
+  - This example has been tested with STM32F3348-DISCO
+    board and can be easily tailored to any other supported device and development board.
+
+  - STM32F3348-DISCO Set-up: PA12 must be briefly tied to ground to simulate a fault event
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF3GettingStarted.pdf">Getting started with STM32CubeF3 Embedded Software for STM32F3xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF3 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32F3348-Discovery Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

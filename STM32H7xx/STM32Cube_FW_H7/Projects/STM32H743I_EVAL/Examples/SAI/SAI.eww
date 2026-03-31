@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/SAI_AudioPlay/EWARM/SAI_AudioPlay.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/SAI_AudioPlayback/EWARM/SAI_AudioPlayback.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>SAI_AudioPlay</project>
+        <configuration>STM32H743I_EVAL</configuration>
+      </member>
+      <member>
+        <project>SAI_AudioPlayback</project>
+        <configuration>STM32H743I_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<infocenter_data version="1.0">
+  <iar_name>NVIC</iar_name>                                   									  <!--App-->
+  <iar_description>These examples show how to wake-up from WFI mode by DMA End of Transfer interrupt, how to configure the IRQ Channels,
+  how to use priority and nested interrupts and how to relocate the vector table.</iar_description><!--App short description-->
+  <iar_curdir>$CUR_DIR$</iar_curdir>
+</infocenter_data>

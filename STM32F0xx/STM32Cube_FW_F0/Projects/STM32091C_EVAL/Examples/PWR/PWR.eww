@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/PWR_STANDBY/EWARM/PWR_STANDBY.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/PWR_STOP/EWARM/PWR_STOP.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>PWR_STANDBY</project>
+        <configuration>STM32091C_EVAL</configuration>
+      </member>
+      <member>
+        <project>PWR_STOP</project>
+        <configuration>STM32091C_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

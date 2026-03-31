@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/I2C_TwoBoards/DataExchangeDMA/DataExchangeDMA.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/I2C_TwoBoards/DataExchangeInterrupt/DataExchangeInterrupt.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/I2C_EEPROM/I2C_EEPROM.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/I2C_TSENSOR/I2C_TSENSOR.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/I2C_TwoBoards/MasterReceiverInterrupt/MasterReceiverInterrupt.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/I2C_TwoBoards/MasterTransmitterInterrupt/MasterTransmitterInterrupt.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>I2C_TSENSOR</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>I2C_TSENSOR</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>I2C_EEPROM</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>I2C_EEPROM</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>DataExchangeDMA</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>DataExchangeDMA</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>DataExchangeInterrupt</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>DataExchangeInterrupt</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>MasterReceiverInterrupt</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>MasterReceiverInterrupt</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>MasterTransmitterInterrupt</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>MasterTransmitterInterrupt</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

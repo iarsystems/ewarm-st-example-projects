@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/SPDIFRX_Loopback/EWARM/SPDIFRX_Loopback.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>SPDIFRX_Loopback</project>
+        <configuration>STM32F769I_Discovery</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

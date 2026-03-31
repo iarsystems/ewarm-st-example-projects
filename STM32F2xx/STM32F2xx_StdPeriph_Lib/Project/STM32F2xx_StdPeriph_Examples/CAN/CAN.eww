@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/LoopBack/LoopBack.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/Networking/Networking.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>LoopBack</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+      <member>
+        <project>Networking</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

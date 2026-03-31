@@ -1,0 +1,475 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>ADC Workspace</h1>
+
+=====================================================================================
+<b>ADC_DMA_Transfer</b>
+ADC DMA Transfer example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to configure and use ADC to convert an external
+analog input (PA0) and get the result using a DMA transfer, through the
+STM32L0xx HAL API.
+
+The ADC is configured to convert continuously channel0, resolution is set to 12
+bit right alignment with a software start.
+In order to reduce power consumption, the low frequency mode is enabled since
+the ADC clock is PCLK clock (this mode can be enabled only if ADC clock is lower
+than 2.8MHz), combined with AutoWait feature (new conversion is started only
+when previous conversion is completed).
+
+DMA1-Channel1-Request0 is configured in Circular mode to transfer continuously
+the content of the ADC_DR (Data Register) to aResultDMA which handles the
+conversion result.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate
+      delay (in milliseconds) based on variable incremented in SysTick ISR. This
+      implies that if HAL_Delay() is called from a peripheral ISR process, then
+      the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - ADC/ADC_DMA_Transfer/Inc/stm32l0xx_hal_conf.h    HAL configuration file
+  - ADC/ADC_DMA_Transfer/Inc/stm32l0xx_it.h          Interrupt handlers header file
+  - ADC/ADC_DMA_Transfer/Inc/main.h                  Header for main.c module
+  - ADC/ADC_DMA_Transfer/Src/stm32l0xx_it.c          Interrupt handlers
+  - ADC/ADC_DMA_Transfer/Src/main.c                  Main program
+  - ADC/ADC_DMA_Transfer/Src/stm32l0xx_hal_msp.c     HAL MSP file
+  - ADC/ADC_DMA_Transfer/Src/system_stm32l0xx.c      STM32L0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32L051xx, STM32L052xx, STM32L053xx STM32L062xx and
+    STM32L063xx device lines RevZ
+
+  - This example has been tested with STM32L053R8-Nucleo RevC  board and can be
+    easily tailored to any other supported device and development board.
+
+  - Connect an external signal to PA.0 (A0 Arduino connector).
+  - To monitor the conversion result, put aResultDMA in the live watch.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>ADC_LowPower</b>
+ADC conversion example using related peripherals (GPIO, Timer),
+user control by push button and LED.
+=====================================================================================
+
+<u>Example Description</u>
+
+This example provides a short description of how to use the ADC peripheral to
+perform conversions with ADC low power modes: auto-wait and auto-power off.
+
+Other peripherals related to ADC are used:
+Mandatory:
+ - GPIO peripheral is used in analog mode to drive signal from device pin to
+   ADC input.
+Optionally:
+ - Timer peripheral is used to trig ADC conversions.
+
+ADC settings:
+  Trig of conversion start done by external event (timer at 1kHz).
+  Continuous mode disabled to have only 1 conversion at each conversion trig.
+ADC conversion results:
+ - ADC conversions results are transferred manually (by software), into variable
+   array "uhADCxConvertedValue".
+Board settings:
+ - ADC is configured to convert ADC_CHANNEL_4 (pin PA.04 (Arduino A2)).
+
+How to use this example:
+ADC overrun feature is used to watch the ADC low power modes effectiveness:
+ - If definition label "#define ADC_LOWPOWER" is commented, then ADC does not use
+   low power features.
+   Trigger events are occurring continuously (from timer trigger out), ADC performs
+   a conversion at each trigger event.
+   ADC conversion results are not fetch after each conversion, therefore some results
+   are overwritten and ADC overrun triggers.
+   =&gt; Press User push-button (fetch an ADC conversion result and refresh LED state),
+   then LED2 should turn on.
+
+ - If definition label "#define ADC_LOWPOWER" is uncommented, then ADC does use
+   low power features.
+   Trigger events are occurring continuously (from timer trigger out), but ADC does not
+   perform a conversion at each trigger event: after the first ADC conversion, ADC does
+   not start a new conversion until the previous conversion result has been fetched
+   (done by function "HAL_ADC_GetValue(&amp;AdcHandle)" into the example: this is ADC feature
+   "LowPowerAutoWait".
+   Moreover, ADC is powered off during this idle phase: this is ADC feature
+   "LowPowerAutoPowerOff".
+   When user press User push-button, ADC result is fetched and ADC is freed from idle phase:
+   a new conversion starts at the next trigger event.
+   ADC conversion results are never overwritten, ADC overrun does not trigger
+   =&gt; Press User push-button (fetch an ADC conversion result and refresh LED state),
+      then LED2 should remain turned off.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - ADC/ADC_LowPower/Inc/stm32l0xx_hal_conf.h    HAL configuration file
+  - ADC/ADC_LowPower/Inc/stm32l0xx_it.h          HAL interrupt handlers header file
+  - ADC/ADC_LowPower/Inc/main.h                  Header for main.c module
+  - ADC/ADC_LowPower/Src/stm32l0xx_it.c          HAL interrupt handlers
+  - ADC/ADC_LowPower/Src/main.c                  Main program
+  - ADC/ADC_LowPower/Src/stm32l0xx_hal_msp.c     HAL MSP file
+  - ADC/ADC_LowPower/Src/system_stm32l0xx.c      STM32L0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32L053xx devices.
+
+  - This example has been tested with STM32L053R8-Nucleo Rev C board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>ADC_OverSampler</b>
+ADC Over Sampler example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to configure and use ADC to convert an external
+analog input (PA0) combined with oversampling feature to increase resolution,
+through the STM32L0xx HAL API.
+
+The ADC is configured to convert continuously channel0, the oversampler is
+enabled in order to increase resolution. Oversampling ratio is set to 128x so
+the maximum output result is 0x7FF80 (19 bit), since the ADC_DR is a 16 bit
+register, 3 right bit shift is performed to keep only the 16 last significant
+bits by setting the RightBitShift to 3.
+
+uwConvertedValue variable handles the 16 bit conversion result and uwInputVoltage
+handles the input voltage.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate
+      delay (in milliseconds) based on variable incremented in SysTick ISR. This
+      implies that if HAL_Delay() is called from a peripheral ISR process, then
+      the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - ADC/ADC_OverSampler/Inc/stm32l0xx_hal_conf.h    HAL configuration file
+  - ADC/ADC_OverSampler/Inc/stm32l0xx_it.h          Interrupt handlers header file
+  - ADC/ADC_OverSampler/Inc/main.h                  Header for main.c module
+  - ADC/ADC_OverSampler/Src/stm32l0xx_it.c          Interrupt handlers
+  - ADC/ADC_OverSampler/Src/main.c                  Main program
+  - ADC/ADC_OverSampler/Src/stm32l0xx_hal_msp.c     HAL MSP module
+  - ADC/ADC_OverSampler/Src/system_stm32l0xx.c      STM32L0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32L051xx, STM32L052xx, STM32L053xx STM32L062xx and
+    STM32L063xx device lines RevZ
+
+  - This example has been tested with STM32L053R8-Nucleo RevC  board and can be
+    easily tailored to any other supported device and development board.
+
+  - Connect an external signal to PA.0 (A0 Arduino connector).
+  - To monitor the conversion results, put uwConvertedValue and uwInputVoltage
+    in the live watch.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>ADC_RegularConversion_Interrupt</b>
+Conversion using Interrupt
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to use the ADC1 and Interrupt to convert continuously
+data from ADC1 channel0., through the STM32L0xx HAL API.
+
+The ADC is configured to convert continuously channel0, resolution is set to 12
+bit right alignment with a software start.
+Each time an end of conversion occurs an interrupt is generated and the converted
+data of ADC1 DR register is affected to the uwADCxConvertedValue variable in the
+ADC conversion complete call back function.
+
+In order to reduce power consumption, the low frequency mode is enabled since
+the ADC clock is PCLK clock (this mode can be enabled only if ADC clock is lower
+than 2.8MHz), combined with AutoWait feature (new conversion is started only
+when previous conversion is completed).
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate
+      delay (in milliseconds) based on variable incremented in SysTick ISR. This
+      implies that if HAL_Delay() is called from a peripheral ISR process, then
+      the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - ADC/ADC_RegularConversion_Interrupt/Inc/stm32l0xx_hal_conf.h    HAL configuration file
+  - ADC/ADC_RegularConversion_Interrupt/Inc/stm32l0xx_it.h          Interrupt handlers header file
+  - ADC/ADC_RegularConversion_Interrupt/Inc/main.h                  Header for main.c module
+  - ADC/ADC_RegularConversion_Interrupt/Src/stm32l0xx_it.c          Interrupt handlers
+  - ADC/ADC_RegularConversion_Interrupt/Src/main.c                  Main program
+  - ADC/ADC_RegularConversion_Interrupt/Src/stm32l0xx_hal_msp.c     HAL MSP module
+  - ADC/ADC_RegularConversion_Interrupt/Src/system_stm32l0xx.c      STM32L0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32L051xx, STM32L052xx, STM32L053xx STM32L062xx and
+    STM32L063xx device lines RevZ
+
+  - This example has been tested with STM32L053R8-Nucleo RevC  board and can be
+    easily tailored to any other supported device and development board.
+
+  - Connect an external signal to PA.0 (A0 Arduino connector).
+  - To monitor the conversion result, put uwADCxConvertedValue in the live watch.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>ADC_RegularConversion_Polling</b>
+ADC Regular conversion Polling example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to use the ADC1 and the Polling mode to convert data from
+ADC1 channel0.
+
+When an end of conversion occurs the converted data of ADC1 DR register is
+affected to the uwADCxConvertedValue variable .
+
+Since ADC1 clock is PCLK (2 MHz) and sampling time is set to 7.5 cycles, the conversion
+time of 12bit data is 12.5 cycles so the total conversion time is (12.5+7.5)/2000000= 10us(0.1Msps).
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate
+      delay (in milliseconds) based on variable incremented in SysTick ISR. This
+      implies that if HAL_Delay() is called from a peripheral ISR process, then
+      the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - ADC/ADC_RegularConversion_Polling/Inc/stm32l0xx_hal_conf.h    HAL configuration file
+  - ADC/ADC_RegularConversion_Polling/Inc/stm32l0xx_it.h          Interrupt handlers header file
+  - ADC/ADC_RegularConversion_Polling/Inc/main.h                  Header for main.c module
+  - ADC/ADC_RegularConversion_Polling/Src/stm32l0xx_it.c          Interrupt handlers
+  - ADC/ADC_RegularConversion_Polling/Src/main.c                  Main program
+  - ADC/ADC_RegularConversion_Polling/Src/stm32l0xx_hal_msp.c     HAL MSP module
+  - ADC/ADC_RegularConversion_Polling/Src/system_stm32l0xx.c      STM32L0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32L051xx, STM32L052xx, STM32L053xx STM32L062xx and
+    STM32L063xx device lines RevZ
+
+  - This example has been tested with STM32L053R8-Nucleo RevC  board and can be
+    easily tailored to any other supported device and development board.
+
+  - Connect an external signal to PA.0 (A0 Arduino connector).
+  - To monitor the conversion result, put uwADCxConvertedValue in the live watch.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>ADC_Sequencer</b>
+ADC example using ADC peripheral with sequencer to convert several channels
+=====================================================================================
+
+<u>Example Description</u>
+
+This example provides a short description of how to use the ADC peripheral
+with sequencer to convert several channels.
+Channels converted are, in order, one external channel and two internal channels
+(VrefInt and temperature sensor).
+
+WAVEFORM_VOLTAGE_GENERATION_FOR_TEST compilation switch (located in main.h) is
+available to generate a waveform voltage for the test :
+ - "WAVEFORM_VOLTAGE_GENERATION_FOR_TEST" defined: waveform voltage for test is generated
+   on DAC_CHANNEL_1 (output pin PA.04) by DAC peripheral.
+   If ADC channel and DAC channel are selected on the same GPIO (default configuration
+   in this example):
+   connection is done internally in GPIO pad, user has nothing to connect.
+   If ADC channel and DAC channel are selected on two different GPIO:
+   user has just to connect a wire between DAC channel output and ADC input to run this example.
+ - "WAVEFORM_VOLTAGE_GENERATION_FOR_TEST" not defined: no voltage is generated, user has
+   to connect a voltage source to the selected ADC channel input to run this example
+
+Other peripherals related to ADC are used:
+Mandatory:
+ - GPIO peripheral is used in analog mode to drive signal from device pin to
+   ADC input.
+Optionally:
+ - DMA peripheral is used to transfer ADC converted data.
+
+ADC settings:
+  Sequencer is enabled and set to convert 3 ranks (3 channels) in discontinuous
+  mode, one by one, each conversion being software-triggered.
+
+ADC conversion results:
+ - ADC conversions results are transferred automatically by DMA, into variable
+   array "aADCxConvertedValues".
+ - Each entry of this array contains one of the converted data of the ADC sequencer three ranks.
+ - When DMA transfer half-buffer and buffer lengths are reached, callbacks
+   HAL_ADC_ConvHalfCpltCallback() and HAL_ADC_ConvCpltCallback() are called.
+ - When the ADC sequence is complete (the three ADC conversions are carried out),
+   the voltages and temperature are computed and stored in variables:
+   uhADCChannelToDAC_mVolt, uhVrefInt_mVolt, wTemperature_DegreeCelsius.
+
+Board settings:
+ - ADC rank 1 is configured to convert ADC_CHANNEL_4 (pin PA.04).
+ - There are 2 posibilities:
+   1 - If compilation switch "WAVEFORM_VOLTAGE_GENERATION_FOR_TEST" is defined:
+     - The voltage input on ADC channel is provided from DAC channel.
+     ADC and DAC channel have been chosen to have the same pad shared at device level: pin PA.04.
+     ==&gt; Therefore, there is no external connection needed to run this example.
+     - Voltage is increasing at each click on user button, from 0 to maximum range in 4 steps.
+       Clicks on user button follow circular cycles: At clicks counter maximum value reached, counter is set back to 0.
+   2 - If compilation switch "WAVEFORM_VOLTAGE_GENERATION_FOR_TEST" is NOT defined:
+     - The input voltage of ADC rank 1 channel must be provided by an external source connected to pin PA.04
+     (Arduino connector CN8 pin A2, Morpho connector CN7 pin 32).
+
+  Channels on sequencer ranks 2 and 3 are ADC internal channels: no external connection is required.
+
+  To observe voltage level applied on ADC channel through GPIO, connect a voltmeter on
+  pin PA.04 (Arduino connector CN8 pin A2, Morpho connector CN7 pin 32).
+
+STM32L053R8-Nucleo Rev C board's LED is be used to monitor the program execution status:
+ - Normal operation: LED2 is turned-on/off with respect to ADC conversion results.
+    - Turned-off if sequencer has not yet converted all ranks
+    - Turned-on if sequencer has converted all ranks
+ - Error: In case of error, LED2 is toggling at a frequency of 1Hz.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - ADC/ADC_Sequencer/Inc/stm32l0xx_hal_conf.h    HAL configuration file
+  - ADC/ADC_Sequencer/Inc/stm32l0xx_it.h          DMA interrupt handlers header file
+  - ADC/ADC_Sequencer/Inc/main.h                  Header for main.c module
+  - ADC/ADC_Sequencer/Src/stm32l0xx_it.c          DMA interrupt handlers
+  - ADC/ADC_Sequencer/Src/main.c                  Main program
+  - ADC/ADC_Sequencer/Src/stm32l0xx_hal_msp.c     HAL MSP file
+  - ADC/ADC_Sequencer/Src/system_stm32l0xx.c      STM32L0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32L05xx and STM32L06xx devices.
+
+  - This example has been tested with STM32L053R8-Nucleo Rev C board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeL0GettingStarted.pdf">Getting started with STM32CubeL0 Embedded Software for STM32L0xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeL0 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32L053R8-Nucleo Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

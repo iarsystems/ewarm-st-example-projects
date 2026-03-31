@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/UART_Hyperterminal_DMA/EWARM/UART_Hyperterminal_DMA.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/UART_Hyperterminal_IT/EWARM/UART_Hyperterminal_IT.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/UART_Printf/EWARM/UART_Printf.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>UART_Hyperterminal_DMA</project>
+        <configuration>STM324xG_EVAL</configuration>
+      </member>
+      <member>
+        <project>UART_Hyperterminal_IT</project>
+        <configuration>STM324xG_EVAL</configuration>
+      </member>
+      <member>
+        <project>UART_Printf</project>
+        <configuration>STM324xG_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

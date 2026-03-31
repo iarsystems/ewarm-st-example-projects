@@ -1,0 +1,295 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.JPN.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>FIREWALL Workspace</h1>
+
+=====================================================================================
+<b>FIREWALL_VolatileData_Executable</b>
+FIREWALL executable volatile data protection example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to use the Firewall IP to protect a volatile data segment
+located in SRAM and to define it as executable.
+
+In the example Firewall initialization, the protected volatile data segment is
+defined as non-shared so that it can't be accessed by non protected code when
+the Firewall is closed.
+
+The Firewall-protected memory segment is split in two sub segments ("a" region
+and "b" region) defined as follows by the linker file
+
+  |___________________________|
+  |                           |   0x20004FFF
+  |                           |
+  |            RAM            |
+  |                           |
+  |___________________________|   0x20003000
+  |                           |   0x20002FFF
+  |   Volatile data segment   |
+  |        "b" region         |
+  |           (data)          |
+  |___________________________|  0x20002E00
+  |                           |  0x20002DFF
+  |   Volatile data segment   |
+  |        "a" region         |
+  |          (code)           |
+  |___________________________|  0x20002104
+  |___________________________|
+  |                           |  0x20001FFF
+  |                           |
+  |            ROM            |
+  |                           |
+  |___________________________|  0x20000000
+  |                           |
+
+ The example unrolls as follows.
+
+ The Firewall is first configured such that the volatile data segment is defined
+ as executable.
+ Protected code (that could be the user application code) located in protected
+ volatile data segment (in "a" region) is executed twice and it is verified that
+ its processing returns the expected output each time.
+
+ Two different ways to invoke the protected executable data are shown in the
+ example, as well as the FPA bit reset when the Firewall is closed to avoid
+ any unwanted access to the protected area.
+
+ If the code unrolls as expected, LED1 is turned on.
+ If an error occurs (unexpected Firewall reset or any other unexpected
+ result), LED1 blinks in transmiting a sequence of three dots, three dashes, three dots.
+
+ The Firewall software reset leads to resort to RTC back-up registers
+ to keep track of the code unrolling. The latter are not related to Firewall
+ feature but their usage is shown for possible debugging purposes.
+
+ The table below lists them and provides their meaning.
+
+ reg.\value   |       0       |             1             |        2
+ ------------------------------------------------------------------------------
+ RTC-&gt;BKP4R   |  Example very |  main() has been started  |        N/A
+              |  first start  |    at least one time      |
+ -----------------------------------------------------------------------------
+ RTC-&gt;BKP0R   | Initial value |     Unexpected Firewall   | Uncorrect protected
+              |               |           reset           | function first run
+ -----------------------------------------------------------------------------
+ RTC-&gt;BKP1R   | Initial value | Unexpected software reset | Uncorrect protected
+              |               | (not Firewall-triggered)  | function second run
+ -----------------------------------------------------------------------------
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate
+      delay (in milliseconds) based on variable incremented in SysTick ISR. This
+      implies that if HAL_Delay() is called from a peripheral ISR process, then
+      the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - FIREWALL/FIREWALL_VolatileData_Executable/Inc/stm32l0xx_conf.h         HAL Configuration file
+  - FIREWALL/FIREWALL_VolatileData_Executable/Inc/stm32l0xx_it.h           Header for stm32l0xx_it.c
+  - FIREWALL/FIREWALL_VolatileData_Executable/Inc/main.h                   Header file for main.c
+  - FIREWALL/FIREWALL_VolatileData_Executable/Inc/protected_vdata_code.h   Header file for protected_vdata_code.c
+  - FIREWALL/FIREWALL_VolatileData_Executable/Src/system_stm32l0xx.c       STM32L0xx system clock configuration file
+  - FIREWALL/FIREWALL_VolatileData_Executable/Src/stm32l0xx_it.c           Interrupt handlers
+  - FIREWALL/FIREWALL_VolatileData_Executable/Src/main.c                   Main program
+  - FIREWALL/FIREWALL_VolatileData_Executable/Src/protected_vdata_code.c         Code to be located in protected volatile data segment
+  - FIREWALL/FIREWALL_VolatileData_Executable/Src/protected_volatile_data.c       Data to be located in protected volatile data segment
+  - FIREWALL/FIREWALL_VolatileData_Executable/EWARM/stm32l073xx_sram.icf   linker file for proper placing in memory
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32L073xx devices
+
+  - This example has been tested with STMicroelectronics STM32L073Z-EVAL
+    evaluation board and can be easily tailored to any other supported device
+    and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>FIREWALL_VolatileData_Shared</b>
+FIREWALL Volatile Data sharing example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to use the Firewall IP to protect a code segment as well
+as volatile and non-volatile data segments.
+Volatile data segment is located in SRAM.
+Non-volatile data segment is located in FLASH.
+
+In the example Firewall initialization, the protected volatile data segment is
+first defined as shared so that it can be accessed by non protected code.
+
+For Firewall demonstration's sake, two Firewall sofware resets are purposedly
+triggered.
+- the first one in accessing the protected non-volatile data segment
+- the second one in accessing the protected volatile data segment once
+the sharing feature has been disabled.
+
+The Firewall-protected memory segments are defined as follows
+
+  |                           |
+  |                           |
+  |___________________________|  0x2000023F
+  |                           |
+  |   Volatile data segment   |
+  |___________________________|  0x20000000
+  |                           |
+  |                           |
+  |                           |
+  |___________________________| 0x080050FF
+  |                           |
+  | Non-volatile data segment |
+  |___________________________| 0x08005000
+  |                           |
+  |___________________________| 0x080041FF
+  |                           |
+  |       Code segment        |
+  |___________________________| 0x08004000
+  |                           |
+
+ The example unrolls as follows.
+
+ The main() function starts its first run.
+ The Firewall is configured such that the volatile data segment is shared
+ with non protected code.
+ Protected code (that could be the user application code) is executed and it is verified that
+ - the array located in the volatile data segment is updated as expected
+ - no Firewall reset occurs when unprotected code segment accesses the array.
+
+ Next, while the Firewall is closed, a Firewall reset is purposedly triggered
+ in accessing an array located in the protected non-volatile data segment.
+
+ This leads to a software reset and a second main() run.
+ The second run is similar to the first one, the firewall is configured the
+ same way but this time, the protected code when called disables the volatile
+ data sharing feature.
+
+ A second Firewall reset is purposedly triggered in accessing the no more
+ shared array located in the protected volatile data segment.
+
+ If the code unrolls as expected, LED1 is turned on.
+ If an error occurs (unexpected Firewall reset or any other unexpected
+ result), LED1 blinks in transmiting a sequence of three dots, three dashes, three dots.
+
+ The Firewall-triggered software resets lead to resort to RTC back-up registers
+ to keep track of the code unrolling. The latter are not related to Firewall
+ feature but their usage is shown for possible debugging purposes.
+
+ The table below lists them and provides their meaning.
+
+ register\value |        0         |               1              |     2
+ ------------------------------------------------------------------------------
+ RTC-&gt;BKP4R     |   Example very   |      main() first run        |    main()
+                |   first start    |                              |  second run
+ ------------------------------------------------------------------------------
+ RTC-&gt;BKP0R     |  Initial value   |   Access to protected        |   VDS has
+                |                  |   volatile data segment      |    been
+                |                  |   successful when VDS=1      |    reset
+ ------------------------------------------------------------------------------
+ RTC-&gt;BKP1R     |  Initial value   |  Unexpected Firewall reset   |    N/A
+ ------------------------------------------------------------------------------
+ RTC-&gt;BKP2R     |  Initial value   | No Firewall reset occured    |    N/A
+                |                  | when protected non-volatile  |
+                |                  | data were accessed,          |
+                |                  | although reset was expected  |
+ ------------------------------------------------------------------------------
+ RTC-&gt;BKP3R     |  Initial value   | No Firewall reset occured    |    N/A
+                |                  | when protected volatile      |
+                |                  | data were accessed, although |
+                |                  | reset was expected           |
+ ------------------------------------------------------------------------------
+
+ When the software detects a Firewall reset with RTC-&gt;BKP0R = 2, it infers
+ that the code properly behaved, ending up by an expected Firewall software
+ reset due to unauthorized access to protected volatile data while the
+ Firewall was closed.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate
+      delay (in milliseconds) based on variable incremented in SysTick ISR. This
+      implies that if HAL_Delay() is called from a peripheral ISR process, then
+      the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - FIREWALL/FIREWALL_VolatileData_Shared/Inc/stm32l0xx_conf.h         HAL Configuration file
+  - FIREWALL/FIREWALL_VolatileData_Shared/Inc/stm32l0xx_it.h           Header for stm32l0xx_it.c
+  - FIREWALL/FIREWALL_VolatileData_Shared/Inc/main.h                   Header file for main.c
+  - FIREWALL/FIREWALL_VolatileData_Shared/Inc/protected_code.h         Header file for protected_code.c
+  - FIREWALL/FIREWALL_VolatileData_Shared/Src/system_stm32l0xx.c       STM32L0xx system clock configuration file
+  - FIREWALL/FIREWALL_VolatileData_Shared/Src/stm32l0xx_it.c           Interrupt handlers
+  - FIREWALL/FIREWALL_VolatileData_Shared/Src/main.c                   Main program
+  - FIREWALL/FIREWALL_VolatileData_Shared/Src/protected_code.c         Code to be located in protected code segment
+  - FIREWALL/FIREWALL_VolatileData_Shared/Src/proprotected_nonvolatile_data.c Data to be located in protected non-volatile data segment
+  - FIREWALL/FIREWALL_VolatileData_Shared/Src/protected_volatile_data.c       Data to be located in protected volatile data segment
+  - FIREWALL/FIREWALL_VolatileData_Shared/EWARM/stm32l073xx_flash.icf linker file for proper placing in memory
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32L073xx devices
+
+  - This example has been tested with STMicroelectronics STM32L073Z-EVAL
+    evaluation board and can be easily tailored to any other supported device
+    and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeL0GettingStarted.pdf">Getting started with STM32CubeL0 Embedded Software for STM32L0xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeL0 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32L073Z-EVAL Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

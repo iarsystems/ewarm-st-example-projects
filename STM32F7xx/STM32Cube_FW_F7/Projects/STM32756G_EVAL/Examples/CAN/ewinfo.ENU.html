@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>CAN Workspace</h1>
+
+=====================================================================================
+<b>CAN_LoopBack</b>
+CAN LoopBack example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example provides a description of how to set a communication with the CAN
+in loopback mode.
+
+The CAN cell first performs a transmission and a reception of a standard data
+frame by polling at 175 Kbps. The received frame is checked and some LEDs light
+up to indicate whether the communication was successful.
+
+STM32 Eval board's LEDs can be used to monitor the transfer status:
+ - LED1 is ON when the transfer is complete.
+ - LED3 is Toggle when there is a transfer error occurred.
+ - LED3 is ON when there is an initialization error occurred.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Keywords</u>
+
+Connectivity, CAN, Communication, Transmission, Reception, Polling,
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - CAN/CAN_LoopBack/Inc/stm32f7xx_hal_conf.h    HAL configuration file
+  - CAN/CAN_LoopBack/Inc/main.h                  Header for main.c module
+  - CAN/CAN_LoopBack/Inc/stm32f7xx_it.h          Interrupt handlers header file
+  - CAN/CAN_LoopBack/Src/main.c                  Main program
+  - CAN/CAN_LoopBack/Src/stm32f7xx_msp.c         HAL MSP module
+  - CAN/CAN_LoopBack/Src/stm32f7xx_it.c          Interrupt handlers
+  - CAN/CAN_LoopBack/Src/system_stm32f7xx.c      STM32F7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F756xx/STM32F746xx devices.
+
+  - This example has been tested with STM327x6G-EVAL board revB and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>CAN_Networking</b>
+CAN Networking example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to configure the CAN peripheral to send and receive
+CAN frames in normal mode. The sent frames are used to control Leds by pressing
+Tamper push-button.
+
+The CAN serial communication link is a bus to which a number of units may be
+connected. This number has no theoretical limit. Practically the total number
+of units will be limited by delay times and/or electrical loads on the bus line.
+
+This program behaves as follows:
+  - After reset, all Leds are OFF on the N eval boards
+  - By Pressing on Tamper push-button : LED1 turns ON and all other Leds are OFF, on the N
+    eval boards connected to the bus.
+  - Press on Tamper push-button again to send CAN Frame to command LEDn+1 ON, all other Leds
+    are OFF on the N eval boards.
+
+Note: This example is tested with a bus of 3 units. The same program example is
+      loaded in all units to send and receive frames.
+Note: Any unit in the CAN bus may play the role of sender (by pressing Tamper push-button)
+      or receiver.
+
+  The CAN is configured as follows:
+    - Bit Rate   = 1 Mbit/s
+    - CAN Clock  = external clock (HSE)
+    - ID Filter  = All identifiers are allowed
+    - RTR = Data
+    - DLC = 1 byte
+    - Data: Led number that should be turned ON
+
+
+<u>Keywords</u>
+
+Connectivity, CAN, Communication, Transmission, Reception, Polling, Networking, Send, Receive,
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - CAN/CAN_Networking/Inc/stm32f7xx_hal_conf.h    HAL configuration file
+  - CAN/CAN_Networking/Inc/stm32f7xx_it.h          DMA interrupt handlers header file
+  - CAN/CAN_Networking/Inc/main.h                  Header for main.c module
+  - CAN/CAN_Networking/Src/stm32f7xx_it.c          DMA interrupt handlers
+  - CAN/CAN_Networking/Src/main.c                  Main program
+  - CAN/CAN_Networking/Src/stm32f7xx_hal_msp.c     HAL MSP file
+  - CAN/CAN_Networking/Src/system_stm32f7xx.c      STM32F7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F756xx/STM32F746xx devices.
+  - This example has been tested with STM327x6G-EVAL board revB and can be
+    easily tailored to any other supported device and development board.
+
+  - STM327x6G-EVAL Set-up
+    - Use LED1, LED2, LED3 and LED4
+    - Use Tamper push-button connected to PC.13
+    - Connect a male/male CAN cable between at least 2 EVAL CAN connectors (CN22)
+    - You have to configure the jumpers as follows:
+
+       +-------------------------------+
+       |   Jumper    |       CAN1      |
+       +-------------------------------+
+       |   JP8       |      fitted     |
+       |   JP11      |       1-2       |
+       |   JP12      |      fitted     |
+       +-------------------------------+
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following:
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF7GettingStarted.pdf">Getting started with STM32CubeF7 Embedded Software for STM32F7xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF7 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM327x6G-EVAL Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

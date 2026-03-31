@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.JPN.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+uIP Webserver Demo
+
+DESCRIPTION
+===========
+   This example project shows how to use the IAR Embedded Workbench
+  for ARM to develop code for the IAR-STM32F107VC-SK board. It is an
+  embedded Web Server based on uIP TCP/IP stack v0.9 and features
+  three HTML pages that form a compact and interactive Web Server to
+  interact with IAR-STM32F107VC-SK board.
+   You will be able to address the IAR-STM32F107VC-SK board as a web
+  page using your web browser, as well as controlling the four LEDs on
+  the board through the browser and finally you will be able to get
+  continuously, each 1 second, the ADC Channel 10 converted value displayed
+  on a status bar also in the web page of your browser.
+
+  How to Connect to the uIP Web Server Demo Application on
+  an STM32F107VC-SK Starter Kit
+    1.Upload and start the application in the normal way from within EWARM.
+    2.Unplug the Ethernet cable from your PC. Connect the the PC via an
+      Ethernet cable to the Ethernet port of the evaluation board instead.
+      The USB connection to the evaluation board must be left in place - so
+      that you end up with both an Ethernet and a USB connection to
+      the evaluation board.
+    3.Click on the network icon in the system tray to open the Network
+      and Sharing Center. Wait until the connection is shown as
+      an "Unidentified network", then click on "Local Area Connection."
+    4.Click on "Properties", then click on "Internet Protocol Version 4
+      (TCP/IPv4)", then click on "Properties."
+    5.Select "Use the following IP address:" and specify 192.168.0.16
+      as IP address  and 255.255.255.0 as subnet mask. Leave everything
+      else blank. Click on "OK."
+    6.In the properties window, click on "Close."
+    7.In the Local Area Connection Status window, click on "Close."
+    8.Direct your browser to the URL, http://192.168.0.8. Please note
+      that this is not the same IP adress as the one you specified, as
+      there appears an entry of 8 instead of one of 16 at the fourth
+      position.
+    9.Don't forget to revert all settings once you want to reconnect
+      to the Internet.
+
+COMPATIBILITY
+=============
+   The example project is compatible with IAR-STM32F107VC-SK
+  evaluation board. By default, the project is configured to use the
+  J-Link JTAG/SWD interface.
+
+CONFIGURATION
+=============
+   Webserver demo application is downloaded to the microcontroller's
+  Embedded Flash memory and executed.
+
+   Make sure that the following jumpers are correctly configured on the
+  IAR-STM32F107VC-SK evaluation board:
+
+   Jumpers:
+    PWR_SEL - depending of power source
+    PWDW_D  - closed
+    JTAG_SEL  - open (on board j-link)
+    B0_1/B0_0 - B0_0
+    B1_1/B1_0 - B1_0
+
+GETTING STARTED
+===============
+  1) Build and download the example.
+
+  2) Run the example.
+
+   </pre>
+
+  </div>
+  </body>
+</html>
+
+
+
+
+
+

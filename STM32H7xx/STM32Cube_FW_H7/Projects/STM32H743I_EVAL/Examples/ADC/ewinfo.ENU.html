@@ -1,0 +1,811 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>ADC Workspace</h1>
+
+=====================================================================================
+<b>ADC_AnalogWatchdog</b>
+ADC conversion example with analog watchdog, using 
+related peripherals (GPIO, DMA, Timer), voltage input from DAC, user control
+by user button, LED, and optionally by potentiometer (RV1).
+=====================================================================================
+
+<u>Example Description</u>
+
+This example provides a short description of how to use the ADC peripheral to
+perform conversions with analog watchdog and out-of-window interruptions enabled.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+The SystemClock_Config() function is used to configure the system clock for STM32H743xx Devices :
+The CPU at 400MHz
+The HCLK for D1 Domain AXI and AHB3 peripherals , D2 Domain AHB1/AHB2 peripherals and D3 Domain AHB4  peripherals at 200MHz.
+The APB clock dividers for D1 Domain APB3 peripherals, D2 Domain APB1 and APB2 peripherals and D3 Domain APB4 peripherals to  run at 100MHz
+
+One compilation switch is available to select ADC configuration continuous mode
+and external trigger (located in main.h):
+ - "ADC_TRIGGER_FROM_TIMER" defined: ADC is operating in not continuous mode
+   and conversions are trigger by external trigger: timer.
+ - "ADC_TRIGGER_FROM_TIMER" not defined: ADC is operating in continuous mode
+   and first conversion is trigger by software trigger.
+
+One compilation switch is available to generate a waveform voltage
+for test (located in main.h):
+ - "WAVEFORM_VOLTAGE_GENERATION_FOR_TEST" defined: For this example purpose, generates a
+   waveform voltage on a spare DAC channel DAC_CHANNEL_1 (pin PA.04).
+   If ADC channel and DAC channel are selected on the same GPIO (default configuration
+   in this example):
+   connection is done internally in GPIO pad, user has nothing to connect.
+   If ADC channel and DAC channel are selected on two different GPIO:
+   user has just to connect a wire between DAC channel output and ADC input to run this example.
+ - "WAVEFORM_VOLTAGE_GENERATION_FOR_TEST" not defined: no voltage is generated, user has
+   to connect a voltage source to the selected ADC channel input to run this example.
+
+Other peripherals related to ADC are used:
+Mandatory:
+ - GPIO peripheral is used in analog mode to drive signal from device pin to
+   ADC input.
+Optionally:
+ - Timer peripheral is used to trigger ADC conversions.
+ - DMA peripheral is used to transfer ADC converted data.
+
+ADC settings:
+ - Regular group:
+   Conversions are triggered by external event (timer at 1kHz).
+ - Continuous mode is disabled (and sequencer disabled: only 1 channel selected) to yield only 1 conversion at each conversion trigger.
+ - Analog watchdog 1 is enabled, minimum and maximum thresholds are respectively set
+   to 1/8 and 5/8 of full range scale (between about 0.41V and 2.06V with full range of 3.3V).
+
+ADC conversion results:
+ - ADC regular conversions results are transferred automatically by DMA, into variable
+   array "aADCxConvertedValues".
+ - DMA and ADC are configured to operate continuously, in circular mode.
+   When DMA transfer half-buffer and full buffer lengths are reached, callbacks
+   HAL_ADC_ConvHalfCpltCallback() and HAL_ADC_ConvCpltCallback() are called.
+
+Board settings:
+ - ADC is configured to convert ADC_CHANNEL_18 (pin PA.04).
+Two ways are possible to feed analog data to the ADC channel.
+ 1°) The Eval Board potentiometer (RV1) is able to make the ADC_CHANNEL_18 voltage vary,
+ by connecting PA.0_c pin to PA04 pin .
+ Therefore, the user can turn the potentiometer then press the tamper button.
+Pressing the tamper button leads to a software check that verifies whether or not
+a converted data is out of the analog watchdog 1 range. If this the case, LED1
+is turned on, otherwise, if the converted data at the time of the button press
+is not out-of-range, LED1 is turned off.
+
+ 2°) Alternatively, the user can connect the Eval Board ADC1 ADC_CHANNEL_18 PA.04 pin
+ to the DAC1 output PA.04 pin.
+ The voltage at the input of the ADC is increased in successive steps (up to 4 steps)
+  at each click on the tamper button.
+  When the voltage has reached its maximum value, the voltage restarts from its minimum value for a new steps cycle.
+  Again, at each tamper button key press, the converted data is compared to the analog watchdog thresholds
+ and LED1 is turned on if a data is out-of-range.
+
+To observe voltage level applied on ADC channel through GPIO, connect a voltmeter on
+pin PA.04 (connector CN6 pin 19).
+
+STM32H743I-EVAL board LEDs are used to monitor the program execution status:
+ - Normal operation: LED1 is turned-on/off with respect to ADC conversion
+   result.
+    - Turned-off if voltage is within AWD window
+    - Turned-on if voltage is out of AWD window
+ - Error: In case of error, LED3 is toggling at a frequency of 1Hz.
+
+Note: LED3 is ON during test because it is connected to PA4 (DAC channel1).
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - ADC/ADC_AnalogWatchdog/Inc/stm32h7xx_hal_conf.h    HAL configuration file
+  - ADC/ADC_AnalogWatchdog/Inc/stm32h7xx_it.h          HAL interrupt handlers header file
+  - ADC/ADC_AnalogWatchdog/Inc/main.h                  Header for main.c module
+  - ADC/ADC_AnalogWatchdog/Src/stm32h7xx_it.c          HAL interrupt handlers
+  - ADC/ADC_AnalogWatchdog/Src/main.c                  Main program
+  - ADC/ADC_AnalogWatchdog/Src/stm32h7xx_hal_msp.c     HAL MSP file
+  - ADC/ADC_AnalogWatchdog/Src/system_stm32h7xx.c      STM32H7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32H743xx devices.
+
+  - This example has been tested with STM32H743I-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>ADC_DAC_Interconnect</b>
+ADC DAC Interconnect example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to configure and connect DAC output to ADC input and use
+the analog watchdog to monitor signal behavior.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+The SystemClock_Config() function is used to configure the system clock for STM32H743xx Devices :
+The CPU at 400MHz
+The HCLK for D1 Domain AXI and AHB3 peripherals , D2 Domain AHB1/AHB2 peripherals and D3 Domain AHB4  peripherals at 200MHz.
+The APB clock dividers for D1 Domain APB3 peripherals, D2 Domain APB1 and APB2 peripherals and D3 Domain APB4 peripherals to  run at 100MHz
+
+The ADC is configured to convert continuously ADC_CHANNEL_DAC1CH1_ADC2 connected
+to DAC1 on chip output.
+
+DAC1 is configured to generate a triangular wave at ~ 1.5 Hz (300mV to 1.9V).
+
+2 Analog watchdog are set on high range (1V~3.3V) and low range (0~1V)
+
+LED1 is ON when the voltage is out of high range.
+
+LED2 is ON when the voltage is out of low range.
+
+uwConvertedValue variable contains the 32-bit conversion result and
+uwInputVoltage yields the unsigned input voltage in mV.
+
+LED3 is ON and example is stopped(using infinite loop) when there is an error
+during process.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The example need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - ADC/ADC_DAC_Interconnect/Inc/stm32h7xx_hal_conf.h    HAL configuration file
+  - ADC/ADC_DAC_Interconnect/Inc/stm32h7xx_it.h          Interrupt handlers header file
+  - ADC/ADC_DAC_Interconnect/Inc/main.h                  Header for main.c module
+  - ADC/ADC_DAC_Interconnect/Src/stm32h7xx_it.c          Interrupt handlers
+  - ADC/ADC_DAC_Interconnect/Src/main.c                  Main program
+  - ADC/ADC_DAC_Interconnect/Src/stm32h7xx_hal_msp.c     HAL MSP file
+  - ADC/ADC_DAC_Interconnect/Src/system_stm32h7xx.c      STM32H7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32H743xx devices.
+
+  - This example has been tested with STM32H743I-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>ADC_DifferentialMode</b>
+ADC DifferentialMode example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to configure and use the ADC2 to convert an external
+analog input in Differential Mode, difference between external voltage on VinN and VinP.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+The SystemClock_Config() function is used to configure the system clock for STM32H743xx Devices :
+The CPU at 400MHz
+The HCLK for D1 Domain AXI and AHB3 peripherals , D2 Domain AHB1/AHB2 peripherals and D3 Domain AHB4  peripherals at 200MHz.
+The APB clock dividers for D1 Domain APB3 peripherals, D2 Domain APB1 and APB2 peripherals and D3 Domain APB4 peripherals to  run at 100MHz
+
+The ADC2 is configured to convert continuously ADC_CHANNEL_2 (VinP) connected to PF.13 (PIN 3 CN11)
+and its correspanding VinN connected to PF.14 (PIN 4 CN11).
+
+User can connect ADC_CHANNEL_2 pins (PF.13, PF.14) to external power supply  and vary voltage
+between -3V3 to 3V3.
+
+uwConvertedValue variable contains the 32-bit conversion result and
+swInputVoltage yields the signed input voltage in mV.
+
+LED3 is ON and example is stopped(using infinite loop) when there is an error
+during process.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The example need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - ADC/ADC_DifferentialMode/Inc/stm32h7xx_hal_conf.h    HAL configuration file
+  - ADC/ADC_DifferentialMode/Inc/stm32h7xx_it.h          Interrupt handlers header file
+  - ADC/ADC_DifferentialMode/Inc/main.h                  Header for main.c module
+  - ADC/ADC_DifferentialMode/Src/stm32h7xx_it.c          Interrupt handlers
+  - ADC/ADC_DifferentialMode/Src/main.c                  Main program
+  - ADC/ADC_DifferentialMode/Src/stm32h7xx_hal_msp.c     HAL MSP file
+  - ADC/ADC_DifferentialMode/Src/system_stm32h7xx.c      STM32H7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32H743xx devices.
+
+  - This example has been tested with STM32H743I-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>ADC_DMA_Transfer</b>
+ADC DMA Transfer example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to configure and use the ADC to convert an external
+analog input and get the result using a DMA transfer through the HAL API.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+The SystemClock_Config() function is used to configure the system clock for STM32H743xx Devices :
+The CPU at 400MHz
+The HCLK for D1 Domain AXI and AHB3 peripherals , D2 Domain AHB1/AHB2 peripherals and D3 Domain AHB4  peripherals at 200MHz.
+The APB clock dividers for D1 Domain APB3 peripherals, D2 Domain APB1 and APB2 peripherals and D3 Domain APB4 peripherals to  run at 100MHz
+
+The ADC is configured to convert continuously ADC_CHANNEL_0, resolution is set to 16
+bits right aligned, conversion is software-triggered.
+
+DMA1_Stream1 is configured in Circular mode to transfer continuously
+the content of ADC_DR (Data Register) to "aADCxConvertedData" variable which
+stores the conversion result.
+
+User may watch variable array "aADCxConvertedData" and check that its value is modified
+according to the voltage applied to PA.0_c, directly controlled by
+the Eval Board potentiometer (RV1).
+
+STM32 board LED can be used to monitor the conversion:
+  - LED3 is ON when there is an error in initialization.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The example need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - ADC/ADC_DMA_Transfer/Inc/stm32h7xx_hal_conf.h    HAL configuration file
+  - ADC/ADC_DMA_Transfer/Inc/stm32h7xx_it.h          HAL interrupt handlers header file
+  - ADC/ADC_DMA_Transfer/Inc/main.h                  Header for main.c module
+  - ADC/ADC_DMA_Transfer/Src/stm32h7xx_it.c          HAL interrupt handlers
+  - ADC/ADC_DMA_Transfer/Src/main.c                  Main program
+  - ADC/ADC_DMA_Transfer/Src/stm32h7xx_hal_msp.c     HAL MSP file
+  - ADC/ADC_DMA_Transfer/Src/system_stm32h7xx.c      STM32H7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32H743xx devices.
+
+  - This example has been tested with STM32H743I-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32H743I-EVAL Set-up
+    Use an external power supply and adjust supply voltage and connect it on PA.0_c (CN6 pin16)
+
+  - To monitor the conversion result, put the "aADCxConvertedData" variable in the debugger live watch.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>ADC_DualModeInterleaved</b>
+Two ADC in interleaved dual-mode, data transfer by DMA
+=====================================================================================
+
+<u>Example Description</u>
+
+This example provides a short description of how to use two ADC peripherals to
+perform conversions in interleaved dual-mode.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+The SystemClock_Config() function is used to configure the system clock for STM32H743xx Devices :
+The CPU at 400MHz
+The HCLK for D1 Domain AXI and AHB3 peripherals , D2 Domain AHB1/AHB2 peripherals and D3 Domain AHB4  peripherals at 200MHz.
+The APB clock dividers for D1 Domain APB3 peripherals, D2 Domain APB1 and APB2 peripherals and D3 Domain APB4 peripherals to  run at 100MHz
+
+A compilation switch is available to select ADC configuration continuous mode
+and external trigger (located in main.h):
+ - "ADC_TRIGGER_FROM_TIMER" defined: ADC is operating in not continuous mode
+   and conversions are triggered by external trigger: timer.
+ - "ADC_TRIGGER_FROM_TIMER" not defined: ADC is operating in continuous mode
+   and first conversion is triggered by software trigger.
+
+A compilation switch is available to generate a waveform voltage
+for test (located in main.h):
+ - "WAVEFORM_VOLTAGE_GENERATION_FOR_TEST" defined: For this example purpose, generates a
+   waveform voltage by DAC peripheral on a spare DAC channel: DAC_CHANNEL_1 on pin PA.04 (Morpho connector CN6 pin 19).
+   If ADC channel and DAC channel are selected on the same GPIO (default configuration
+   in this example):
+   connection is done internally in GPIO pad, user has nothing to connect.
+   If ADC channel and DAC channel are selected on two different GPIO:
+   user has just to connect a wire between DAC channel output and ADC input to run this example.
+   This voltage follows a 5-step curve, ADC sampling rate is set so that for a given
+   ADC, two conversions are carried out for one DAC output level.
+ - "WAVEFORM_VOLTAGE_GENERATION_FOR_TEST" not defined: no voltage is generated, user has
+   to connect a voltage source to the selected ADC channel input
+   or resort to the Eval Board potentiometer (RV1) connected to PA.0_c
+   in order to make the ADC_CHANNEL_18 voltage vary.
+
+Note: In this example, ADC sampling rate is not set as the highest possible (ADC parameters set for this purpose: resolution 16 bits, ... ).
+      ADC sampling rate can be increased by modifying resolution and sampling time, but this will decrease the conversion accuracy.
+
+Other peripherals related to ADC are used:
+Mandatory:
+ - GPIO peripheral is used in analog mode to drive signal from device pin to
+   ADC input.
+Optionally:
+ - Timer peripheral is used to trigger ADC conversions.
+ - DMA peripheral is used to transfer ADC converted data.
+   Both ADC are using the same DMA (DMA of ADC master). DMA is used as well by DAC in case of WAVEFORM_VOLTAGE_GENERATION_FOR_TEST enabled.
+
+ADC conversion results:
+ - ADC conversions results are transferred automatically by DMA, into variable
+   array "aADCDualConvertedValues".
+   ADC master and ADC slave results are concatenated in a common 32-bit data register:
+   - ADC master results in the 16 LSB [15:0] (with ADC resolution 16 bits, bits effectively used are [15:0])
+   - ADC slave results in the 16 MSB [31:16] (with ADC resolution 16 bits, bits effectively used are [31:16])
+
+ - DMA are configured to operate continuously, in circular mode.
+   Data is transferred by words every ADC1+ADC2 conversions.
+   When DMA transfer half-buffer and complete buffer length are reached, callbacks
+   HAL_ADC_ConvCpltCallback() and HAL_ADC_ConvCpltCallback() are called.
+
+ - In this example, dual conversion values are extracted from the common register and
+   stored into 2 arrays corresponding to each ADC conversion values
+   (aADCxConvertedValues, aADCyConvertedValues).
+
+Board settings:
+  ADC1 and ADC2 are configured to convert the same channel: ADC_CHANNEL_18 on pin PA.04 (Morpho connector CN6 pin 19).
+
+  If compilation switch "WAVEFORM_VOLTAGE_GENERATION_FOR_TEST" is defined, the voltage input on ADC channel comes
+  from the DAC channel. This means that, if they are different, ADC pin and DAC pin must be connected by a wire.
+
+STM32H743I-EVAL board LEDs are used to monitor the program execution status:
+ - Normal operation: LED1 is turned-on/off in function of ADC conversion
+   status:
+    - Turned-off if ADC conversions have just filled up half of the buffer (DMA half-transfer interrupt has been triggered)
+    - Turned-on if ADC conversions have filled up the complete buffer (DMA transfer complete interrupt has been triggered)
+   The buffer fill up carries on indefinitively.
+ - Error: In case of error, LED3 is toggling at a frequency of 1Hz.
+
+Note: LED3 is ON during test because it is connected to PA4 (DAC channel1).
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - ADC/ADC_DualModeInterleaved/Inc/stm32h7xx_hal_conf.h    HAL configuration file
+  - ADC/ADC_DualModeInterleaved/Inc/stm32h7xx_it.h          DMA interrupt handlers header file
+  - ADC/ADC_DualModeInterleaved/Inc/main.h                  Header for main.c module
+  - ADC/ADC_DualModeInterleaved/Src/stm32h7xx_it.c          DMA interrupt handlers
+  - ADC/ADC_DualModeInterleaved/Src/main.c                  Main program
+  - ADC/ADC_DualModeInterleaved/Src/stm32h7xx_hal_msp.c     HAL MSP file
+  - ADC/ADC_DualModeInterleaved/Src/system_stm32h7xx.c      stm32h7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32H743xx devices.
+
+  - This example has been tested with STM32H743I-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>ADC_DifferentialMode</b>
+ADC InternalChannelConversion example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to configure and use the ADC to retreive the system
+battery level.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+The SystemClock_Config() function is used to configure the system clock for STM32H743xx Devices :
+The CPU at 400MHz
+The HCLK for D1 Domain AXI and AHB3 peripherals , D2 Domain AHB1/AHB2 peripherals and D3 Domain AHB4  peripherals at 200MHz.
+The APB clock dividers for D1 Domain APB3 peripherals, D2 Domain APB1 and APB2 peripherals and D3 Domain APB4 peripherals to  run at 100MHz
+
+The ADC is configured to convert continuously from ADC_CHANNEL_VBAT_DIV4.
+
+User can check batery level but must ensure its fits in 0.9V to 3.6V as allowed
+range.
+
+uwConvertedValue variable contains the 32-bit conversion result and
+uwInputVoltage yields the unsigned input voltage in mV.
+
+LED3 is ON and example is stopped(using infinite loop) when there is an error
+during process.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The example need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - ADC/ADC_InternalChannelConversion/Inc/stm32h7xx_hal_conf.h    HAL configuration file
+  - ADC/ADC_InternalChannelConversion/Inc/stm32h7xx_it.h          Interrupt handlers header file
+  - ADC/ADC_InternalChannelConversion/Inc/main.h                  Header for main.c module
+  - ADC/ADC_InternalChannelConversion/Src/stm32h7xx_it.c          Interrupt handlers
+  - ADC/ADC_InternalChannelConversion/Src/main.c                  Main program
+  - ADC/ADC_InternalChannelConversion/Src/stm32h7xx_hal_msp.c     HAL MSP file
+  - ADC/ADC_InternalChannelConversion/Src/system_stm32h7xx.c      STM32H7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32H743xx devices.
+
+  - This example has been tested with STM32H743I-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>ADC_OverSampler</b>
+ADC OverSampler example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to configure and use the ADC to convert an external
+analog input combined with oversampling feature to increase resolution through the HAL API.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+The SystemClock_Config() function is used to configure the system clock for STM32H743xx Devices :
+The CPU at 400MHz
+The HCLK for D1 Domain AXI and AHB3 peripherals , D2 Domain AHB1/AHB2 peripherals and D3 Domain AHB4  peripherals at 200MHz.
+The APB clock dividers for D1 Domain APB3 peripherals, D2 Domain APB1 and APB2 peripherals and D3 Domain APB4 peripherals to  run at 100MHz
+
+The ADC is configured to convert continuously ADC_CHANNEL_0 connected to PA.0_c
+while the oversampler is enabled.
+Oversampling ratio is set to 1024 so the maximum output result
+is 0xFFFF * 1024 = 0x3FFFC00 (26 bits). Result is 6-bit right shift.
+
+uwConvertedValue variable contains the 20-bit conversion result and
+uwInputVoltage yields the input voltage in mV.
+
+User can vary the ADC_CHANNEL_0 voltage using the Eval Board potentiometer (RV1) connected to PA.0_c.
+The converted value is monitored through debugger: uwConvertedValue and uwInputVoltage variables.
+
+STM32 board LED can be used to monitor the conversion:
+  - LED3 is ON when there is an error in initialization.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The example need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - ADC/ADC_OverSampler/Inc/stm32h7xx_hal_conf.h    HAL configuration file
+  - ADC/ADC_OverSampler/Inc/stm32h7xx_it.h          Interrupt handlers header file
+  - ADC/ADC_OverSampler/Inc/main.h                  Header for main.c module
+  - ADC/ADC_OverSampler/Src/stm32h7xx_it.c          Interrupt handlers
+  - ADC/ADC_OverSampler/Src/main.c                  Main program
+  - ADC/ADC_OverSampler/Src/stm32h7xx_hal_msp.c     HAL MSP file
+  - ADC/ADC_OverSampler/Src/system_stm32h7xx.c      STM32H7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32H743I-EVAL devices.
+
+  - This example has been tested with STM32H743I-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>ADC_RegularConversion_Polling</b>
+Conversion using Polling
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to use the ADC in Polling mode to convert data through the HAL API.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+The SystemClock_Config() function is used to configure the system clock for STM32H743xx Devices :
+The CPU at 400MHz
+The HCLK for D1 Domain AXI and AHB3 peripherals , D2 Domain AHB1/AHB2 peripherals and D3 Domain AHB4  peripherals at 200MHz.
+The APB clock dividers for D1 Domain APB3 peripherals, D2 Domain APB1 and APB2 peripherals and D3 Domain APB4 peripherals to  run at 100MHz
+
+When the end of conversion occurs, the converted data of ADC1 DR register is
+affected to the uhADCxConvertedValue variable.
+
+Note that the test carries out only one conversion. To trigger another conversion, the user
+needs to reset then restart the example execution.
+
+In this example, the system clock is 400MHz, AHB = 200MHz and ADC clock = AHB/4.
+Since ADC1 clock is 50 MHz and sampling time is set to 8.5 cycles, the conversion
+time to 16bit data is 16.5 cycles so the total conversion time is (16.5+8.5)/50 = 0.5us(2.0Msps).
+
+User can vary the ADC_CHANNEL_0 voltage using the Eval Board potentiometer (RV1) connected to PA.0_c.
+
+The converted value is monitored through debugger: uhADCxConvertedValue variable.
+
+STM32 board LED can be used to monitor the conversion:
+  - LED3 is ON when there is an error occurs.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The example need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - ADC/ADC_RegularConversion_Polling/Inc/stm32h7xx_hal_conf.h    HAL configuration file
+  - ADC/ADC_RegularConversion_Polling/Inc/stm32h7xx_it.h          Interrupt handlers header file
+  - ADC/ADC_RegularConversion_Polling/Inc/main.h                  Header for main.c module
+  - ADC/ADC_RegularConversion_Polling/Src/stm32h7xx_it.c          Interrupt handlers
+  - ADC/ADC_RegularConversion_Polling/Src/main.c                  Main program
+  - ADC/ADC_RegularConversion_Polling/Src/stm32h7xx_hal_msp.c     HAL MSP file
+  - ADC/ADC_RegularConversion_Polling/Src/system_stm32h7xx.c      STM32H7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32H743xx devices.
+
+  - This example has been tested with STM32H743I-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>ADC_Regular_injected_groups</b>
+ADC conversion example showing the usage of
+the 2 ADC groups: regular group for ADC conversions on main stream and 
+injected group for ADC conversions limited on specific events (conversions
+injected within main conversions stream),
+using related peripherals (GPIO, DMA, Timer), voltage input from DAC, user 
+control by push button and LED
+=====================================================================================
+
+<u>Example Description</u>
+
+This example provides a short description of how to use the ADC peripheral to
+perform conversions using the two ADC groups: regular group for ADC conversions
+on main stream and injected group for ADC conversions limited on specific events
+(conversions injected within main conversions stream).
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+The SystemClock_Config() function is used to configure the system clock for STM32H743xx Devices :
+The CPU at 400MHz
+The HCLK for D1 Domain AXI and AHB3 peripherals , D2 Domain AHB1/AHB2 peripherals and D3 Domain AHB4  peripherals at 200MHz.
+The APB clock dividers for D1 Domain APB3 peripherals, D2 Domain APB1 and APB2 peripherals and D3 Domain APB4 peripherals to  run at 100MHz
+
+One compilation switch is available to select ADC configuration continuous mode
+and external trigger (located in main.h):
+ - "ADC_TRIGGER_FROM_TIMER" defined: ADC is operating in not continuous mode
+   and conversions are trigger by external trigger: timer.
+ - "ADC_TRIGGER_FROM_TIMER" not defined: ADC is operating in continuous mode
+   and first conversion is trigger by software trigger.
+
+One compilation switch is available to generate a waveform voltage
+for test (located in main.h):
+ - "WAVEFORM_VOLTAGE_GENERATION_FOR_TEST" defined: For this example purpose, generates a
+   waveform voltage on a spare DAC channel: DAC_CHANNEL_1 on pin PA.04 (Connector CN6 pin 19)
+   user has just to connect a wire between DAC channel output and ADC input to run this example.
+ - "WAVEFORM_VOLTAGE_GENERATION_FOR_TEST" not defined: no voltage is generated, user has
+   to connect a voltage source to the selected ADC channel input to run this example.
+
+Other peripherals related to ADC are used:
+Mandatory:
+ - GPIO peripheral is used in analog mode to drive signal from device pin to
+   ADC input.
+Optionally:
+ - Timer peripheral is used to trigger ADC conversions.
+ - DMA peripheral is used to transfer ADC converted data.
+
+ADC settings:
+ - Regular group:
+   Conversions are triggered by external event (timer at 1kHz).
+ - Continuous mode is disabled (and sequencer disabled: only 1 channel selected) to yield only 1 conversion at each conversion trigger.
+ - Injected group:
+   Conversions are software-triggered by a mere call to HAL_ADCEx_InjectedStart_IT()
+   to convert VREFINT channel at each press on Tamper button.
+
+ADC conversion results:
+ - ADC regular conversions results are transferred automatically by DMA, into variable
+   array "aADCxConvertedValues".
+ - DMA and ADC are configured to operate continuously, in circular mode.
+   When DMA transfer half-buffer and full buffer lengths are reached, callbacks
+   HAL_ADC_ConvHalfCpltCallback() and HAL_ADC_ConvCpltCallback() are called.
+ - ADC injected conversions results are retrieved upon JEOC interrupt by
+   HAL_ADCEx_InjectedConvCpltCallback() function.
+ - uhADCxConvertedValue_Injected variable contains the  ADC conversion result of injected group.
+
+Board settings:
+ - ADC is configured to convert ADC_CHANNEL_3 on pin PF.07 (Connector CN6 pin 4).
+ - Channel configured on regular group:
+   User has to connect the Eval Board ADC3 ADC_CHANNEL_3 PF.07 pin
+   to the DAC1 output PA.04 pin.
+ - Voltage is increasing at each click on push button, from 0 to maximum range in 4 steps.
+   Clicks on push button follow circular cycles: At clicks counter maximum value reached, counter is set back to 0.
+ - Channel configured on injected group:
+   The voltage input is provided from internal reference voltage VrefInt.
+
+STM32H743I-EVAL board LEDs are used to monitor the program execution status:
+ - Normal operation: LED1 is turned-on/off in function of ADC conversion
+   result.
+    - Turned-off if voltage measured by injected group is below voltage measured by regular group (average of results table)
+    - Turned-on if voltage measured by injected group is above voltage measured by regular group (average of results table)
+ - Error: In case of error, LED3 is toggling at a frequency of 1Hz.
+
+Note: LED3 is ON during test because it is connected to PA4 (DAC channel1).
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - ADC/ADC_Regular_injected_groups/Inc/stm32h7xx_hal_conf.h    HAL configuration file
+  - ADC/ADC_Regular_injected_groups/Inc/stm32h7xx_it.h          HAL interrupt handlers header file
+  - ADC/ADC_Regular_injected_groups/Inc/main.h                  Header for main.c module
+  - ADC/ADC_Regular_injected_groups/Src/stm32h7xx_it.c          HAL interrupt handlers
+  - ADC/ADC_Regular_injected_groups/Src/main.c                  Main program
+  - ADC/ADC_Regular_injected_groups/Src/stm32h7xx_hal_msp.c     HAL MSP file
+  - ADC/ADC_Regular_injected_groups/Src/system_stm32h7xx.c      STM32H7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32H743xx devices.
+
+  - This example has been tested with STM32H743I-EVAL board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeH7GettingStarted.pdf">Getting started with STM32CubeH7 Embedded Software for STM32H7xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeH7 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32H743I-EVAL Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

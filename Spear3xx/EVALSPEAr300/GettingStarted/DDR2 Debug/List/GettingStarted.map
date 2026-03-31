@@ -1,0 +1,408 @@
+###############################################################################
+#
+# IAR ELF Linker V10.1.2.5396/W64 [NIGHTLY BUILD] for ARM 31/Mar/2026  14:14:34
+# Copyright 2007-2026 IAR Systems AB.
+#
+#    Output file  =
+#        C:\ProgramData\IARSystems\EmbeddedWorkbench\DownloadedExamples\arm\9.70.4\ST\Spear3xx\EVALSPEAr300\GettingStarted\DDR2
+#        Debug\Exe\GettingStarted.out
+#    Map file     =
+#        C:\ProgramData\IARSystems\EmbeddedWorkbench\DownloadedExamples\arm\9.70.4\ST\Spear3xx\EVALSPEAr300\GettingStarted\DDR2
+#        Debug\List\GettingStarted.map
+#    Command line =
+#        -f
+#        "C:\ProgramData\IARSystems\EmbeddedWorkbench\DownloadedExamples\arm\9.70.4\ST\Spear3xx\EVALSPEAr300\GettingStarted\DDR2
+#        Debug\Exe\GettingStarted.out.rsp"
+#        ("C:\ProgramData\IARSystems\EmbeddedWorkbench\DownloadedExamples\arm\9.70.4\ST\Spear3xx\EVALSPEAr300\GettingStarted\DDR2
+#        Debug\Obj\MMU_2105206773957925208.dir\arm926ej_cp15_drv.o"
+#        "C:\ProgramData\IARSystems\EmbeddedWorkbench\DownloadedExamples\arm\9.70.4\ST\Spear3xx\EVALSPEAr300\GettingStarted\DDR2
+#        Debug\Obj\main.o"
+#        "C:\ProgramData\IARSystems\EmbeddedWorkbench\DownloadedExamples\arm\9.70.4\ST\Spear3xx\EVALSPEAr300\GettingStarted\DDR2
+#        Debug\Obj\Startup_17868067532763321386.dir\SPEAR300_cstartup.o"
+#        "C:\ProgramData\IARSystems\EmbeddedWorkbench\DownloadedExamples\arm\9.70.4\ST\Spear3xx\EVALSPEAr300\GettingStarted\DDR2
+#        Debug\Obj\MMU_2105206773957925208.dir\ttbl.o" --redirect
+#        _Printf=_PrintfFullNoMb --redirect _Scanf=_ScanfFullNoMb
+#        --no_out_extension -o
+#        "C:\ProgramData\IARSystems\EmbeddedWorkbench\DownloadedExamples\arm\9.70.4\ST\Spear3xx\EVALSPEAr300\GettingStarted\DDR2
+#        Debug\Exe\GettingStarted.out" --map
+#        "C:\ProgramData\IARSystems\EmbeddedWorkbench\DownloadedExamples\arm\9.70.4\ST\Spear3xx\EVALSPEAr300\GettingStarted\DDR2
+#        Debug\List\GettingStarted.map" --config
+#        C:\ProgramData\IARSystems\EmbeddedWorkbench\DownloadedExamples\arm\9.70.4\ST\Spear3xx\EVALSPEAr300\GettingStarted/config/spear300_ddr.icf
+#        --semihosting --entry __iar_program_start --vfe --text_out locale
+#        --cpu=ARM926EJ-S --fpu=None) --diagnostics_format=sarif_stdout
+#        --dependencies=n
+#        "C:\ProgramData\IARSystems\EmbeddedWorkbench\DownloadedExamples\arm\9.70.4\ST\Spear3xx\EVALSPEAr300\GettingStarted\DDR2
+#        Debug\Exe\GettingStarted.out.iar_deps" --dynamic_output
+#        "C:\ProgramData\IARSystems\EmbeddedWorkbench\DownloadedExamples\arm\9.70.4\ST\Spear3xx\EVALSPEAr300\GettingStarted\DDR2
+#        Debug\Exe\GettingStarted.out.iar_dynout"
+#
+###############################################################################
+
+*******************************************************************************
+*** RUNTIME MODEL ATTRIBUTES
+***
+
+CppFlavor       = *
+__CPP_Runtime   = 1
+__SystemLibrary = DLib
+__dlib_version  = 6
+
+
+*******************************************************************************
+*** HEAP SELECTION
+***
+
+The basic heap was selected because --advanced_heap
+was not specified and the application did not appear to
+be primarily optimized for speed.
+
+
+*******************************************************************************
+*** PLACEMENT SUMMARY
+***
+
+build for ram;
+"A0":  place at address 0x0 {  ro section .intvec };
+"P1":  place in [from 0x40 to 0x3ff'ffff] {  ro };
+define block CSTACK with size = __ICFEDIT_size_cstack__, alignment = 8 { };
+define block SVC_STACK with size = __ICFEDIT_size_svcstack__, alignment = 8 { };
+define block IRQ_STACK with size = __ICFEDIT_size_irqstack__, alignment = 8 { };
+define block FIQ_STACK with size = __ICFEDIT_size_fiqstack__, alignment = 8 { };
+define block UND_STACK with size = __ICFEDIT_size_undstack__, alignment = 8 { };
+define block ABT_STACK with size = __ICFEDIT_size_abtstack__, alignment = 8 { };
+define block HEAP with size = __ICFEDIT_size_heap__, alignment = 8 { };
+"P2":  place in [from 0x40 to 0x3ff'ffff] {
+           rw,  block CSTACK,  block SVC_STACK,  block IRQ_STACK,
+           block FIQ_STACK,  block UND_STACK,  block ABT_STACK,  block HEAP };
+"P3":  place in [from 0x400'0000 to 0x7ff'ffff] {
+           section MMU_TT,  section DATA_NO_CACHE };
+do not initialize {  section .noinit };
+do not initialize {  section MMU_TT };
+
+No sections matched the following patterns:
+
+  ro section .boot_header    in "A1"
+  section .bootloader        in block BootRam
+  section .bootloader_entry  in block BootRam
+  section .table             in block BootRam
+  section DATA_NO_CACHE      in "P3"
+
+
+  Section          Kind         Address  Alignment    Size  Object
+  -------          ----         -------  ---------    ----  ------
+"A0":                                                 0x40
+  .intvec          ro code          0x0          4    0x40  SPEAR300_cstartup.o [3]
+                                 - 0x40               0x40
+
+"P1":                                                0xc64
+  .text            ro code         0x40          4   0x564  arm926ej_cp15_drv.o [2]
+  .text            ro code        0x5a4          4    0x20  uread4.o [5]
+  .text            ro code        0x5c4          4   0x4a8  main.o [1]
+  .rodata          const          0xa6c          4    0xa0  ttbl.o [2]
+  .text            ro code        0xb0c          4    0xa0  SPEAR300_cstartup.o [3]
+  .text            ro code        0xbac          2    0x3c  zero_init3.o [5]
+  .text            ro code        0xbe8          4    0x34  cmain.o [5]
+  .text            ro code        0xc1c          4     0x8  low_level_init.o [4]
+  .text            ro code        0xc24          4    0x28  data_init.o [5]
+  .text            ro code        0xc4c          4     0x4  exit.o [4]
+  .text            ro code        0xc50          4    0x20  exit.o [6]
+  .text            ro code        0xc70          4     0x4  cexit.o [5]
+  .text            ro code        0xc74          4    0x10  cexit_2.o [5]
+  .iar.init_table  const          0xc84          4    0x10  - Linker created -
+  .rodata          const          0xc94          4     0xc  ttbl.o [2]
+  .text            ro code        0xca0          4     0x4  xreturnswi.o [6]
+  .rodata          const          0xca4                0x0  zero_init3.o [5]
+                                - 0xca4              0xc64
+
+"P2", part 1 of 2:                                     0x4
+  .bss             zero           0xca4          4     0x4  main.o [1]
+                                - 0xca8                0x4
+
+"P2", part 2 of 2:                                  0x2200
+  CSTACK                          0xca8          8  0x2000  <Block>
+    CSTACK         uninit         0xca8             0x2000  <Block tail>
+  SVC_STACK                      0x2ca8          8    0x40  <Block>
+    SVC_STACK      uninit        0x2ca8               0x40  <Block tail>
+  IRQ_STACK                      0x2ce8          8   0x100  <Block>
+    IRQ_STACK      uninit        0x2ce8              0x100  <Block tail>
+  FIQ_STACK                      0x2de8          8    0x40  <Block>
+    FIQ_STACK      uninit        0x2de8               0x40  <Block tail>
+  UND_STACK                      0x2e28          8    0x40  <Block>
+    UND_STACK      uninit        0x2e28               0x40  <Block tail>
+  ABT_STACK                      0x2e68          8    0x40  <Block>
+    ABT_STACK      uninit        0x2e68               0x40  <Block tail>
+                               - 0x2ea8             0x2200
+
+"P3":                                               0x4000
+  MMU_TT           uninit    0x400'0000      16384  0x4000  ttbl.o [2]
+                           - 0x400'4000             0x4000
+
+Absolute sections, part 1 of 10:                       0x4
+  .noinit          uninit   0x9900'0004                0x4  main.o [1]
+                          - 0x9900'0008                0x4
+
+Absolute sections, part 2 of 10:                       0x8
+  .noinit          uninit   0xa900'03fc                0x4  main.o [1]
+  .noinit          uninit   0xa900'0400                0x4  main.o [1]
+                          - 0xa900'0404                0x8
+
+Absolute sections, part 3 of 10:                       0xc
+  .noinit          uninit   0xf110'000c                0x4  main.o [1]
+  .noinit          uninit   0xf110'0010                0x4  main.o [1]
+  .noinit          uninit   0xf110'0014                0x4  main.o [1]
+                          - 0xf110'0018                0xc
+
+Absolute sections, part 4 of 10:                       0x8
+  .noinit          uninit   0xf110'001c                0x4  main.o [1]
+  .noinit          uninit   0xf110'0020                0x4  main.o [1]
+                          - 0xf110'0024                0x8
+
+Absolute sections, part 5 of 10:                       0x8
+  .noinit          uninit   0xf110'0030                0x4  main.o [1]
+  .noinit          uninit   0xf110'0034                0x4  main.o [1]
+                          - 0xf110'0038                0x8
+
+Absolute sections, part 6 of 10:                      0x40
+  .noinit          uninit   0xf110'0100                0x4  main.o [1]
+  .noinit          uninit   0xf110'0104                0x4  main.o [1]
+  .noinit          uninit   0xf110'0108                0x4  main.o [1]
+  .noinit          uninit   0xf110'010c                0x4  main.o [1]
+  .noinit          uninit   0xf110'0110                0x4  main.o [1]
+  .noinit          uninit   0xf110'0114                0x4  main.o [1]
+  .noinit          uninit   0xf110'0118                0x4  main.o [1]
+  .noinit          uninit   0xf110'011c                0x4  main.o [1]
+  .noinit          uninit   0xf110'0120                0x4  main.o [1]
+  .noinit          uninit   0xf110'0124                0x4  main.o [1]
+  .noinit          uninit   0xf110'0128                0x4  main.o [1]
+  .noinit          uninit   0xf110'012c                0x4  main.o [1]
+  .noinit          uninit   0xf110'0130                0x4  main.o [1]
+  .noinit          uninit   0xf110'0134                0x4  main.o [1]
+  .noinit          uninit   0xf110'0138                0x4  main.o [1]
+  .noinit          uninit   0xf110'013c                0x4  main.o [1]
+                          - 0xf110'0140               0x40
+
+Absolute sections, part 7 of 10:                      0x40
+  .noinit          uninit   0xf110'0200                0x4  main.o [1]
+  .noinit          uninit   0xf110'0204                0x4  main.o [1]
+  .noinit          uninit   0xf110'0208                0x4  main.o [1]
+  .noinit          uninit   0xf110'020c                0x4  main.o [1]
+  .noinit          uninit   0xf110'0210                0x4  main.o [1]
+  .noinit          uninit   0xf110'0214                0x4  main.o [1]
+  .noinit          uninit   0xf110'0218                0x4  main.o [1]
+  .noinit          uninit   0xf110'021c                0x4  main.o [1]
+  .noinit          uninit   0xf110'0220                0x4  main.o [1]
+  .noinit          uninit   0xf110'0224                0x4  main.o [1]
+  .noinit          uninit   0xf110'0228                0x4  main.o [1]
+  .noinit          uninit   0xf110'022c                0x4  main.o [1]
+  .noinit          uninit   0xf110'0230                0x4  main.o [1]
+  .noinit          uninit   0xf110'0234                0x4  main.o [1]
+  .noinit          uninit   0xf110'0238                0x4  main.o [1]
+  .noinit          uninit   0xf110'023c                0x4  main.o [1]
+                          - 0xf110'0240               0x40
+
+Absolute sections, part 8 of 10:                       0x2
+  .noinit          uninit   0xfc80'0080                0x2  main.o [1]
+                          - 0xfc80'0082                0x2
+
+Absolute sections, part 9 of 10:                       0x2
+  .noinit          uninit   0xfc80'0084                0x2  main.o [1]
+                          - 0xfc80'0086                0x2
+
+Absolute sections, part 10 of 10:                      0x2
+  .noinit          uninit   0xfc80'0088                0x2  main.o [1]
+                          - 0xfc80'008a                0x2
+
+Unused ranges:
+
+        From          To        Size
+        ----          --        ----
+      0x2ea8  0x3ff'ffff  0x3ff'd158
+  0x400'4000  0x7ff'ffff  0x3ff'c000
+
+
+*******************************************************************************
+*** INIT TABLE
+***
+
+          Address  Size
+          -------  ----
+Zero (__iar_zero_init3)
+    1 destination range, total size 0x4:
+            0xca4   0x4
+
+
+
+*******************************************************************************
+*** MODULE SUMMARY
+***
+
+    Module               ro code  ro data  rw data  rw data
+                                                     (abs)
+    ------               -------  -------  -------  -------
+command line/config:
+    -------------------------------------------------------
+    Total:
+
+C:\ProgramData\IARSystems\EmbeddedWorkbench\DownloadedExamples\arm\9.70.4\ST\Spear3xx\EVALSPEAr300\GettingStarted\DDR2 Debug\Obj: [1]
+    main.o                 1'192                 4      174
+    -------------------------------------------------------
+    Total:                 1'192                 4      174
+
+C:\ProgramData\IARSystems\EmbeddedWorkbench\DownloadedExamples\arm\9.70.4\ST\Spear3xx\EVALSPEAr300\GettingStarted\DDR2 Debug\Obj\MMU_2105206773957925208.dir: [2]
+    arm926ej_cp15_drv.o    1'380
+    ttbl.o                            172   16'384
+    -------------------------------------------------------
+    Total:                 1'380      172   16'384
+
+C:\ProgramData\IARSystems\EmbeddedWorkbench\DownloadedExamples\arm\9.70.4\ST\Spear3xx\EVALSPEAr300\GettingStarted\DDR2 Debug\Obj\Startup_17868067532763321386.dir: [3]
+    SPEAR300_cstartup.o      224
+    -------------------------------------------------------
+    Total:                   224
+
+dl5E_aln.a: [4]
+    exit.o                     4
+    low_level_init.o           8
+    -------------------------------------------------------
+    Total:                    12
+
+rt5E_al.a: [5]
+    cexit.o                    4
+    cexit_2.o                 16
+    cmain.o                   52
+    data_init.o               40
+    uread4.o                  32
+    zero_init3.o              60
+    -------------------------------------------------------
+    Total:                   204
+
+shs_l.a: [6]
+    exit.o                    32
+    xreturnswi.o               4
+    -------------------------------------------------------
+    Total:                    36
+
+    Linker created                     16    8'704
+-----------------------------------------------------------
+    Grand Total:           3'048      188   25'092      174
+
+
+*******************************************************************************
+*** ENTRY LIST
+***
+
+Entry                       Address    Size  Type      Object
+-----                       -------    ----  ----      ------
+.iar.init_table$$Base         0xc84           --   Gb  - Linker created -
+.iar.init_table$$Limit        0xc94           --   Gb  - Linker created -
+?main                         0xbe8          Code  Gb  cmain.o [5]
+ABT_STACK$$Base              0x2e68           --   Gb  - Linker created -
+ABT_STACK$$Limit             0x2ea8           --   Gb  - Linker created -
+CP15_Cache                    0x510    0x3c  Code  Gb  arm926ej_cp15_drv.o [2]
+CP15_GetStatus                 0x40     0x8  Code  Gb  arm926ej_cp15_drv.o [2]
+CP15_InitMmuTtb                0xac   0x434  Code  Gb  arm926ej_cp15_drv.o [2]
+CP15_InvalAllCache             0x54    0x14  Code  Gb  arm926ej_cp15_drv.o [2]
+CP15_InvalAllTbl               0x68    0x14  Code  Gb  arm926ej_cp15_drv.o [2]
+CP15_Mmu                      0x4e0    0x30  Code  Gb  arm926ej_cp15_drv.o [2]
+CP15_RomProt                  0x578    0x2c  Code  Gb  arm926ej_cp15_drv.o [2]
+CP15_SetDomain                 0x48     0xc  Code  Gb  arm926ej_cp15_drv.o [2]
+CP15_SetMmu                    0x7c    0x18  Code  Gb  arm926ej_cp15_drv.o [2]
+CP15_SetTtb                    0x94    0x18  Code  Gb  arm926ej_cp15_drv.o [2]
+CP15_SysProt                  0x54c    0x2c  Code  Gb  arm926ej_cp15_drv.o [2]
+CSTACK$$Base                  0xca8           --   Gb  - Linker created -
+CSTACK$$Limit                0x2ca8           --   Gb  - Linker created -
+FIQ_STACK$$Base              0x2de8           --   Gb  - Linker created -
+FIQ_STACK$$Limit             0x2e28           --   Gb  - Linker created -
+GPT1_Handler                  0x5f8   0x10c  Code  Gb  main.o [1]
+GPT1_Handler::led_count
+                              0xca4     0x4  Data  Lc  main.o [1]
+IRQ_STACK$$Base              0x2ce8           --   Gb  - Linker created -
+IRQ_STACK$$Limit             0x2de8           --   Gb  - Linker created -
+L1Table                  0x400'0000  0x4000  Data  Gb  ttbl.o [2]
+Region$$Table$$Base           0xc84           --   Gb  - Linker created -
+Region$$Table$$Limit          0xc94           --   Gb  - Linker created -
+SVC_STACK$$Base              0x2ca8           --   Gb  - Linker created -
+SVC_STACK$$Limit             0x2ce8           --   Gb  - Linker created -
+TIMER1_COMPARE1         0xfc80'0088     0x2  Data  Wk  main.o [1]
+TtSB                          0xa6c    0xa0  Data  Gb  ttbl.o [2]
+TtTB                          0xc94     0xc  Data  Gb  ttbl.o [2]
+UND_STACK$$Base              0x2e28           --   Gb  - Linker created -
+UND_STACK$$Limit             0x2e68           --   Gb  - Linker created -
+VICDEFVECTADDR          0xf110'0034     0x4  Data  Wk  main.o [1]
+VICVECTADDR             0xf110'0030     0x4  Data  Wk  main.o [1]
+VICVECTADDR0            0xf110'0100     0x4  Data  Wk  main.o [1]
+VICVECTADDR1            0xf110'0104     0x4  Data  Wk  main.o [1]
+VICVECTADDR10           0xf110'0128     0x4  Data  Wk  main.o [1]
+VICVECTADDR11           0xf110'012c     0x4  Data  Wk  main.o [1]
+VICVECTADDR12           0xf110'0130     0x4  Data  Wk  main.o [1]
+VICVECTADDR13           0xf110'0134     0x4  Data  Wk  main.o [1]
+VICVECTADDR14           0xf110'0138     0x4  Data  Wk  main.o [1]
+VICVECTADDR15           0xf110'013c     0x4  Data  Wk  main.o [1]
+VICVECTADDR2            0xf110'0108     0x4  Data  Wk  main.o [1]
+VICVECTADDR3            0xf110'010c     0x4  Data  Wk  main.o [1]
+VICVECTADDR4            0xf110'0110     0x4  Data  Wk  main.o [1]
+VICVECTADDR5            0xf110'0114     0x4  Data  Wk  main.o [1]
+VICVECTADDR6            0xf110'0118     0x4  Data  Wk  main.o [1]
+VICVECTADDR7            0xf110'011c     0x4  Data  Wk  main.o [1]
+VICVECTADDR8            0xf110'0120     0x4  Data  Wk  main.o [1]
+VICVECTADDR9            0xf110'0124     0x4  Data  Wk  main.o [1]
+VIC_Init                      0x704   0x154  Code  Gb  main.o [1]
+VIC_SetVectoredIRQ            0x858    0x40  Code  Gb  main.o [1]
+_A_RAS_reg2             0x9900'0004     0x4  Data  Wk  main.o [1]
+_A_RS_GPIODATA          0xa900'03fc     0x4  Data  Wk  main.o [1]
+_A_RS_GPIODIR           0xa900'0400     0x4  Data  Wk  main.o [1]
+_A_TIMER1_CONTROL1      0xfc80'0080     0x2  Data  Wk  main.o [1]
+_A_TIMER1_STATUS_INT_ACK1
+                        0xfc80'0084     0x2  Data  Wk  main.o [1]
+_A_VICINTENABLE         0xf110'0010     0x4  Data  Wk  main.o [1]
+_A_VICINTENCLEAR        0xf110'0014     0x4  Data  Wk  main.o [1]
+_A_VICINTSELECT         0xf110'000c     0x4  Data  Wk  main.o [1]
+_A_VICPROTECTION        0xf110'0020     0x4  Data  Wk  main.o [1]
+_A_VICSOFTINTCLEAR      0xf110'001c     0x4  Data  Wk  main.o [1]
+_A_VICVECTCNTL0         0xf110'0200     0x4  Data  Wk  main.o [1]
+_A_VICVECTCNTL1         0xf110'0204     0x4  Data  Wk  main.o [1]
+_A_VICVECTCNTL10        0xf110'0228     0x4  Data  Wk  main.o [1]
+_A_VICVECTCNTL11        0xf110'022c     0x4  Data  Wk  main.o [1]
+_A_VICVECTCNTL12        0xf110'0230     0x4  Data  Wk  main.o [1]
+_A_VICVECTCNTL13        0xf110'0234     0x4  Data  Wk  main.o [1]
+_A_VICVECTCNTL14        0xf110'0238     0x4  Data  Wk  main.o [1]
+_A_VICVECTCNTL15        0xf110'023c     0x4  Data  Wk  main.o [1]
+_A_VICVECTCNTL2         0xf110'0208     0x4  Data  Wk  main.o [1]
+_A_VICVECTCNTL3         0xf110'020c     0x4  Data  Wk  main.o [1]
+_A_VICVECTCNTL4         0xf110'0210     0x4  Data  Wk  main.o [1]
+_A_VICVECTCNTL5         0xf110'0214     0x4  Data  Wk  main.o [1]
+_A_VICVECTCNTL6         0xf110'0218     0x4  Data  Wk  main.o [1]
+_A_VICVECTCNTL7         0xf110'021c     0x4  Data  Wk  main.o [1]
+_A_VICVECTCNTL8         0xf110'0220     0x4  Data  Wk  main.o [1]
+_A_VICVECTCNTL9         0xf110'0224     0x4  Data  Wk  main.o [1]
+__aeabi_uread4                0x5a4          Code  Gb  uread4.o [5]
+__cmain                       0xbe8          Code  Gb  cmain.o [5]
+__exit                        0xc50    0x20  Code  Gb  exit.o [6]
+__iar_data_init3              0xc25    0x28  Code  Gb  data_init.o [5]
+__iar_program_start           0xb0c          Code  Gb  SPEAR300_cstartup.o [3]
+__iar_return_from_swi         0xca0     0x4  Code  Gb  xreturnswi.o [6]
+__iar_zero_init3              0xbad    0x3c  Code  Gb  zero_init3.o [5]
+__low_level_init              0xc1c     0x8  Code  Gb  low_level_init.o [4]
+__region_RAM_bootload_start__ {Abs}
+                        0xd280'0040           --   Gb  <internal module>
+__vector                        0x0          Code  Gb  SPEAR300_cstartup.o [3]
+_call_main                    0xc00          Code  Gb  cmain.o [5]
+_exit                         0xc70          Code  Gb  cexit.o [5]
+_exit_2                       0xc74          Code  Gb  cexit_2.o [5]
+exit                          0xc4c     0x4  Code  Gb  exit.o [4]
+irq_handler                   0x5c4    0x34  Code  Gb  main.o [1]
+main                          0x898   0x11c  Code  Gb  main.o [1]
+
+
+[1] = C:\ProgramData\IARSystems\EmbeddedWorkbench\DownloadedExamples\arm\9.70.4\ST\Spear3xx\EVALSPEAr300\GettingStarted\DDR2 Debug\Obj
+[2] = C:\ProgramData\IARSystems\EmbeddedWorkbench\DownloadedExamples\arm\9.70.4\ST\Spear3xx\EVALSPEAr300\GettingStarted\DDR2 Debug\Obj\MMU_2105206773957925208.dir
+[3] = C:\ProgramData\IARSystems\EmbeddedWorkbench\DownloadedExamples\arm\9.70.4\ST\Spear3xx\EVALSPEAr300\GettingStarted\DDR2 Debug\Obj\Startup_17868067532763321386.dir
+[4] = dl5E_aln.a
+[5] = rt5E_al.a
+[6] = shs_l.a
+
+   3'048 bytes of readonly  code memory
+     188 bytes of readonly  data memory
+  25'092 bytes of readwrite data memory (+ 174 absolute)
+
+Errors: none
+Warnings: none

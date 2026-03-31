@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<infocenter_data version="1.0">
+  <iar_name>COMP</iar_name><!--App-->
+  <iar_description>This example shows how to configure COMP peripheral to automatically hold
+TIMER PWM output on safe state (low level) as soon as comparator output is set
+at high level.</iar_description><!--App short description-->
+  <iar_curdir>$CUR_DIR$</iar_curdir>
+</infocenter_data>

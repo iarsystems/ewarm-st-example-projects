@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/FLASH_DualBoot/EWARM/FLASH_DualBoot.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/FLASH_EraseProgram/EWARM/FLASH_EraseProgram.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/FLASH_FastProgram/EWARM/FLASH_FastProgram.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/FLASH_WriteProtection/EWARM/FLASH_WriteProtection.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>FLASH_DualBoot</project>
+        <configuration>FLASH_DualBoot_Bank1</configuration>
+      </member>
+      <member>
+        <project>FLASH_DualBoot</project>
+        <configuration>FLASH_DualBoot_Bank2</configuration>
+      </member>
+      <member>
+        <project>FLASH_EraseProgram</project>
+        <configuration>STM32L476G_EVAL</configuration>
+      </member>
+      <member>
+        <project>FLASH_FastProgram</project>
+        <configuration>STM32L476G_EVAL</configuration>
+      </member>
+      <member>
+        <project>FLASH_WriteProtection</project>
+        <configuration>STM32L476G_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

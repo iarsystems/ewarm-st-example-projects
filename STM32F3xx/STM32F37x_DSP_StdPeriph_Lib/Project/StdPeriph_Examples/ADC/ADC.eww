@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/ADC_AnalogWatchdog/ADC_AnalogWatchdog.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/ADC_BasicExample/ADC_BasicExample.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/ADC_DMA/ADC_DMA.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>ADC_AnalogWatchdog</project>
+        <configuration>STM32373C-EVAL</configuration>
+      </member>
+      <member>
+        <project>ADC_BasicExample</project>
+        <configuration>STM32373C-EVAL</configuration>
+      </member>
+      <member>
+        <project>ADC_DMA</project>
+        <configuration>STM32373C-EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/EXTI_Example/EXTI_Example.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>EXTI_Example</project>
+        <configuration>STM32F051</configuration>
+      </member>
+      <member>
+        <project>EXTI_Example</project>
+        <configuration>STM32F072</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

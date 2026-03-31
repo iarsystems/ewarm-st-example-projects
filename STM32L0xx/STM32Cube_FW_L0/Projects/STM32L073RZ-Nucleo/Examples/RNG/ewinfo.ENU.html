@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>RNG Workspace</h1>
+
+=====================================================================================
+<b>RNG_MultiRNG</b>
+Multiple Random Numbers Generator example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example guides you through the HAL API different configuration steps
+to ensure 32-bit long random numbers generation by RNG peripheral.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+Then the SystemClock_Config() function is used to configure the system
+clock (SYSCLK) to run at 2 MHz.
+
+The RNG peripheral configuration is ensured by the HAL_RNG_Init() function.
+The latter is calling the HAL_RNG_MspInit() function which implements
+the configuration of the needed RNG resources according to the used hardware (CLOCK,
+GPIO, DMA and NVIC). You may update this function to change RNG configuration.
+
+After startup, user is asked to press User push-button.
+The 8-entry array aRandom32bit[] is filled up by 32-bit long random numbers
+at each key press.
+The Random numbers can be displayed on the debugger in aRandom32bit variable.
+
+In case of error, LED2 is toggling at a frequency of 1Hz.
+
+
+<u>Directory contents</u>
+
+  - RNG/RNG_MultiRNG/Inc/stm32l0xx_hal_conf.h    HAL configuration file
+  - RNG/RNG_MultiRNG/Inc/stm32l0xx_it.h          Interrupt handlers header file
+  - RNG/RNG_MultiRNG/Inc/main.h                  Header for main.c module
+  - RNG/RNG_MultiRNG/Src/stm32l0xx_it.c          Interrupt handlers
+  - RNG/RNG_MultiRNG/Src/main.c                  Main program
+  - RNG/RNG_MultiRNG/Src/stm32l0xx_hal_msp.c     HAL MSP module
+  - RNG/RNG_MultiRNG/Src/system_stm32l0xx.c      STM32L0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32L073xx devices.
+
+  - This example has been tested with STM32L073RZ-Nucleo Rev C board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following:
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeL0GettingStarted.pdf">Getting started with STM32CubeL0 Embedded Software for STM32L0xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeL0 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32L073RZ-Nucleo Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

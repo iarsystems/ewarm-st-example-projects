@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>PWR Workspace</h1>
+
+=====================================================================================
+<b>PWR_STANDBY</b>
+PWR standby example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to enters the system to STANDBY mode and wake-up from this
+mode using: external RESET, RTC Alarm A or WKUP pin.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+Then the SystemClock_Config() function is used to configure the system
+clock (SYSCLK) to run at 216 MHz.
+
+When a falling edge is detected on the EXTI line an interrupt is generated. In the
+EXTI handler routine the RTC is configured to generate an Alarm event in 5 seconds
+then the system enters STANDBY mode causing the LED1 to stop toggling.
+A rising edge on WKUP pin or an external RESET will wake-up the system from
+STANDBY. If within 5 seconds neither rising edge on WKUP pin nor external RESET
+are generated, the RTC Alarm A will wake-up the system.
+
+After wake-up from STANDBY mode, program execution restarts in the same way as after
+a RESET, the RTC configuration (clock source, prescaler,...) is kept and LED1 restarts
+toggling. As result there is no need to configure the RTC.
+
+two leds LED1 and LED3 are used to monitor the system state as following:
+ - LED3 On: configuration failed (system will go to an infinite loop)
+ - LED1 On: system in RUN mode
+ - LED1 Off : system in STANDBY mode
+
+These Steps are repeated in an infinite loop.
+
+Note: To measure the current consumption in STANDBY mode, please refer to
+      @subpage PWR_CurrentConsumption example.
+
+Note: This example can not be used in DEBUG mode, this is due to the fact
+      that the Cortex-M7 core is no longer clocked during low power mode
+      so debugging features are disabled.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+Note:  Care must be taken when HAL_RCCEx_PeriphCLKConfig() is used to select the RTC clock source; in this
+       case the Backup domain will be reset in order to modify the RTC Clock source, as consequence RTC
+       registers (including the backup registers) and RCC_BDCR register are set to their reset values.
+
+
+<u>Keywords</u>
+
+Power, PWR, Standby mode, Interrupt, EXTI, Wakeup, Low Power, External reset,
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - PWR/PWR_STANDBY/Inc/stm32f7xx_hal_conf.h         HAL Configuration file
+  - PWR/PWR_STANDBY/Inc/stm32f7xx_it.h           Header for stm32f7xx_it.c
+  - PWR/PWR_STANDBY/Inc/main.h                   Header file for main.c
+  - PWR/PWR_STANDBY/Src/system_stm32f7xx.c       STM32F7xx system clock configuration file
+  - PWR/PWR_STANDBY/Src/stm32f7xx_it.c           Interrupt handlers
+  - PWR/PWR_STANDBY/Src/main.c                   Main program
+  - PWR/PWR_STANDBY/Src/stm32f7xx_hal_msp.c      HAL MSP module
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F756xx/STM32F746xx devices
+
+  - This example has been tested with STMicroelectronics STM327x6G-EVAL revB
+    evaluation board and can be easily tailored to any other supported device
+    and development board.
+
+  - STM327x6G-EVAL revB Set-up
+    - Use LED1 and LED3 connected respectively to PF10 and PB7 pins
+    - Use the Tamper push-button connected to pin PC.13 (EXTI15_10)
+    - WakeUp Pin PWR_WAKEUP_PIN4 connected to PC13
+    - To use LED1, ensure that JP24 is in position 2-3
+    - To use LED3, ensure that JP23 is in position 2-3
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>PWR_STOP</b>
+Power Stop Mode Example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to enters the system to STOP mode and wake-up from this
+mode using RTC Wakeup Timer Event connected to EXTI_Line22 or by pressing Tamper
+push-button connected to EXTI15_10.
+
+In the associated software
+  - the system clock is set to 216 MHz
+  - the EXTI15_10 is configured to generate interrupt on falling edge
+  - the EXTI_Line22 connected internally to the RTC Wakeup event is configured
+    to generate an interrupt on rising edge each 4s
+  - the SysTick is programmed to generate an interrupt each 1 ms
+
+Initially LED4 is turned ON.
+The system enters STOP mode after 5 seconds and will wait for the RTC Wakeup event to be
+generated each 4s, or Tamper push-button is pressed.
+ - If the RTC WakeUp event (EXTI_Line22) is the source of wakeup from STOP, LED1 is ON.
+ - If the Tamper push-button (EXTI15_10) is the source of wakeup from STOP, LED2 is ON.
+
+This behavior is repeated in an infinite loop.
+
+LEDs are used to monitor the system state as following:
+ - LED1 and LED4 ON: system woken up from STOP using RTC WakeUp Interrupt
+ - LED2 and LED4 ON: system woken up from STOP using EXTI15_10 (Tamper push-button)
+ - LED4 ON: system in RUN mode
+ - LED3 ON: Initialization error (RTC, RCC,...)
+
+Note: The system could be entered to STOP mode with the under drive mode.
+      To enable the STOP mode with the under drive mode, the "#define UNDERDRIVE_MODE"
+      in the "main.c" file must be uncommented.
+
+Note: This example can not be used in DEBUG mode, this is due to the fact
+      that the Cortex-M7 core is no longer clocked during low power mode
+      so debugging features are disabled
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+Note:  Care must be taken when HAL_RCCEx_PeriphCLKConfig() is used to select the RTC clock source; in this
+       case the Backup domain will be reset in order to modify the RTC Clock source, as consequence RTC
+       registers (including the backup registers) and RCC_BDCR register are set to their reset values.
+
+
+<u>Keywords</u>
+
+Power, PWR, Stop mode, Interrupt, EXTI, Wakeup, Low Power, External reset,
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - PWR/PWR_STOP/Inc/stm32f7xx_hal_conf.h         HAL Configuration file
+  - PWR/PWR_STOP/Inc/stm32f7xx_it.h           Header for stm32f7xx_it.c
+  - PWR/PWR_STOP/Inc/main.h                   Header file for main.c
+  - PWR/PWR_STOP/Src/system_stm32f7xx.c       STM32F7xx system clock configuration file
+  - PWR/PWR_STOP/Src/stm32f7xx_it.c           Interrupt handlers
+  - PWR/PWR_STOP/Src/main.c                   Main program
+  - PWR/PWR_STOP/Src/stm32f7xx_hal_msp.c      HAL MSP module
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F756xx/STM32F746xx devices
+
+  - This example has been tested with STMicroelectronics STM327x6G-EVAL revB
+    evaluation board and can be easily tailored to any other supported device
+    and development board.
+
+  - STM327x6G-EVAL revB Set-up
+    - Use the Tamper push-button connected to pin PC.13 (EXTI15_10)
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF7GettingStarted.pdf">Getting started with STM32CubeF7 Embedded Software for STM32F7xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF7 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM327x6G-EVAL Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

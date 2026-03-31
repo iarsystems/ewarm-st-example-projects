@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/SPI_OneBoard_HalfDuplex_DMA/EWARM/SPI_OneBoard_HalfDuplex_DMA.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/SPI_OneBoard_HalfDuplex_DMA_Init/EWARM/SPI_OneBoard_HalfDuplex_DMA_Init.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/SPI_OneBoard_HalfDuplex_IT/EWARM/SPI_OneBoard_HalfDuplex_IT.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/SPI_TwoBoards_FullDuplex_DMA/EWARM/SPI_TwoBoards_FullDuplex_DMA.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/SPI_TwoBoards_FullDuplex_IT/EWARM/SPI_TwoBoards_FullDuplex_IT.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>SPI_OneBoard_HalfDuplex_DMA</project>
+        <configuration>NUCLEO-F207ZG</configuration>
+      </member>
+      <member>
+        <project>SPI_OneBoard_HalfDuplex_DMA_Init</project>
+        <configuration>NUCLEO-F207ZG</configuration>
+      </member>
+      <member>
+        <project>SPI_OneBoard_HalfDuplex_IT</project>
+        <configuration>NUCLEO-F207ZG</configuration>
+      </member>
+      <member>
+        <project>SPI_TwoBoards_FullDuplex_DMA</project>
+        <configuration>NUCLEO-F207ZG</configuration>
+      </member>
+      <member>
+        <project>SPI_TwoBoards_FullDuplex_IT</project>
+        <configuration>NUCLEO-F207ZG</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

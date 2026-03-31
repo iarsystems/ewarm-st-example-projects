@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<infocenter_data version="1.0">
+  <iar_template_variant>1</iar_template_variant>
+  <iar_name>STM32F10x stdperiph lib 3.5.0</iar_name>                             <!--Family-->
+  <iar_title>Examples with STM32F10x stdperiph lib</iar_title>                  <!--Manufacturer Family-->
+</infocenter_data>

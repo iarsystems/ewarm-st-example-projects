@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<infocenter_data version="1.0">
+  <iar_name>Audio Streaming</iar_name>                                   <!--App-->
+  <iar_description>The USB-FS-Device Audio Streaming demo gives examples of how to use the STM32F10x5/7 USB-OTG peripheral in Device mode to communicate with the PC host in the isochronous transfer mode.</iar_description>                     <!--App short description-->
+  <iar_curdir>$CUR_DIR$</iar_curdir>
+</infocenter_data>

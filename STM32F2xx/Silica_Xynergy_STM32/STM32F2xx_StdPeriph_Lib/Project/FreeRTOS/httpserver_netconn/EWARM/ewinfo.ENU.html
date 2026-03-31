@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+http server netconn demonstration
+  
+This directory contains a set of sources files that implement a web server
+application, based on the netconn API, for STM32F2x7 devices.
+
+Please note that for http server netconn demonstration, LwIP v1.3.2 is used as
+the TCP/IP stack and FreeRTOS v6.1.0 is used as the Real Time Kernel.
+
+Project Directory contents
+
+ - "inc": contains the demonstration firmware header files
+    - inc/main.h               main config file
+    - inc/stm32F2x7_eth_bsp.h  header for stm32F2x7_eth_bsp.c
+    - inc/netconf.h            header for netconf.c
+    - inc/lwipopts.h           LwIP stack configuration options
+    - inc/FreeRTOSConfig.h     FreeRTOS configuration options
+    - inc/fsdata.h             header for fsdata.c
+    - inc/stm32f2xx_conf.h     Library Configuration file
+    - inc/stm32f2x7_eth_conf.h STM32 Ethernet driver Configuration file
+    - inc/stm32f2xx_it.h       Header for stm32f2xx_it.c
+    - inc/fs.h                 header for fs.c
+    - inc/httpserver-netconn.h header for httpserver-netconn.c
+    - inc/serial_debug.h       header for serial_debug.c
+
+ - "src": contains the demonstration firmware source files
+    - src/main.c               main program file
+    - src/stm32F2x7_eth_bsp.c  STM32F2x7 Ethernet hardware configuration
+    - src/netconf.c            LwIP stack initializations
+    - src/fsdata.c             ROM filesystem data (html pages)
+    - src/system_stm32f2xx.c   STM32 system clock configuration file
+    - src/stm32f2xx_it.c       STM32 Interrupt handlers
+    - src/httpserver-netconn.c httpserver netconn main task
+    - src/fs.c                 file system functions
+    - src/serial_debug.c       retarget the printf function to the USART
+
+ - "EWARM": contains preconfigured project for EWARM toolchain
+
+Hardware and Software environment
+  
+  - This example has been tested with the following environments:
+     - STM322xG-EVAL board
+     - Http clients: Firefox Mozilla (v3.6 and later) or Microsoft Internet Explorer (v8 and later)
+     - DHCP server: PC utility TFTPD32 (http://tftpd32.jounin.net/) is used as a DHCP server
+  
+  - STM322xG-EVAL Set-up
+    - Connect STM322xG-EVAL board to remote PC (through a crossover ethernet cable)
+      or to your local network (through a straight ethernet cable)
+    - STM322xG-EVAL jumpers setting
+        +==========================================================================================+
+        +  Jumper |       MII mode configuration            |      RMII mode configuration         +
+        +==========================================================================================+
+        +  JP5    | 2-3 provide 25MHz clock by MCO(PA8)     |  2-3 provide 50MHz clock by MCO(PA8) +
+        +         | 1-2 provide 25MHz clock by ext. Crystal |                                      +
+        + -----------------------------------------------------------------------------------------+
+        +  JP6    |          2-3                            |  1-2                                 +
+        + -----------------------------------------------------------------------------------------+
+        +  JP8    |          Open                           |  Close                               +
+        +==========================================================================================+
+    @Note: the default setting is MII mode, to change it to RMII mode refer to main.h file.
+
+
+How to use it ?
+
+In order to make the program work, you must do the following:
+  1. Load the demonstration code in the STM32F2x7 Flash memory (see below)
+  2. Refer to "AN3384 LwIP TCP/IP stack demonstration for STM32F2x7xx microcontrollers"
+     to know how to use the demonstration
+
+  In order to load the IAP code, you have do the following:
+   - EWARM
+      - Open the Project.eww workspace
+      - Rebuild all files: Project->Rebuild all
+      - Load project image: Project->Debug
+      - Run program: Debug->Go(F5)
+   </pre>
+
+  </div>
+  </body>
+</html>
+

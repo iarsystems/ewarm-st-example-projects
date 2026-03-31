@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/AES_modes/AES.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/AES_ECBmode_DMA/AES_ECB_DMA.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/DES_TDES_modes/DES_TDES.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/TDES_ECBmode_DMA/TDES_ECB_DMA.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>AES</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+      <member>
+        <project>AES_ECB_DMA</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+      <member>
+        <project>DES_TDES</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+      <member>
+        <project>TDES_ECB_DMA</project>
+        <configuration>STM322xG_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<infocenter_data version="1.0">
+  <iar_name>IWDG</iar_name><!--App-->
+  <iar_description>This example describes how to configure the IWDG and insure counter update at 
+regular period and generating an MCU IWDG reset on at User Button pressed.</iar_description><!--App short description-->
+  <iar_curdir>$CUR_DIR$</iar_curdir>
+</infocenter_data>

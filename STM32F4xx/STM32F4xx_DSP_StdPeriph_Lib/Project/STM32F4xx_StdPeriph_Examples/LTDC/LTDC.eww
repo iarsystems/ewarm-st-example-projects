@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/LTDC_AP_SDCard/LTDC_AP_SDCard.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/LTDC_ColorKeying/LTDC_ColorKeying.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/LTDC_Display_1Layer/LTDC_Display_1Layer.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/LTDC_Display_2Layers/LTDC_Display_2Layers.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/LTDC_PicturesFromSDCard/LTDC_PicturesFromSDCard.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>LTDC_AP_SDCard</project>
+        <configuration>STM324x9I_EVAL</configuration>
+      </member>
+      <member>
+        <project>LTDC_ColorKeying</project>
+        <configuration>STM324x9I_EVAL</configuration>
+      </member>
+      <member>
+        <project>LTDC_Display_1Layer</project>
+        <configuration>STM324x9I_EVAL</configuration>
+      </member>
+      <member>
+        <project>LTDC_Display_2Layers</project>
+        <configuration>STM324x9I_EVAL</configuration>
+      </member>
+      <member>
+        <project>LTDC_PicturesFromSDCard</project>
+        <configuration>STM324x9I_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

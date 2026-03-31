@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>SAI Workspace</h1>
+
+=====================================================================================
+<b>SAI_AudioPlay</b>
+Description of the SAI audio play example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to use the SAI HAL API to play an audio file using the DMA
+circular mode and how to handle the buffer update.
+
+      Plug a headphone to ear the sound  /!\ Take care of yours ears.
+      Default volume is 20%.
+      The audio file is played in loop
+      Note: Copy file 'audio.bin' (available in AudioFile) directly in the flash
+      at @0x08010000 using ST-Link utility
+Once started, LED2 is toggling on STM32F769I_Discovery.
+
+Note: Note the DMA runs in circular buffer mode and never stops. If you break with
+      the debugger, the DMA hw will keep running and a noise will be heard.
+
+Note: This example does not use BSP_AUDIO so the MspInit is coded in the main.c.
+
+
+<u>Keywords</u>
+
+Audio, SAI, DMA, Buffer update, play, headphone, audio protocol
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - SAI/SAI_AudioPlay/Src/main.c                  Main program
+  - SAI/SAI_AudioPlay/Src/system_stm32f7xx.c      STM32F7xx system source file
+  - SAI/SAI_AudioPlay/Src/stm32f7xx_it.c          Interrupt handlers
+  - SAI/SAI_AudioPlay/Inc/main.h                  Main program header file
+  - SAI/SAI_AudioPlay/Inc/stm32f7xx_hal_conf.h    HAL configuration file
+  - SAI/SAI_AudioPlay/Inc/stm32f7xx_it.h          Interrupt handlers header file
+  - SAI/SAI_AudioPlay/AudioFile/audio.bin         Audio wave extract.
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F769xx/STM32F779xx/STM32F777xx/STM32F767xx devices.
+
+  - This example has been tested with STMicroelectronics STM32F769I_Discovery
+    board and can be easily tailored to any other supported device
+    and development board.
+
+  - STM32F769I_Discovery Set-up :
+    - Plug headset on CN7 connector.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF7GettingStarted.pdf">Getting started with STM32CubeF7 Embedded Software for STM32F7xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF7 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32F769I-Discovery Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

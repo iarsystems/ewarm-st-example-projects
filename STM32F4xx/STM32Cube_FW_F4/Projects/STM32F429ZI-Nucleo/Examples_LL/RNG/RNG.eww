@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/RNG_GenerateRandomNumbers/EWARM/RNG_GenerateRandomNumbers.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/RNG_GenerateRandomNumbers_IT/EWARM/RNG_GenerateRandomNumbers_IT.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>RNG_GenerateRandomNumbers</project>
+        <configuration>STM32F429ZI-Nucleo</configuration>
+      </member>
+      <member>
+        <project>RNG_GenerateRandomNumbers_IT</project>
+        <configuration>STM32F429ZI-Nucleo</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

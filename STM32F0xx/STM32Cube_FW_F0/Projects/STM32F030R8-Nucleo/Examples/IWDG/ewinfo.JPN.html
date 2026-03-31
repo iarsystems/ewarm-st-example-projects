@@ -1,0 +1,210 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.JPN.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>IWDG Workspace</h1>
+
+=====================================================================================
+<b>IWDG_Reset</b>
+Independent Watchdog Reset Example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to ensure IWDG reload counter and simulate a software
+fault that generates an MCU IWDG reset when a programmed time period has elapsed.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+Then the SystemClock_Config() function is used to configure the system
+clock (SYSCLK) to run at 48 MHz.
+
+The IWDG timeout is set to 1 second.
+
+First, the TIM14 timer is configured to measure the LSI frequency as the
+LSI is internally connected to TIM14 CH1, in order to adjust the IWDG clock.
+The LSI frequency value could be monitored on debugger in "uwLsiFreq" variable.
+
+The LSI measurement using the TIM14 is described below:
+  - Configure the TIM14 to remap internally the TIM14 CH1 Input Capture to the LSI
+    clock output.
+  - Enable the TIM14 Input Capture interrupt: after one cycle of LSI clock, the
+    period value is stored in a variable and compared to the HCLK clock to get
+    its real value.
+
+Then, the IWDG reload counter is configured as below to obtain 1 second according
+to the measured LSI frequency after setting the prescaler value:
+
+    IWDG counter clock Frequency = LSI Frequency / Prescaler value
+
+The IWDG reload counter is refreshed each 990 ms in the main program infinite
+loop to prevent a IWDG reset.
+
+LED2 is also toggling each 990 ms indicating that the program is running.
+
+An EXTI Line is connected to a GPIO pin, configured to generate an interrupt
+when the User push-button (PC.13) is pressed.
+
+The EXTI Line is used to simulate a software failure: once the EXTI Line event
+occurs by pressing the User push-button (PC.13), the corresponding interrupt is served.
+
+In the ISR, a write to invalid address generates a Hardfault exception
+containing an infinite loop and preventing to return to main program (the IWDG
+reload counter is not refreshed).
+As a result, when the IWDG counter reaches 0, the IWDG reset occurs.
+
+If the IWDG reset is generated, after the system resumes from reset, LED2 turns on for 4 seconds.
+If the EXTI Line event does not occur, the IWDG counter is indefinitely refreshed in the main
+program infinite loop, and there is no IWDG reset.
+
+If the user button is pressed while LED2 is turned on, another Hardfault exception is triggered.
+In this case, since the IWDG has not been reprogrammed yet, the software ends up
+stuck in the hardfault. All LEDs are turned off in this situation.
+
+LED2 will turn off if any error occurs.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate
+      delay (in milliseconds) based on variable incremented in SysTick ISR. This
+      implies that if HAL_Delay() is called from a peripheral ISR process, then
+      the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - IWDG/IWDG_Reset/Inc/stm32f0xx_hal_conf.h    HAL configuration file
+  - IWDG/IWDG_Reset/Inc/stm32f0xx_it.h          Interrupt handlers header file
+  - IWDG/IWDG_Reset/Inc/main.h                  Header for main.c module
+  - IWDG/IWDG_Reset/Src/stm32f0xx_it.c          Interrupt handlers
+  - IWDG/IWDG_Reset/Src/main.c                  Main program
+  - IWDG/IWDG_Reset/Src/stm32f0xx_hal_msp.c     HAL MSP file
+  - IWDG/IWDG_Reset/Src/system_stm32f0xx.c      STM32F0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F0xx devices.
+
+  - This example has been tested with STM32F030R8-Nucleo Rev C board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>IWDG_WindowMode</b>
+IWDG Reset with window mode
+=====================================================================================
+
+<u>Example Description</u>
+
+This example shows how to periodically update the IWDG reload counter and
+simulate a reload outside the window that generates an MCU IWDG reset.
+
+At the beginning of the main program the HAL_Init() function is called to reset
+all the peripherals, initialize the Flash interface and the systick.
+Then the SystemClock_Config() function is used to configure the system
+clock (SYSCLK) to run at 48 MHz.
+
+The IWDG time-out is set to 762 ms (the time-out may varies due to LSI frequency
+dispersion).
+
+The Window option is enabled with a window register value set to 400 ms.
+To prevent a reset, the down-counter must be reloaded when its value is:
+ -lower than the window register value (400ms)
+ -greater than 0x0
+The IWDG counter is therefore refreshed each 450 ms in the main program infinite loop to
+prevent a IWDG reset (762 - 450 = 312 within the interval).
+LED2 is also toggled each 450 ms indicating that the program is running.
+LED2 will turn off if any error occurs.
+
+An EXTI Line is connected to a GPIO pin, configured to generate an interrupt
+when the User push-button (PC.13) is pressed.
+
+Once the EXTI Line event occurs by pressing the User push-button (PC.13),
+the refresh period is set to 200 ms.
+That will make refresh being outside window value. As a result, when the IWDG counter is reloaded,
+the IWDG reset occurs.
+
+If the IWDG reset is generated, after the system resumes from reset, LED2 turns on for 4 seconds.
+
+If the EXTI Line event does not occur, the IWDG counter is indefinitely refreshed
+in the main program infinite loop, and there is no IWDG reset.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate
+      delay (in milliseconds) based on variable incremented in SysTick ISR. This
+      implies that if HAL_Delay() is called from a peripheral ISR process, then
+      the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Directory contents</u>
+
+  - IWDG/IWDG_WindowMode/Inc/stm32f0xx_hal_conf.h    HAL configuration file
+  - IWDG/IWDG_WindowMode/Inc/stm32f0xx_it.h          Interrupt handlers header file
+  - IWDG/IWDG_WindowMode/Inc/main.h                  Header for main.c module
+  - IWDG/IWDG_WindowMode/Src/stm32f0xx_it.c          Interrupt handlers
+  - IWDG/IWDG_WindowMode/Src/main.c                  Main program
+  - IWDG/IWDG_WindowMode/Src/system_stm32f0xx.c      STM32F0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F0xx devices.
+
+  - This example has been tested with STM32F030R8-Nucleo Rev C board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files: Project-&gt;Rebuild all
+ - Load project image: Project-&gt;Download and Debug
+ - Run program: Debug-&gt;Go(F5)
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF0GettingStarted.pdf">Getting started with STM32CubeF0 Embedded Software for STM32F0xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF0 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32F030R8-Nucleo Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/Data_Program/Data_Program.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/Dual_Boot/EWARM/Dual_Boot.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/HalfPage/HalfPage.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/ParallelHalfPage/ParallelHalfPage.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/Write_Protection/Write_Protection.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>Data_Program</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>Dual_Boot</project>
+        <configuration>STM32L1XX_HD_BANK1</configuration>
+      </member>
+      <member>
+        <project>Dual_Boot</project>
+        <configuration>STM32L1XX_HD_BANK2</configuration>
+      </member>
+      <member>
+        <project>HalfPage</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>HalfPage</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>ParallelHalfPage</project>
+        <configuration>STM32L152D-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>ParallelHalfPage</project>
+        <configuration>STM32L152D-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>Write_Protection</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>Write_Protection</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

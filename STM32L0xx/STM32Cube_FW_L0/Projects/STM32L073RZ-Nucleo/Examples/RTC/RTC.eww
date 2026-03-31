@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/RTC_Alarm/EWARM/RTC_Alarm.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/RTC_LSI/EWARM/RTC_LSI.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/RTC_Tamper/EWARM/RTC_Tamper.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/RTC_TimeStamp/EWARM/RTC_TimeStamp.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>RTC_Alarm</project>
+        <configuration>STM32L073RZ_NUCLEO</configuration>
+      </member>
+      <member>
+        <project>RTC_LSI</project>
+        <configuration>STM32L073RZ_NUCLEO</configuration>
+      </member>
+      <member>
+        <project>RTC_Tamper</project>
+        <configuration>STM32L073RZ_NUCLEO</configuration>
+      </member>
+      <member>
+        <project>RTC_TimeStamp</project>
+        <configuration>STM32L073RZ_NUCLEO</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

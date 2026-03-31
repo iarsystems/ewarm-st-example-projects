@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.JPN.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+EIC
+
+DESCRIPTION
+===========
+   This example demontrates the use of the Enhanced Interrupt Controller (EIC):
+
+  - Configuration of 8 TIM (TIM0..TIM7)timers to generate an interrupt
+    on each counter overflow event.
+  - TIM0 is linked to the first fast FIQ channel while all others timers
+    to their correspondant IRQ channel.
+  - Assignment of a descendant IRQ priority for each IRQ channel :
+    TIM1 has a priority of 7  and TIM7 has a priority of 1.
+  - In each interrupt routine, a pin of GPIO0 is chosen to toggle
+    the IRQ or FIQ (entry/exit) status.
+
+  The system clock(MCLK) is using the internal oscillator ~ 1.17MHz.
+  The prescaler of each timer is equal to the timer number. For example,
+  TIM7 has a prescaler = 7 .
+
+COMPATIBILITY
+=============
+  The project is compatible with the IAR STR730-SK evaluation board.
+  The project is by default configured to use the J-Link JTAG interface.
+
+CONFIGURATION
+=============
+  The application is downloaded to the flash memory.
+
+ Jumpers:
+  EXT/JLINK - the correct jumper position depends on the power source used
+
+GETTING STARTED
+===============
+  1) Connect the J-Link.
+  2) Power the board.
+  3) Build and download the example.
+  4) Run the example.
+
+   </pre>
+
+  </div>
+  </body>
+</html>
+

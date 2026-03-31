@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/PWR_CurrentConsumption/EWARM/PWR_CurrentConsumption.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/PWR_PVD/EWARM/PWR_PVD.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>PWR_CurrentConsumption</project>
+        <configuration>STM32F3348-Discovery</configuration>
+      </member>
+      <member>
+        <project>PWR_PVD</project>
+        <configuration>STM32F3348-Discovery</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

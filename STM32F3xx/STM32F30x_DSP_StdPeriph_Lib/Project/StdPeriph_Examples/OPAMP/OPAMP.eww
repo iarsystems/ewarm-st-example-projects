@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/InternalFollower/InternalFollower.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/PGA/PGA.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/TimerControlledMux/TimerControlledMux.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>InternalFollower</project>
+        <configuration>STM32303C-EVAL</configuration>
+      </member>
+      <member>
+        <project>PGA</project>
+        <configuration>STM32303C-EVAL</configuration>
+      </member>
+      <member>
+        <project>TimerControlledMux</project>
+        <configuration>STM32303C-EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

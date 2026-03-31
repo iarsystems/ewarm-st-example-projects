@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<exampleInfo>
+  <copyDir>..\..\..\..\Drivers\BSP\Components\Common\</copyDir>
+  <copyDir>..\..\..\..\Drivers\BSP\Components\ili9320\</copyDir>
+  <copyDir>..\..\..\..\Drivers\BSP\Components\ili9325\</copyDir>
+  <copyDir>..\..\..\..\Drivers\BSP\Components\stmpe811\</copyDir>
+  <copyDir>..\..\..\..\Drivers\BSP\STM322xG_EVAL\</copyDir>
+  <copyDir>..\..\..\..\Drivers\CMSIS\Device\ST\STM32F2xx\</copyDir>
+  <copyDir>..\..\..\..\Drivers\STM32F2xx_HAL_Driver\</copyDir>
+  <copyDir>..\..\..\..\Utilities\Fonts\</copyDir>
+</exampleInfo>

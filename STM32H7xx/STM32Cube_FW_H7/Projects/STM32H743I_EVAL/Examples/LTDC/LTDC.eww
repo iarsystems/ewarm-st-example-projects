@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/LTDC_ColorKeying/EWARM/LTDC_ColorKeying.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/LTDC_Display_1Layer/EWARM/LTDC_Display_1Layer.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/LTDC_Display_2Layers/EWARM/LTDC_Display_2Layers.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>LTDC_ColorKeying</project>
+        <configuration>STM32H743I_EVAL</configuration>
+      </member>
+      <member>
+        <project>LTDC_Display_1Layer</project>
+        <configuration>STM32H743I_EVAL</configuration>
+      </member>
+      <member>
+        <project>LTDC_Display_2Layers</project>
+        <configuration>STM32H743I_EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

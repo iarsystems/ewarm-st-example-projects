@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/BitBand/BitBand.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/ModePrivilege/Mode_Privilege.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>BitBand</project>
+        <configuration>STM32303C-EVAL</configuration>
+      </member>
+      <member>
+        <project>Mode_Privilege</project>
+        <configuration>STM32303C-EVAL</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

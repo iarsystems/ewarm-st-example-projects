@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/ADC1_DMA/ADC1_DMA.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/ADC1_Freeze/ADC1_Freeze.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/ADC1_IDDmeas/ADC1_IDDmeas.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/ADC1_AnalogWatchdog/AnalogWatchdog.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>ADC1_DMA</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>ADC1_DMA</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>ADC1_Freeze</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>ADC1_Freeze</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>ADC1_IDDmeas</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>ADC1_IDDmeas</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+      <member>
+        <project>AnalogWatchdog</project>
+        <configuration>STM32L152-EVAL Flash Debug</configuration>
+      </member>
+      <member>
+        <project>AnalogWatchdog</project>
+        <configuration>STM32L152-EVAL RAM Debug</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

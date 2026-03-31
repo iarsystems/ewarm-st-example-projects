@@ -1,0 +1,357 @@
+/**
+  ******************************************************************************
+  * @file    HRTIM/HRTIM_FaultEvent/Src/main.c 
+  * @author  MCD Application Team
+  * @version V1.0.0
+  * @date    21-April-2017
+  * @brief   Main program body
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; COPYRIGHT(c) 2017 STMicroelectronics</center></h2>
+  *
+  * Redistribution and use in source and binary forms, with or without modification,
+  * are permitted provided that the following conditions are met:
+  *   1. Redistributions of source code must retain the above copyright notice,
+  *      this list of conditions and the following disclaimer.
+  *   2. Redistributions in binary form must reproduce the above copyright notice,
+  *      this list of conditions and the following disclaimer in the documentation
+  *      and/or other materials provided with the distribution.
+  *   3. Neither the name of STMicroelectronics nor the names of its contributors
+  *      may be used to endorse or promote products derived from this software
+  *      without specific prior written permission.
+  *
+  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  *
+  ******************************************************************************
+  */
+
+/* Includes ------------------------------------------------------------------*/
+#include "main.h"
+
+/** @addtogroup STM32H7xx_HAL_Examples
+  * @{
+  */
+
+/** @addtogroup HRTIM_FaultEvent
+  * @{
+  */
+
+/* Private typedef -----------------------------------------------------------*/
+/* Private define ------------------------------------------------------------*/
+#define HRTIM_TIMA_PERIOD  0xFFFF
+
+/* Private macro -------------------------------------------------------------*/
+/* Private variables ---------------------------------------------------------*/
+/* Timer handler declaration */
+HRTIM_HandleTypeDef                 HrtimHandle;
+
+HRTIM_TimeBaseCfgTypeDef            sConfig_time_base;
+HRTIM_TimerCfgTypeDef               sConfig_timerA;
+HRTIM_OutputCfgTypeDef              sConfig_output_config;
+HRTIM_CompareCfgTypeDef             sConfig_compare;
+HRTIM_FaultCfgTypeDef               sConfig_fault2;
+
+/* Private function prototypes -----------------------------------------------*/
+static void SystemClock_Config(void);
+static void Error_Handler(void);
+static void MPU_Config(void);
+static void CPU_CACHE_Enable(void);
+
+/* Private functions ---------------------------------------------------------*/
+
+/**
+  * @brief  Main program
+  * @param  None
+  * @retval None
+  */
+int main(void)
+{
+  /* Configure the MPU attributes as Write Through */
+  MPU_Config();
+
+  /* Enable the CPU Cache */
+  CPU_CACHE_Enable();
+
+  /* STM32H7xx HAL library initialization:
+       - Configure the Systick to generate an interrupt each 1 msec
+       - Set NVIC Group Priority to 4
+       - Low Level Initialization
+  */
+  HAL_Init();
+
+  /* Configure the system clock to 400 MHz */
+  SystemClock_Config();
+
+  /*##-1- Configure the HRTIM peripheral ######################################################*/
+  /* Initialize the HRTIM structure */
+  HrtimHandle.Instance = HRTIM1;
+  HrtimHandle.Init.HRTIMInterruptResquests = HRTIM_IT_NONE;
+  HrtimHandle.Init.SyncOptions = HRTIM_SYNCOPTION_NONE;
+
+  HAL_HRTIM_Init(&HrtimHandle);
+
+  /*##-2- Configure the HRTIM TIMA PWM channels 1 & 2 #########################################*/
+  sConfig_time_base.Mode = HRTIM_MODE_CONTINUOUS;
+  sConfig_time_base.Period = HRTIM_TIMA_PERIOD;
+  sConfig_time_base.PrescalerRatio = HRTIM_PRESCALERRATIO_DIV1;
+  sConfig_time_base.RepetitionCounter = 0;
+          
+  HAL_HRTIM_TimeBaseConfig(&HrtimHandle, HRTIM_TIMERINDEX_TIMER_A, &sConfig_time_base);
+
+  sConfig_timerA.DMARequests = HRTIM_TIM_DMA_NONE;
+  sConfig_timerA.HalfModeEnable = HRTIM_HALFMODE_DISABLED;
+  sConfig_timerA.StartOnSync = HRTIM_SYNCSTART_DISABLED;
+  sConfig_timerA.ResetOnSync = HRTIM_SYNCRESET_DISABLED;
+  sConfig_timerA.DACSynchro = HRTIM_DACSYNC_NONE;
+  sConfig_timerA.PreloadEnable = HRTIM_PRELOAD_ENABLED;
+  sConfig_timerA.UpdateGating = HRTIM_UPDATEGATING_INDEPENDENT;
+  sConfig_timerA.BurstMode = HRTIM_TIMERBURSTMODE_MAINTAINCLOCK;
+  sConfig_timerA.RepetitionUpdate = HRTIM_UPDATEONREPETITION_ENABLED;
+  sConfig_timerA.ResetUpdate = HRTIM_TIMUPDATEONRESET_DISABLED;
+  sConfig_timerA.InterruptRequests = HRTIM_TIM_IT_NONE;
+  sConfig_timerA.PushPull = HRTIM_TIMPUSHPULLMODE_DISABLED;
+  sConfig_timerA.FaultEnable = HRTIM_TIMFAULTENABLE_FAULT2;
+  sConfig_timerA.FaultLock = HRTIM_TIMFAULTLOCK_READWRITE;
+  sConfig_timerA.DeadTimeInsertion = HRTIM_TIMDEADTIMEINSERTION_DISABLED;
+  sConfig_timerA.DelayedProtectionMode = HRTIM_TIMER_A_B_C_DELAYEDPROTECTION_DISABLED;
+  sConfig_timerA.UpdateTrigger= HRTIM_TIMUPDATETRIGGER_NONE;
+  sConfig_timerA.ResetTrigger = HRTIM_TIMRESETTRIGGER_NONE;
+
+  HAL_HRTIM_WaveformTimerConfig(&HrtimHandle, HRTIM_TIMERINDEX_TIMER_A,&sConfig_timerA);
+
+  sConfig_compare.AutoDelayedMode = HRTIM_AUTODELAYEDMODE_REGULAR;
+  sConfig_compare.AutoDelayedTimeout = 0;
+  sConfig_compare.CompareValue = HRTIM_TIMA_PERIOD/2;
+
+  HAL_HRTIM_WaveformCompareConfig(&HrtimHandle, HRTIM_TIMERINDEX_TIMER_A, HRTIM_COMPAREUNIT_1, &sConfig_compare);
+
+  sConfig_compare.CompareValue = HRTIM_TIMA_PERIOD/4;
+  HAL_HRTIM_WaveformCompareConfig(&HrtimHandle, HRTIM_TIMERINDEX_TIMER_A, HRTIM_COMPAREUNIT_2, &sConfig_compare);
+
+  sConfig_output_config.Polarity = HRTIM_OUTPUTPOLARITY_HIGH;
+  sConfig_output_config.SetSource = HRTIM_OUTPUTSET_TIMPER;
+  sConfig_output_config.ResetSource = HRTIM_OUTPUTRESET_TIMCMP1;
+  sConfig_output_config.IdleMode = HRTIM_OUTPUTIDLEMODE_NONE;
+  sConfig_output_config.IdleLevel = HRTIM_OUTPUTIDLELEVEL_INACTIVE;
+  sConfig_output_config.FaultLevel = HRTIM_OUTPUTFAULTLEVEL_INACTIVE;
+  sConfig_output_config.ChopperModeEnable = HRTIM_OUTPUTCHOPPERMODE_DISABLED;
+  sConfig_output_config.BurstModeEntryDelayed = HRTIM_OUTPUTBURSTMODEENTRY_REGULAR;
+
+  HAL_HRTIM_WaveformOutputConfig(&HrtimHandle, HRTIM_TIMERINDEX_TIMER_A, HRTIM_OUTPUT_TA1, &sConfig_output_config);
+
+  sConfig_output_config.ResetSource = HRTIM_OUTPUTRESET_TIMPER;
+  sConfig_output_config.SetSource = HRTIM_OUTPUTSET_TIMCMP2;
+
+  HAL_HRTIM_WaveformOutputConfig(&HrtimHandle, HRTIM_TIMERINDEX_TIMER_A, HRTIM_OUTPUT_TA2, &sConfig_output_config);
+
+  /*##-3- Fault Event configuration   #########################################################*/
+/* Fault conditionning configuration */
+  sConfig_fault2.Source = HRTIM_FAULTSOURCE_DIGITALINPUT;
+  sConfig_fault2.Polarity = HRTIM_FAULTPOLARITY_HIGH;
+  sConfig_fault2.Filter = HRTIM_FAULTFILTER_NONE;
+  sConfig_fault2.Lock = HRTIM_FAULTLOCK_READWRITE;
+  
+  HAL_HRTIM_FaultPrescalerConfig(&HrtimHandle, HRTIM_FAULTPRESCALER_DIV1);
+  
+  HAL_HRTIM_FaultConfig(&HrtimHandle, HRTIM_FAULT_2, &sConfig_fault2);
+  
+  /* Enable Fault2 input */
+  HAL_HRTIM_FaultModeCtl(&HrtimHandle, HRTIM_FAULT_2, HRTIM_FAULTMODECTL_ENABLED);
+
+  /*##-4- Start PWM signals generation ########################################################*/
+  if (HAL_HRTIM_WaveformOutputStart(&HrtimHandle, HRTIM_OUTPUT_TA1 + HRTIM_OUTPUT_TA2) != HAL_OK)
+  {
+    /* PWM Generation Error */
+    Error_Handler();
+  }
+
+/*##-5- Start HRTIM counter ###################################################################*/
+  if (HAL_HRTIM_WaveformCounterStart(&HrtimHandle, HRTIM_TIMERID_TIMER_A) != HAL_OK)
+  {
+    /* PWM Generation Error */
+    Error_Handler();
+  }
+  /* Infinite loop */
+  while (1)
+  {
+  }
+}
+
+/**
+  * @brief  System Clock Configuration
+  *         The system Clock is configured as follow : 
+  *            System Clock source            = PLL (HSE)
+  *            SYSCLK(Hz)                     = 400000000 (CPU Clock)
+  *            HCLK(Hz)                       = 200000000 (AXI and AHBs Clock)
+  *            AHB Prescaler                  = 2
+  *            D1 APB3 Prescaler              = 2 (APB3 Clock  100MHz)
+  *            D2 APB1 Prescaler              = 2 (APB1 Clock  100MHz)
+  *            D2 APB2 Prescaler              = 2 (APB2 Clock  100MHz)
+  *            D3 APB4 Prescaler              = 2 (APB4 Clock  100MHz)
+  *            HSE Frequency(Hz)              = 25000000
+  *            PLL_M                          = 5
+  *            PLL_N                          = 160
+  *            PLL_P                          = 2
+  *            PLL_Q                          = 4
+  *            PLL_R                          = 2
+  *            VDD(V)                         = 3.3
+  *            Flash Latency(WS)              = 4
+  * @param  None
+  * @retval None
+  */
+static void SystemClock_Config(void)
+{
+  RCC_ClkInitTypeDef RCC_ClkInitStruct;
+  RCC_OscInitTypeDef RCC_OscInitStruct;
+  HAL_StatusTypeDef ret = HAL_OK;
+  
+  /*!< Supply configuration update enable */
+  MODIFY_REG(PWR->CR3, PWR_CR3_SCUEN, 0);
+
+  /* The voltage scaling allows optimizing the power consumption when the device is 
+     clocked below the maximum system frequency, to update the voltage scaling value 
+     regarding system frequency refer to product datasheet.  */
+  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+
+  while ((PWR->D3CR & (PWR_D3CR_VOSRDY)) != PWR_D3CR_VOSRDY) {}
+  
+  /* Enable HSE Oscillator and activate PLL with HSE as source */
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.HSIState = RCC_HSI_OFF;
+  RCC_OscInitStruct.CSIState = RCC_CSI_OFF;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+
+  RCC_OscInitStruct.PLL.PLLM = 5;
+  RCC_OscInitStruct.PLL.PLLN = 160;
+  RCC_OscInitStruct.PLL.PLLP = 2;
+  RCC_OscInitStruct.PLL.PLLR = 2;
+  RCC_OscInitStruct.PLL.PLLQ = 4;
+
+  RCC_OscInitStruct.PLL.PLLVCOSEL = RCC_PLL1VCOWIDE;
+  RCC_OscInitStruct.PLL.PLLRGE = RCC_PLL1VCIRANGE_2;
+  ret = HAL_RCC_OscConfig(&RCC_OscInitStruct);
+  if(ret != HAL_OK)
+  {
+    Error_Handler();
+  }
+  
+/* Select PLL as system clock source and configure  bus clocks dividers */
+  RCC_ClkInitStruct.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_D1PCLK1 | RCC_CLOCKTYPE_PCLK1 | \
+                                 RCC_CLOCKTYPE_PCLK2  | RCC_CLOCKTYPE_D3PCLK1);
+
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+  RCC_ClkInitStruct.SYSCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_HCLK_DIV2;
+  RCC_ClkInitStruct.APB3CLKDivider = RCC_APB3_DIV2;  
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_APB1_DIV2; 
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_APB2_DIV2; 
+  RCC_ClkInitStruct.APB4CLKDivider = RCC_APB4_DIV2; 
+  ret = HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_4);
+  if(ret != HAL_OK)
+  {
+    Error_Handler();
+  }
+}
+
+/**
+  * @brief  This function is executed in case of error occurrence.
+  * @param  None
+  * @retval None
+  */
+static void Error_Handler(void)
+{
+  /* User may add here some code to deal with this error */
+  while(1)
+  {
+  }
+}
+
+/**
+  * @brief  Configure the MPU attributes as Write Through for Internal D1SRAM.
+  * @note   The Base Address is 0x24000000 since this memory interface is the AXI.
+  *         The Configured Region Size is 512KB because same as D1SRAM size.
+  * @param  None
+  * @retval None
+  */
+static void MPU_Config(void)
+{
+  MPU_Region_InitTypeDef MPU_InitStruct;
+  
+  /* Disable the MPU */
+  HAL_MPU_Disable();
+
+  /* Configure the MPU attributes as WT for SRAM */
+  MPU_InitStruct.Enable = MPU_REGION_ENABLE;
+  MPU_InitStruct.BaseAddress = 0x24000000;
+  MPU_InitStruct.Size = MPU_REGION_SIZE_512KB;
+  MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
+  MPU_InitStruct.IsBufferable = MPU_ACCESS_NOT_BUFFERABLE;
+  MPU_InitStruct.IsCacheable = MPU_ACCESS_CACHEABLE;
+  MPU_InitStruct.IsShareable = MPU_ACCESS_SHAREABLE;
+  MPU_InitStruct.Number = MPU_REGION_NUMBER0;
+  MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL0;
+  MPU_InitStruct.SubRegionDisable = 0x00;
+  MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_ENABLE;
+
+  HAL_MPU_ConfigRegion(&MPU_InitStruct);
+
+  /* Enable the MPU */
+  HAL_MPU_Enable(MPU_PRIVILEGED_DEFAULT);
+}
+
+/**
+  * @brief  CPU L1-Cache enable.
+  * @param  None
+  * @retval None
+  */
+static void CPU_CACHE_Enable(void)
+{
+  /* Enable I-Cache */
+  SCB_EnableICache();
+
+  /* Enable D-Cache */
+  SCB_EnableDCache();
+}
+
+#ifdef  USE_FULL_ASSERT
+
+/**
+  * @brief  Reports the name of the source file and the source line number
+  *         where the assert_param error has occurred.
+  * @param  file: pointer to the source file name
+  * @param  line: assert_param error line source number
+  * @retval None
+  */
+void assert_failed(uint8_t* file, uint32_t line)
+{ 
+  /* User can add his own implementation to report the file name and line number,
+     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+
+  /* Infinite loop */
+  while (1)
+  {
+  }
+}
+#endif
+
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
+
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

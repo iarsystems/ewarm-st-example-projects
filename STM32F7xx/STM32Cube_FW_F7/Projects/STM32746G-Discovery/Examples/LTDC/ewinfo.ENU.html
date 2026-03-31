@@ -1,0 +1,282 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>LTDC Workspace</h1>
+
+=====================================================================================
+<b>LTDC_Display_1Layer</b>
+LTDC Display Layer 1 example
+=====================================================================================
+
+<u>Example Description</u>
+
+  This example provides a description of how to configure LTDC peripheral to
+  display a BMP image of size 480x272 and format RGB888 (24 bits/pixel) on LCD using only one layer.
+  In this basic example the goal is to explain the different fields of the LTDC
+  structure.
+
+  At the beginning of the main program the HAL_Init() function is called to reset
+  all the peripherals, initialize the Flash interface and the systick.
+  Then the SystemClock_Config() function is used to configure the system
+  clock (SYSCLK) to run at 216 MHz.
+
+  After LCD initialization, the LCD layer 1 is configured to display an image
+  (modelled by an array) loaded directly from flash memory by LTDC integrated DMA.
+
+  LCD_TFT synchronous timings configuration :
+  -------------------------------------------
+
+                                             Total Width
+                          &lt;---------------------------------------------------&gt;
+                    Hsync width HBP             Active Width                HFP
+                          &lt;---&gt;&lt;--&gt;&lt;--------------------------------------&gt;&lt;--&gt;
+                      ____    ____|_______________________________________|____
+                          |___|   |                                       |    |
+                                  |                                       |    |
+                      __|         |                                       |    |
+         /|\    /|\  |            |                                       |    |
+          | VSYNC|   |            |                                       |    |
+          |Width\|/  |__          |                                       |    |
+          |     /|\     |         |                                       |    |
+          |  VBP |      |         |                                       |    |
+          |     \|/_____|_________|_______________________________________|    |
+          |     /|\     |         | / / / / / / / / / / / / / / / / / / / |    |
+          |      |      |         |/ / / / / / / / / / / / / / / / / / / /|    |
+ Total    |      |      |         |/ / / / / / / / / / / / / / / / / / / /|    |
+ Heigh    |      |      |         |/ / / / / / / / / / / / / / / / / / / /|    |
+          |Active|      |         |/ / / / / / / / / / / / / / / / / / / /|    |
+          |Heigh |      |         |/ / / / / / Active Display Area / / / /|    |
+          |      |      |         |/ / / / / / / / / / / / / / / / / / / /|    |
+          |      |      |         |/ / / / / / / / / / / / / / / / / / / /|    |
+          |      |      |         |/ / / / / / / / / / / / / / / / / / / /|    |
+          |      |      |         |/ / / / / / / / / / / / / / / / / / / /|    |
+          |      |      |         |/ / / / / / / / / / / / / / / / / / / /|    |
+          |     \|/_____|_________|_______________________________________|    |
+          |     /|\     |                                                      |
+          |  VFP |      |                                                      |
+         \|/    \|/_____|______________________________________________________|
+
+  Each LCD device has its specific synchronous timings values.
+  This example uses AM480272H3TMQW-T01H LCD (MB1046 B-01) and configures
+  the synchronous timings as following :
+
+  Horizontal Synchronization (Hsync) = 41
+  Horizontal Back Porch (HBP)        = 13
+  Active Width                       = 480
+  Horizontal Front Porch (HFP)       = 32
+
+  Vertical Synchronization (Vsync)   = 10
+  Vertical Back Porch (VBP)          = 2
+  Active Heigh                       = 272
+  Vertical Front Porch (VFP)         = 2
+
+  LCD_TFT windowing configuration :
+  ---------------------------------
+
+  To configure the active display window, this example configures the
+  horizontal/vertical start and stop.
+
+  HorizontalStart = (Offset_X + Hsync + HBP);
+  HorizontalStop  = (Offset_X + Hsync + HBP + Window_Width - 1);
+  VarticalStart   = (Offset_Y + Vsync + VBP);
+  VerticalStop    = (Offset_Y + Vsync + VBP + Window_Heigh - 1);
+
+  Window_width and Window_heigh should be in line with the image size to be
+  displayed.
+
+STM32 Discovery board's LED can be used to monitor the transfer status:
+ - LED1 is ON when there is an error in Init process.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application needs to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Keywords</u>
+
+Display, LTDC, Display Controller, TFT, LCD, Graphic, RGB888, 1 Layer, BMP,
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+    - LTDC/LTDC_Display_1Layer/Inc/stm32f7xx_hal_conf.h  HAL configuration file
+    - LTDC/LTDC_Display_1Layer/Inc/stm32f7xx_it.h        Interrupt handlers header file
+    - LTDC/LTDC_Display_1Layer/Inc/main.h                Main configuration file
+    - LTDC/LTDC_Display_1Layer/Src/stm32f7xx_it.c        Interrupt handlers
+    - LTDC/LTDC_Display_1Layer/Src/main.c                Main program
+    - LTDC/LTDC_Display_1Layer/Src/stm32f7xx_hal_msp.c   HAL MSP module
+    - LTDC/LTDC_Display_1Layer/Src/system_stm32f7xx.c    STM32F7xx system clock configuration file
+    - LTDC/LTDC_Display_1Layer/Inc/RGB565_480x272.h      Image of size 480x272 and format RGB565 to be displayed on LCD
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F746xx devices.
+
+  - This example has been tested with STM32746G-DISCOVERY revB and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>LTDC_Display_2Layers</b>
+LTDC Display 2 layers example
+=====================================================================================
+
+<u>Example Description</u>
+
+  This example describes how to configure the LTDC peripheral to display two Layers
+  at the same time.
+  The goal of this example is to explain how to blend two layers and how to display
+  an image with L8 (8bits per pixels indexed) as pixel format.
+
+  At the beginning of the main program the HAL_Init() function is called to reset
+  all the peripherals, initialize the Flash interface and the systick.
+  Then the SystemClock_Config() function is used to configure the system
+  clock (SYSCLK) to run at 216 MHz.
+
+  After LCD initialization, the LCD layer 1 and Layer 2 are configured as follows :
+  - Layer 1 is configured to display an image loaded from flash memory with direct
+    color (RGB565) as pixel format and 320x240 (QVGA) size.
+  - Layer 2 is configured to display an image loaded from flash memory with indirect
+    color (L8) as pixel format and 320x240 (QVGA) size.
+    To display an image with an indirect color as pixel format, a color lookup table (CLUT)
+    is loaded, then every byte from image data (L8_320x240) is considered as
+    a position in color lookup table (CLUT).(see example below)
+
+  The blending is always active and the two layers can be blended following
+  the configured blending factors and the constant alpha.
+  In this example the constant alpha for layer 2 is decreased to see the layer 1
+  in the intersection zone.
+
+  Example :
+  ------------------------------------------------------------------------------
+  |Image data   |  position   CLUT(RGB Value)  |   Alpha  | Output (ARGB value)|
+  |-------------|------------------------------|----------|------------------- |
+  |00 10 FF 25  |  0   -----&gt; 0xFD10EA         | 0xFF     | 0xFFFD10EA         |
+  |             |  .                           |          | 0xFF1548AD         |
+  |             |  .                           |          | 0xFFAE6547         |
+  |             |  .                           |          | 0xFFDA14EA         |
+  |             |  .                           |          | .                  |
+  |             |  16  -----&gt; 0x1548AD         |          | .                  |
+  |             |  .                           |          | .                  |
+  |             |  .                           |          | .                  |
+  |             |  37  -----&gt; 0xDA14EA         |          | .                  |
+  |             |  .                           |          |                    |
+  |             |  .                           |          |                    |
+  |             |  255 -----&gt; 0xAE6547         |          |                    |
+  ------------------------------------------------------------------------------
+
+  The images swap their positions across the LCD in an infinite loop.
+
+STM32 Discovery board's LED can be used to monitor the transfer status:
+ - LED1 is ON when there is an error in Init process.
+
+Note: Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+      a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
+      than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
+      To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
+
+Note: The application need to ensure that the SysTick time base is always set to 1 millisecond
+      to have correct HAL operation.
+
+
+<u>Keywords</u>
+
+Display, LTDC, Display Controller, TFT, LCD, Graphic, RGB888, 2 Layers, BMP,
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+    - LTDC/LTDC_Display_2Layers/Inc/stm32f7xx_hal_conf.h    HAL configuration file
+    - LTDC/LTDC_Display_2Layers/Inc/stm32f7xx_it.h          Interrupt handlers header file
+    - LTDC/LTDC_Display_2Layers/Inc/main.h                  Main configuration file
+    - LTDC/LTDC_Display_2Layers/Src/stm32f7xx_it.c          Interrupt handlers
+    - LTDC/LTDC_Display_2Layers/Src/main.c                  Main program
+    - LTDC/LTDC_Display_2Layers/Src/stm32f7xx_hal_msp.c     HAL MSP module
+    - LTDC/LTDC_Display_2Layers/Src/system_stm32f7xx.c      STM32F7xx system clock configuration file
+    - LTDC/LTDC_Display_2Layers/Inc/RGB565_320x240.h        Image layer 1 to be displayed on LCD : QVGA (320x240) in RGB565
+    - LTDC/LTDC_Display_2Layers/Inc/L8_320x240.h            Image layer 2 to be displayed on LCD QVGA (320x240) with CLUT8 format.
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F7xx devices.
+
+  - This example has been tested with STM32746G-DISCOVERY revB and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF7GettingStarted.pdf">Getting started with STM32CubeF7 Embedded Software for STM32F7xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF7 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32746G-Discovery Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

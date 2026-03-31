@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/FMC_PSRAM/EWARM/FMC_PSRAM.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/FMC_PSRAM_PreInitConfig/EWARM/FMC_PSRAM_PreInitConfig.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>FMC_PSRAM</project>
+        <configuration>STM32F723E_DISCOVERY</configuration>
+      </member>
+      <member>
+        <project>FMC_PSRAM_PreInitConfig</project>
+        <configuration>STM32F723E_DISCOVERY</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.JPN.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>DMA Workspace</h1>
+
+=====================================================================================
+<b>DMA_CopyFromFlashToMemory</b>
+DMA example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to use a DMA to transfer a word data buffer
+from Flash memory to embedded SRAM. Peripheral initialization done using
+LL unitary services functions for optimization purpose (performance and size).
+
+At the beginning of the main program the SystemClock_Config() function is used to configure the system
+clock (SYSCLK) to run at 216 MHz.
+
+Then the LED_Init() function is used to initialize the LED1.
+
+Then the Configure_DMA() function is used to configure the DMA2_Stream0 to transfer the contents of a 32-word data
+buffer stored in Flash memory to the reception buffer declared in RAM.
+
+The start of transfer is triggered by software(LL_DMA_EnableStream()). DMA2_Stream0 memory-to-memory
+transfer is enabled. Source and destination addresses incrementing is also enabled.
+The transfer is started by setting the channel enable bit for DMA2_Stream0.
+At the end of the transfer a Transfer Complete interrupt is generated since it
+is enabled and the callback function (customized by user) is called.
+
+Finally, aSRC_Const_Buffer and aDST_Buffer are compared through Buffercmp() in order to
+check buffers correctness.
+
+NUCLEO-F767ZI's LED1 can be used to monitor the transfer status:
+- LED1 is turn on if DMA data transferred consistency.
+- LED1 is blinking every 1 sec in case of error.
+
+
+<u>Keywords</u>
+
+System, DMA, Data Transfer, Memory to memory, Stream, Flash, SRAM
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - DMA/DMA_CopyFromFlashToMemory/Inc/stm32f7xx_it.h          Interrupt handlers header file
+  - DMA/DMA_CopyFromFlashToMemory/Inc/main.h                  Header for main.c module
+  - DMA/DMA_CopyFromFlashToMemory/Inc/stm32_assert.h          Template file to include assert_failed function
+  - DMA/DMA_CopyFromFlashToMemory/Src/stm32f7xx_it.c          Interrupt handlers
+  - DMA/DMA_CopyFromFlashToMemory/Src/main.c                  Main program
+  - DMA/DMA_CopyFromFlashToMemory/Src/system_stm32f7xx.c      STM32F7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F767xx devices.
+
+  - This example has been tested with NUCLEO-F767ZI board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>DMA_CopyFromFlashToMemory_Init</b>
+DMA example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to use a DMA to transfer a word data buffer
+from Flash memory to embedded SRAM. Peripheral initialization done
+using LL initialization function to demonstrate LL init usage.
+
+At the beginning of the main program the SystemClock_Config() function is used to configure the system
+clock (SYSCLK) to run at 216 MHz.
+
+Then the LED_Init() function is used to initialize the LED1.
+
+Then the Configure_DMA() function is used to configure the DMA2_Stream0 to transfer the contents of a 32-word data
+buffer stored in Flash memory to the reception buffer declared in RAM.
+
+The start of transfer is triggered by software(LL_DMA_EnableStream()). DMA2_Stream0 memory-to-memory
+transfer is enabled. Source and destination addresses incrementing is also enabled.
+The transfer is started by setting the channel enable bit for DMA2_Stream0.
+At the end of the transfer a Transfer Complete interrupt is generated since it
+is enabled and the callback function (customized by user) is called.
+
+Finally, aSRC_Const_Buffer and aDST_Buffer are compared through Buffercmp() in order to
+check buffers correctness.
+
+NUCLEO-F767ZI's LED1 can be used to monitor the transfer status:
+- LED1 is turned ON if the DMA data transfer is successfully completed.
+- LED1 is blinking every 1 sec in case of error.
+
+
+<u>Keywords</u>
+
+System, DMA, Data Transfer, Memory to memory, Stream, Flash, SRAM
+
+Note:  If the user code size exceeds the DTCM-RAM size or starts from internal cacheable memories (SRAM1 and SRAM2),
+       it is recommended to configure the latters as Write Through.
+       This is ensured by configuring the memory attributes at MPU level in order to ensure cache coherence on SRAM1 and SRAM2.
+       Please, refer to Template project for a typical MPU configuration.
+
+Note:  If external memory is shared between several processors, it is recommended to configure it as Write Back (bufferable), shareable and cacheable.
+       The memory base address and size must be properly updated.
+       The user needs to manage the cache coherence at application level.
+
+For more details about the MPU configuration and use, please refer to AN4838 Managing memory protection unit (MPU) in STM32 MCUs
+
+
+<u>Directory contents</u>
+
+  - DMA/DMA_CopyFromFlashToMemory_Init/Inc/stm32f7xx_it.h          Interrupt handlers header file
+  - DMA/DMA_CopyFromFlashToMemory_Init/Inc/main.h                  Header for main.c module
+  - DMA/DMA_CopyFromFlashToMemory_Init/Inc/stm32_assert.h          Template file to include assert_failed function
+  - DMA/DMA_CopyFromFlashToMemory_Init/Src/stm32f7xx_it.c          Interrupt handlers
+  - DMA/DMA_CopyFromFlashToMemory_Init/Src/main.c                  Main program
+  - DMA/DMA_CopyFromFlashToMemory_Init/Src/system_stm32f7xx.c      STM32F7xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F767xx devices.
+
+  - This example has been tested with NUCLEO-F767ZI board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF7GettingStarted.pdf">Getting started with STM32CubeF7 Embedded Software for STM32F7xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF7 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32F767ZI-Nucleo Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

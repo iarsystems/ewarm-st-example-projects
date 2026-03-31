@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.JPN.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>CRS Workspace</h1>
+
+=====================================================================================
+<b>CRS_Synchronization_IT</b>
+CRS example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to configure Clock Recovery Service in IT mode through
+the STM32L0xx CRS LL API. Peripheral initialization done using
+LL unitary services functions for optimization purpose (performance and size).
+
+At the beginning of the main program the SystemClock_Config() function is used to
+configure the system clock (SYSCLK) to run at 2.097 MHz.
+
+Then, HSI48 and LSE oscillators are enabled.
+In this example, after pressing the user button, as a first step a synchronization miss is raised
+when using a wrong synchronization source i.e. GPIO with nothing connected (instead of LSE).
+In a 2nd step, a reconfiguration is done to use LSE source and reach the correct synchronization.
+HSI48 synchronize to LSE (32768Hz), adjusting the trimmer such to get the counting to 48000000/32768.
+
+In this test, this is the scenario:
+ - set the source to GPIO and then enable IT
+ - Wait for User push-button press to start the test (Fast toggle LED2)
+ - to provoke a SYNC event, call the software event generation function
+ - Interrupt is raised to indicate a SYNC MISS and LED2 remains off
+ - in main program, wait for 1 sec and reconfigure source to LSE
+ - Interrupt is raised to indicate a SYNC OK and then power on LED2
+ - Toggle quickly LED2 when SYNC WARN is detected
+ - Increase tollerance (FELIM value) when SYNC WARN is detected
+ - At the end of the test LED2 should stay ON
+
+
+<u>Directory contents</u>
+
+  - CRS/CRS_Synchronization_IT/Inc/stm32l0xx_it.h          Interrupt handlers header file
+  - CRS/CRS_Synchronization_IT/Inc/main.h                  Header for main.c module
+  - CRS/CRS_Synchronization_IT/Inc/stm32_assert.h          Template file to include assert_failed function
+  - CRS/CRS_Synchronization_IT/Src/stm32l0xx_it.c          Interrupt handlers
+  - CRS/CRS_Synchronization_IT/Src/main.c                  Main program
+  - CRS/CRS_Synchronization_IT/Src/system_stm32l0xx.c      STM32L0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32L073xx devices.
+
+  - This example has been tested with STM32L073RZ-Nucleo Rev C board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32L073RZ-Nucleo Rev C Set-up
+    - Connect the MCO pin to an oscilloscope to monitor HSI48 frequency:
+      - PA.08: connected to pin 23 of CN10 connector
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>CRS_Synchronization_Polling</b>
+CRS example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to configure Clock Recovery Service in polling mode through
+the STM32L0xx CRS LL API. Peripheral initialization done using
+LL unitary services functions for optimization purpose (performance and size).
+
+At the beginning of the main program the SystemClock_Config() function is used to
+configure the system clock (SYSCLK) to run at 2.097 MHz.
+
+Then, HSI48 and LSE oscillators are enabled. In this example CRS will use LSE
+oscillator to calibrate HSI48 frequency.
+When HSI48 and LSE are started, automatic calibration starts and program call the
+polling function to wait for synchronization status.
+
+In this test, there are results which could occur:
+ - Wait for User push-button press to start the test (Fast toggle LED2)
+ - few loops occurs up to SYNC OK event (if SYNC WARN, HSI48 trimming value will be
+ automatically modified)
+ - in case of SYNC MISS or SYNC ERROR, there is an issue with synchronization input
+ parameters. In this case, user need to apply new parameters after checking synchronization
+ information and restart the synchronization.
+ - LED2 is slowly blinking (1 sec. period) in case of timeout during polling
+ procedure. It may due to an issue with LSE synchronization frequency.
+ - LED2 will finally power on if SYNC OK is returned by CRS.
+
+
+<u>Directory contents</u>
+
+  - CRS/CRS_Synchronization_Polling/Inc/stm32l0xx_it.h          Interrupt handlers header file
+  - CRS/CRS_Synchronization_Polling/Inc/main.h                  Header for main.c module
+  - CRS/CRS_Synchronization_Polling/Inc/stm32_assert.h          Template file to include assert_failed function
+  - CRS/CRS_Synchronization_Polling/Src/stm32l0xx_it.c          Interrupt handlers
+  - CRS/CRS_Synchronization_Polling/Src/main.c                  Main program
+  - CRS/CRS_Synchronization_Polling/Src/system_stm32l0xx.c      STM32L0xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32L073xx devices.
+
+  - This example has been tested with STM32L073RZ-Nucleo Rev C board and can be
+    easily tailored to any other supported device and development board.
+
+  - STM32L073RZ-Nucleo Rev C Set-up
+    - Connect the MCO pin to an oscilloscope to monitor HSI48 frequency:
+      - PA.08: connected to pin 23 of CN10 connector
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeL0GettingStarted.pdf">Getting started with STM32CubeL0 Embedded Software for STM32L0xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeL0 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32L073RZ-Nucleo Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

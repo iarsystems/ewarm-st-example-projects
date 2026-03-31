@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<infocenter_data version="1.0">
+  <iar_name>Template</iar_name><!--App-->
+  <iar_description>This directory provides a reference template project that can be used to build any firmware application for STM32F410xx devices using STM32CubeF4 HAL and running on STM32F4xx-Nucleo boards from STMicroelectronics.</iar_description><!--App short description-->
+  <iar_curdir>$CUR_DIR$</iar_curdir>
+</infocenter_data>

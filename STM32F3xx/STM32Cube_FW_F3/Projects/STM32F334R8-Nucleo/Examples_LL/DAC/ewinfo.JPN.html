@@ -1,0 +1,230 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.JPN.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+<span style="font-family: monospace;">
+<h1>DAC Workspace</h1>
+
+=====================================================================================
+<b>DAC_GenerateConstantSignal_TriggerSW</b>
+DAC example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to use the DAC peripheral to generate
+a constant voltage signal;
+This example is based on the STM32F3xx DAC LL API;
+peripheral initialization done using LL unitary services functions
+for optimization purpose (performance and size).
+
+Example configuration:
+One DAC channel (DAC1 channel1) is configured to connect DAC channel output on GPIO pin
+to get the samples from SW (no DMA transfer) and to get conversion trigger from SW.
+
+Example execution:
+From the main program execution, LED is toggling quickly while waiting for
+user button press.
+Then, the DAC is configured and activated: constant signal is generated on DAC output
+indefinitely.
+DAC channel output value is provided by SW, a new value is loaded
+at each press on push button: start from 0, increased by a quarter of Vdda and
+finishing at Vdda voltage.
+Finally, LED is turned-on.
+
+Connection needed:
+None.
+Oscilloscope for monitoring DAC channel output (cf pin below).
+Other peripheral used:
+  1 GPIO for push button
+  1 GPIO for DAC channel output PA.04 (Arduino connector CN8 pin A2, Morpho connector CN7 pin 32)
+
+
+<u>Directory contents</u>
+
+  - DAC/DAC_GenerateConstantSignal_TriggerSW/Inc/stm32f3xx_it.h          Interrupt handlers header file
+  - DAC/DAC_GenerateConstantSignal_TriggerSW/Inc/main.h                  Header for main.c module
+  - DAC/DAC_GenerateConstantSignal_TriggerSW/Inc/stm32_assert.h          Template file to include assert_failed function
+  - DAC/DAC_GenerateConstantSignal_TriggerSW/Src/stm32f3xx_it.c          Interrupt handlers
+  - DAC/DAC_GenerateConstantSignal_TriggerSW/Src/main.c                  Main program
+  - DAC/DAC_GenerateConstantSignal_TriggerSW/Src/system_stm32f3xx.c      STM32F3xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F334R8 devices.
+
+  - This example has been tested with STM32F334R8-Nucleo Rev C board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>DAC_GenerateWaveform_TriggerHW</b>
+DAC example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to use the DAC peripheral to generate
+a waveform voltage from digital data stream transfered by DMA;
+This example is based on the STM32F3xx DAC LL API;
+peripheral initialization done using LL unitary services functions
+for optimization purpose (performance and size).
+
+Example configuration:
+One DAC channel (DAC1 channel1) is configured to connect DAC channel output on GPIO pin
+to get the samples from DMA transfer and to get conversion trigger from timer.
+
+Other peripherals configured in this example:
+one DMA channel and one timer are configured to provide samples to be generated
+by DAC peripheral:
+sinus waveform, frequency 1kHz, amplitude Vdda.
+(these settings are configurable by changing literals values in file header).
+
+Example execution:
+From the main program execution, LED is toggling quickly while waiting for
+user button press.
+DMA and timer are configured and activated to transfer data and trig DAC conversion.
+Then, the DAC is configured and activated: waveform is generated on DAC output
+indefinitely.
+DAC channel output value is provided by DMA transfer, a new value is loaded
+at each trigger from trimer.
+Finally, LED is turned-on.
+
+Connection needed:
+None.
+Oscilloscope for monitoring DAC channel output (cf pin below).
+Other peripheral used:
+  1 GPIO for push button
+  1 GPIO for DAC channel output PA.04 (Arduino connector CN8 pin A2, Morpho connector CN7 pin 32)
+  For waveform voltage generation: 1 DMA channel, 1 timer.
+
+
+<u>Directory contents</u>
+
+  - DAC/DAC_GenerateWaveform_TriggerHW/Inc/stm32f3xx_it.h          Interrupt handlers header file
+  - DAC/DAC_GenerateWaveform_TriggerHW/Inc/main.h                  Header for main.c module
+  - DAC/DAC_GenerateWaveform_TriggerHW/Inc/stm32_assert.h          Template file to include assert_failed function
+  - DAC/DAC_GenerateWaveform_TriggerHW/Src/stm32f3xx_it.c          Interrupt handlers
+  - DAC/DAC_GenerateWaveform_TriggerHW/Src/main.c                  Main program
+  - DAC/DAC_GenerateWaveform_TriggerHW/Src/system_stm32f3xx.c      STM32F3xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F334R8 devices.
+
+  - This example has been tested with STM32F334R8-Nucleo Rev C board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+=====================================================================================
+<b>DAC_GenerateWaveform_TriggerHW_Init</b>
+DAC example
+=====================================================================================
+
+<u>Example Description</u>
+
+This example describes how to use the DAC peripheral to generate
+a waveform voltage from digital data stream transfered by DMA;
+This example is based on the STM32F3xx DAC LL API;
+peripheral initialization done using LL initialization function
+to demonstrate LL init usage.
+
+Example configuration:
+One DAC channel (DAC1 channel1) is configured to connect DAC channel output on GPIO pin
+to get the samples from DMA transfer and to get conversion trigger from timer.
+
+Other peripherals configured in this example:
+one DMA channel and one timer are configured to provide samples to be generated
+by DAC peripheral:
+sinus waveform, frequency 1kHz, amplitude Vdda.
+(these settings are configurable by changing literals values in file header).
+
+Example execution:
+From the main program execution, LED is toggling quickly while waiting for
+user button press.
+DMA and timer are configured and activated to transfer data and trig DAC conversion.
+Then, the DAC is configured and activated: waveform is generated on DAC output
+indefinitely.
+DAC channel output value is provided by DMA transfer, a new value is loaded
+at each trigger from trimer.
+Finally, LED is turned-on.
+
+Connection needed:
+None.
+Oscilloscope for monitoring DAC channel output (cf pin below).
+Other peripheral used:
+  1 GPIO for push button
+  1 GPIO for DAC channel output PA.04 (Arduino connector CN8 pin A2, Morpho connector CN7 pin 32)
+  For waveform voltage generation: 1 DMA channel, 1 timer.
+
+
+<u>Directory contents</u>
+
+  - DAC/DAC_GenerateWaveform_TriggerHW_Init/Inc/stm32f3xx_it.h          Interrupt handlers header file
+  - DAC/DAC_GenerateWaveform_TriggerHW_Init/Inc/main.h                  Header for main.c module
+  - DAC/DAC_GenerateWaveform_TriggerHW_Init/Src/stm32f3xx_it.c          Interrupt handlers
+  - DAC/DAC_GenerateWaveform_TriggerHW_Init/Src/main.c                  Main program
+  - DAC/DAC_GenerateWaveform_TriggerHW_Init/Src/system_stm32f3xx.c      STM32F3xx system source file
+
+
+<u>Hardware and Software environment</u>
+
+  - This example runs on STM32F334R8 devices.
+
+  - This example has been tested with STM32F334R8-Nucleo Rev C board and can be
+    easily tailored to any other supported device and development board.
+
+
+<u>How to use it ?</u>
+
+In order to make the program work, you must do the following :
+ - Rebuild all files and load your image into target memory
+ - Run the example
+
+
+
+  <br\><b><a href="$CUR_DIR$/../../../../Documentation/STM32CubeF3GettingStarted.pdf">Getting started with STM32CubeF3 Embedded Software for STM32F3xx series</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../../../../Release_Notes.html">Release Notes for STM32CubeF3 Embedded Software</a></b>
+
+  <br\><b><a href="$CUR_DIR$/../Release_Notes.html">Release Notes for STM32F334R8-Nucleo Examples</a></b>
+
+</span>
+  </pre>
+  </div>
+  </body>
+</html>
+

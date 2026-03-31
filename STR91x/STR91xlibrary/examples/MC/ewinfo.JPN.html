@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.JPN.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+MC
+
+DESCRIPTION
+===========
+   This example show how to configure the MC peripheral to generate Three
+  complementary PWM signals, to insert a defined dead time value and to use the
+  Tacho interface in hardware Mode. The PCLK frequency is set to 25 MHz, the MC
+  is running at 11.73 KHz, the PulseU, PulseV and PulseW duty cycles are fixed
+  respectively to 50%, 25% and 12.5%. The dead time is equal to 148 microsecond.
+  The PWM waveform can be display in a scope.
+
+COMPATIBILITY
+=============
+  The project is compatible with the IAR-STR912-SK evaluation board.
+  The project is by default configured to use the J-Link JTAG interface.
+
+CONFIGURATION
+=============
+  The application is downloaded to the flash memory.
+
+  Connect a scope to:
+  - Pin29 (P6.00/MC_UH).
+  - Pin31 (P6.01/MC_UL).
+  - Pin19 (P6.02/MC_VH).
+  - Pin20 (P6.03/MC_VL).
+  - Pin83 (P6.04/MC_WH).
+  - Pin84 (P6.05/MC_WL).
+
+GETTING STARTED
+===============
+  1) Connect the J-Link.
+  2) Power the board.
+  3) Build and download the example.
+  4) Run the example.
+
+   </pre>
+
+  </div>
+  </body>
+</html>
+

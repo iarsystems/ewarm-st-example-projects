@@ -1,0 +1,368 @@
+__var _IWDG_KR;
+__var _IWDG_PR;
+__var _IWDG_RLR;
+__var _IWDG_SR;
+
+__var _FLASH_KEYR;
+__var _FLASH_OPTKEYR;
+__var _FLASH_SR;
+__var _FLASH_CR;
+__var _FLASH_OPTCR;
+
+__var _BOR_LEV;
+__var _WDG_SW;
+__var _nRST_STOP;
+__var _nRST_STDBY;
+__var _RDP;
+__var _nWRP;
+__var _OTP_BASE;
+
+_init()
+{
+__var reg;
+
+  _IWDG_KR        = 0x40003000;
+  _IWDG_PR        = 0x40003004;
+  _IWDG_RLR       = 0x40003008;
+  _IWDG_SR        = 0x4000300C;
+  _FLASH_KEYR     = 0x40023C04;
+  _FLASH_OPTKEYR  = 0x40023C08;
+  _FLASH_SR       = 0x40023C0C;
+  _FLASH_CR       = 0x40023C10;
+  _FLASH_OPTCR    = 0x40023C14;
+  _OTP_BASE       = 0x1FFF7800;
+
+  _BOR_LEV    = 3;
+  _WDG_SW     = 1;
+  _nRST_STOP  = 1;
+  _nRST_STDBY = 1;
+  _RDP        = 0xAA;
+  _nWRP       = 0xFFF;
+
+  __hwReset(0);
+
+  if(0 == ((1<<5) & __readMemory32(_FLASH_OPTCR,"Memory")))
+  {
+    // unlock WDT registers
+    __writeMemory32(0x5555,_IWDG_KR,"Memory");
+    // wait PVU reset
+    while(1 & __readMemory32(_IWDG_SR,"Memory"));
+    __writeMemory32(0x7,_IWDG_PR,"Memory");
+    // wait RVU reset
+    while(2 & __readMemory32(_IWDG_SR,"Memory"));
+    __writeMemory32(0xFFF,_IWDG_RLR,"Memory");
+    // reaload WDT
+    __writeMemory32(0xAAAA,_IWDG_KR,"Memory");
+  }
+}
+
+_wait_until_busy()
+{
+  while(1<<16 & __readMemory32(_FLASH_SR,"Memory"));
+}
+
+_unlock()
+{
+  // Authorize the programming of main of OTP areas
+  __writeMemory32(0x45670123,_FLASH_KEYR,"Memory");
+  __writeMemory32(0xCDEF89AB,_FLASH_KEYR,"Memory");
+  // Authorize the programming of the option bytes
+  __writeMemory32(0x08192A3B,_FLASH_OPTKEYR,"Memory");
+  __writeMemory32(0x4C5D6E7F,_FLASH_OPTKEYR,"Memory");
+}
+
+_store_opt()
+{
+__var reg;
+  reg = __readMemory32(_FLASH_OPTCR,"Memory");
+
+  _BOR_LEV    = (reg >> 2) & 0x3;
+  _WDG_SW     = (reg >> 5) & 0x1;
+  _nRST_STOP  = (reg >> 6) & 0x1;
+  _nRST_STDBY = (reg >> 7) & 0x1;
+  _RDP        = (reg >> 8) & 0xFF;
+  _nWRP       = (reg >>16) & 0xFFF;
+}
+
+_restore_opt()
+{
+__var reg;
+  _wait_until_busy();
+  _unlock();
+  reg = (1            << 1)
+      | (_BOR_LEV     << 2)
+      | (_WDG_SW      << 5)
+      | (_nRST_STOP   << 6)
+      | (_nRST_STDBY  << 7)
+      | (_RDP         << 8)
+      | (_nWRP        <<16)
+      ;
+  // Modifying user option bytes
+  __writeMemory32(reg,_FLASH_OPTCR,"Memory");
+  _wait_until_busy();
+}
+
+/*********************************************************************
+*
+*       High level functions
+*
+*       These functions should be called from the C-SPY debugger
+*       quick watch window.
+*       All output will go the the debug log window.
+*
+*       Note that the debugger will lose the connection with the ARM core
+*       when executing any of these commands. To recover, the debugger session
+*       must be terminated and the board must be power cycled.
+*
+**********************************************************************/
+
+// Read the option register.
+stm32f4xx_read_opt()
+{
+  _init();
+  _store_opt();
+  __message "-I- STM32F4xx options bytes:\n";
+  __message "-I- \tBOR_LEV    = ", _BOR_LEV:%x,"\n";
+  __message "-I- \tWDG_SW     = ", _WDG_SW:%x,"\n";
+  __message "-I- \tnRST_STOP  = ", _nRST_STOP:%x,"\n";
+  __message "-I- \tnRST_STDBY = ", _nRST_STDBY:%x,"\n";
+  __message "-I- \tRDP        = ", _RDP:%x,"\n";
+  __message "-I- \tnWRP       = ", _nWRP:%x,"\n";
+}
+
+// read disable
+stm32f4xx_read_lock()
+{
+  _init();
+  _store_opt();
+  _RDP = 0xFF;  // read protection
+  _restore_opt();
+  // reload
+  _init();
+  _store_opt();
+  // check OPT
+  if(_RDP != 0xFF)
+  {
+    __message "-I- STM32F4xx read protection enable ... fault\n";
+  }
+  else
+  {
+    __message "-I- STM32F4xx read protection enable ... pass\n";
+  }
+}
+
+// read enable
+stm32f4xx_read_unlock()
+{
+  _init();
+  _store_opt();
+  _RDP = 0xAA;  // read protection
+  _restore_opt();
+  // reload
+  _init();
+  _store_opt();
+  // check OPT
+  if(_RDP != 0xAA)
+  {
+    __message "-I- STM32F4xx read protection disable ... fault\n";
+  }
+  else
+  {
+    __message "-I- STM32F4xx read protection disable ... pass\n";
+  }
+}
+
+// Chip protect
+stm32f4xx_full_lock()
+{
+  _init();
+  _store_opt();
+  _RDP = 0xCC;  // Chip protect
+  _restore_opt();
+  // reload
+  _init();
+  _store_opt();
+  // check OPT
+  if(_RDP != 0xCC)
+  {
+    __message "-I- STM32F4xx chip protection enable ... fault\n";
+  }
+  else
+  {
+    __message "-I- STM32F4xx chip protection enable ... pass\n";
+  }
+}
+
+// Enable WDT.
+stm32f4xx_iwdt_enable()
+{
+  _init();
+  _store_opt();
+  _WDG_SW = 0;  // iWDT enable
+  _restore_opt();
+  // reload
+  _init();
+  _store_opt();
+  // check OPT
+  if(_WDG_SW)
+  {
+    __message "-I- STM32F4xx independent WDT enable ... fault\n";
+  }
+  else
+  {
+    __message "-I- STM32F4xx independent WDT enable ... pass\n";
+  }
+}
+
+// Disable WDT.
+stm32f4xx_iwdt_disable()
+{
+  _init();
+  _store_opt();
+  _WDG_SW = 1;  // iWDT disable
+  _restore_opt();
+  // reload
+  _init();
+  _store_opt();
+  // check OPT
+  if(!_WDG_SW)
+  {
+    __message "-I- STM32F4xx independent WDT disable ... fault\n";
+  }
+  else
+  {
+    __message "-I- STM32F4xx independent WDT disable ... pass\n";
+  }
+}
+
+// Enable reset at stop
+stm32f4xx_rst_stop_enable()
+{
+  _init();
+  _store_opt();
+  _nRST_STOP = 0;  // nRST_STOP enable
+  _restore_opt();
+  // reload
+  _init();
+  _store_opt();
+  // check OPT
+  if(_nRST_STOP)
+  {
+    __message "-I- STM32F4xx reset at stop enable ... fault\n";
+  }
+  else
+  {
+    __message "-I- STM32F4xx reset at stop enable ... pass\n";
+  }
+}
+
+// Disable reset at stop
+stm32f4xx_rst_stopt_disable()
+{
+  _init();
+  _store_opt();
+  _nRST_STOP = 1;  // nRST_STOP disable
+  _restore_opt();
+  // reload
+  _init();
+  _store_opt();
+  // check OPT
+  if(!_nRST_STOP)
+  {
+    __message "-I- STM32F4xx reset at stop disable ... fault\n";
+  }
+  else
+  {
+    __message "-I- STM32F4xx reset at stop disable ... pass\n";
+  }
+}
+
+// Enable reset at stdby
+stm32f4xx_rst_stdby_enable()
+{
+  _init();
+  _store_opt();
+  _nRST_STDBY = 0;  // nRST_STDBY enable
+  _restore_opt();
+  // reload
+  _init();
+  _store_opt();
+  // check OPT
+  if(_nRST_STDBY)
+  {
+    __message "-I- STM32F4xx reset at stop enable ... fault\n";
+  }
+  else
+  {
+    __message "-I- STM32F4xx reset at stop enable ... pass\n";
+  }
+}
+
+// Disable reset at stdby
+stm32f4xx_rst_stdby_disable()
+{
+  _init();
+  _store_opt();
+  _nRST_STDBY = 1;  // nRST_STDBY disable
+  _restore_opt();
+  // reload
+  _init();
+  _store_opt();
+  // check OPT
+  if(!_nRST_STDBY)
+  {
+    __message "-I- STM32F4xx reset at stdby disable ... fault\n";
+  }
+  else
+  {
+    __message "-I- STM32F4xx reset at stdby disable ... pass\n";
+  }
+}
+
+// Enable/disable sectors write protect.
+stm32f4xx_write_protect(protect)
+{
+  _init();
+  _store_opt();
+
+  // write protect data
+  _nWRP =  protect & 0xFFF;
+
+  _restore_opt();
+  // reload
+  _init();
+  _store_opt();
+  // check OPT
+  if(_nWRP !=  (protect & 0xFFF))
+  {
+    __message "-I- STM32F4xx set write protect ... fault\n";
+  }
+  else
+  {
+    __message "-I- STM32F4xx set write protect ... pass\n";
+  }
+}
+
+//configure BOR level.
+stm32f4xx_bor_level(level)
+{
+  _init();
+  _store_opt();
+
+  // write protect data
+  _BOR_LEV =  level & 0x3;
+
+  _restore_opt();
+  // reload
+  _init();
+  _store_opt();
+  // check OPT
+  if(_BOR_LEV !=  (level & 0x3))
+  {
+    __message "-I- STM32F4xx set BOR level ... fault\n";
+  }
+  else
+  {
+    __message "-I- STM32F4xx set BOR level ... pass\n";
+  }
+}

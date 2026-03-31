@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/LPUART_WakeUpFromStop/EWARM/LPUART_WakeUpFromStop.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/LPUART_WakeUpFromStop_Init/EWARM/LPUART_WakeUpFromStop_Init.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>ALL</name>
+      <member>
+        <project>LPUART_WakeUpFromStop</project>
+        <configuration>STM32L073RZ_NUCLEO</configuration>
+      </member>
+      <member>
+        <project>LPUART_WakeUpFromStop_Init</project>
+        <configuration>STM32L073RZ_NUCLEO</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.JPN.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+I2C
+
+DESCRIPTION
+===========
+   This example provides a basic example of how to use the I2C software library
+  and an associate I2C EEPROM driver to communicate with an M24C08 EEPROM.
+  Using this driver the program performs a write of a Tx_Buffer, defined in the
+  main.c file, to the memory followed by a read of the written data. Then data
+  read from the memory stored in the Rx_Buffer is compared with the expected
+  values of the Tx_Buffer. The result of this comparison is stored in the
+  "TransferStatus" variable.
+  The I2C is configured in Master transmitter during write operation and in
+  Master receiver during read operation from I2C EEPROM. 
+  The Own I2C address is defined to 0xA0 in the I2c_ee.c file.
+  The speed is set to the maximum frequency of 400kHz. This value is defined in
+  the I2c_ee.c file, which could be in the range of 0 to 400KHZ.
+  One I2C EEPROM Block address where the program will write the buffer have to
+  be selected from the four address available and defined in the I2c_ee.c file.
+  The EEPROM address where the program start the write and the read operations
+  is defined in the main.c file. 
+
+COMPATIBILITY
+=============
+  The project is compatible with the IAR STR750-SK board.
+  The project is by default configured to use the J-Link JTAG interface.
+
+CONFIGURATION
+=============
+  An I2C EEPROM have to be connected to the STR750 microcontroller as following:
+  - Connect I2C_SCL(P0.08) to EEPROM_SCL(Pin6).
+  - Connect I2C_SDA(P0.09) to EEPROM_SDA(Pin5).
+  - Connect pin(P2.00) to EEPROM_E2(Pin3).
+  - Connect EEPROM_Vcc(Pin8) to VDD.
+  - Connect EEPROM_Vss(Pin4) to VSS.
+
+  Jumpers:
+   PWR_SEL   - depends on the power source
+   VRE       - OFF
+   BOOT0     - 0
+   BOOT1     - 0
+
+GETTING STARTED
+===============
+  1) Connect the J-Link.
+  2) Power the board.
+  3) Build and download the example.
+  4) Run the example.
+
+   </pre>
+
+  </div>
+  </body>
+</html>
+

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$/IWDG_Reset/IWDG_Reset.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$/IWDG_WindowMode/IWDG_WindowMode.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>IWDG_Reset</project>
+        <configuration>STM32F051</configuration>
+      </member>
+      <member>
+        <project>IWDG_Reset</project>
+        <configuration>STM32F072</configuration>
+      </member>
+      <member>
+        <project>IWDG_WindowMode</project>
+        <configuration>STM32F051</configuration>
+      </member>
+      <member>
+        <project>IWDG_WindowMode</project>
+        <configuration>STM32F072</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>

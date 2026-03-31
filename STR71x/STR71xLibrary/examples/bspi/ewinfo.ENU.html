@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+     xml:lang="en">
+  <head>
+    <title>Information Center for ARM</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="file://$TOOLKIT_DIR$/doc/infocenter/style/ewic.css" />
+  </head>
+  <body>
+  <div id="topbanner"></div>
+  <div id="titlebanner_small">
+    <h2>Information Center for ARM</h2>
+  </div>
+  <div class="breadcrumb"><a href="$TOOLKIT_DIR$/doc/infocenter/index.ENU.html">Information Center for ARM</a> | EXAMPLES</div>
+  <div class="mainblock">
+   <h2>Example description</h2>
+
+   <pre>  <!--Insert readme.txt-->
+BSPI
+
+DESCRIPTION
+===========
+   In this example BSPI0 and BSPI1 are connected together on the same bus. BSPI0
+  is configured as Master and BSPI1 as Slave, both with a word of 8 bits and
+  Tx/Rx FIFO of 9 words. The BSPI clock frequency is fixed to APB1/6.
+
+   The BSPI0 transmits a nine data buffer size to BSPI1. Then the data received
+  by the BSPI1 is stored in the "Receivetab" variable which can be seen on the
+  debugger watch window.
+
+  This example demonstrates the following features of the BSPI :
+
+   - Master and Slave modes support,
+   - Internal clock prescaler,
+   - Programmable depth transmit FIFO,
+   - Programmable depth receive FIFO,
+   - Operate with 16 bit word length.
+
+  It is made of 4 parts :
+
+   1) Configure BSPI0 as a master,
+   2) Configure BSPI1 as a slave,
+   3) Transmission of five words from Master to Slave,
+   4) Reception of nine words from Master.
+
+COMPATIBILITY
+=============
+   These examples work as standalone on the STR711/STR712 IAR boards. By default
+  the projects are configured to use the J-Link JTAG interface.
+
+CONFIGURATION
+=============
+  The application is downloaded to the flash memory.
+
+  Connect:
+    BSPI0 .MISO0 --> BSPI1.MISO1
+    BSPI0 .MOSI0 --> BSPI1.MOSI1
+    BSPI0 .SCLK0 --> BSPI1.SCLK1
+    BSPI1 .SS1 --> GND
+
+GETTING STARTED
+===============
+  1) Connect the J-Link.
+  2) Power the board.
+  3) Build and download the example.
+  4) Run the example.
+
+   </pre>
+
+  </div>
+  </body>
+</html>
+
