@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-
-<infocenter_data version="1.0">
-  <iar_template_variant>A</iar_template_variant>
-  <iar_name>HAL API + Low Layer API Examples</iar_name><!--Board-->
-  <iar_title>Examples through the both HAL API and Low Layer API for STM32F429ZI-Nucleo board</iar_title><!--Board-->
-</infocenter_data>

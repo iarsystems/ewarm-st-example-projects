@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<infocenter_data version="1.0">
-  <iar_name>RNG</iar_name><!--App-->
-  <iar_description>This example guides the user through the different configuration steps by mean of HAL API to ensure RNG random 32bit numbers generation.</iar_description><!--App short description-->
-  <iar_curdir>$CUR_DIR$</iar_curdir>
-</infocenter_data>

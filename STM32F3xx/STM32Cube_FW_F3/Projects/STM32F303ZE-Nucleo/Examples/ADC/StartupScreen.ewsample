@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<exampleInfo>
-  <copyDir>..\..\..\..\Drivers\BSP\STM32F3xx_Nucleo_144\</copyDir>
-  <copyDir>..\..\..\..\Drivers\CMSIS\Device\ST\STM32F3xx\</copyDir>
-  <copyDir>..\..\..\..\Drivers\STM32F3xx_HAL_Driver\</copyDir>
-</exampleInfo>

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<infocenter_data version="1.0">
-  <iar_name>WWDG</iar_name><!--App-->
-  <iar_description>This example guides the user through the different configuration steps by means of the HAL API
-to perform periodic WWDG counter update and simulate a software fault that generates
-an MCU WWDG reset when a predefined time period has elapsed.</iar_description><!--App short description-->
-  <iar_curdir>$CUR_DIR$</iar_curdir>
-</infocenter_data>

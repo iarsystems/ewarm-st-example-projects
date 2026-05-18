@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<infocenter_data version="1.0">
-  <iar_name>I2S</iar_name><!--App-->
-  <iar_description>This example provides a description of how to set a communication between two
-SPIs in I2S mode using interrupts and performing a transfer from Master to Slave.</iar_description><!--App short description-->
-  <iar_curdir>$CUR_DIR$</iar_curdir>
-</infocenter_data>

@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<infocenter_data version="1.0">
-  <iar_name>DMA2D</iar_name><!--App-->
-  <iar_description>This example provides a description of how to configure the DMA2D peripheral in Memory_to_Memory transfer mode and display the result on LCD, in resorting to DMA2D LL APIs for performance improvement.</iar_description><!--App short description-->
-  <iar_curdir>$CUR_DIR$</iar_curdir>
-</infocenter_data>

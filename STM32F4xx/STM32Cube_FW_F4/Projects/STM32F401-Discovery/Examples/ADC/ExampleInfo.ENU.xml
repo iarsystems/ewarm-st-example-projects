@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<infocenter_data version="1.0">
-  <iar_name>ADC</iar_name><!--App-->
-  <iar_description>This example describes how to use the ADC and DMA to transfer continuously converted data from ADC to memory.</iar_description><!--App short description-->
-  <iar_curdir>$CUR_DIR$</iar_curdir>
-</infocenter_data>

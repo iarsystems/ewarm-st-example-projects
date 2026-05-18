@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<infocenter_data version="1.0">
-  <iar_name>IWDG</iar_name><!--App-->
-  <iar_description>This example guides you through the different configuration steps by mean of HAL API to ensure IWDG reload counter and simulate a software fault generating an MCU IWDG
-reset on expiry of a programmed time period.</iar_description><!--App short description-->
-  <iar_curdir>$CUR_DIR$</iar_curdir>
-</infocenter_data>

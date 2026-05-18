@@ -73,4 +73,3 @@ const TtTableBlock_t TtTB[] =
   {L1Table,TableL1},
   TTB_INVALID
 };
-  

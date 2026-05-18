@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-
-<infocenter_data version="1.0">
-  <iar_template_variant>A</iar_template_variant>
-  <iar_name>STM32303E-EVAL</iar_name><!--Board-->
-  <iar_title>STM32CubeF3 Embedded Software for STM32303E-EVAL board</iar_title><!--Board-->
-</infocenter_data>

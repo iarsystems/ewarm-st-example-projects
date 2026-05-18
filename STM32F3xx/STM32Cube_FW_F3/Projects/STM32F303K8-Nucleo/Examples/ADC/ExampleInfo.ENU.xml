@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<infocenter_data version="1.0">
-  <iar_name>ADC</iar_name><!--App-->
-  <iar_description>This example describes how to configure and use the ADC to convert an external
-analog input and get the result using a DMA transfer through the HAL API.</iar_description><!--App short description-->
-  <iar_curdir>$CUR_DIR$</iar_curdir>
-</infocenter_data>

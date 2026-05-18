@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<infocenter_data version="1.0">
-  <iar_name>USART</iar_name><!--App-->
-  <iar_description>This example describes an USART-SPI communication (transmit/receive) between two
-boards where he USART is configured as a slave.</iar_description><!--App short description-->
-  <iar_curdir>$CUR_DIR$</iar_curdir>
-</infocenter_data>

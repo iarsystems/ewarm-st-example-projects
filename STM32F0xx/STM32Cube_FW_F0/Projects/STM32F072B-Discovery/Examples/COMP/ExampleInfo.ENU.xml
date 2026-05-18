@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<infocenter_data version="1.0">
-  <iar_name>COMP</iar_name><!--App-->
-  <iar_description>This example shows how to configure the COMP peripheral to compare the external
-voltage applied on a specific pin with the Internal Voltage Reference.</iar_description><!--App short description-->
-  <iar_curdir>$CUR_DIR$</iar_curdir>
-</infocenter_data>

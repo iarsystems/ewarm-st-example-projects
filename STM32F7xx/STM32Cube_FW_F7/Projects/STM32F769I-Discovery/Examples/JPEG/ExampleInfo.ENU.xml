@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<infocenter_data version="1.0">
-  <iar_name>JPEG</iar_name><!--App-->
-  <iar_description>This example demonstrates how to read jpeg file from SDCard memory using Fatfs, decode it using the JPEG HW decoder in DMA mode and display the final ARGB8888 image KoD LCD mounted on board or a HDMI monitor Connected through the DSI-HDMI bridge board MB1232.</iar_description><!--App short description-->
-  <iar_curdir>$CUR_DIR$</iar_curdir>
-</infocenter_data>

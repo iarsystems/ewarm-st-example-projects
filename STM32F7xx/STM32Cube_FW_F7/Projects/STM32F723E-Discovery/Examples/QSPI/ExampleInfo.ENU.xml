@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<infocenter_data version="1.0">
-  <iar_name>QSPI</iar_name><!--App-->
-  <iar_description>This example shows how to erase, write to and read from the external MX25R6435F Macronix
-flash memory using QSPI communication.</iar_description><!--App short description-->
-  <iar_curdir>$CUR_DIR$</iar_curdir>
-</infocenter_data>
