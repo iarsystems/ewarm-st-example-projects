@@ -298,6 +298,8 @@
         </option>
         <option>
           <name>CCIncludePath2</name>
+          <state>$PROJ_DIR$\..\..\..\..\..\..\CMSIS\Core\Include</state>
+
           <state>$PROJ_DIR$\DataExchangeDMA</state>
           <state>$PROJ_DIR$\..\..\..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include</state>
           <state>$PROJ_DIR$\..\..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc</state>
@@ -1220,6 +1222,8 @@
         </option>
         <option>
           <name>CCIncludePath2</name>
+          <state>$PROJ_DIR$\..\..\..\..\..\..\CMSIS\Core\Include</state>
+
           <state>$PROJ_DIR$\DataExchangeDMA</state>
           <state>$PROJ_DIR$\..\..\..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include</state>
           <state>$PROJ_DIR$\..\..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc</state>

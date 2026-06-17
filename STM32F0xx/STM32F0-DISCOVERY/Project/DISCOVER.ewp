@@ -292,6 +292,8 @@
         </option>
         <option>
           <name>CCIncludePath2</name>
+          <state>$PROJ_DIR$\..\..\..\CMSIS\Core\Include</state>
+
           <state>$PROJ_DIR$\</state>
           <state>$PROJ_DIR$\src\EvalTest</state>
           <state>$PROJ_DIR$\..\Libraries\STM32F0xx_StdPeriph_Driver\inc</state>
@@ -1203,6 +1205,8 @@
         </option>
         <option>
           <name>CCIncludePath2</name>
+          <state>$PROJ_DIR$\..\..\..\CMSIS\Core\Include</state>
+
           <state>$PROJ_DIR$\</state>
           <state>$PROJ_DIR$\src\EvalTest</state>
           <state>$PROJ_DIR$\..\Libraries\STM32F0xx_StdPeriph_Driver\inc</state>

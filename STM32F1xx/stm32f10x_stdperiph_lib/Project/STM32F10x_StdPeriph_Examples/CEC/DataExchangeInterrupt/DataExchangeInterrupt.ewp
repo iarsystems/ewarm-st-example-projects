@@ -294,6 +294,8 @@
         </option>
         <option>
           <name>CCIncludePath2</name>
+          <state>$PROJ_DIR$\..\..\..\..\..\..\CMSIS\Core\Include</state>
+
           <state>$PROJ_DIR$\</state>
           <state>$PROJ_DIR$\..\..\..\..\Libraries\CMSIS\CM3\CoreSupport</state>
           <state>$PROJ_DIR$\..\..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x</state>
@@ -1218,6 +1220,8 @@
         </option>
         <option>
           <name>CCIncludePath2</name>
+          <state>$PROJ_DIR$\..\..\..\..\..\..\CMSIS\Core\Include</state>
+
           <state>$PROJ_DIR$\</state>
           <state>$PROJ_DIR$\..\..\..\..\Libraries\CMSIS\CM3\CoreSupport</state>
           <state>$PROJ_DIR$\..\..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x</state>
@@ -2139,6 +2143,8 @@
             </option>
             <option>
               <name>CCIncludePath2</name>
+              <state>$PROJ_DIR$\..\..\..\..\..\..\CMSIS\Core\Include</state>
+
               <state>$PROJ_DIR$\</state>
               <state>$PROJ_DIR$\..\..\..\..\Libraries\CMSIS\CM3\CoreSupport</state>
               <state>$PROJ_DIR$\..\..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x</state>
@@ -2399,6 +2405,8 @@
             </option>
             <option>
               <name>CCIncludePath2</name>
+              <state>$PROJ_DIR$\..\..\..\..\..\..\CMSIS\Core\Include</state>
+
               <state>$PROJ_DIR$\</state>
               <state>$PROJ_DIR$\..\..\..\..\Libraries\CMSIS\CM3\CoreSupport</state>
               <state>$PROJ_DIR$\..\..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x</state>
